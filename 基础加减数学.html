@@ -20,24 +20,23 @@
             background-color: white;
             text-align: center;
             padding: 40px 20px 0 20px;
-            border-bottom: 5px solid #f1c40f;
+            border-bottom: 6px solid #f1c40f;
         }
 
         .header h1 {
             color: #1a4a8e;
-            font-size: 36px;
-            font-weight: 600;
+            font-size: 42px; /* 调大标题 */
+            font-weight: 900;
             margin: 0;
             letter-spacing: 2px;
         }
 
-        .header h1 span { font-weight: 800; margin-right: 15px; }
+        .header h1 span { font-weight: 900; margin-right: 15px; }
 
         .header .subtitle {
             color: #6b7280;
-            font-size: 18px;
-            margin-top: 10px;
-            margin-bottom: 25px;
+            font-size: 22px; /* 调大副标题 */
+            margin: 10px 0 25px 0;
             font-weight: 400;
         }
 
@@ -51,7 +50,7 @@
         .card {
             background: white;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             min-height: 500px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
@@ -61,43 +60,56 @@
         }
 
         /* --- 菜单布局 --- */
-        .category-section { margin-bottom: 30px; }
+        .category-section { margin-bottom: 35px; }
         .category-title {
             color: #1a4a8e;
-            border-left: 5px solid #f1c40f;
+            border-left: 6px solid #f1c40f;
             padding-left: 15px;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-size: 1.6rem; /* 调大分类标题 */
             font-weight: bold;
         }
 
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
         }
 
         /* --- 按钮样式 --- */
         .btn-emsi {
-            padding: 15px;
+            padding: 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             background: #1a4a8e;
             color: white;
-            font-size: 1rem;
+            font-size: 1.2rem; /* 调大按钮文字 */
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            font-weight: bold;
         }
 
         .btn-emsi:hover { background: #2563eb; transform: translateY(-2px); }
-        .btn-back { background: #6b7280; margin-bottom: 30px; }
 
-        /* --- 关键修改：左右两列布局 --- */
+        /* 顶部控制栏 */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #edf2f7;
+        }
+
+        .btn-back { background: #6b7280; }
+        .btn-refresh { background: #27ae60; } /* 绿色的刷新按钮 */
+
+        /* --- 左右两列布局 --- */
         #quiz-list {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 左右两列 */
-            column-gap: 40px; /* 列间距 */
-            row-gap: 20px;    /* 行间距 */
+            grid-template-columns: 1fr 1fr; 
+            column-gap: 50px; 
+            row-gap: 30px;    
         }
 
         .quiz-item {
@@ -108,30 +120,31 @@
         }
 
         .question {
-            font-size: 1.4rem;
+            font-size: 2.2rem; /* 题目字体加大 */
             color: #2d3748;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
         }
 
         .ans-toggle {
             background-color: #f1c40f;
             color: #1a4a8e;
             border: none;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 800;
             cursor: pointer;
             width: fit-content;
-            font-size: 0.85rem;
+            font-size: 1.1rem;
         }
 
         .solution-box {
-            margin-top: 10px;
-            padding: 10px;
+            margin-top: 15px;
+            padding: 15px;
             background: #f8fafc;
-            border-left: 4px solid #f1c40f;
+            border-left: 6px solid #f1c40f;
             display: none;
-            font-size: 1.2rem;
+            font-size: 1.8rem; /* 答案字体加大 */
             color: #1a4a8e;
             font-weight: bold;
         }
@@ -142,14 +155,14 @@
             background-color: #1a4a8e;
             color: white;
             text-align: center;
-            padding: 18px 20px;
-            font-size: 15px;
+            padding: 20px 20px;
+            font-size: 18px;
         }
 
-        /* 移动端适配：手机上变回一列 */
-        @media (max-width: 768px) {
+        @media (max-width: 800px) {
             #quiz-list { grid-template-columns: 1fr; }
-            .header h1 { font-size: 28px; }
+            .header h1 { font-size: 32px; }
+            .quiz-header { flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
@@ -195,8 +208,11 @@
             </div>
 
             <div id="quiz-page" class="hidden">
-                <button class="btn-emsi btn-back" onclick="goHome()">← Volver al Menú</button>
-                <h2 id="quiz-title" style="color: #1a4a8e; margin-top: 0;"></h2>
+                <div class="quiz-header">
+                    <button class="btn-emsi btn-back" onclick="goHome()">← Menú (菜单)</button>
+                    <button class="btn-emsi btn-refresh" id="refresh-btn">Nuevas Preguntas (换一批)</button>
+                </div>
+                <h2 id="quiz-title" style="color: #1a4a8e; margin-top: 0; font-size: 2rem;"></h2>
                 <div id="quiz-list"></div>
             </div>
         </div>
@@ -207,7 +223,15 @@
     </footer>
 
 <script>
+    // 全局变量，记录当前的题目类型和限制
+    let currentQuizType = '';
+    let currentQuizLimit = 0;
+
     function startQuiz(type, limit) {
+        // 保存当前状态，以便刷新时使用
+        currentQuizType = type;
+        currentQuizLimit = limit;
+
         document.getElementById('home-page').classList.add('hidden');
         document.getElementById('quiz-page').classList.remove('hidden');
         window.scrollTo(0,0);
@@ -230,6 +254,11 @@
             list.appendChild(item);
         }
     }
+
+    // 绑定刷新按钮事件
+    document.getElementById('refresh-btn').onclick = function() {
+        startQuiz(currentQuizType, currentQuizLimit);
+    };
 
     function generateQuestion(type, limit) {
         const getNum = (max) => {
