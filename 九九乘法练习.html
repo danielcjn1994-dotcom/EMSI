@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI Madrid - Práctica de Matemáticas</title>
+    <style>
+        :root {
+            /* 校徽配色 */
+            --emsi-blue: #00479d; /* 深蓝色 */
+            --emsi-yellow: #f4c900; /* 亮黄色 */
+            
+            /* 游戏状态色 */
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --bg: #f5f7fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'Heiti SC', Arial, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 纯文字页眉设计 --- */
+        header {
+            background-color: white;
+            padding: 25px 20px;
+            text-align: center;
+            /* 顶部蓝色条，底部黄色条，呼应校徽 */
+            border-top: 5px solid var(--emsi-blue);
+            border-bottom: 5px solid var(--emsi-yellow);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .brand-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-title {
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* EMSI 强调字 */
+        .emsi-text {
+            color: var(--emsi-blue);
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        /* 中文校名 */
+        .cn-text {
+            color: var(--emsi-blue);
+            font-size: 32px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* 西语校名副标题 */
+        .sub-title {
+            margin: 8px 0 0 0;
+            font-size: 18px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        /* --- 主体容器 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 850px;
+            text-align: center;
+        }
+
+        h2 { color: var(--emsi-blue); }
+
+        /* --- 菜单 --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-table {
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid var(--emsi-blue);
+            border-radius: 10px;
+            cursor: pointer;
+            background: white;
+            color: var(--emsi-blue);
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .btn-table:hover {
+            background: var(--emsi-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-mix {
+            background: var(--emsi-yellow);
+            border: 2px solid #e6bd00;
+            color: var(--emsi-blue);
+            font-size: 20px;
+            grid-column: 1 / -1; /* 让混合按钮占满一行 */
+        }
+        
+        .btn-mix:hover {
+             background: #e6bd00;
+             color: white;
+        }
+
+        /* --- 连线练习区 --- */
+        #game-area { display: none; }
+
+        .matching-board {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .item {
+            padding: 15px;
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 22px;
+            font-weight: bold;
+            transition: all 0.15s;
+            user-select: none;
+            color: #333;
+        }
+
+        /* 状态控制 */
+        .item.selected {
+            border-color: var(--emsi-blue);
+            background-color: #eef6fc;
+            color: var(--emsi-blue);
+            transform: scale(1.02);
+        }
+
+        .item.correct {
+            background-color: var(--success) !important;
+            border-color: var(--success) !important;
+            color: white !important;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .item.wrong {
+            background-color: var(--error) !important;
+            border-color: var(--error) !important;
+            color: white !important;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* --- 底部控制 --- */
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-control {
+            padding: 12px 30px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            font-size: 16px;
+            transition: opacity 0.2s;
+        }
+        .btn-control:hover { opacity: 0.9; }
+
+        .btn-home { background: #7f8c8d; }
+        .btn-end { background: var(--emsi-yellow); color: var(--emsi-blue); }
+
+        /* --- 页脚 --- */
+        footer {
+            background: var(--emsi-blue);
+            color: rgba(255,255,255,0.9);
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .emsi-text { font-size: 32px; }
+            .cn-text { font-size: 24px; display: block; margin: 5px 0; }
+            .sub-title { font-size: 16px; }
+            .matching-board { gap: 15px; }
+            .item { font-size: 18px; padding: 12px; }
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-container">
+            <h1 class="main-title">
+                <span class="emsi-text">EMSI</span>
+                <span class="cn-text">马德里国际中文学校</span>
+            </h1>
+            <h2 class="sub-title">Colegio Chino Internacional de Madrid</h2>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div id="menu">
+                <h2>Práctica de Multiplicación</h2>
+                <p style="color: #666;">Selecciona una tabla para comenzar:</p>
+                <div class="menu-grid">
+                    <script>
+                        for(let i=1; i<=9; i++) {
+                            document.write(`<button class="btn-table" onclick="startGame(${i})">Tabla del ${i}</button>`);
+                        }
+                    </script>
+                    <button class="btn-table btn-mix" onclick="startGame('mix')">★ Desafío Mixto (20 preguntas) ★</button>
+                </div>
+            </div>
+
+            <div id="game-area">
+                <h2 id="game-title">Práctica</h2>
+                <p style="color: #666;">Primero la operación, luego el resultado:</p>
+                <div class="matching-board">
+                    <div class="column" id="left-col"></div>
+                    <div class="column" id="right-col"></div>
+                </div>
+                <div class="controls">
+                    <button class="btn-control btn-home" onclick="location.reload()">Inicio (首页)</button>
+                    <button class="btn-control btn-end" onclick="finishNow()">Finalizar (交卷)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+    </footer>
+
+    <script>
+        // --- 游戏逻辑 (保持不变) ---
+        let selectedLeftEl = null;
+        let matchedCount = 0;
+        let totalItems = 0;
+        let isProcessing = false; // 防止快速点击的锁
+
+        function startGame(mode) {
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('game-area').style.display = 'block';
+            
+            const leftCol = document.getElementById('left-col');
+            const rightCol = document.getElementById('right-col');
+            const title = document.getElementById('game-title');
+            
+            leftCol.innerHTML = '';
+            rightCol.innerHTML = '';
+            matchedCount = 0;
+            selectedLeftEl = null;
+            isProcessing = false;
+
+            let pairs = [];
+
+            if (mode === 'mix') {
+                title.innerText = "Desafío Mixto (Aleatorio)";
+                let set = new Set();
+                while(set.size < 20) {
+                    let a = Math.floor(Math.random() * 9) + 1;
+                    let b = Math.floor(Math.random() * 9) + 1;
+                    set.add(`${a}x${b}`);
+                }
+                set.forEach(p => {
+                    let parts = p.split('x');
+                    pairs.push({ q: `${parts[0]} × ${parts[1]}`, a: parts[0] * parts[1], id: Math.random() });
+                });
+                shuffle(pairs); 
+            } else {
+                title.innerText = `Practicando: Tabla del ${mode}`;
+                for (let i = 1; i <= 9; i++) {
+                    pairs.push({ q: `${mode} × ${i}`, a: mode * i, id: i });
+                }
+            }
+
+            totalItems = pairs.length;
+
+            // 渲染左侧
+            pairs.forEach(pair => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerText = pair.q;
+                div.dataset.id = pair.id;
+                div.onclick = () => {
+                    if (isProcessing || div.classList.contains('correct')) return;
+                    if (selectedLeftEl) selectedLeftEl.classList.remove('selected');
+                    selectedLeftEl = div;
+                    div.classList.add('selected');
+                };
+                leftCol.appendChild(div);
+            });
+
+            // 渲染右侧 (乱序)
+            let answerList = [...pairs];
+            shuffle(answerList);
+            answerList.forEach(pair => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerText = pair.a;
+                div.dataset.id = pair.id;
+                div.onclick = () => {
+                    if (isProcessing || div.classList.contains('correct') || !selectedLeftEl) return;
+                    handleMatch(selectedLeftEl, div);
+                };
+                rightCol.appendChild(div);
+            });
+        }
+
+        function handleMatch(leftEl, rightEl) {
+            if (leftEl.dataset.id === rightEl.dataset.id) {
+                // 正确
+                leftEl.classList.remove('selected');
+                leftEl.classList.add('correct');
+                rightEl.classList.add('correct');
+                selectedLeftEl = null;
+                matchedCount++;
+                if (matchedCount === totalItems) {
+                    setTimeout(() => alert("¡Felicidades! Has completado la práctica. 🎉"), 300);
+                }
+            } else {
+                // 错误
+                isProcessing = true; // 锁定点击
+                leftEl.classList.add('wrong');
+                rightEl.classList.add('wrong');
+                setTimeout(() => {
+                    leftEl.classList.remove('wrong', 'selected');
+                    rightEl.classList.remove('wrong');
+                    selectedLeftEl = null;
+                    isProcessing = false; // 解锁点击
+                }, 800);
+            }
+        }
+
+        function finishNow() {
+            if (matchedCount === totalItems) {
+                 alert("¡Ya has terminado! Excelente trabajo.");
+                 location.reload();
+            } else if (confirm(`Has acertado ${matchedCount} de ${totalItems}. ¿Quieres terminar y volver al inicio?`)) {
+                location.reload();
+            }
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    </script>
+</body>
+</html>

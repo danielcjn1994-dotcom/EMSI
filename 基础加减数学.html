@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI - Panel de Aritmética</title>
+    <style>
+        /* --- EMSI 视觉风格复刻 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span { font-weight: 800; margin-right: 15px; }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 500px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 40px;
+            box-sizing: border-box;
+            border: 1px solid #eee;
+        }
+
+        /* --- 菜单布局 --- */
+        .category-section { margin-bottom: 30px; }
+        .category-title {
+            color: #1a4a8e;
+            border-left: 5px solid #f1c40f;
+            padding-left: 15px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        /* --- 按钮样式 --- */
+        .btn-emsi {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #1a4a8e;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-emsi:hover { background: #2563eb; transform: translateY(-2px); }
+        .btn-back { background: #6b7280; margin-bottom: 30px; }
+
+        /* --- 关键修改：左右两列布局 --- */
+        #quiz-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 左右两列 */
+            column-gap: 40px; /* 列间距 */
+            row-gap: 20px;    /* 行间距 */
+        }
+
+        .quiz-item {
+            border-bottom: 1px solid #f0f4f8;
+            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question {
+            font-size: 1.4rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .ans-toggle {
+            background-color: #f1c40f;
+            color: #1a4a8e;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            width: fit-content;
+            font-size: 0.85rem;
+        }
+
+        .solution-box {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8fafc;
+            border-left: 4px solid #f1c40f;
+            display: none;
+            font-size: 1.2rem;
+            color: #1a4a8e;
+            font-weight: bold;
+        }
+
+        .hidden { display: none; }
+
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+        }
+
+        /* 移动端适配：手机上变回一列 */
+        @media (max-width: 768px) {
+            #quiz-list { grid-template-columns: 1fr; }
+            .header h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Aritmética Básica: Suma y Resta</div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div id="home-page">
+                <div class="category-section">
+                    <div class="category-title">Operaciones hasta 10 y 20</div>
+                    <div class="menu-grid">
+                        <button class="btn-emsi" onclick="startQuiz('add', 10)">Suma hasta 10</button>
+                        <button class="btn-emsi" onclick="startQuiz('sub', 10)">Resta hasta 10</button>
+                        <button class="btn-emsi" onclick="startQuiz('add', 20)">Suma hasta 20</button>
+                        <button class="btn-emsi" onclick="startQuiz('sub', 20)">Resta hasta 20</button>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-title">Operaciones hasta 50 y 100</div>
+                    <div class="menu-grid">
+                        <button class="btn-emsi" onclick="startQuiz('add', 50)">Suma hasta 50</button>
+                        <button class="btn-emsi" onclick="startQuiz('sub', 50)">Resta hasta 50</button>
+                        <button class="btn-emsi" onclick="startQuiz('add', 100)">Suma hasta 100</button>
+                        <button class="btn-emsi" onclick="startQuiz('sub', 100)">Resta hasta 100</button>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-title">Operaciones Mixtas</div>
+                    <div class="menu-grid">
+                        <button class="btn-emsi" onclick="startQuiz('mixed', 10)">Mixta hasta 10</button>
+                        <button class="btn-emsi" onclick="startQuiz('mixed', 20)">Mixta hasta 20</button>
+                        <button class="btn-emsi" onclick="startQuiz('mixed', 50)">Mixta hasta 50</button>
+                        <button class="btn-emsi" onclick="startQuiz('mixed', 100)">Mixta hasta 100</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="quiz-page" class="hidden">
+                <button class="btn-emsi btn-back" onclick="goHome()">← Volver al Menú</button>
+                <h2 id="quiz-title" style="color: #1a4a8e; margin-top: 0;"></h2>
+                <div id="quiz-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+<script>
+    function startQuiz(type, limit) {
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('quiz-page').classList.remove('hidden');
+        window.scrollTo(0,0);
+        
+        const typeNames = { 'add': 'Suma', 'sub': 'Resta', 'mixed': 'Operaciones Mixtas' };
+        document.getElementById('quiz-title').innerText = `${typeNames[type]} (Límite ${limit})`;
+        
+        const list = document.getElementById('quiz-list');
+        list.innerHTML = '';
+
+        for (let i = 1; i <= 10; i++) {
+            let q = generateQuestion(type, limit);
+            const item = document.createElement('div');
+            item.className = 'quiz-item';
+            item.innerHTML = `
+                <div class="question"><strong>${i}.</strong> &nbsp; ${q.text} = ?</div>
+                <button class="ans-toggle" onclick="toggleAns(this)">Solución</button>
+                <div class="solution-box">${q.solve}</div>
+            `;
+            list.appendChild(item);
+        }
+    }
+
+    function generateQuestion(type, limit) {
+        const getNum = (max) => {
+            const min = max > 10 ? 10 : 1;
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+
+        if (type === 'add') {
+            let a = getNum(limit - 5);
+            let b = Math.floor(Math.random() * (limit - a)) + 1;
+            return { text: `${a} + ${b}`, solve: `${a + b}` };
+        } 
+        
+        if (type === 'sub') {
+            let a = getNum(limit);
+            let b = Math.floor(Math.random() * a) + 1;
+            return { text: `${a} - ${b}`, solve: `${a - b}` };
+        }
+
+        if (type === 'mixed') {
+            while (true) {
+                let n1 = getNum(limit);
+                let op1 = Math.random() > 0.5 ? '+' : '-';
+                let n2 = Math.floor(Math.random() * (limit/2)) + 1;
+                let step1 = (op1 === '+') ? n1 + n2 : n1 - n2;
+                if (step1 < 0 || step1 > limit) continue;
+
+                let op2 = Math.random() > 0.5 ? '+' : '-';
+                let n3 = Math.floor(Math.random() * (limit/2)) + 1;
+                let step2 = (op2 === '+') ? step1 + n3 : step1 - n3;
+                if (step2 < 0 || step2 > limit) continue;
+
+                return {
+                    text: `${n1} ${op1} ${n2} ${op2} ${n3}`,
+                    solve: `${step1} ${op2} ${n3} = ${step2}`
+                };
+            }
+        }
+    }
+
+    function toggleAns(btn) {
+        const box = btn.nextElementSibling;
+        const isHidden = box.style.display === 'none' || box.style.display === '';
+        box.style.display = isHidden ? 'block' : 'none';
+        btn.innerText = isHidden ? 'Ocultar' : 'Solución';
+    }
+
+    function goHome() {
+        document.getElementById('home-page').classList.remove('hidden');
+        document.getElementById('quiz-page').classList.add('hidden');
+    }
+</script>
+</body>
+</html>

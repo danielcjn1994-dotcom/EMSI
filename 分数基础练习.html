@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI - Operaciones Básicas (Números Pequeños)</title>
+    <style>
+        /* --- EMSI 视觉风格复刻 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span { font-weight: 800; margin-right: 15px; }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 850px;
+            min-height: 450px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 40px;
+            box-sizing: border-box;
+            border: 1px solid #eee;
+        }
+
+        /* --- 交互元素 --- */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-emsi {
+            padding: 18px;
+            border: none;
+            border-radius: 10px;
+            background: #1a4a8e;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-emsi:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
+            background: #6b7280;
+            padding: 10px 20px;
+            margin-bottom: 25px;
+        }
+
+        .quiz-item {
+            border-bottom: 1px solid #f0f4f8;
+            padding: 20px 0;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* 分数渲染 */
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 8px;
+        }
+        .num { border-bottom: 2px solid #1a4a8e; padding: 0 5px; }
+        .den { padding: 0 5px; }
+        .op { margin: 0 10px; font-weight: bold; color: #1a4a8e; }
+
+        .ans-toggle {
+            background-color: #f1c40f;
+            color: #1a4a8e;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .solution-box {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f8fafc;
+            border-left: 4px solid #f1c40f;
+            display: none;
+            line-height: 2.5;
+            overflow-x: auto;
+            font-size: 1.2rem;
+        }
+
+        .hidden { display: none; }
+
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Nivel Básico: Fracciones (Numeradores Pequeños)</div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div id="home-page">
+                <h2 style="color: #1a4a8e; text-align: center; margin-bottom: 30px;">Selecciona el tipo de ejercicio</h2>
+                <div class="btn-grid">
+                    <button class="btn-emsi" onclick="startQuiz('add')">Suma de fracciones</button>
+                    <button class="btn-emsi" onclick="startQuiz('sub')">Resta de fracciones</button>
+                    <button class="btn-emsi" onclick="startQuiz('addsub')">Suma y Resta mixta</button>
+                    <button class="btn-emsi" onclick="startQuiz('mul')">Multiplicación</button>
+                    <button class="btn-emsi" onclick="startQuiz('div')">División</button>
+                </div>
+            </div>
+
+            <div id="quiz-page" class="hidden">
+                <button class="btn-emsi btn-back" onclick="goHome()">← Volver al Inicio</button>
+                <h2 id="quiz-title" style="color: #1a4a8e; border-bottom: 2px solid #f1c40f; display: inline-block;"></h2>
+                <div id="quiz-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+<script>
+    const gcd = (a, b) => b === 0 ? Math.abs(a) : gcd(b, a % b);
+    const lcm = (a, b) => (a === 0 || b === 0) ? 0 : Math.abs(a * b) / gcd(a, b);
+
+    class Fraction {
+        constructor(n, d) {
+            let common = gcd(n, d);
+            this.n = n / common;
+            this.d = d / common;
+            if (this.d < 0) { this.n = -this.n; this.d = -this.d; }
+        }
+        toHTML() {
+            if (this.d === 1) return `<span>${this.n}</span>`;
+            return `<span class="fraction"><span class="num">${this.n}</span><span class="den">${this.d}</span></span>`;
+        }
+    }
+
+    // 生成“友好”的分数：分子1-9，分母是易于计算的两位数
+    function randFrac() {
+        const friendlyDens = [10, 12, 14, 15, 16, 18, 20, 24, 25, 30];
+        const d = friendlyDens[Math.floor(Math.random() * friendlyDens.length)];
+        const n = Math.floor(Math.random() * 9) + 1; // 1 到 9
+        return new Fraction(n, d);
+    }
+
+    function startQuiz(type) {
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('quiz-page').classList.remove('hidden');
+        window.scrollTo(0,0);
+        
+        const titles = { 'add':'Suma', 'sub':'Resta', 'addsub':'Suma o Resta', 'mul':'Multiplicación', 'div':'División' };
+        document.getElementById('quiz-title').innerText = titles[type];
+        
+        const list = document.getElementById('quiz-list');
+        list.innerHTML = '';
+
+        for (let i = 1; i <= 10; i++) {
+            let q = generateValidQuestion(type);
+            const item = document.createElement('div');
+            item.className = 'quiz-item';
+            item.innerHTML = `
+                <div class="question"><strong>${i}.</strong> &nbsp; ${q.html} <span class="op">=</span> ?</div>
+                <button class="ans-toggle" onclick="toggleAns(this)">Ver solución</button>
+                <div class="solution-box">${q.process}</div>
+            `;
+            list.appendChild(item);
+        }
+    }
+
+    function generateValidQuestion(type) {
+        while (true) {
+            let f1 = randFrac();
+            let f2 = randFrac();
+            let op;
+            if (type === 'add') op = '+';
+            else if (type === 'sub') op = '-';
+            else if (type === 'addsub') op = Math.random() > 0.5 ? '+' : '-';
+            else if (type === 'mul') op = '×';
+            else op = '÷';
+
+            let val1 = f1.n / f1.d;
+            let val2 = f2.n / f2.d;
+            
+            // 1. 结果必须为正
+            let resVal = (op==='+')?val1+val2:(op==='-')?val1-val2:(op==='×')?val1*val2:val1/val2;
+            if (resVal <= 0) continue;
+
+            // 2. 额外限制：乘法中间过程分子不能过大
+            if (op === '×' && (f1.n * f2.n > 80)) continue;
+            
+            // 3. 限制通分后的公分母不要超过 150
+            if ((op === '+' || op === '-') && lcm(f1.d, f2.d) > 150) continue;
+
+            return solveBasic(f1, f2, op);
+        }
+    }
+
+    function solveBasic(f1, f2, op) {
+        const initialExp = `${f1.toHTML()} <span class="op">${op}</span> ${f2.toHTML()}`;
+        let steps = [initialExp];
+
+        if (op === '+' || op === '-') {
+            let commonD = lcm(f1.d, f2.d);
+            if (f1.d !== commonD || f2.d !== commonD) {
+                let n1 = f1.n * (commonD / f1.d);
+                let n2 = f2.n * (commonD / f2.d);
+                steps.push(`<span class="fraction"><span class="num">${n1}</span><span class="den">${commonD}</span></span> <span class="op">${op}</span> <span class="fraction"><span class="num">${n2}</span><span class="den">${commonD}</span></span>`);
+                steps.push(new Fraction((op==='+')?n1+n2:n1-n2, commonD).toHTML());
+            } else {
+                steps.push(new Fraction((op==='+')?f1.n+f2.n:f1.n-f2.n, f1.d).toHTML());
+            }
+        } else if (op === '×') {
+            steps.push(`<span class="fraction"><span class="num">${f1.n} × ${f2.n}</span><span class="den">${f1.d} × ${f2.d}</span></span>`);
+            steps.push(new Fraction(f1.n * f2.n, f1.d * f2.d).toHTML());
+        } else if (op === '÷') {
+            steps.push(`${f1.toHTML()} <span class="op">×</span> <span class="fraction"><span class="num">${f2.d}</span><span class="den">${f2.n}</span></span>`);
+            steps.push(new Fraction(f1.n * f2.d, f1.d * f2.n).toHTML());
+        }
+
+        return { html: initialExp, process: [...new Set(steps)].join(' <span class="op">=</span> ') };
+    }
+
+    function toggleAns(btn) {
+        const box = btn.nextElementSibling;
+        const isHidden = box.style.display === 'none' || box.style.display === '';
+        box.style.display = isHidden ? 'block' : 'none';
+        btn.innerText = isHidden ? 'Ocultar solución' : 'Ver solución';
+    }
+
+    function goHome() {
+        document.getElementById('home-page').classList.remove('hidden');
+        document.getElementById('quiz-page').classList.add('hidden');
+    }
+</script>
+</body>
+</html>
