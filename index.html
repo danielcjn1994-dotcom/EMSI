@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMSI - Portal de Aprendizaje</title>
     <style>
-        /* --- EMSI 核心视觉风格 (保留原有样式) --- */
+        /* --- EMSI 核心视觉风格 --- */
         body {
             margin: 0;
             font-family: 'Segoe UI', 'PingFang SC', sans-serif;
@@ -14,79 +14,63 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
         .header {
             background-color: white;
             width: 100%;
-            text-align: center;
-            padding: 45px 0 20px 0;
+            padding: 20px 0;
             border-bottom: 6px solid #f1c40f; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
+
+        /* 页眉容器：设置为相对定位，方便 Logo 绝对定位 */
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative; /* 关键：基准锚点 */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* 确保文字内容居中 */
+            min-height: 100px; /* 保证页眉有足够高度 */
+            padding: 0 20px;
+        }
+
+        .header-logo {
+            position: absolute; /* 关键：将图片固定在左侧 */
+            left: 40px;        /* 距离左边的距离，可根据需要调整 */
+            height: 90px;
+            width: auto;
+        }
+
+        .header-text {
+            text-align: center; /* 标题文字完全居中 */
+        }
+
         .header h1 {
             color: #1a4a8e; 
             font-size: 32px;
             margin: 0;
             letter-spacing: 1px;
         }
-        .header p { color: #6b7280; margin-top: 8px; font-size: 18px; }
-
-        .main-container {
-            max-width: 1000px;
-            width: 90%;
-            margin: 40px auto;
-            flex: 1;
+        .header p { 
+            color: #6b7280; 
+            margin: 5px 0 0 0; 
+            font-size: 18px; 
         }
 
-        .category-box {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
-        }
-        .category-title {
-            color: #1a4a8e;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            border-bottom: 2px solid #f1c40f;
-            padding-bottom: 10px;
-        }
-
-        /* --- 新增：子分类标题样式 --- */
-        .subcategory-title {
-            color: #475569;
-            font-size: 18px;
-            font-weight: 600;
-            margin: 20px 0 15px 5px;
-            display: flex;
-            align-items: center;
-        }
-        .subcategory-title::before {
-            content: "";
-            display: inline-block;
-            width: 4px;
-            height: 18px;
-            background-color: #f1c40f;
-            margin-right: 10px;
-            border-radius: 2px;
-        }
-
-        .button-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
+        /* --- 页面主体样式保持不变 --- */
+        .main-container { max-width: 1000px; width: 90%; margin: 40px auto; flex: 1; }
+        .category-box { background: white; border-radius: 20px; padding: 30px; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .category-title { color: #1a4a8e; font-size: 24px; font-weight: bold; margin-bottom: 25px; display: flex; align-items: center; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; }
+        .subcategory-title { color: #475569; font-size: 18px; font-weight: 600; margin: 25px 0 15px 5px; display: flex; align-items: center; }
+        .subcategory-title::before { content: ""; display: inline-block; width: 4px; height: 18px; background-color: #f1c40f; margin-right: 10px; border-radius: 2px; }
+        .button-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        
         .nav-link {
             text-decoration: none;
             background: #f8fafc;
             color: #334155;
-            padding: 20px 15px;
+            padding: 15px;
             border-radius: 12px;
             text-align: center;
             font-weight: 500;
@@ -95,69 +79,57 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            height: 60px;
+            align-items: center;
+            height: 90px;
         }
+        .nav-link span { font-size: 24px; margin-bottom: 8px; }
+        .nav-link:hover { border-color: #1a4a8e; background: #1a4a8e; color: white; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(26, 74, 142, 0.15); }
 
-        .nav-link:hover {
-            border-color: #1a4a8e;
-            background: #1a4a8e;
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(26, 74, 142, 0.15);
-        }
+        .footer { background: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
 
-        .english-section .nav-link:hover {
-            background: #27ae60;
-            border-color: #27ae60;
-        }
-
-        .footer {
-            background: #1a4a8e;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-        }
-
-        @media (max-width: 600px) {
-            .button-grid { grid-template-columns: 1fr; }
-            .header h1 { font-size: 24px; }
+        /* 手机端适配：如果空间不足，Logo 恢复到上方居中 */
+        @media (max-width: 850px) {
+            .header-container { flex-direction: column; min-height: auto; }
+            .header-logo { position: static; margin-bottom: 15px; height: 70px; }
+            .header-text { text-align: center; }
         }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <h1>EMSI 马德里国际中文学校</h1>
-        <p>Centro de Recursos de Aprendizaje</p>
+        <div class="header-container">
+            <img src="logo.png" alt="EMSI Logo" class="header-logo">
+            
+            <div class="header-text">
+                <h1>EMSI 马德里国际中文学校</h1>
+                <p>Centro de Recursos de Aprendizaje</p>
+            </div>
+        </div>
     </header>
 
     <div class="main-container">
         
         <section class="category-box">
-            <div class="category-title">
-                🔢 Matemáticas / 数学
+            <div class="category-title">🔢 Matemáticas / 数学</div>
+
+            <div class="subcategory-title">🧮 Aritmética / 算术基础</div>
+            <div class="button-grid">
+                <a href="基础加减数学.html" class="nav-link"><span>➕</span>Aritmética Básica</a>
+                <a href="九九乘法练习.html" class="nav-link"><span>✖️</span>Tabla de Multiplicar</a>
             </div>
 
-            <div class="subcategory-title">Aritmética / 算术基础</div>
+            <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
             <div class="button-grid">
-                <a href="基础加减数学.html" class="nav-link">Aritmética Básica (Enteros)</a>
-                <a href="九九乘法练习.html" class="nav-link">Tabla de Multiplicar</a>
-            </div>
-
-            <div class="subcategory-title">Fracciones / 分数专项</div>
-            <div class="button-grid">
-                <a href="分数基础练习.html" class="nav-link">Fracciones: Nivel Básico</a>
-                <a href="分数运算.html" class="nav-link">Operaciones de Fracciones</a>
+                <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
+                <a href="分数运算.html" class="nav-link"><span>📝</span>Fracciones: Avanzado</a>
             </div>
         </section>
 
-        <section class="category-box english-section">
-            <div class="category-title">
-                🔤 Inglés / 英语
-            </div>
+        <section class="category-box">
+            <div class="category-title">🔤 Inglés / 英语</div>
             <div class="button-grid">
-                <a href="英语单词练习完整版.html" class="nav-link">Práctica de Vocabulario</a>
+                <a href="英语单词练习完整版.html" class="nav-link"><span>📖</span>Vocabulario</a>
             </div>
         </section>
 
