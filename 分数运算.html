@@ -25,7 +25,7 @@
 
         .header h1 {
             color: #1a4a8e;
-            font-size: 42px; /* 调大校名 */
+            font-size: 42px; 
             font-weight: 900;
             margin: 0;
             letter-spacing: 2px;
@@ -35,7 +35,7 @@
 
         .header .subtitle {
             color: #6b7280;
-            font-size: 22px; /* 调大副标题 */
+            font-size: 22px; 
             margin: 10px 0 25px 0;
             font-weight: 400;
         }
@@ -73,10 +73,14 @@
             border-radius: 12px;
             background: #1a4a8e;
             color: white;
-            font-size: 1.2rem; /* 调大按钮文字 */
+            font-size: 1.2rem; 
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none; /* 移除链接下划线 */
         }
 
         .btn-emsi:hover { background: #2563eb; transform: translateY(-2px); }
@@ -92,7 +96,9 @@
         }
 
         .btn-back { background: #6b7280; }
-        .btn-refresh { background: #27ae60; } /* 绿色的刷新按钮 */
+        .btn-refresh { background: #27ae60; } 
+        /* 新增：首页按钮样式 */
+        .btn-home { background: #334155; }
 
         /* --- 题目条目样式 --- */
         .quiz-item {
@@ -101,7 +107,7 @@
         }
 
         .question {
-            font-size: 2.2rem; /* 调大题目字体 */
+            font-size: 2.2rem; 
             color: #2d3748;
             margin-bottom: 15px;
             display: flex;
@@ -117,7 +123,7 @@
             align-items: center;
             vertical-align: middle;
             margin: 0 10px;
-            font-size: 1.8rem; /* 调大分数文字 */
+            font-size: 1.8rem; 
         }
         .num { border-bottom: 3px solid #1a4a8e; padding: 0 8px; }
         .den { padding: 0 8px; }
@@ -140,9 +146,9 @@
             background: #f8fafc;
             border-left: 6px solid #f1c40f;
             display: none;
-            line-height: 3; /* 增加行高，防止分数重叠 */
+            line-height: 3; 
             overflow-x: auto;
-            font-size: 1.8rem; /* 调大答案过程字体 */
+            font-size: 1.8rem; 
         }
 
         .hidden { display: none; }
@@ -171,6 +177,12 @@
     <main class="main-content">
         <div class="card">
             <div id="home-page">
+                <div style="margin-bottom: 25px;">
+                    <a href="index.html" style="text-decoration: none; color: #1a4a8e; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+                        ⬅ Volver al Portal / 返回主页
+                    </a>
+                </div>
+
                 <h2 style="color: #1a4a8e; text-align: center; margin-bottom: 30px; font-size: 1.8rem;">Selecciona una Categoría</h2>
                 <div class="btn-grid">
                     <button class="btn-emsi" onclick="startQuiz('add')">Suma (3-4 fracciones)</button>
@@ -184,7 +196,10 @@
 
             <div id="quiz-page" class="hidden">
                 <div class="quiz-header">
-                    <button class="btn-emsi btn-back" onclick="goHome()">← Menú (菜单)</button>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="index.html" class="btn-emsi btn-home">🏠 Inicio (主页)</a>
+                        <button class="btn-emsi btn-back" onclick="goHome()">← Menú (菜单)</button>
+                    </div>
                     <button class="btn-emsi btn-refresh" id="refresh-btn">Nuevas Preguntas (换一批)</button>
                 </div>
                 <h2 id="quiz-title" style="color: #1a4a8e; font-size: 2rem; margin-top: 0;"></h2>
@@ -252,7 +267,6 @@
         }
     }
 
-    // 绑定刷新事件
     document.getElementById('refresh-btn').onclick = function() {
         startQuiz(currentQuizType);
     };
@@ -316,7 +330,6 @@
             steps.push(new Fraction(currentN, commonD).toHTML());
         }
 
-        // 数值预估用于检查负数
         let tempF = fracs.map(frac => frac.n / frac.d);
         let tempO = [...ops];
         for(let i=0; i<tempO.length; i++){
