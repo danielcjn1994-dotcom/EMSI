@@ -47,6 +47,20 @@
             text-align: center;
         }
 
+        /* --- 新增：返回门户主页链接样式 --- */
+        .back-to-portal {
+            text-decoration: none;
+            color: var(--emsi-blue);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            transition: opacity 0.2s;
+        }
+        .back-to-portal:hover { opacity: 0.7; }
+
         /* --- 菜单按钮：字体调大 --- */
         .menu-grid {
             display: grid;
@@ -56,7 +70,7 @@
         }
         .btn-table {
             padding: 20px;
-            font-size: 22px; /* 调大 */
+            font-size: 22px; 
             border: 2px solid var(--emsi-blue);
             border-radius: 12px;
             cursor: pointer;
@@ -69,7 +83,7 @@
         .btn-view-table { background: #eef6fc; border: 2px dashed var(--emsi-blue); grid-column: 1 / -1; margin-bottom: 15px; font-size: 24px; }
         .btn-mix { background: var(--emsi-yellow); border: 2px solid #e6bd00; color: var(--emsi-blue); grid-column: 1 / -1; font-size: 24px; }
 
-        /* --- 口诀表分栏：字体全面调大 --- */
+        /* --- 口诀表分栏 --- */
         #table-view { display: none; }
         .columns-container {
             display: grid;
@@ -91,17 +105,17 @@
             padding: 8px;
             border-radius: 8px;
             margin-bottom: 15px;
-            font-size: 22px; /* 调大标题 */
+            font-size: 22px;
         }
         .row-item {
-            font-size: 19px; /* 调大公式文字 */
+            font-size: 19px;
             margin: 10px 0;
             color: #334155;
             white-space: nowrap;
         }
-        .row-item strong { color: var(--emsi-blue); font-size: 24px; } /* 调大结果数字 */
+        .row-item strong { color: var(--emsi-blue); font-size: 24px; }
 
-        /* --- 游戏区域：调大匹配块 --- */
+        /* --- 游戏区域 --- */
         #game-area { display: none; }
         .matching-board { display: flex; justify-content: space-between; gap: 30px; margin: 40px 0; }
         .column { display: flex; flex-direction: column; gap: 15px; flex: 1; }
@@ -110,7 +124,7 @@
             border: 2px solid #e0e0e0; 
             border-radius: 12px; 
             cursor: pointer; 
-            font-size: 28px; /* 游戏数字调大 */
+            font-size: 28px;
             font-weight: bold; 
             min-height: 40px;
             display: flex;
@@ -140,6 +154,10 @@
 
     <div class="main-content">
         <div class="container">
+            <a href="index.html" class="back-to-portal">
+                ⬅ Volver al Portal / 返回主页
+            </a>
+
             <div id="menu">
                 <div class="menu-grid">
                     <button class="btn-table btn-view-table" onclick="showFullTable()">📖 Ver Tabla de Multiplicar (1-9)</button>
@@ -165,7 +183,7 @@
                         }
                     </script>
                 </div>
-                <button class="btn-home" onclick="location.reload()">Volver al Inicio (返回首页)</button>
+                <button class="btn-home" onclick="location.reload()">Volver al Inicio (返回本页菜单)</button>
             </div>
 
             <div id="game-area">
@@ -174,12 +192,12 @@
                     <div class="column" id="left-col"></div>
                     <div class="column" id="right-col"></div>
                 </div>
-                <button class="btn-home" onclick="location.reload()">Inicio (首页)</button>
+                <button class="btn-home" onclick="location.reload()">Menu (菜单)</button>
             </div>
         </div>
     </div>
 
-    <footer>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</footer>
+    <footer>© 2026 EMSI 马德里国际中文学校 | Educación para un future mejor</footer>
 
     <script>
         function showFullTable() {
@@ -204,7 +222,7 @@
             if (mode === 'mix') {
                 title.innerText = "Desafío Mixto";
                 let set = new Set();
-                while(set.size < 8) { // 混合挑战减少到8组以保证在iPad上大字体显示不溢出
+                while(set.size < 8) {
                     let a = Math.floor(Math.random() * 9) + 1;
                     let b = Math.floor(Math.random() * 9) + 1;
                     set.add(`${a}x${b}`);
