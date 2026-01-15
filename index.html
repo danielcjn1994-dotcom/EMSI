@@ -23,27 +23,27 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        /* 页眉容器：设置为相对定位，方便 Logo 绝对定位 */
+        /* 页眉容器：调宽至 1300px */
         .header-container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
-            position: relative; /* 关键：基准锚点 */
+            position: relative; 
             display: flex;
             align-items: center;
-            justify-content: center; /* 确保文字内容居中 */
-            min-height: 100px; /* 保证页眉有足够高度 */
+            justify-content: center; 
+            min-height: 100px; 
             padding: 0 20px;
         }
 
         .header-logo {
-            position: absolute; /* 关键：将图片固定在左侧 */
-            left: 40px;        /* 距离左边的距离，可根据需要调整 */
+            position: absolute; 
+            left: 40px;        
             height: 90px;
             width: auto;
         }
 
         .header-text {
-            text-align: center; /* 标题文字完全居中 */
+            text-align: center; 
         }
 
         .header h1 {
@@ -58,8 +58,8 @@
             font-size: 18px; 
         }
 
-        /* --- 页面主体样式保持不变 --- */
-        .main-container { max-width: 1000px; width: 90%; margin: 40px auto; flex: 1; }
+        /* --- 页面主体：调宽至 1300px --- */
+        .main-container { max-width: 1300px; width: 90%; margin: 40px auto; flex: 1; }
         .category-box { background: white; border-radius: 20px; padding: 30px; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eee; }
         .category-title { color: #1a4a8e; font-size: 24px; font-weight: bold; margin-bottom: 25px; display: flex; align-items: center; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; }
         .subcategory-title { color: #475569; font-size: 18px; font-weight: 600; margin: 25px 0 15px 5px; display: flex; align-items: center; }
@@ -80,14 +80,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 90px;
+            height: 100px; /* 稍微增加高度以适应标题 */
         }
         .nav-link span { font-size: 24px; margin-bottom: 8px; }
         .nav-link:hover { border-color: #1a4a8e; background: #1a4a8e; color: white; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(26, 74, 142, 0.15); }
 
         .footer { background: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
 
-        /* 手机端适配：如果空间不足，Logo 恢复到上方居中 */
+        /* 手机端适配 */
         @media (max-width: 850px) {
             .header-container { flex-direction: column; min-height: auto; }
             .header-logo { position: static; margin-bottom: 15px; height: 70px; }
@@ -99,7 +99,7 @@
 
     <header class="header">
         <div class="header-container">
-            <img src="logo.png" alt="EMSI Logo" class="header-logo">
+            <img src="素材/logo.png" alt="EMSI Logo" class="header-logo">
             
             <div class="header-text">
                 <h1>EMSI 马德里国际中文学校</h1>
@@ -121,6 +121,7 @@
 
             <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
             <div class="button-grid">
+                <a href="Fracción.html" class="nav-link"><span>📘</span>Teoría de Fracciones</a>
                 <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
                 <a href="分数运算.html" class="nav-link"><span>📝</span>Fracciones: Avanzado</a>
             </div>
