@@ -22,7 +22,7 @@
             min-height: 100vh;
         }
 
-        /* --- 页眉：调大校名 --- */
+        /* --- 页眉 --- */
         header {
             background-color: white;
             padding: 30px 20px;
@@ -47,21 +47,36 @@
             text-align: center;
         }
 
-        /* --- 新增：返回门户主页链接样式 --- */
-        .back-to-portal {
-            text-decoration: none;
-            color: var(--emsi-blue);
-            font-weight: bold;
-            display: flex;
+        /* --- 返回首页按钮 --- */
+        .btn-back-pill {
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            transition: opacity 0.2s;
+            padding: 10px 35px;
+            background-color: #ffffff;
+            color: var(--emsi-blue);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
         }
-        .back-to-portal:hover { opacity: 0.7; }
 
-        /* --- 菜单按钮：字体调大 --- */
+        .btn-back-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            background-color: #fcfcfc;
+        }
+
+        .btn-back-pill .arrow {
+            font-size: 1.6rem;
+            margin-right: 15px;
+            line-height: 1;
+        }
+
+        /* --- 菜单按钮 --- */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -149,20 +164,23 @@
             <span class="emsi-text">EMSI</span>
             <span class="cn-text">马德里国际中文学校</span>
         </h1>
-        <h2 class="sub-title">Tabla de Multiplicar (1-9)</h2>
+        <h2 class="sub-title">Tabla de Multiplicar (1-10)</h2>
     </header>
 
     <div class="main-content">
         <div class="container">
-            <a href="index.html" class="back-to-portal">
-                ⬅ Volver al Portal / 返回主页
-            </a>
+            <div style="text-align: left;">
+                <a href="index.html" class="btn-back-pill">
+                    <span class="arrow">←</span> 返回首页
+                </a>
+            </div>
 
             <div id="menu">
                 <div class="menu-grid">
-                    <button class="btn-table btn-view-table" onclick="showFullTable()">📖 Ver Tabla de Multiplicar (1-9)</button>
+                    <button class="btn-table btn-view-table" onclick="showFullTable()">📖 Ver Tabla de Multiplicar (1-10)</button>
                     <script>
-                        for(let i=1; i<=9; i++) {
+                        // 修改点：循环到 10 生成按钮
+                        for(let i=1; i<=10; i++) {
                             document.write(`<button class="btn-table" onclick="startGame(${i})">Tabla del ${i}</button>`);
                         }
                     </script>
@@ -173,9 +191,10 @@
             <div id="table-view">
                 <div class="columns-container">
                     <script>
-                        for(let i=1; i<=9; i++) {
+                        // 修改点：循环到 10 生成列表
+                        for(let i=1; i<=10; i++) {
                             let columnHtml = `<div class="table-column"><div class="column-header">Tabla ${i}</div>`;
-                            for(let j=1; j<=9; j++) {
+                            for(let j=1; j<=10; j++) {
                                 columnHtml += `<div class="row-item">${i} × ${j} = <strong>${i*j}</strong></div>`;
                             }
                             columnHtml += `</div>`;
@@ -197,7 +216,7 @@
         </div>
     </div>
 
-    <footer>© 2026 EMSI 马德里国际中文学校 | Educación para un future mejor</footer>
+    <footer>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</footer>
 
     <script>
         function showFullTable() {
@@ -220,11 +239,11 @@
             
             let pairs = [];
             if (mode === 'mix') {
-                title.innerText = "Desafío Mixto";
+                title.innerText = "Desafío Mixto (1-10)";
                 let set = new Set();
-                while(set.size < 8) {
-                    let a = Math.floor(Math.random() * 9) + 1;
-                    let b = Math.floor(Math.random() * 9) + 1;
+                while(set.size < 10) {
+                    let a = Math.floor(Math.random() * 10) + 1;
+                    let b = Math.floor(Math.random() * 10) + 1;
                     set.add(`${a}x${b}`);
                 }
                 set.forEach(p => {
@@ -233,7 +252,10 @@
                 });
             } else {
                 title.innerText = `Práctica: Tabla del ${mode}`;
-                for (let i = 1; i <= 9; i++) { pairs.push({ q: `${mode} × ${i}`, a: mode * i, id: i }); }
+                // 修改点：单表练习也支持到 10
+                for (let i = 1; i <= 10; i++) { 
+                    pairs.push({ q: `${mode} × ${i}`, a: mode * i, id: i }); 
+                }
             }
 
             totalItems = pairs.length;

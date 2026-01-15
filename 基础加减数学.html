@@ -50,13 +50,41 @@
         .card {
             background: white;
             width: 100%;
-            max-width: 1100px; /* 稍微加宽以适应并排显示 */
+            max-width: 1100px; 
             min-height: 500px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             padding: 40px;
             box-sizing: border-box;
             border: 1px solid #eee;
+        }
+
+        /* --- 新增：图片样式的返回按钮 --- */
+        .btn-back-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 35px;
+            background-color: #ffffff;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .btn-back-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            background-color: #fcfcfc;
+        }
+
+        .btn-back-pill .arrow {
+            font-size: 1.6rem;
+            margin-right: 15px;
+            line-height: 1;
         }
 
         /* --- 菜单按钮 --- */
@@ -99,12 +127,12 @@
         .btn-refresh { background: #27ae60; } 
         .btn-home { background: #334155; }
 
-        /* --- 关键修改：题目列表改为两列网格布局 --- */
+        /* --- 题目网格布局 --- */
         #quiz-list {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 一行两列 */
-            column-gap: 50px; /* 两列之间的间距 */
-            row-gap: 15px; /* 行与行之间的间距 */
+            grid-template-columns: 1fr 1fr; 
+            column-gap: 50px; 
+            row-gap: 15px; 
         }
 
         .quiz-item {
@@ -115,7 +143,7 @@
         }
 
         .question {
-            font-size: 2.2rem; /* 稍微缩小一点字体以适应并排 */
+            font-size: 2.2rem; 
             color: #2d3748;
             margin-bottom: 15px;
             font-weight: bold;
@@ -153,7 +181,6 @@
             font-size: 18px;
         }
 
-        /* 响应式适配：在屏幕较窄时恢复为一列 */
         @media (max-width: 850px) {
             #quiz-list { grid-template-columns: 1fr; }
             .header h1 { font-size: 30px; }
@@ -171,9 +198,9 @@
     <main class="main-content">
         <div class="card">
             <div id="home-page">
-                <div style="margin-bottom: 25px;">
-                    <a href="index.html" style="text-decoration: none; color: #1a4a8e; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;">
-                        ⬅ Volver al Portal / 返回主页
+                <div style="margin-bottom: 35px;">
+                    <a href="index.html" class="btn-back-pill">
+                        <span class="arrow">←</span> 返回首页
                     </a>
                 </div>
 
@@ -206,7 +233,6 @@
     </footer>
 
 <script>
-    // 逻辑部分完全保持不变
     let currentType = '';
     let currentLimit = 20;
 
@@ -233,7 +259,7 @@
             item.className = 'quiz-item';
             item.innerHTML = `
                 <div class="question">${i}. ${data.text} = ?</div>
-                <button class="ans-toggle" onclick="toggleAns(this)">Ver solución</button>
+                <button class="ans-toggle" onclick="toggleAns(this)">Ver solution</button>
                 <div class="solution-box">${data.solve}</div>
             `;
             list.appendChild(item);
@@ -280,7 +306,7 @@
         const box = btn.nextElementSibling;
         const isHidden = box.style.display === 'none' || box.style.display === '';
         box.style.display = isHidden ? 'block' : 'none';
-        btn.innerText = isHidden ? 'Ocultar' : 'Ver solución';
+        btn.innerText = isHidden ? 'Ocultar' : 'Ver solution';
     }
 
     function goHome() {

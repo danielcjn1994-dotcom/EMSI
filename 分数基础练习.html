@@ -59,6 +59,34 @@
             border: 1px solid #eee;
         }
 
+        /* --- 新增：图片样式的返回按钮 --- */
+        .btn-back-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 35px;
+            background-color: #ffffff;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .btn-back-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            background-color: #fcfcfc;
+        }
+
+        .btn-back-pill .arrow {
+            font-size: 1.6rem;
+            margin-right: 15px;
+            line-height: 1;
+        }
+
         /* --- 菜单布局 --- */
         .btn-grid {
             display: grid;
@@ -97,7 +125,6 @@
 
         .btn-back { background: #6b7280; }
         .btn-refresh { background: #27ae60; } 
-        /* 新增：返回主页按钮样式 */
         .btn-home { background: #334155; } 
 
         /* --- 左右两列布局 --- */
@@ -189,9 +216,9 @@
     <main class="main-content">
         <div class="card">
             <div id="home-page">
-                <div style="margin-bottom: 25px;">
-                    <a href="index.html" style="text-decoration: none; color: #1a4a8e; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;">
-                        ⬅ Volver al Portal / 返回主页
+                <div style="margin-bottom: 35px;">
+                    <a href="index.html" class="btn-back-pill">
+                        <span class="arrow">←</span> 返回首页
                     </a>
                 </div>
 
@@ -224,7 +251,6 @@
     </footer>
 
 <script>
-    // ... 此处保留你原有的所有 JavaScript 逻辑 ...
     const gcd = (a, b) => b === 0 ? Math.abs(a) : gcd(b, a % b);
     const lcm = (a, b) => (a === 0 || b === 0) ? 0 : Math.abs(a * b) / gcd(a, b);
 
