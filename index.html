@@ -23,7 +23,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        /* 页眉容器：调宽至 1300px */
         .header-container {
             max-width: 1300px;
             margin: 0 auto;
@@ -58,7 +57,7 @@
             font-size: 18px; 
         }
 
-        /* --- 页面主体：调宽至 1300px --- */
+        /* --- 页面主体 --- */
         .main-container { max-width: 1300px; width: 90%; margin: 40px auto; flex: 1; }
         .category-box { background: white; border-radius: 20px; padding: 30px; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eee; }
         .category-title { color: #1a4a8e; font-size: 24px; font-weight: bold; margin-bottom: 25px; display: flex; align-items: center; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; }
@@ -80,14 +79,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100px; /* 稍微增加高度以适应标题 */
+            height: 110px; 
         }
         .nav-link span { font-size: 24px; margin-bottom: 8px; }
         .nav-link:hover { border-color: #1a4a8e; background: #1a4a8e; color: white; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(26, 74, 142, 0.15); }
 
         .footer { background: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
 
-        /* 手机端适配 */
         @media (max-width: 850px) {
             .header-container { flex-direction: column; min-height: auto; }
             .header-logo { position: static; margin-bottom: 15px; height: 70px; }
@@ -100,7 +98,6 @@
     <header class="header">
         <div class="header-container">
             <img src="logo.png" alt="EMSI Logo" class="header-logo">
-            
             <div class="header-text">
                 <h1>EMSI 马德里国际中文学校</h1>
                 <p>Centro de Recursos de Aprendizaje</p>
@@ -112,6 +109,16 @@
         
         <section class="category-box">
             <div class="category-title">🔢 Matemáticas / 数学</div>
+
+            <div class="subcategory-title">💡 Problemas / 应用题专项练习</div>
+            <div class="button-grid">
+                <a href="应用题1年级.html" class="nav-link"><span>🌱</span>1º de Primaria<br>一年级</a>
+                <a href="应用题 2 年级.html" class="nav-link"><span>🍀</span>2º de Primaria<br>二年级</a>
+                <a href="应用题 3 年级.html" class="nav-link"><span>🌿</span>3º de Primaria<br>三年级</a>
+                <a href="应用题 4 年级.html" class="nav-link"><span>🍂</span>4º de Primaria<br>四年级</a>
+                <a href="应用题 5 年级.html" class="nav-link"><span>🌳</span>5º de Primaria<br>五年级</a>
+                <a href="应用题 6 年级.html" class="nav-link"><span>🎓</span>6º de Primaria<br>六年级</a>
+            </div>
 
             <div class="subcategory-title">🧮 Aritmética / 算术基础</div>
             <div class="button-grid">

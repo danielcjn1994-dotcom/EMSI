@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 教学资源 - 四年级数学练习</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f; /* 核心金黄色横条 */
+            position: relative;
+        }
+
+        /* 返回首页按钮 */
+        .back-home {
+            position: absolute;
+            left: 30px;
+            top: 30px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #1a4a8e;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+
+        .back-home:hover {
+            color: #f1c40f;
+            background-color: #f0f4f8;
+        }
+
+        .back-home svg {
+            margin-right: 8px;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 900;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 内容展示区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 1100px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 28px; }
+            .back-home { position: static; justify-content: center; margin-bottom: 15px; }
+            .card { height: 70vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="back-home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            返回首页
+        </a>
+
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">4º de Primaria - 四年级数学练习</div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <iframe 
+                src="Problemas 4º.pdf" 
+                class="pdf-viewer"
+                title="四年级数学练习题"
+            >
+                您的浏览器不支持预览 PDF，请<a href="Problemas 4º.pdf">下载文件</a>查看。
+            </iframe>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
