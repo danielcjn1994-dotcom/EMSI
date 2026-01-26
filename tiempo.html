@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI Lengua - Calendario y Tiempo</title>
+    <style>
+        /* --- EMSI 核心视觉风格 --- */
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            background-color: #f5f7fa;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        .header {
+            background-color: white; text-align: center;
+            padding: 40px 20px 0 20px; border-bottom: 5px solid #f1c40f; 
+            position: relative;
+        }
+
+        .back-home {
+            position: absolute; left: 30px; top: 30px;
+            display: flex; align-items: center; text-decoration: none;
+            color: #1a4a8e; font-weight: 600; font-size: 16px;
+            transition: all 0.3s; padding: 8px 15px; border-radius: 8px;
+        }
+        .back-home:hover { color: #f1c40f; background-color: #f0f4f8; }
+        .back-home svg { margin-right: 8px; }
+
+        .header h1 { color: #1a4a8e; font-size: 38px; font-weight: 800; margin: 0; }
+        .header .subtitle { color: #6b7280; font-size: 20px; margin-top: 10px; margin-bottom: 25px; }
+
+        /* --- 遮罩控制工具栏 --- */
+        .tool-bar {
+            margin: 20px auto; display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .btn-tool {
+            padding: 12px 30px; border-radius: 30px; border: 2px solid #1a4a8e;
+            background: white; color: #1a4a8e; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-tool.active { background: #1a4a8e; color: white; border-color: #f1c40f; }
+
+        /* --- 内容展示区 --- */
+        .main-content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0 20px 40px 20px; }
+
+        .card {
+            background: white; width: 100%; max-width: 1300px; 
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb; position: relative; 
+            padding: 40px 20px; box-sizing: border-box; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* 词汇表格样式 */
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px; width: 100%; margin-bottom: 40px;
+        }
+
+        .vocab-section h3 {
+            color: #1a4a8e; border-left: 5px solid #f1c40f;
+            padding-left: 15px; margin-bottom: 20px; font-size: 22px;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 18px; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+        th { color: #6b7280; font-weight: 600; font-size: 14px; text-transform: uppercase; }
+        .es { font-weight: 700; color: #1a4a8e; width: 50%; }
+        .zh { color: #475569; }
+
+        /* --- 游戏区域样式 --- */
+        .game-section {
+            width: 100%; max-width: 800px;
+            border-top: 2px dashed #eee;
+            padding-top: 30px; text-align: center;
+        }
+        .game-section h3 { color: #1a4a8e; margin-bottom: 20px; font-size: 22px; }
+        .game-box { display: inline-block; transition: transform 0.3s ease; }
+        .game-box:hover { transform: scale(1.05); }
+        .game-box a { text-decoration: none; color: #475569; font-weight: 600; display: block; }
+        .game-box img { border-radius: 10px; margin: 0 auto 10px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* --- 遮罩插件 --- */
+        #mask {
+            display: none; position: absolute;
+            top: 100px; left: 50%; transform: translateX(-50%);
+            width: 320px; height: 450px;
+            background-color: #1a4a8e; border: 4px solid #f1c40f; 
+            border-radius: 12px; cursor: move; z-index: 100;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4); resize: both; overflow: hidden;
+        }
+        #mask::after {
+            content: "🙈\A挑战模式\A拖动我遮住单词";
+            white-space: pre; color: #f1c40f; font-weight: bold;
+            font-size: 18px; display: flex; justify-content: center;
+            align-items: center; height: 100%; text-align: center;
+        }
+
+        .footer { background-color: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .vocab-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 26px; }
+            .back-home { position: static; justify-content: center; margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="back-home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            返回首页
+        </a>
+        <h1><span>EMSI</span> Lengua Española</h1>
+        <div class="subtitle">El Calendario y Las Estaciones - 时间与季节</div>
+    </header>
+
+    <main class="main-content">
+        <div class="tool-bar">
+            <button class="btn-tool" id="toggleMask">🙈 开启挑战模式 (单词遮罩)</button>
+            <span style="color: #666; font-size: 14px;">遮住左侧西语或右侧汉语进行练习。</span>
+        </div>
+
+        <div class="card" id="cardContainer">
+            <div id="mask"></div>
+
+            <div class="vocab-grid">
+                <div class="vocab-section">
+                    <h3>🍂 Las Estaciones / 季节</h3>
+                    <table>
+                        <tr><th>Español</th><th>Chino</th></tr>
+                        <tr><td class="es">La Primavera</td><td class="zh">春天</td></tr>
+                        <tr><td class="es">El Verano</td><td class="zh">夏天</td></tr>
+                        <tr><td class="es">El Otoño</td><td class="zh">秋天</td></tr>
+                        <tr><td class="es">El Invierno</td><td class="zh">冬天</td></tr>
+                    </table>
+                </div>
+
+                <div class="vocab-section">
+                    <h3>📅 La Semana / 星期</h3>
+                    <table>
+                        <tr><th>Español</th><th>Chino</th></tr>
+                        <tr><td class="es">Lunes</td><td class="zh">周一</td></tr>
+                        <tr><td class="es">Martes</td><td class="zh">周二</td></tr>
+                        <tr><td class="es">Miércoles</td><td class="zh">周三</td></tr>
+                        <tr><td class="es">Jueves</td><td class="zh">周四</td></tr>
+                        <tr><td class="es">Viernes</td><td class="zh">周五</td></tr>
+                        <tr><td class="es">Sábado</td><td class="zh">周六</td></tr>
+                        <tr><td class="es">Domingo</td><td class="zh">周日</td></tr>
+                    </table>
+                </div>
+
+                <div class="vocab-section">
+                    <h3>🗓️ Los Meses / 月份</h3>
+                    <table>
+                        <tr><th>Español</th><th>Chino</th></tr>
+                        <tr><td class="es">Enero</td><td class="zh">一月</td></tr>
+                        <tr><td class="es">Febrero</td><td class="zh">二月</td></tr>
+                        <tr><td class="es">Marzo</td><td class="zh">三月</td></tr>
+                        <tr><td class="es">Abril</td><td class="zh">四月</td></tr>
+                        <tr><td class="es">Mayo</td><td class="zh">五月</td></tr>
+                        <tr><td class="es">Junio</td><td class="zh">六月</td></tr>
+                        <tr><td class="es">Julio</td><td class="zh">七月</td></tr>
+                        <tr><td class="es">Agosto</td><td class="zh">八月</td></tr>
+                        <tr><td class="es">Septiembre</td><td class="zh">九月</td></tr>
+                        <tr><td class="es">Octubre</td><td class="zh">十月</td></tr>
+                        <tr><td class="es">Noviembre</td><td class="zh">十一月</td></tr>
+                        <tr><td class="es">Diciembre</td><td class="zh">十二月</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="game-section">
+                <h3>🎮 Juego Interactivo / 互动游戏</h3>
+                <div class="game-box">
+                    <a target="_blank" href="https://wordwall.net/es/resource/13056090/meses-del-a%C3%B1o?ref=embed-image">
+                        <img src="https://screens.cdn.wordwall.net/200/d0398a1bf52f4568a20683d46ba105c0_0" width="200" height="150" style="border:1px solid grey;display:block" alt="Meses del año" />
+                        <span>Meses del año / 月份练习</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+    </footer>
+
+    <script>
+        const mask = document.getElementById('mask');
+        const btn = document.getElementById('toggleMask');
+        const cardContainer = document.getElementById('cardContainer');
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        btn.addEventListener('click', () => {
+            if (mask.style.display === 'block') {
+                mask.style.display = 'none';
+                btn.classList.remove('active');
+            } else {
+                mask.style.display = 'block';
+                btn.classList.add('active');
+            }
+        });
+
+        mask.addEventListener('mousedown', (e) => {
+            if (e.offsetX > mask.offsetWidth - 30 && e.offsetY > mask.offsetHeight - 30) return;
+            isDragging = true;
+            offsetX = e.clientX - mask.getBoundingClientRect().left;
+            offsetY = e.clientY - mask.getBoundingClientRect().top;
+            mask.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const containerRect = cardContainer.getBoundingClientRect();
+            let x = e.clientX - containerRect.left - offsetX;
+            let y = e.clientY - containerRect.top - offsetY;
+            mask.style.left = x + 'px';
+            mask.style.top = y + 'px';
+            mask.style.transform = 'none'; 
+        });
+
+        document.addEventListener('mouseup', () => { isDragging = false; mask.style.cursor = 'move'; });
+    </script>
+</body>
+</html>
