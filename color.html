@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI Lengua - Los Colores</title>
+    <style>
+        /* --- EMSI 核心视觉风格 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f; 
+            position: relative;
+        }
+
+        .back-home {
+            position: absolute;
+            left: 30px;
+            top: 30px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #1a4a8e;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+
+        .back-home:hover { color: #f1c40f; background-color: #f0f4f8; }
+        .back-home svg { margin-right: 8px; }
+
+        .header h1 { color: #1a4a8e; font-size: 38px; font-weight: 800; margin: 0; }
+        .header .subtitle { color: #6b7280; font-size: 20px; margin-top: 10px; margin-bottom: 25px; }
+
+        /* --- 插件控制按钮 --- */
+        .tool-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-tool {
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: 2px solid #1a4a8e;
+            background: white;
+            color: #1a4a8e;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-tool:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+
+        .btn-tool.active {
+            background: #1a4a8e;
+            color: white;
+            border-color: #f1c40f;
+        }
+
+        /* --- 内容展示区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 20px 40px 20px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 1300px; 
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            position: relative; 
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .content-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            user-select: none; 
+        }
+
+        /* --- 遮罩插件样式 (重点修改) --- */
+        #mask {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%); /* 初始居中 */
+            width: 300px;
+            height: 500px;
+            /* 修改点：使用纯实色背景，不再透明 */
+            background-color: #1a4a8e; 
+            border: 4px solid #f1c40f; 
+            border-radius: 12px;
+            cursor: move;
+            z-index: 100;
+            /* 修改点：加深阴影，增强覆盖感 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            resize: both; 
+            overflow: hidden;
+        }
+
+        /* 遮罩上的提示文字样式优化 */
+        #mask::after {
+            content: "🙈\A Modo Desafío\A挑战模式"; /* \A 是换行符 */
+            white-space: pre; /* 允许换行 */
+            color: #f1c40f; /* 字体改成金色，对比度更高 */
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+            opacity: 0.9;
+        }
+
+        .footer { background-color: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 26px; }
+            .back-home { position: static; justify-content: center; margin-bottom: 15px; }
+            .tool-bar p { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="back-home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            返回首页
+        </a>
+        <h1><span>EMSI</span> Lengua Española</h1>
+        <div class="subtitle">Los Colores - 颜色挑战</div>
+    </header>
+
+    <main class="main-content">
+        <div class="tool-bar">
+            <button class="btn-tool" id="toggleMask">🙈 开启/关闭单词遮罩</button>
+        </div>
+        <p style="text-align: center; color: #666; margin-bottom: 15px; font-size: 14px;">💡 提示：点击上方按钮开启遮罩。遮罩可以自由拖动，按住右下角可以调整大小。</p>
+
+        <div class="card" id="cardContainer">
+            <img src="color.png" alt="西班牙语颜色图表" class="content-image">
+            
+            <div id="mask"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+    </footer>
+
+    <script>
+        const mask = document.getElementById('mask');
+        const btn = document.getElementById('toggleMask');
+        const cardContainer = document.getElementById('cardContainer');
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        // 1. 开关功能
+        btn.addEventListener('click', () => {
+            if (mask.style.display === 'block') {
+                mask.style.display = 'none';
+                btn.classList.remove('active');
+                btn.innerHTML = '🙈 开启/关闭单词遮罩';
+            } else {
+                mask.style.display = 'block';
+                btn.classList.add('active');
+                btn.innerHTML = '🐵 已开启挑战模式';
+            }
+        });
+
+        // 2. 鼠标拖动功能优化
+        mask.addEventListener('mousedown', (e) => {
+            // 如果是在调整大小区（右下角 30px 区域），则不触发拖动
+            if (e.offsetX > mask.offsetWidth - 30 && e.offsetY > mask.offsetHeight - 30) return;
+            
+            isDragging = true;
+            // 计算鼠标点击点相对于 mask 左上角的偏移
+            offsetX = e.clientX - mask.getBoundingClientRect().left;
+            offsetY = e.clientY - mask.getBoundingClientRect().top;
+            mask.style.cursor = 'grabbing'; // 拖动时鼠标样式
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            // 计算新的位置相对于 cardContainer
+            const containerRect = cardContainer.getBoundingClientRect();
+            let x = e.clientX - containerRect.left - offsetX;
+            let y = e.clientY - containerRect.top - offsetY;
+
+            // 简单的边界检查（可选，防止拖出太远）
+            // x = Math.max(0, Math.min(x, containerRect.width - mask.offsetWidth));
+            // y = Math.max(0, Math.min(y, containerRect.height - mask.offsetHeight));
+
+            mask.style.left = x + 'px';
+            mask.style.top = y + 'px';
+            // 清除 transform 防止位置冲突
+            mask.style.transform = 'none'; 
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            mask.style.cursor = 'move'; // 恢复鼠标样式
+        });
+    </script>
+</body>
+</html>

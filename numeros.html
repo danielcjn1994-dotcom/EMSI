@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI Lengua - Los Números</title>
+    <style>
+        /* --- EMSI 核心视觉风格 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f; 
+            position: relative;
+        }
+
+        .back-home {
+            position: absolute;
+            left: 30px;
+            top: 30px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #1a4a8e;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+
+        .back-home:hover {
+            color: #f1c40f;
+            background-color: #f0f4f8;
+        }
+
+        .back-home svg { margin-right: 8px; }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 38px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        /* --- 内容展示区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        /* 卡片容器：调整宽度和内边距 */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 1300px; /* 1. 加宽：从1100px改为1300px */
+            min-height: 60vh; 
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 15px; /* 2. 减少内边距：让图片有更多空间 */
+            box-sizing: border-box;
+        }
+
+        /* 教学图片样式：确保撑满宽度 */
+        .content-image {
+            width: 100%;      /* 强制撑满容器宽度 */
+            max-width: 100%;
+            height: auto;     /* 高度自动按比例缩放 */
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* --- 游戏区域样式 --- */
+        .game-section {
+            width: 100%;
+            max-width: 700px; /* 稍微加宽游戏区域背景 */
+            border-top: 2px dashed #eee;
+            padding-top: 30px;
+            text-align: center;
+        }
+
+        .game-section h3 {
+            color: #1a4a8e;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .game-box {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            margin: 10px; /* 增加间距，方便以后并排方多个游戏 */
+        }
+
+        .game-box:hover {
+            transform: scale(1.05);
+        }
+
+        .game-box a {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            display: block; /* 确保链接包含图片和文字 */
+        }
+
+        .game-box img {
+            border-radius: 10px;
+            margin: 0 auto 10px auto; /* 图片居中 */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            /* 确保Wordwall提供的图片也响应式缩放，但不超过其原大小 */
+            max-width: 100%; 
+            height: auto;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 26px; }
+            .back-home { position: static; justify-content: center; margin-bottom: 15px; }
+            /* 手机端稍微减少内边距 */
+            .card { padding: 20px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="back-home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            返回首页
+        </a>
+        <h1><span>EMSI</span> Lengua Española</h1>
+        <div class="subtitle">Los Números - 数字教学与互动游戏</div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <img src="numeros.jpg" alt="西班牙语数字图表" class="content-image">
+
+            <div class="game-section">
+                <h3>🎮 Juegos Interactivos / 互动练习</h3>
+                <div class="game-box">
+                    <a target="_blank" href="https://wordwall.net/es/resource/2576958/jugamos-con-numeros/numeros-numbers-jard%C3%ADn-terry?ref=embed-image">
+                        <img src="https://screens.cdn.wordwall.net/200/a74f1d7f3c7442ffbf7388c206522331_0" width="200" height="150" style="border:1px solid grey;display:block" alt="Juego de números" />
+                        <span>Numeros - Numbers jardín Terry</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+    </footer>
+
+</body>
+</html>
