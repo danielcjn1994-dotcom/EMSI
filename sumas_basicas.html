@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI - Tabla de Sumas Básicas (2-10)</title>
+    <style>
+        /* --- EMSI 核心视觉规范 --- */
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            background-color: #f0f4f8;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        .header {
+            background-color: white; text-align: center;
+            padding: 30px 20px 15px 20px; border-bottom: 6px solid #f1c40f; 
+            position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .back-home {
+            position: absolute; left: 30px; top: 30px;
+            text-decoration: none; color: #1a4a8e; font-weight: 700;
+            padding: 8px 18px; border-radius: 20px; background: #f0f4f8;
+            transition: 0.3s; font-size: 14px;
+        }
+        .back-home:hover { background: #1a4a8e; color: white; }
+
+        .header h1 { color: #1a4a8e; font-size: 28px; margin: 0; }
+        .header p { color: #64748b; margin-top: 5px; font-size: 16px; }
+
+        /* --- 工具栏 --- */
+        .toolbar {
+            max-width: 1100px; width: 90%; margin: 20px auto 0 auto;
+            display: flex; justify-content: center; gap: 15px;
+        }
+
+        .btn-action {
+            padding: 10px 25px; border-radius: 25px; border: 2px solid #1a4a8e;
+            background: white; color: #1a4a8e; font-weight: 700; cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-action.active { background: #1a4a8e; color: white; }
+
+        /* --- 表格区域 --- */
+        .main-container {
+            max-width: 1100px; width: 95%; margin: 20px auto 50px auto;
+            background: white; padding: 25px; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .row-container {
+            display: flex; align-items: stretch; margin-bottom: 8px;
+        }
+
+        /* 左侧目标数字列 */
+        .target-num {
+            width: 70px; min-width: 70px;
+            background-color: #1a4a8e; color: #f1c40f;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; font-weight: 900;
+            border-radius: 10px 0 0 10px;
+            border-right: 4px solid #f1c40f;
+        }
+
+        /* 右侧算式区域 */
+        .equations-grid {
+            display: flex; flex-wrap: wrap; gap: 6px;
+            padding: 8px 15px; background: #f8fafc;
+            flex-grow: 1; border-radius: 0 10px 10px 0;
+        }
+
+        .eq-box {
+            width: 80px; height: 45px;
+            background: white; border: 2px solid #e2e8f0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 700; color: #334155;
+            border-radius: 8px; cursor: pointer;
+            transition: all 0.2s; position: relative;
+        }
+
+        .eq-box:hover { border-color: #1a4a8e; transform: scale(1.05); z-index: 10; }
+
+        /* 隐藏模式样式 */
+        .is-hidden {
+            background-color: #1a4a8e !important;
+            color: #1a4a8e !important;
+            border-color: #1a4a8e !important;
+        }
+        .is-hidden::after {
+            content: "?"; position: absolute;
+            color: #f1c40f; font-size: 18px;
+        }
+
+        .footer { background: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 13px; }
+
+        @media (max-width: 768px) {
+            .eq-box { width: 65px; font-size: 14px; }
+            .target-num { width: 50px; font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="back-home">⬅ 返回</a>
+        <h1>Sumas del 2 al 10</h1>
+        <p>基础加法逻辑表 (10以内)</p>
+    </header>
+
+    <div class="toolbar">
+        <button class="btn-action active" id="showAll">👁️ 全部显示</button>
+        <button class="btn-action" id="hideAll">🙈 挑战模式</button>
+    </div>
+
+    <main class="main-container" id="tableBasica">
+        </main>
+
+    <footer class="footer">© 2026 EMSI 马德里国际中文学校</footer>
+
+    <script>
+        // 自动计算 2-10 的所有加法组合
+        const container = document.getElementById('tableBasica');
+        const showAllBtn = document.getElementById('showAll');
+        const hideAllBtn = document.getElementById('hideAll');
+
+        for (let target = 2; target <= 10; target++) {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'row-container';
+            
+            const targetDiv = document.createElement('div');
+            targetDiv.className = 'target-num';
+            targetDiv.textContent = target;
+            
+            const gridDiv = document.createElement('div');
+            gridDiv.className = 'equations-grid';
+            
+            // 计算加法组合：从 1+ 开始
+            for (let a = 1; a < target; a++) {
+                const b = target - a;
+                const eqBox = document.createElement('div');
+                eqBox.className = 'eq-box';
+                eqBox.textContent = `${a}+${b}`;
+                eqBox.onclick = () => eqBox.classList.toggle('is-hidden');
+                gridDiv.appendChild(eqBox);
+            }
+            
+            rowDiv.appendChild(targetDiv);
+            rowDiv.appendChild(gridDiv);
+            container.appendChild(rowDiv);
+        }
+
+        showAllBtn.onclick = () => {
+            document.querySelectorAll('.eq-box').forEach(el => el.classList.remove('is-hidden'));
+            showAllBtn.classList.add('active');
+            hideAllBtn.classList.remove('active');
+        };
+
+        hideAllBtn.onclick = () => {
+            document.querySelectorAll('.eq-box').forEach(el => el.classList.add('is-hidden'));
+            hideAllBtn.classList.add('active');
+            showAllBtn.classList.remove('active');
+        };
+    </script>
+</body>
+</html>
