@@ -93,7 +93,10 @@
             display: block; 
         }
 
-        .category-box.collapsed .category-content { display: none; }
+        /* 核心逻辑：默认折叠状态 */
+        .category-box.collapsed .category-content {
+            display: none;
+        }
 
         .toggle-icon {
             font-size: 18px;
@@ -101,7 +104,10 @@
             color: #f1c40f;
         }
 
-        .collapsed .toggle-icon { transform: rotate(-90deg); }
+        /* 折叠时箭头旋转 90 度 */
+        .collapsed .toggle-icon {
+            transform: rotate(-90deg); 
+        }
         
         .academic-box { border-top: 5px solid #1a4a8e; }
 
@@ -135,6 +141,7 @@
             .header-container { flex-direction: column; min-height: auto; }
             .header-logo { position: static; margin-bottom: 15px; height: 70px; }
             .header-text { text-align: center; }
+            .category-title { font-size: 20px; padding: 20px; }
         }
     </style>
 </head>
@@ -152,7 +159,7 @@
 
     <div class="main-container">
         
-        <section class="category-box academic-box">
+        <section class="category-box academic-box collapsed">
             <div class="category-title" onclick="toggleCategory(this)">
                 <span>📂 Gestión Académica / 教务系统</span>
                 <span class="toggle-icon">▼</span>
@@ -167,7 +174,7 @@
             </div>
         </section>
 
-        <section class="category-box">
+        <section class="category-box collapsed">
             <div class="category-title" onclick="toggleCategory(this)">
                 <span>🔢 Matemáticas / 数学</span>
                 <span class="toggle-icon">▼</span>
@@ -200,7 +207,7 @@
             </div>
         </section>
 
-        <section class="category-box">
+        <section class="category-box collapsed">
             <div class="category-title" onclick="toggleCategory(this)">
                 <span>📚 Lengua / 西班牙语</span>
                 <span class="toggle-icon">▼</span>
@@ -223,7 +230,7 @@
             </div>
         </section>
 
-        <section class="category-box">
+        <section class="category-box collapsed">
             <div class="category-title" onclick="toggleCategory(this)">
                 <span>🔤 Inglés / 英语</span>
                 <span class="toggle-icon">▼</span>
@@ -248,26 +255,20 @@
             box.classList.toggle('collapsed');
         }
 
-        // 2. 教务权限检查
+        // 2. 教务权限检查 (Zhao / 1122)
         function secureGo(page) {
-            // 检查当前会话是否已经验证通过
             const isAuth = sessionStorage.getItem('emsi_auth');
-
             if (isAuth === 'true') {
                 window.location.href = page;
                 return;
             }
-
-            // 如果没验证，弹出输入框
             const user = prompt("请输入用户名 (Usuario):");
-            if (user === null) return; // 用户点取消
-
+            if (user === null) return; 
             const pass = prompt("请输入密码 (Contraseña):");
-            if (pass === null) return; // 用户点取消
+            if (pass === null) return; 
 
-            // 验证 Zhao / 1122
             if (user === "Zhao" && pass === "1122") {
-                sessionStorage.setItem('emsi_auth', 'true'); // 记录登录状态
+                sessionStorage.setItem('emsi_auth', 'true');
                 window.location.href = page;
             } else {
                 alert("抱歉，用户名或密码错误。\nUsuario o contraseña incorrectos.");
