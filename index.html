@@ -3,118 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI - Portal de Aprendizaje</title>
+    <title>EMSI - Dashboard de Aprendizaje</title>
     <style>
         /* --- EMSI 核心视觉风格 --- */
+        :root {
+            --emsi-blue: #1a4a8e;
+            --emsi-gold: #f1c40f;
+            --emsi-bg: #f0f2f5;
+            --sidebar-width: 280px;
+        }
+
         body {
             margin: 0;
             font-family: 'Segoe UI', 'PingFang SC', sans-serif;
-            background-color: #f0f2f5;
+            background-color: var(--emsi-bg);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
         }
 
+        /* --- 页眉：修复居中逻辑 --- */
         .header {
             background-color: white;
-            width: 100%;
-            padding: 20px 0;
-            border-bottom: 6px solid #f1c40f; 
+            z-index: 100;
+            padding: 15px 0;
+            border-bottom: 6px solid var(--emsi-gold);
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
         }
 
         .header-container {
-            max-width: 1300px;
-            margin: 0 auto;
-            position: relative; 
+            width: 100%;
             display: flex;
-            align-items: center;
             justify-content: center; 
-            min-height: 100px; 
-            padding: 0 20px;
+            align-items: center;
+            min-height: 80px;
         }
 
         .header-logo {
-            position: absolute; 
-            left: 40px;        
-            height: 90px;
+            position: absolute;
+            left: 40px;
+            height: 75px;
             width: auto;
         }
 
-        .header-text {
-            text-align: center; 
-        }
+        .header-text { text-align: center; }
+        .header h1 { color: var(--emsi-blue); font-size: 32px; margin: 0; letter-spacing: 1px; }
+        .header p { color: #6b7280; margin: 5px 0 0 0; font-size: 18px; }
 
-        .header h1 {
-            color: #1a4a8e; 
-            font-size: 32px;
-            margin: 0;
-            letter-spacing: 1px;
-        }
-        .header p { 
-            color: #6b7280; 
-            margin: 5px 0 0 0; 
-            font-size: 18px; 
-        }
-
-        /* --- 页面主体 --- */
-        .main-container { max-width: 1300px; width: 90%; margin: 40px auto; flex: 1; }
-        
-        .category-box { 
-            background: white; 
-            border-radius: 20px; 
-            padding: 0; 
-            margin-bottom: 30px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
-            border: 1px solid #eee; 
+        /* --- 核心布局 --- */
+        .layout-wrapper {
+            display: flex;
+            flex: 1;
             overflow: hidden;
-            transition: all 0.3s ease;
         }
 
-        .category-title { 
-            color: #1a4a8e; 
-            font-size: 24px; 
-            font-weight: bold; 
-            padding: 25px 30px;
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            cursor: pointer;
-            user-select: none;
+        /* 左侧导航轴 */
+        .sidebar {
+            width: var(--sidebar-width);
             background: white;
-            transition: background 0.2s;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.03);
+            z-index: 10;
         }
 
-        .category-title:hover { background-color: #fcfcfc; }
+        .nav-item {
+            padding: 18px 25px;
+            cursor: pointer;
+            color: #475569;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            border-left: 5px solid transparent;
+            margin-bottom: 5px;
+            user-select: none;
+        }
+
+        .nav-reset {
+            background: #fff8e1;
+            color: #d4a017;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+            padding-bottom: 25px;
+        }
+        .nav-reset:hover { background: #f1c40f; color: white; }
+
+        .nav-item:hover:not(.nav-reset) { background: #f8fafc; color: var(--emsi-blue); }
+        .nav-item.active { background: #f0f4f9; color: var(--emsi-blue); border-left: 5px solid var(--emsi-blue); }
+        .nav-item .icon { font-size: 20px; margin-right: 12px; display: flex; align-items: center; }
+
+        /* 二级菜单样式 */
+        .submenu {
+            display: none; /* 默认隐藏 */
+            background: #fcfcfc;
+            overflow: hidden;
+        }
+        .submenu.open { display: block; }
+        
+        .submenu-item {
+            padding: 12px 25px 12px 55px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #64748b;
+            transition: all 0.2s;
+            border-left: 5px solid transparent;
+            user-select: none;
+        }
+        .submenu-item:hover { background: #f1f5f9; color: var(--emsi-blue); }
+        .submenu-item.active { 
+            color: var(--emsi-blue); 
+            background: #f0f4f9; 
+            font-weight: bold; 
+            border-left: 5px solid var(--emsi-gold);
+        }
+
+        .arrow { font-size: 12px; transition: transform 0.3s; }
+        .nav-item.open .arrow { transform: rotate(180deg); }
+
+        /* 右侧内容区 */
+        .main-stage {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            background: var(--emsi-bg);
+        }
 
         .category-content {
-            padding: 0 30px 30px 30px;
-            border-top: 2px solid #f1c40f;
-            display: block; 
-        }
-
-        /* 核心逻辑：默认折叠状态 */
-        .category-box.collapsed .category-content {
             display: none;
+            animation: slideInRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
 
-        .toggle-icon {
-            font-size: 18px;
-            transition: transform 0.3s ease;
-            color: #f1c40f;
+        .category-content.active { display: block; }
+
+        @keyframes slideInRight {
+            0% { transform: translateX(30px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
         }
 
-        /* 折叠时箭头旋转 90 度 */
-        .collapsed .toggle-icon {
-            transform: rotate(-90deg); 
+        /* --- 内部卡片样式 --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
         }
-        
-        .academic-box { border-top: 5px solid #1a4a8e; }
+
+        .category-header {
+            font-size: 26px;
+            color: var(--emsi-blue);
+            font-weight: bold;
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--emsi-gold);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
 
         .subcategory-title { color: #475569; font-size: 18px; font-weight: 600; margin: 25px 0 15px 5px; display: flex; align-items: center; }
-        .subcategory-title::before { content: ""; display: inline-block; width: 4px; height: 18px; background-color: #f1c40f; margin-right: 10px; border-radius: 2px; }
-        
-        .button-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .subcategory-title::before { content: ""; display: inline-block; width: 4px; height: 18px; background-color: var(--emsi-gold); margin-right: 10px; border-radius: 2px; }
+        .button-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
         
         .nav-link {
             text-decoration: none;
@@ -133,16 +187,60 @@
             height: 110px; 
         }
         .nav-link span { font-size: 24px; margin-bottom: 8px; }
-        .nav-link:hover { border-color: #1a4a8e; background: #1a4a8e; color: white; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(26, 74, 142, 0.15); }
+        .nav-link:hover { border-color: var(--emsi-blue); background: var(--emsi-blue); color: white; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(26, 74, 142, 0.15); }
 
-        .footer { background: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
-
-        @media (max-width: 850px) {
-            .header-container { flex-direction: column; min-height: auto; }
-            .header-logo { position: static; margin-bottom: 15px; height: 70px; }
-            .header-text { text-align: center; }
-            .category-title { font-size: 20px; padding: 20px; }
+        .welcome-screen {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #94a3b8;
+            text-align: center;
         }
+        .welcome-logo { width: 180px; height: auto; margin-bottom: 30px; }
+
+        /* --- 登录框 --- */
+        .login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 320px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .login-box h3 { color: var(--emsi-blue); margin-top: 0; }
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: var(--emsi-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .footer { background: var(--emsi-blue); color: white; text-align: center; padding: 15px; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -157,91 +255,114 @@
         </div>
     </header>
 
-    <div class="main-container">
-        
-        <section class="category-box academic-box collapsed">
-            <div class="category-title" onclick="toggleCategory(this)">
-                <span>📂 Gestión Académica / 教务系统</span>
-                <span class="toggle-icon">▼</span>
+    <div class="layout-wrapper">
+        <nav class="sidebar">
+            <div class="nav-item nav-reset" onclick="resetHome()">
+                <span style="display:flex; align-items:center;"><span class="icon">🏠</span><span>主页 / Home</span></span>
             </div>
-            <div class="category-content">
-                <div class="subcategory-title">📋 Administración / 行政管理</div>
-                <div class="button-grid">
-                    <a href="javascript:void(0)" onclick="secureGo('考勤.html')" class="nav-link"><span>📝</span>Registro de Asistencia<br>学生每周考勤</a>
-                    <a href="javascript:void(0)" onclick="secureGo('评价.html')" class="nav-link"><span>📊</span>Progreso Académico<br>学生阶段评价</a>
-                    <a href="javascript:void(0)" onclick="secureGo('calendario.html')" class="nav-link"><span>📅</span>Calendario y Notas<br>校历与备忘录</a>
+            
+            <div class="nav-item" onclick="showCategory('academic', this)">
+                <span style="display:flex; align-items:center;"><span class="icon">📂</span><span>教务系统 / Gestión</span></span>
+            </div>
+            
+            <div class="nav-item" id="resTrigger" onclick="toggleSubmenu(this)">
+                <span style="display:flex; align-items:center;"><span class="icon">📚</span><span>教学资源 / Recursos</span></span>
+                <span class="arrow">▼</span>
+            </div>
+            <div id="resSubmenu" class="submenu">
+                <div class="submenu-item" onclick="showCategory('math', this)">🔢 数学 / Matemáticas</div>
+                <div class="submenu-item" onclick="showCategory('lengua', this)">📚 西班牙语 / Lengua</div>
+                <div class="submenu-item" onclick="showCategory('english', this)">🔤 英语 / Inglés</div>
+            </div>
+        </nav>
+
+        <main class="main-stage">
+            
+            <div id="welcome" class="welcome-screen">
+                <img src="校徽.png" alt="EMSI Logo" class="welcome-logo">
+                <h2>欢迎使用 EMSI 资源中心</h2>
+                <p>请从左侧导航轴选择分类进行操作</p>
+            </div>
+
+            <div id="academic" class="category-content">
+                <div class="content-card">
+                    <div class="category-header">📂 Gestión Académica / 教务系统</div>
+                    <div class="subcategory-title">📋 Administración / 行政管理</div>
+                    <div class="button-grid">
+                        <a href="javascript:void(0)" onclick="openLogin('考勤.html')" class="nav-link"><span>📝</span>Registro de Asistencia<br>学生每周考勤</a>
+                        <a href="javascript:void(0)" onclick="openLogin('评价.html')" class="nav-link"><span>📊</span>Progreso Académico<br>学生阶段评价</a>
+                        <a href="javascript:void(0)" onclick="openLogin('calendario.html')" class="nav-link"><span>📅</span>Calendario y Notas<br>校历与备忘录</a>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <section class="category-box collapsed">
-            <div class="category-title" onclick="toggleCategory(this)">
-                <span>🔢 Matemáticas / 数学</span>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="category-content">
-                <div class="subcategory-title">💡 Problemas / 应用题专项练习</div>
-                <div class="button-grid">
-                    <a href="应用题1年级.html" class="nav-link"><span>🌱</span>1º de Primaria</a>
-                    <a href="应用题 2 年级.html" class="nav-link"><span>🍀</span>2º de Primaria</a>
-                    <a href="应用题 3 年级.html" class="nav-link"><span>🌿</span>3º de Primaria</a>
-                    <a href="应用题 4 年级.html" class="nav-link"><span>🍂</span>4º de Primaria</a>
-                    <a href="应用题 5 年级.html" class="nav-link"><span>🌳</span>5º de Primaria</a>
-                    <a href="应用题 6 年级.html" class="nav-link"><span>🎓</span>6º de Primaria</a>
-                </div>
-
-                <div class="subcategory-title">🧮 Aritmética / 算术基础 1-4ºPrimaria</div>
-                <div class="button-grid">
-                    <a href="基础加减数学.html" class="nav-link"><span>➕</span>Aritmética Básica</a>
-                    <a href="sumas_basicas.html" class="nav-link"><span>🐣</span>Sumas (2-10)</a>
-                    <a href="sumas.html" class="nav-link"><span>🚀</span>Sumas (11-18)</a>
-                    <a href="九九乘法练习.html" class="nav-link"><span>✖️</span>Tabla de Multiplicar</a>
-                </div>
-
-                <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
-                <div class="button-grid">
-                    <a href="分数理论.html" class="nav-link"><span>📘</span>Teoría de Fracciones</a>
-                    <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
-                    <a href="分数运算.html" class="nav-link"><span>📝</span>Fracciones: Advanced</a>
+            <div id="math" class="category-content">
+                <div class="content-card">
+                    <div class="category-header">🔢 Matemáticas / 数学</div>
+                    <div class="subcategory-title">💡 Problemas / 应用题专项练习</div>
+                    <div class="button-grid">
+                        <a href="应用题1年级.html" class="nav-link"><span>🌱</span>1º de Primaria</a>
+                        <a href="应用题 2 年级.html" class="nav-link"><span>🍀</span>2º de Primaria</a>
+                        <a href="应用题 3 年级.html" class="nav-link"><span>🌿</span>3º de Primaria</a>
+                        <a href="应用题 4 年级.html" class="nav-link"><span>🍂</span>4º de Primaria</a>
+                        <a href="应用题 5 年级.html" class="nav-link"><span>🌳</span>5º de Primaria</a>
+                        <a href="应用题 6 年级.html" class="nav-link"><span>🎓</span>6º de Primaria</a>
+                    </div>
+                    <div class="subcategory-title">🧮 Aritmética / 算术基础 1-4ºPrimaria</div>
+                    <div class="button-grid">
+                        <a href="基础加减数学.html" class="nav-link"><span>➕</span>Aritmética Básica</a>
+                        <a href="sumas_basicas.html" class="nav-link"><span>🐣</span>Sumas (2-10)</a>
+                        <a href="sumas.html" class="nav-link"><span>🚀</span>Sumas (11-18)</a>
+                        <a href="九九乘法练习.html" class="nav-link"><span>✖️</span>Tabla de Multiplicar</a>
+                    </div>
+                    <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
+                    <div class="button-grid">
+                        <a href="分数理论.html" class="nav-link"><span>📘</span>Teoría de Fracciones</a>
+                        <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
+                        <a href="分数运算.html" class="nav-link"><span>📝</span>Advanced</a>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <section class="category-box collapsed">
-            <div class="category-title" onclick="toggleCategory(this)">
-                <span>📚 Lengua / 西班牙语</span>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="category-content">
-                <div class="subcategory-title">🗣️ Sílabas y Lectura / 音节与阅读</div>
-                <div class="button-grid">
-                    <a href="alfabeto.html" class="nav-link"><span>🅰️</span>El Alfabeto</a>
-                    <a href="silaborario.html" class="nav-link"><span>🔤</span>Silabario</a>
-                    <a href="juegos_silabas.html" class="nav-link"><span>🕹️</span>Laboratorio</a>
-                    <a href="oraciones.html" class="nav-link"><span>📖</span>Lectura</a>
-                </div>
-
-                <div class="subcategory-title">🎨 Vocabulario / 分类词汇</div>
-                <div class="button-grid">
-                    <a href="numeros.html" class="nav-link"><span>🔟</span>Los Números</a>
-                    <a href="color.html" class="nav-link"><span>🌈</span>Los Colores</a>
-                    <a href="tiempo.html" class="nav-link"><span>📅</span>El Tiempo</a>
+            <div id="lengua" class="category-content">
+                <div class="content-card">
+                    <div class="category-header">📚 Lengua / 西班牙语</div>
+                    <div class="subcategory-title">🗣️ Sílabas y Lectura / 音节与阅读</div>
+                    <div class="button-grid">
+                        <a href="alfabeto.html" class="nav-link"><span>🅰️</span>El Alfabeto</a>
+                        <a href="silaborario.html" class="nav-link"><span>🔤</span>Silabario</a>
+                        <a href="juegos_silabas.html" class="nav-link"><span>🕹️</span>Laboratorio</a>
+                        <a href="oraciones.html" class="nav-link"><span>📖</span>Lectura</a>
+                    </div>
+                    <div class="subcategory-title">🎨 Vocabulario / 分类词汇</div>
+                    <div class="button-grid">
+                        <a href="numeros.html" class="nav-link"><span>🔟</span>Los Números</a>
+                        <a href="color.html" class="nav-link"><span>🌈</span>Los Colores</a>
+                        <a href="tiempo.html" class="nav-link"><span>📅</span>El Tiempo</a>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <section class="category-box collapsed">
-            <div class="category-title" onclick="toggleCategory(this)">
-                <span>🔤 Inglés / 英语</span>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="category-content">
-                <div class="button-grid">
-                    <a href="英语单词练习完整版.html" class="nav-link"><span>📖</span>Vocabulario</a>
+            <div id="english" class="category-content">
+                <div class="content-card">
+                    <div class="category-header">🔤 Inglés / 英语</div>
+                    <div class="button-grid">
+                        <a href="英语单词练习完整版.html" class="nav-link"><span>📖</span>Vocabulario</a>
+                    </div>
                 </div>
             </div>
-        </section>
 
+        </main>
+    </div>
+
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-box">
+            <h3>🔐 教务系统验证</h3>
+            <input type="text" id="userInput" placeholder="用户名 (Usuario)">
+            <input type="password" id="passInput" placeholder="密码 (Contraseña)">
+            <button onclick="checkAuth()">确认登录</button>
+            <button onclick="closeLogin()" style="background:#94a3b8; margin-top:5px;">取消</button>
+        </div>
     </div>
 
     <footer class="footer">
@@ -249,32 +370,68 @@
     </footer>
 
     <script>
-        // 1. 分类折叠
-        function toggleCategory(element) {
-            const box = element.parentElement;
-            box.classList.toggle('collapsed');
+        let pendingPage = "";
+
+        // 切换下拉菜单
+        function toggleSubmenu(element) {
+            const menu = document.getElementById('resSubmenu');
+            const isOpen = menu.classList.contains('open');
+            
+            // 如果点击大类，仅切换展开状态
+            menu.classList.toggle('open');
+            element.classList.toggle('open');
         }
 
-        // 2. 教务权限检查 (Zhao / 1122)
-        function secureGo(page) {
-            const isAuth = sessionStorage.getItem('emsi_auth');
-            if (isAuth === 'true') {
-                window.location.href = page;
-                return;
-            }
-            const user = prompt("请输入用户名 (Usuario):");
-            if (user === null) return; 
-            const pass = prompt("请输入密码 (Contraseña):");
-            if (pass === null) return; 
+        // 内容切换逻辑
+        function showCategory(id, element) {
+            // 1. 隐藏欢迎语
+            document.getElementById('welcome').style.display = 'none';
+            
+            // 2. 清除所有导航项和子项的激活状态
+            document.querySelectorAll('.nav-item, .submenu-item').forEach(el => el.classList.remove('active'));
+            
+            // 3. 隐藏所有内容卡片
+            document.querySelectorAll('.category-content').forEach(content => content.classList.remove('active'));
+            
+            // 4. 激活当前内容和按钮
+            document.getElementById(id).classList.add('active');
+            element.classList.add('active');
 
-            if (user === "Zhao" && pass === "1122") {
+            // 5. 自动滚动到顶
+            document.querySelector('.main-stage').scrollTop = 0;
+        }
+
+        // 还原主页
+        function resetHome() {
+            document.querySelectorAll('.category-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-item, .submenu-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('resSubmenu').classList.remove('open');
+            document.getElementById('resTrigger').classList.remove('open');
+            document.getElementById('welcome').style.display = 'flex';
+        }
+
+        // 登录逻辑
+        function openLogin(page) {
+            if (sessionStorage.getItem('emsi_auth') === 'true') { window.location.href = page; return; }
+            pendingPage = page;
+            document.getElementById('loginOverlay').style.display = 'flex';
+            document.getElementById('userInput').focus();
+        }
+
+        function closeLogin() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('userInput').value = "";
+            document.getElementById('passInput').value = "";
+        }
+
+        function checkAuth() {
+            const u = document.getElementById('userInput').value;
+            const p = document.getElementById('passInput').value;
+            if (u === "Zhao" && p === "1122") {
                 sessionStorage.setItem('emsi_auth', 'true');
-                window.location.href = page;
-            } else {
-                alert("抱歉，用户名或密码错误。\nUsuario o contraseña incorrectos.");
-            }
+                window.location.href = pendingPage;
+            } else { alert("用户名或密码错误！"); }
         }
     </script>
-
 </body>
 </html>
