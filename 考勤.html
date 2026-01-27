@@ -5,40 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMSI 考勤登记 - 马德里国际中文学校</title>
     <style>
-        /* --- 基础样式 --- */
+        /* --- 核心视觉风格 --- */
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
             background-color: #f5f7fa; 
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        /* --- 页眉 --- */
         .header {
             background-color: white;
             text-align: center;
-            padding: 40px 20px 0 20px;
+            padding: 35px 20px 0 20px;
             border-bottom: 5px solid #f1c40f; 
         }
 
         .header h1 {
             color: #1a4a8e; 
-            font-size: 42px;
-            font-weight: 600;
+            font-size: 36px;
             margin: 0;
             letter-spacing: 2px;
         }
 
-        .header h1 span { font-weight: 800; margin-right: 15px; }
+        .header h1 span { font-weight: 800; margin-right: 12px; }
 
         .header .subtitle {
             color: #6b7280; 
-            font-size: 20px;
-            margin-top: 10px;
-            margin-bottom: 25px;
+            font-size: 18px;
+            margin: 8px 0 20px 0;
         }
 
         /* --- 顶部控制栏 --- */
@@ -47,273 +44,283 @@
             max-width: 1100px;
             margin: 20px auto;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            gap: 15px;
             padding: 0 20px;
             box-sizing: border-box;
-            gap: 15px;
-            flex-wrap: wrap;
+            align-items: flex-start;
         }
 
+        /* 复刻返回按钮 */
         .btn-home {
             display: inline-flex;
             align-items: center;
-            padding: 8px 25px;
+            padding: 10px 25px;
             background-color: white;
             color: #1a4a8e;
             text-decoration: none;
             border-radius: 50px;
             font-size: 18px;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            white-space: nowrap;
         }
+        .btn-home::before { content: "←"; margin-right: 10px; font-weight: bold; }
 
-        /* 管理区域容器 */
-        .mgmt-panel {
-            background: #fff;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        .mgmt-card {
+            background: white;
+            flex: 1;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            flex: 1;
-            min-width: 300px;
+            gap: 15px;
         }
 
-        .input-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .input-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        
+        .label-text { font-weight: bold; color: #334155; min-width: 80px; }
 
-        .input-field {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+        input, select {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
             outline: none;
+            font-size: 14px;
         }
 
-        .btn-action {
-            padding: 8px 16px;
-            border-radius: 6px;
+        .btn {
+            padding: 10px 20px;
             border: none;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .btn-blue { background-color: #1a4a8e; color: white; }
-        .btn-green { background-color: #27ae60; color: white; }
-        .btn-orange { background-color: #f39c12; color: white; }
+        .btn-blue { background: #1a4a8e; color: white; }
+        .btn-orange { background: #f39c12; color: white; }
+        .btn-green { background: #27ae60; color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
-        /* --- 内容展示区 --- */
+        /* --- 考勤表格区 --- */
         .main-content { flex: 1; padding: 0 20px 40px 20px; display: flex; justify-content: center; }
-
-        .card {
-            background: white;
+        
+        .attendance-container {
             width: 100%;
             max-width: 1100px;
+            background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            padding: 25px;
-            border: 1px solid #eee;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        /* 班级分割标题样式 */
-        .class-divider {
-            background-color: #f8fafc;
-            color: #1a4a8e;
-            padding: 10px 15px;
-            font-weight: 800;
-            font-size: 18px;
-            border-left: 5px solid #f1c40f;
-            margin: 20px 0 10px 0;
+        .class-section { margin-bottom: 40px; }
+
+        .class-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: #f8fafc;
+            padding: 12px 20px;
+            border-left: 6px solid #f1c40f;
+            border-radius: 4px;
+            margin-bottom: 15px;
         }
 
-        .btn-del-class {
-            font-size: 12px;
-            color: #e74c3c;
-            cursor: pointer;
-            font-weight: normal;
-        }
+        .class-name { font-size: 20px; font-weight: 800; color: #1a4a8e; }
 
-        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-        th { text-align: left; padding: 12px; border-bottom: 2px solid #eee; color: #64748b; font-size: 14px; }
-        td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; color: #64748b; font-size: 14px; padding: 12px; border-bottom: 2px solid #edf2f7; }
+        td { padding: 15px 12px; border-bottom: 1px solid #f1f5f9; }
 
-        /* 标签 */
-        .tag { font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
-        .tag-fixed { background-color: #e1effe; color: #1e429f; }
-        .tag-temp { background-color: #fef3c7; color: #92400e; }
+        .status-options { display: flex; gap: 15px; }
+        label { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 4px; color: #475569; }
 
-        .status-options { display: flex; gap: 10px; flex-wrap: wrap; }
-        label { font-size: 13px; color: #4b5563; cursor: pointer; display: flex; align-items: center; gap: 3px; }
+        .tag { font-size: 11px; padding: 2px 8px; border-radius: 12px; margin-left: 8px; font-weight: 600; }
+        .tag-fixed { background: #dbeafe; color: #1e40af; }
+        .tag-temp { background: #fef3c7; color: #92400e; }
 
-        .btn-delete-stu { color: #e74c3c; cursor: pointer; font-size: 13px; }
+        .btn-del { color: #ef4444; font-size: 13px; cursor: pointer; text-decoration: underline; }
 
-        .footer { background-color: #1a4a8e; color: white; text-align: center; padding: 18px 20px; }
+        .empty-state { text-align: center; color: #94a3b8; padding: 60px 0; font-size: 18px; }
+
+        .footer { background: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <header class="header">
         <h1><span>EMSI</span> 马德里国际中文学校</h1>
-        <div class="subtitle">学生班级考勤管理系统</div>
+        <div class="subtitle">学生班级考勤管理系统 (Gestión de Asistencia)</div>
     </header>
 
     <div class="toolbar">
-        <a href="index.html" class="btn-home">← 返回首页</a>
+        <a href="index.html" class="btn-home">返回首页</a>
         
-        <div class="mgmt-panel">
+        <div class="mgmt-card">
             <div class="input-group">
-                <strong>1. 班级管理:</strong>
-                <input type="text" id="classNameInput" class="input-field" placeholder="新班级名称">
-                <button class="btn-action btn-orange" onclick="addClass()">创建班级</button>
+                <span class="label-text">1. 班级名:</span>
+                <input type="text" id="newClassName" placeholder="例如：一年级A班">
+                <button class="btn btn-orange" onclick="addClass()">+ 创建班级</button>
             </div>
-            
-            <hr style="width: 100%; border: 0.5px solid #eee;">
 
             <div class="input-group">
-                <strong>2. 添加学生:</strong>
-                <input type="text" id="stuNameInput" class="input-field" placeholder="学生姓名" style="width:100px;">
-                <select id="stuClassSelect" class="input-field"></select>
-                <select id="stuTypeSelect" class="input-field">
-                    <option value="固定班级">固定班级</option>
-                    <option value="临时学生">临时学生</option>
+                <span class="label-text">2. 加学生:</span>
+                <input type="text" id="newStuName" placeholder="学生姓名" style="width: 140px;">
+                <select id="targetClass"></select>
+                <select id="stuType">
+                    <option value="固定班级">🏢 固定班级</option>
+                    <option value="临时学生">🌟 临时学生</option>
                 </select>
-                <button class="btn-action btn-blue" onclick="addStudent()">确认添加</button>
-                <button class="btn-action btn-green" style="margin-left: auto;" onclick="exportCSV()">📥 导出考勤表</button>
+                <button class="btn btn-blue" onclick="addStudent()">确认添加</button>
+                
+                <div style="margin-left: auto; display: flex; gap: 10px;">
+                    <button class="btn btn-green" onclick="manualSave()">💾 保存数据</button>
+                    <button class="btn btn-blue" style="background:#475569" onclick="exportCSV()">📥 导出报表</button>
+                </div>
             </div>
         </div>
     </div>
 
     <main class="main-content">
-        <div class="card" id="tablesContainer">
+        <div class="attendance-container" id="mainDisplay">
             </div>
     </main>
 
     <footer class="footer">
-        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+        © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
     </footer>
 
     <script>
-        // 数据结构
-        // classes: ["班级A", "班级B"]
-        // students: [{name: "张三", class: "班级A", type: "固定班级"}]
-        let classes = JSON.parse(localStorage.getItem('emsi_classes')) || ["未分配班级"];
-        let students = JSON.parse(localStorage.getItem('emsi_students_v2')) || [];
+        // --- 数据核心 ---
+        // 使用唯一的键名，防止数据冲突
+        const STORAGE_KEY = 'EMSI_ATTENDANCE_DATABASE_2026';
+        
+        let db = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+            classes: [],
+            students: []
+        };
 
-        // 初始化渲染
+        // --- 初始化 ---
         function init() {
-            renderClassSelect();
-            renderTables();
+            renderAll();
         }
 
-        // 渲染班级下拉框
-        function renderClassSelect() {
-            const select = document.getElementById('stuClassSelect');
-            select.innerHTML = classes.map(c => `<option value="${c}">${c}</option>`).join('');
-        }
-
-        // 添加班级
+        // --- 班级操作 ---
         function addClass() {
-            const input = document.getElementById('classNameInput');
-            const name = input.value.trim();
-            if (name && !classes.includes(name)) {
-                classes.push(name);
-                localStorage.setItem('emsi_classes', JSON.stringify(classes));
-                input.value = '';
-                renderClassSelect();
-                renderTables();
-            }
+            const name = document.getElementById('newClassName').value.trim();
+            if (!name) return alert("请输入班级名称");
+            if (db.classes.includes(name)) return alert("班级已存在");
+            
+            db.classes.push(name);
+            autoSave();
+            document.getElementById('newClassName').value = '';
+            renderAll();
         }
 
-        // 删除班级
         function deleteClass(className) {
-            if (confirm(`确定删除班级 [${className}] 吗？该班级下的学生将移至“未分配班级”。`)) {
-                students.forEach(s => { if(s.class === className) s.class = "未分配班级"; });
-                classes = classes.filter(c => c !== className);
-                if (classes.length === 0) classes.push("未分配班级");
-                saveData();
+            if (confirm(`确定要删除 [${className}] 吗？\n该班级下的学生也会被同步移除。`)) {
+                db.classes = db.classes.filter(c => c !== className);
+                db.students = db.students.filter(s => s.className !== className);
+                autoSave();
+                renderAll();
             }
         }
 
-        // 添加学生
+        // --- 学生操作 ---
         function addStudent() {
-            const nameInput = document.getElementById('stuNameInput');
-            const name = nameInput.value.trim();
-            const className = document.getElementById('stuClassSelect').value;
-            const type = document.getElementById('stuTypeSelect').value;
+            const name = document.getElementById('newStuName').value.trim();
+            const className = document.getElementById('targetClass').value;
+            const type = document.getElementById('stuType').value;
 
-            if (name) {
-                students.push({ name, class: className, type });
-                sortStudents();
-                saveData();
-                nameInput.value = '';
-                nameInput.focus();
-            }
-        }
+            if (!name) return alert("请输入学生姓名");
+            if (!className) return alert("请先创建一个班级");
 
-        // 排序逻辑：类型优先，然后拼音
-        function sortStudents() {
-            students.sort((a, b) => {
+            db.students.push({
+                id: Date.now(),
+                name: name,
+                className: className,
+                type: type,
+                status: '出席' // 默认值
+            });
+
+            // 排序：先按类型，再按名字拼音
+            db.students.sort((a, b) => {
                 if (a.type !== b.type) return a.type === "固定班级" ? -1 : 1;
                 return a.name.localeCompare(b.name, 'zh');
             });
+
+            autoSave();
+            document.getElementById('newStuName').value = '';
+            document.getElementById('newStuName').focus();
+            renderAll();
         }
 
-        function removeStudent(index) {
-            if (confirm("确定删除该学生吗？")) {
-                students.splice(index, 1);
-                saveData();
-            }
+        function removeStudent(id) {
+            db.students = db.students.filter(s => s.id !== id);
+            autoSave();
+            renderAll();
         }
 
-        function saveData() {
-            localStorage.setItem('emsi_classes', JSON.stringify(classes));
-            localStorage.setItem('emsi_students_v2', JSON.stringify(students));
-            renderTables();
-            renderClassSelect();
+        function updateStatus(id, newStatus) {
+            const student = db.students.find(s => s.id === id);
+            if (student) student.status = newStatus;
+            autoSave();
         }
 
-        // 核心渲染：按班级分组生成表格
-        function renderTables() {
-            const container = document.getElementById('tablesContainer');
-            container.innerHTML = '';
+        // --- 保存逻辑 ---
+        function autoSave() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+        }
 
-            if (students.length === 0 && classes.length <= 1) {
-                container.innerHTML = '<div style="text-align:center; color:#ccc; padding:50px;">暂无数据，请先创建班级或添加学生</div>';
+        function manualSave() {
+            autoSave();
+            alert("✅ 数据已安全保存至本地存储！");
+        }
+
+        // --- 渲染引擎 ---
+        function renderAll() {
+            const display = document.getElementById('mainDisplay');
+            const selector = document.getElementById('targetClass');
+            
+            // 1. 更新班级下拉框
+            selector.innerHTML = db.classes.map(c => `<option value="${c}">${c}</option>`).join('');
+
+            // 2. 更新主考勤表
+            if (db.classes.length === 0) {
+                display.innerHTML = `
+                    <div class="empty-state">
+                        <p>📢 还没有班级数据</p>
+                        <p style="font-size:14px; color:#cbd5e1">请在上方第一步输入班级名称并点击“创建班级”</p>
+                    </div>`;
                 return;
             }
 
-            classes.forEach(cls => {
-                const classStudents = students.filter(s => s.class === cls);
+            let html = '';
+            db.classes.forEach(cls => {
+                const classStus = db.students.filter(s => s.className === cls);
                 
-                // 创建班级头部
-                const divider = document.createElement('div');
-                divider.className = 'class-divider';
-                divider.innerHTML = `
-                    <span>📍 ${cls} <small style="font-weight:normal; font-size:12px; margin-left:10px;">(${classStudents.length}人)</small></span>
-                    ${cls !== "未分配班级" ? `<span class="btn-del-class" onclick="deleteClass('${cls}')">删除班级</span>` : ''}
-                `;
-                container.appendChild(divider);
-
-                // 创建该班级的表格
-                const table = document.createElement('table');
-                table.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th style="width:25%">学生姓名</th>
-                            <th style="width:65%">考勤状态</th>
-                            <th style="width:10%">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${classStudents.map(s => {
-                            // 在原始数组中找到这个学生的索引
-                            const originalIndex = students.indexOf(s);
-                            return `
+                html += `
+                <div class="class-section">
+                    <div class="class-header">
+                        <span class="class-name">📍 ${cls} (${classStus.length}人)</span>
+                        <span class="btn-del" onclick="deleteClass('${cls}')">删除此班级</span>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:25%">学生姓名</th>
+                                <th style="width:65%">考勤状态</th>
+                                <th style="width:10%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${classStus.map(s => `
                                 <tr>
                                     <td>
                                         <strong>${s.name}</strong>
@@ -321,45 +328,45 @@
                                     </td>
                                     <td>
                                         <div class="status-options">
-                                            <label><input type="radio" name="status-${originalIndex}" value="出席" checked>出席</label>
-                                            <label><input type="radio" name="status-${originalIndex}" value="未出席">未出席</label>
-                                            <label><input type="radio" name="status-${originalIndex}" value="请假">请假</label>
-                                            <label><input type="radio" name="status-${originalIndex}" value="固定不来">固定不来</label>
+                                            ${['出席', '未出席', '请假', '固定不来'].map(opt => `
+                                                <label>
+                                                    <input type="radio" name="status-${s.id}" value="${opt}" 
+                                                    ${s.status === opt ? 'checked' : ''} 
+                                                    onchange="updateStatus(${s.id}, '${opt}')"> ${opt}
+                                                </label>
+                                            `).join('')}
                                         </div>
                                     </td>
-                                    <td><span class="btn-delete-stu" onclick="removeStudent(${originalIndex})">删除</span></td>
+                                    <td><span class="btn-del" onclick="removeStudent(${s.id})">移除</span></td>
                                 </tr>
-                            `;
-                        }).join('')}
-                    </tbody>
-                `;
-                container.appendChild(table);
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>`;
             });
+            display.innerHTML = html;
         }
 
-        // 导出 CSV
+        // --- 导出报表 ---
         function exportCSV() {
-            if (students.length === 0) return alert("没有学生数据");
-            const today = new Date().toLocaleDateString();
-            let csv = "\uFEFF班级,姓名,类型,考勤状态,日期\n";
+            if (db.students.length === 0) return alert("目前没有学生考勤数据可导出");
             
-            students.forEach((s, index) => {
-                const radios = document.getElementsByName(`status-${index}`);
-                let status = "出席";
-                for(let r of radios) { if(r.checked) status = r.value; }
-                csv += `${s.class},${s.name},${s.type},${status},${today}\n`;
+            const today = new Date().toLocaleDateString();
+            let csv = "\uFEFF班级,学生姓名,类型,今日状态,登记日期\n";
+            
+            db.students.forEach(s => {
+                csv += `${s.className},${s.name},${s.type},${s.status},${today}\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `EMSI_全校考勤_${today.replace(/\//g, '-')}.csv`;
+            link.download = `EMSI考勤汇总_${today.replace(/\//g, '-')}.csv`;
             link.click();
         }
 
-        // 回车支持
-        document.getElementById('stuNameInput').addEventListener('keypress', e => { if(e.key === 'Enter') addStudent(); });
-        document.getElementById('classNameInput').addEventListener('keypress', e => { if(e.key === 'Enter') addClass(); });
+        // 监听回车键添加
+        document.getElementById('newStuName').addEventListener('keypress', e => { if(e.key === 'Enter') addStudent(); });
 
         init();
     </script>
