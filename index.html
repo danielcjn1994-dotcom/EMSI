@@ -59,13 +59,65 @@
 
         /* --- 页面主体 --- */
         .main-container { max-width: 1300px; width: 90%; margin: 40px auto; flex: 1; }
-        .category-box { background: white; border-radius: 20px; padding: 30px; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eee; }
-        .category-title { color: #1a4a8e; font-size: 24px; font-weight: bold; margin-bottom: 25px; display: flex; align-items: center; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; }
+        
+        .category-box { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 0; /* 修改 padding 以适配折叠 */
+            margin-bottom: 30px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
+            border: 1px solid #eee; 
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* 分类标题样式 - 现在是可点击的 */
+        .category-title { 
+            color: #1a4a8e; 
+            font-size: 24px; 
+            font-weight: bold; 
+            padding: 25px 30px;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; /* 左右分布 */
+            cursor: pointer;
+            user-select: none;
+            background: white;
+            transition: background 0.2s;
+        }
+
+        .category-title:hover {
+            background-color: #fcfcfc;
+        }
+
+        /* 标题下方的金黄色横线改在内容容器顶部 */
+        .category-content {
+            padding: 0 30px 30px 30px;
+            border-top: 2px solid #f1c40f;
+            display: block; /* 初始展开 */
+        }
+
+        /* 折叠状态下的样式 */
+        .category-box.collapsed .category-content {
+            display: none;
+        }
+
+        /* 旋转箭头指示器 */
+        .toggle-icon {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+            color: #f1c40f;
+        }
+
+        .collapsed .toggle-icon {
+            transform: rotate(-90deg); /* 折叠时箭头指向左/下 */
+        }
         
         .academic-box { border-top: 5px solid #1a4a8e; }
 
         .subcategory-title { color: #475569; font-size: 18px; font-weight: 600; margin: 25px 0 15px 5px; display: flex; align-items: center; }
         .subcategory-title::before { content: ""; display: inline-block; width: 4px; height: 18px; background-color: #f1c40f; margin-right: 10px; border-radius: 2px; }
+        
         .button-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
         
         .nav-link {
@@ -93,6 +145,7 @@
             .header-container { flex-direction: column; min-height: auto; }
             .header-logo { position: static; margin-bottom: 15px; height: 70px; }
             .header-text { text-align: center; }
+            .category-title { font-size: 20px; padding: 20px; }
         }
     </style>
 </head>
@@ -111,67 +164,85 @@
     <div class="main-container">
         
         <section class="category-box academic-box">
-            <div class="category-title">📂 Gestión Académica / 教务系统</div>
-            <div class="subcategory-title">📋 Administración / 行政管理</div>
-            <div class="button-grid">
-                <a href="考勤.html" class="nav-link"><span>📝</span>Registro de Asistencia<br>学生每周考勤</a>
-                <a href="评价.html" class="nav-link"><span>📊</span>Progreso Académico<br>学生阶段评价</a>
-                <a href="calendario.html" class="nav-link"><span>📅</span>Calendario y Notas<br>校历与备忘录</a>
+            <div class="category-title" onclick="toggleCategory(this)">
+                <span>📂 Gestión Académica / 教务系统</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="subcategory-title">📋 Administración / 行政管理</div>
+                <div class="button-grid">
+                    <a href="考勤.html" class="nav-link"><span>📝</span>Registro de Asistencia<br>学生每周考勤</a>
+                    <a href="评价.html" class="nav-link"><span>📊</span>Progreso Académico<br>学生阶段评价</a>
+                    <a href="calendario.html" class="nav-link"><span>📅</span>Calendario y Notas<br>校历与备忘录</a>
+                </div>
             </div>
         </section>
 
         <section class="category-box">
-            <div class="category-title">🔢 Matemáticas / 数学</div>
-
-            <div class="subcategory-title">💡 Problemas / 应用题专项练习</div>
-            <div class="button-grid">
-                <a href="应用题1年级.html" class="nav-link"><span>🌱</span>1º de Primaria</a>
-                <a href="应用题 2 年级.html" class="nav-link"><span>🍀</span>2º de Primaria</a>
-                <a href="应用题 3 年级.html" class="nav-link"><span>🌿</span>3º de Primaria</a>
-                <a href="应用题 4 年级.html" class="nav-link"><span>🍂</span>4º de Primaria</a>
-                <a href="应用题 5 年级.html" class="nav-link"><span>🌳</span>5º de Primaria</a>
-                <a href="应用题 6 年级.html" class="nav-link"><span>🎓</span>6º de Primaria</a>
+            <div class="category-title" onclick="toggleCategory(this)">
+                <span>🔢 Matemáticas / 数学</span>
+                <span class="toggle-icon">▼</span>
             </div>
+            <div class="category-content">
+                <div class="subcategory-title">💡 Problemas / 应用题专项练习</div>
+                <div class="button-grid">
+                    <a href="应用题1年级.html" class="nav-link"><span>🌱</span>1º de Primaria</a>
+                    <a href="应用题 2 年级.html" class="nav-link"><span>🍀</span>2º de Primaria</a>
+                    <a href="应用题 3 年级.html" class="nav-link"><span>🌿</span>3º de Primaria</a>
+                    <a href="应用题 4 年级.html" class="nav-link"><span>🍂</span>4º de Primaria</a>
+                    <a href="应用题 5 年级.html" class="nav-link"><span>🌳</span>5º de Primaria</a>
+                    <a href="应用题 6 年级.html" class="nav-link"><span>🎓</span>6º de Primaria</a>
+                </div>
 
-            <div class="subcategory-title">🧮 Aritmética / 算术基础 1-4ºPrimaria</div>
-            <div class="button-grid">
-                <a href="基础加减数学.html" class="nav-link"><span>➕</span>Aritmética Básica</a>
-                <a href="sumas_basicas.html" class="nav-link"><span>🐣</span>Sumas (2-10)</a>
-                <a href="sumas.html" class="nav-link"><span>🚀</span>Sumas (11-18)</a>
-                <a href="九九乘法练习.html" class="nav-link"><span>✖️</span>Tabla de Multiplicar</a>
-            </div>
+                <div class="subcategory-title">🧮 Aritmética / 算术基础 1-4ºPrimaria</div>
+                <div class="button-grid">
+                    <a href="基础加减数学.html" class="nav-link"><span>➕</span>Aritmética Básica</a>
+                    <a href="sumas_basicas.html" class="nav-link"><span>🐣</span>Sumas (2-10)</a>
+                    <a href="sumas.html" class="nav-link"><span>🚀</span>Sumas (11-18)</a>
+                    <a href="九九乘法练习.html" class="nav-link"><span>✖️</span>Tabla de Multiplicar</a>
+                </div>
 
-            <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
-            <div class="button-grid">
-                <a href="分数理论.html" class="nav-link"><span>📘</span>Teoría de Fracciones</a>
-                <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
-                <a href="分数运算.html" class="nav-link"><span>📝</span>Fracciones: Advanced</a>
-            </div>
-        </section>
-
-        <section class="category-box">
-            <div class="category-title">📚 Lengua / 西班牙语</div>
-            
-            <div class="subcategory-title">🗣️ Sílabas y Lectura / 音节与阅读</div>
-            <div class="button-grid">
-                <a href="alfabeto.html" class="nav-link"><span>🅰️</span>El Alfabeto</a>
-                <a href="silaborario.html" class="nav-link"><span>🔤</span>Silabario</a>
-                <a href="juegos_silabas.html" class="nav-link"><span>🕹️</span>Laboratorio</a>
-                <a href="oraciones.html" class="nav-link"><span>📖</span>Lectura</a>
-            </div>
-
-            <div class="subcategory-title">🎨 Vocabulario / 分类词汇</div>
-            <div class="button-grid">
-                <a href="numeros.html" class="nav-link"><span>🔟</span>Los Números</a>
-                <a href="color.html" class="nav-link"><span>🌈</span>Los Colores</a>
-                <a href="tiempo.html" class="nav-link"><span>📅</span>El Tiempo</a>
+                <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
+                <div class="button-grid">
+                    <a href="分数理论.html" class="nav-link"><span>📘</span>Teoría de Fracciones</a>
+                    <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
+                    <a href="分数运算.html" class="nav-link"><span>📝</span>Fracciones: Advanced</a>
+                </div>
             </div>
         </section>
 
         <section class="category-box">
-            <div class="category-title">🔤 Inglés / 英语</div>
-            <div class="button-grid">
-                <a href="英语单词练习完整版.html" class="nav-link"><span>📖</span>Vocabulario</a>
+            <div class="category-title" onclick="toggleCategory(this)">
+                <span>📚 Lengua / 西班牙语</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="subcategory-title">🗣️ Sílabas y Lectura / 音节与阅读</div>
+                <div class="button-grid">
+                    <a href="alfabeto.html" class="nav-link"><span>🅰️</span>El Alfabeto</a>
+                    <a href="silaborario.html" class="nav-link"><span>🔤</span>Silabario</a>
+                    <a href="juegos_silabas.html" class="nav-link"><span>🕹️</span>Laboratorio</a>
+                    <a href="oraciones.html" class="nav-link"><span>📖</span>Lectura</a>
+                </div>
+
+                <div class="subcategory-title">🎨 Vocabulario / 分类词汇</div>
+                <div class="button-grid">
+                    <a href="numeros.html" class="nav-link"><span>🔟</span>Los Números</a>
+                    <a href="color.html" class="nav-link"><span>🌈</span>Los Colores</a>
+                    <a href="tiempo.html" class="nav-link"><span>📅</span>El Tiempo</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-box">
+            <div class="category-title" onclick="toggleCategory(this)">
+                <span>🔤 Inglés / 英语</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="category-content">
+                <div class="button-grid">
+                    <a href="英语单词练习完整版.html" class="nav-link"><span>📖</span>Vocabulario</a>
+                </div>
             </div>
         </section>
 
@@ -180,6 +251,15 @@
     <footer class="footer">
         © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
     </footer>
+
+    <script>
+        function toggleCategory(element) {
+            // 找到点击标题所在的 category-box
+            const box = element.parentElement;
+            // 切换 collapsed 类
+            box.classList.toggle('collapsed');
+        }
+    </script>
 
 </body>
 </html>
