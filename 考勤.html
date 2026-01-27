@@ -50,7 +50,6 @@
             align-items: flex-start;
         }
 
-        /* 复刻返回按钮 */
         .btn-home {
             display: inline-flex;
             align-items: center;
@@ -79,7 +78,6 @@
         }
 
         .input-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        
         .label-text { font-weight: bold; color: #334155; min-width: 80px; }
 
         input, select {
@@ -119,23 +117,31 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        .class-section { margin-bottom: 40px; }
+        .class-section { margin-bottom: 20px; border: 1px solid #edf2f7; border-radius: 8px; overflow: hidden; }
 
         .class-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #f8fafc;
-            padding: 12px 20px;
-            border-left: 6px solid #f1c40f;
-            border-radius: 4px;
-            margin-bottom: 15px;
+            padding: 15px 20px;
+            cursor: pointer; /* 鼠标手型，提示可点击 */
+            transition: background 0.3s;
+            user-select: none;
         }
 
-        .class-name { font-size: 20px; font-weight: 800; color: #1a4a8e; }
+        .class-header:hover { background: #f1f5f9; }
+
+        .class-name-area { display: flex; align-items: center; gap: 10px; }
+        .toggle-icon { color: #1a4a8e; font-size: 14px; transition: transform 0.3s; }
+        .class-name { font-size: 18px; font-weight: 800; color: #1a4a8e; }
+
+        /* 折叠内容的容器 */
+        .class-content { transition: max-height 0.3s ease-out; }
+        .collapsed-content { display: none; } /* 隐藏表格 */
 
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; color: #64748b; font-size: 14px; padding: 12px; border-bottom: 2px solid #edf2f7; }
+        th { text-align: left; color: #64748b; font-size: 14px; padding: 12px; border-bottom: 2px solid #edf2f7; background: #fff; }
         td { padding: 15px 12px; border-bottom: 1px solid #f1f5f9; }
 
         .status-options { display: flex; gap: 15px; }
@@ -145,7 +151,8 @@
         .tag-fixed { background: #dbeafe; color: #1e40af; }
         .tag-temp { background: #fef3c7; color: #92400e; }
 
-        .btn-del { color: #ef4444; font-size: 13px; cursor: pointer; text-decoration: underline; }
+        .btn-del-class { color: #ef4444; font-size: 13px; font-weight: normal; text-decoration: underline; padding: 5px; }
+        .btn-del-stu { color: #ef4444; font-size: 13px; cursor: pointer; }
 
         .empty-state { text-align: center; color: #94a3b8; padding: 60px 0; font-size: 18px; }
 
@@ -188,8 +195,7 @@
     </div>
 
     <main class="main-content">
-        <div class="attendance-container" id="mainDisplay">
-            </div>
+        <div class="attendance-container" id="mainDisplay"></div>
     </main>
 
     <footer class="footer">
@@ -197,21 +203,19 @@
     </footer>
 
     <script>
-        // --- 数据核心 ---
-        // 使用唯一的键名，防止数据冲突
         const STORAGE_KEY = 'EMSI_ATTENDANCE_DATABASE_2026';
         
+        // 增加 collapsed 数组记录折叠的班级
         let db = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
             classes: [],
-            students: []
+            students: [],
+            collapsed: [] 
         };
 
-        // --- 初始化 ---
         function init() {
             renderAll();
         }
 
-        // --- 班级操作 ---
         function addClass() {
             const name = document.getElementById('newClassName').value.trim();
             if (!name) return alert("请输入班级名称");
@@ -223,16 +227,28 @@
             renderAll();
         }
 
-        function deleteClass(className) {
+        function deleteClass(e, className) {
+            e.stopPropagation(); // 防止触发折叠事件
             if (confirm(`确定要删除 [${className}] 吗？\n该班级下的学生也会被同步移除。`)) {
                 db.classes = db.classes.filter(c => c !== className);
                 db.students = db.students.filter(s => s.className !== className);
+                db.collapsed = db.collapsed.filter(c => c !== className);
                 autoSave();
                 renderAll();
             }
         }
 
-        // --- 学生操作 ---
+        // 切换折叠状态
+        function toggleCollapse(className) {
+            if (db.collapsed.includes(className)) {
+                db.collapsed = db.collapsed.filter(c => c !== className);
+            } else {
+                db.collapsed.push(className);
+            }
+            autoSave();
+            renderAll();
+        }
+
         function addStudent() {
             const name = document.getElementById('newStuName').value.trim();
             const className = document.getElementById('targetClass').value;
@@ -246,10 +262,9 @@
                 name: name,
                 className: className,
                 type: type,
-                status: '出席' // 默认值
+                status: '出席'
             });
 
-            // 排序：先按类型，再按名字拼音
             db.students.sort((a, b) => {
                 if (a.type !== b.type) return a.type === "固定班级" ? -1 : 1;
                 return a.name.localeCompare(b.name, 'zh');
@@ -273,30 +288,26 @@
             autoSave();
         }
 
-        // --- 保存逻辑 ---
         function autoSave() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
         }
 
         function manualSave() {
             autoSave();
-            alert("✅ 数据已安全保存至本地存储！");
+            alert("✅ 数据已安全保存！");
         }
 
-        // --- 渲染引擎 ---
         function renderAll() {
             const display = document.getElementById('mainDisplay');
             const selector = document.getElementById('targetClass');
             
-            // 1. 更新班级下拉框
             selector.innerHTML = db.classes.map(c => `<option value="${c}">${c}</option>`).join('');
 
-            // 2. 更新主考勤表
             if (db.classes.length === 0) {
                 display.innerHTML = `
                     <div class="empty-state">
                         <p>📢 还没有班级数据</p>
-                        <p style="font-size:14px; color:#cbd5e1">请在上方第一步输入班级名称并点击“创建班级”</p>
+                        <p style="font-size:14px; color:#cbd5e1">请创建班级后开始添加学生</p>
                     </div>`;
                 return;
             }
@@ -304,60 +315,62 @@
             let html = '';
             db.classes.forEach(cls => {
                 const classStus = db.students.filter(s => s.className === cls);
+                const isCollapsed = db.collapsed.includes(cls);
                 
                 html += `
                 <div class="class-section">
-                    <div class="class-header">
-                        <span class="class-name">📍 ${cls} (${classStus.length}人)</span>
-                        <span class="btn-del" onclick="deleteClass('${cls}')">删除此班级</span>
+                    <div class="class-header" onclick="toggleCollapse('${cls}')">
+                        <div class="class-name-area">
+                            <span class="toggle-icon">${isCollapsed ? '▶' : '▼'}</span>
+                            <span class="class-name">${cls} (${classStus.length}人)</span>
+                        </div>
+                        <span class="btn-del-class" onclick="deleteClass(event, '${cls}')">删除此班级</span>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width:25%">学生姓名</th>
-                                <th style="width:65%">考勤状态</th>
-                                <th style="width:10%">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${classStus.map(s => `
+                    <div class="class-content ${isCollapsed ? 'collapsed-content' : ''}">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <strong>${s.name}</strong>
-                                        <span class="tag ${s.type === '固定班级' ? 'tag-fixed' : 'tag-temp'}">${s.type}</span>
-                                    </td>
-                                    <td>
-                                        <div class="status-options">
-                                            ${['出席', '未出席', '请假', '固定不来'].map(opt => `
-                                                <label>
-                                                    <input type="radio" name="status-${s.id}" value="${opt}" 
-                                                    ${s.status === opt ? 'checked' : ''} 
-                                                    onchange="updateStatus(${s.id}, '${opt}')"> ${opt}
-                                                </label>
-                                            `).join('')}
-                                        </div>
-                                    </td>
-                                    <td><span class="btn-del" onclick="removeStudent(${s.id})">移除</span></td>
+                                    <th style="width:25%">学生姓名</th>
+                                    <th style="width:65%">考勤状态</th>
+                                    <th style="width:10%">操作</th>
                                 </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                ${classStus.map(s => `
+                                    <tr>
+                                        <td>
+                                            <strong>${s.name}</strong>
+                                            <span class="tag ${s.type === '固定班级' ? 'tag-fixed' : 'tag-temp'}">${s.type}</span>
+                                        </td>
+                                        <td>
+                                            <div class="status-options">
+                                                ${['出席', '未出席', '请假', '固定不来'].map(opt => `
+                                                    <label onclick="event.stopPropagation()">
+                                                        <input type="radio" name="status-${s.id}" value="${opt}" 
+                                                        ${s.status === opt ? 'checked' : ''} 
+                                                        onchange="updateStatus(${s.id}, '${opt}')"> ${opt}
+                                                    </label>
+                                                `).join('')}
+                                            </div>
+                                        </td>
+                                        <td><span class="btn-del-stu" onclick="removeStudent(${s.id})">移除</span></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>`;
             });
             display.innerHTML = html;
         }
 
-        // --- 导出报表 ---
         function exportCSV() {
-            if (db.students.length === 0) return alert("目前没有学生考勤数据可导出");
-            
+            if (db.students.length === 0) return alert("目前没有学生考勤数据");
             const today = new Date().toLocaleDateString();
             let csv = "\uFEFF班级,学生姓名,类型,今日状态,登记日期\n";
-            
             db.students.forEach(s => {
                 csv += `${s.className},${s.name},${s.type},${s.status},${today}\n`;
             });
-
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
@@ -365,9 +378,7 @@
             link.click();
         }
 
-        // 监听回车键添加
         document.getElementById('newStuName').addEventListener('keypress', e => { if(e.key === 'Enter') addStudent(); });
-
         init();
     </script>
 </body>
