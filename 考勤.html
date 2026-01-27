@@ -44,18 +44,17 @@
         /* --- 顶部控制栏 --- */
         .toolbar {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 20px auto;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             padding: 0 20px;
             box-sizing: border-box;
             gap: 15px;
             flex-wrap: wrap;
         }
 
-        /* 返回首页按钮复刻 */
         .btn-home {
             display: inline-flex;
             align-items: center;
@@ -64,76 +63,94 @@
             color: #1a4a8e;
             text-decoration: none;
             border-radius: 50px;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border: 1px solid #e0e0e0;
-            transition: 0.2s;
         }
 
-        .btn-home:hover { transform: translateY(-2px); }
-        .btn-home::before { content: "←"; margin-right: 12px; font-weight: bold; }
-
-        /* 输入区域 */
-        .add-area { display: flex; gap: 10px; align-items: center; }
-
-        .input-name {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            width: 120px;
+        /* 管理区域容器 */
+        .mgmt-panel {
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            min-width: 300px;
         }
 
-        .select-type {
-            padding: 10px;
+        .input-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+        .input-field {
+            padding: 8px 12px;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            background: white;
+            border-radius: 6px;
+            outline: none;
         }
 
         .btn-action {
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
             font-weight: 600;
+            transition: 0.2s;
         }
 
         .btn-blue { background-color: #1a4a8e; color: white; }
         .btn-green { background-color: #27ae60; color: white; }
+        .btn-orange { background-color: #f39c12; color: white; }
 
-        /* --- 表格区域 --- */
+        /* --- 内容展示区 --- */
         .main-content { flex: 1; padding: 0 20px 40px 20px; display: flex; justify-content: center; }
 
         .card {
             background: white;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            padding: 20px;
+            padding: 25px;
             border: 1px solid #eee;
         }
 
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px; border-bottom: 2px solid #f1c40f; color: #1a4a8e; }
-        td { padding: 15px; border-bottom: 1px solid #eee; }
+        /* 班级分割标题样式 */
+        .class-divider {
+            background-color: #f8fafc;
+            color: #1a4a8e;
+            padding: 10px 15px;
+            font-weight: 800;
+            font-size: 18px;
+            border-left: 5px solid #f1c40f;
+            margin: 20px 0 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        /* 学生类型标签 */
-        .tag {
+        .btn-del-class {
             font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-left: 8px;
+            color: #e74c3c;
+            cursor: pointer;
             font-weight: normal;
         }
-        .tag-fixed { background-color: #e1effe; color: #1e429f; } /* 蓝色-固定 */
-        .tag-temp { background-color: #fef3c7; color: #92400e; }  /* 黄色-临时 */
 
-        .status-options { display: flex; gap: 12px; flex-wrap: wrap; }
-        label { font-size: 14px; color: #4b5563; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid #eee; color: #64748b; font-size: 14px; }
+        td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
 
-        .btn-delete { color: #e74c3c; cursor: pointer; font-size: 14px; }
+        /* 标签 */
+        .tag { font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
+        .tag-fixed { background-color: #e1effe; color: #1e429f; }
+        .tag-temp { background-color: #fef3c7; color: #92400e; }
+
+        .status-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        label { font-size: 13px; color: #4b5563; cursor: pointer; display: flex; align-items: center; gap: 3px; }
+
+        .btn-delete-stu { color: #e74c3c; cursor: pointer; font-size: 13px; }
 
         .footer { background-color: #1a4a8e; color: white; text-align: center; padding: 18px 20px; }
     </style>
@@ -142,36 +159,38 @@
 
     <header class="header">
         <h1><span>EMSI</span> 马德里国际中文学校</h1>
-        <div class="subtitle">学生分类考勤管理系统</div>
+        <div class="subtitle">学生班级考勤管理系统</div>
     </header>
 
     <div class="toolbar">
-        <a href="index.html" class="btn-home">返回首页</a>
+        <a href="index.html" class="btn-home">← 返回首页</a>
         
-        <div class="add-area">
-            <input type="text" id="newName" class="input-name" placeholder="学生姓名">
-            <select id="newType" class="select-type">
-                <option value="固定班级">固定班级</option>
-                <option value="临时学生">临时学生</option>
-            </select>
-            <button class="btn-action btn-blue" onclick="addStudent()">添加学生</button>
-            <button class="btn-action btn-green" onclick="exportCSV()">导出考勤</button>
+        <div class="mgmt-panel">
+            <div class="input-group">
+                <strong>1. 班级管理:</strong>
+                <input type="text" id="classNameInput" class="input-field" placeholder="新班级名称">
+                <button class="btn-action btn-orange" onclick="addClass()">创建班级</button>
+            </div>
+            
+            <hr style="width: 100%; border: 0.5px solid #eee;">
+
+            <div class="input-group">
+                <strong>2. 添加学生:</strong>
+                <input type="text" id="stuNameInput" class="input-field" placeholder="学生姓名" style="width:100px;">
+                <select id="stuClassSelect" class="input-field"></select>
+                <select id="stuTypeSelect" class="input-field">
+                    <option value="固定班级">固定班级</option>
+                    <option value="临时学生">临时学生</option>
+                </select>
+                <button class="btn-action btn-blue" onclick="addStudent()">确认添加</button>
+                <button class="btn-action btn-green" style="margin-left: auto;" onclick="exportCSV()">📥 导出考勤表</button>
+            </div>
         </div>
     </div>
 
     <main class="main-content">
-        <div class="card">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 25%;">学生姓名</th>
-                        <th style="width: 60%;">考勤状态 (出席 / 未出席 / 请假 / 固定不来)</th>
-                        <th style="width: 15%;">操作</th>
-                    </tr>
-                </thead>
-                <tbody id="studentList"></tbody>
-            </table>
-        </div>
+        <div class="card" id="tablesContainer">
+            </div>
     </main>
 
     <footer class="footer">
@@ -179,95 +198,170 @@
     </footer>
 
     <script>
-        // 数据结构改为对象数组: { name: "张三", type: "固定班级" }
-        let students = JSON.parse(localStorage.getItem('emsi_student_data')) || [];
+        // 数据结构
+        // classes: ["班级A", "班级B"]
+        // students: [{name: "张三", class: "班级A", type: "固定班级"}]
+        let classes = JSON.parse(localStorage.getItem('emsi_classes')) || ["未分配班级"];
+        let students = JSON.parse(localStorage.getItem('emsi_students_v2')) || [];
 
-        function render() {
-            const container = document.getElementById('studentList');
-            container.innerHTML = '';
-
-            students.forEach((student, index) => {
-                const isFixed = student.type === "固定班级";
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>
-                        <strong>${student.name}</strong>
-                        <span class="tag ${isFixed ? 'tag-fixed' : 'tag-temp'}">${student.type}</span>
-                    </td>
-                    <td>
-                        <div class="status-options">
-                            <label><input type="radio" name="status-${index}" value="出席" checked> 出席</label>
-                            <label><input type="radio" name="status-${index}" value="未出席"> 未出席</label>
-                            <label><input type="radio" name="status-${index}" value="请假"> 请假</label>
-                            <label><input type="radio" name="status-${index}" value="固定不来"> 固定不来</label>
-                        </div>
-                    </td>
-                    <td><span class="btn-delete" onclick="removeStudent(${index})">删除</span></td>
-                `;
-                container.appendChild(tr);
-            });
+        // 初始化渲染
+        function init() {
+            renderClassSelect();
+            renderTables();
         }
 
+        // 渲染班级下拉框
+        function renderClassSelect() {
+            const select = document.getElementById('stuClassSelect');
+            select.innerHTML = classes.map(c => `<option value="${c}">${c}</option>`).join('');
+        }
+
+        // 添加班级
+        function addClass() {
+            const input = document.getElementById('classNameInput');
+            const name = input.value.trim();
+            if (name && !classes.includes(name)) {
+                classes.push(name);
+                localStorage.setItem('emsi_classes', JSON.stringify(classes));
+                input.value = '';
+                renderClassSelect();
+                renderTables();
+            }
+        }
+
+        // 删除班级
+        function deleteClass(className) {
+            if (confirm(`确定删除班级 [${className}] 吗？该班级下的学生将移至“未分配班级”。`)) {
+                students.forEach(s => { if(s.class === className) s.class = "未分配班级"; });
+                classes = classes.filter(c => c !== className);
+                if (classes.length === 0) classes.push("未分配班级");
+                saveData();
+            }
+        }
+
+        // 添加学生
         function addStudent() {
-            const nameInput = document.getElementById('newName');
-            const typeInput = document.getElementById('newType');
+            const nameInput = document.getElementById('stuNameInput');
             const name = nameInput.value.trim();
-            const type = typeInput.value;
+            const className = document.getElementById('stuClassSelect').value;
+            const type = document.getElementById('stuTypeSelect').value;
 
             if (name) {
-                students.push({ name: name, type: type });
-                
-                // 排序逻辑：
-                // 1. 先按类型排（固定班级在前）
-                // 2. 类型相同按拼音 A-Z 排
-                students.sort((a, b) => {
-                    if (a.type !== b.type) {
-                        return a.type === "固定班级" ? -1 : 1;
-                    }
-                    return a.name.localeCompare(b.name, 'zh');
-                });
-
-                saveAndRender();
+                students.push({ name, class: className, type });
+                sortStudents();
+                saveData();
                 nameInput.value = '';
                 nameInput.focus();
             }
         }
 
+        // 排序逻辑：类型优先，然后拼音
+        function sortStudents() {
+            students.sort((a, b) => {
+                if (a.type !== b.type) return a.type === "固定班级" ? -1 : 1;
+                return a.name.localeCompare(b.name, 'zh');
+            });
+        }
+
         function removeStudent(index) {
-            if (confirm(`删除学生 [${students[index].name}]？`)) {
+            if (confirm("确定删除该学生吗？")) {
                 students.splice(index, 1);
-                saveAndRender();
+                saveData();
             }
         }
 
-        function saveAndRender() {
-            localStorage.setItem('emsi_student_data', JSON.stringify(students));
-            render();
+        function saveData() {
+            localStorage.setItem('emsi_classes', JSON.stringify(classes));
+            localStorage.setItem('emsi_students_v2', JSON.stringify(students));
+            renderTables();
+            renderClassSelect();
         }
 
+        // 核心渲染：按班级分组生成表格
+        function renderTables() {
+            const container = document.getElementById('tablesContainer');
+            container.innerHTML = '';
+
+            if (students.length === 0 && classes.length <= 1) {
+                container.innerHTML = '<div style="text-align:center; color:#ccc; padding:50px;">暂无数据，请先创建班级或添加学生</div>';
+                return;
+            }
+
+            classes.forEach(cls => {
+                const classStudents = students.filter(s => s.class === cls);
+                
+                // 创建班级头部
+                const divider = document.createElement('div');
+                divider.className = 'class-divider';
+                divider.innerHTML = `
+                    <span>📍 ${cls} <small style="font-weight:normal; font-size:12px; margin-left:10px;">(${classStudents.length}人)</small></span>
+                    ${cls !== "未分配班级" ? `<span class="btn-del-class" onclick="deleteClass('${cls}')">删除班级</span>` : ''}
+                `;
+                container.appendChild(divider);
+
+                // 创建该班级的表格
+                const table = document.createElement('table');
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th style="width:25%">学生姓名</th>
+                            <th style="width:65%">考勤状态</th>
+                            <th style="width:10%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${classStudents.map(s => {
+                            // 在原始数组中找到这个学生的索引
+                            const originalIndex = students.indexOf(s);
+                            return `
+                                <tr>
+                                    <td>
+                                        <strong>${s.name}</strong>
+                                        <span class="tag ${s.type === '固定班级' ? 'tag-fixed' : 'tag-temp'}">${s.type}</span>
+                                    </td>
+                                    <td>
+                                        <div class="status-options">
+                                            <label><input type="radio" name="status-${originalIndex}" value="出席" checked>出席</label>
+                                            <label><input type="radio" name="status-${originalIndex}" value="未出席">未出席</label>
+                                            <label><input type="radio" name="status-${originalIndex}" value="请假">请假</label>
+                                            <label><input type="radio" name="status-${originalIndex}" value="固定不来">固定不来</label>
+                                        </div>
+                                    </td>
+                                    <td><span class="btn-delete-stu" onclick="removeStudent(${originalIndex})">删除</span></td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                `;
+                container.appendChild(table);
+            });
+        }
+
+        // 导出 CSV
         function exportCSV() {
-            if (students.length === 0) return alert("名单为空");
+            if (students.length === 0) return alert("没有学生数据");
             const today = new Date().toLocaleDateString();
-            let csv = "\uFEFF姓名,学生类型,考勤状态,日期\n";
+            let csv = "\uFEFF班级,姓名,类型,考勤状态,日期\n";
             
             students.forEach((s, index) => {
-                const status = document.querySelector(`input[name="status-${index}"]:checked`).value;
-                csv += `${s.name},${s.type},${status},${today}\n`;
+                const radios = document.getElementsByName(`status-${index}`);
+                let status = "出席";
+                for(let r of radios) { if(r.checked) status = r.value; }
+                csv += `${s.class},${s.name},${s.type},${status},${today}\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `EMSI考勤_${today.replace(/\//g, '-')}.csv`;
+            link.download = `EMSI_全校考勤_${today.replace(/\//g, '-')}.csv`;
             link.click();
         }
 
-        // 回车键支持
-        document.getElementById('newName').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addStudent();
-        });
+        // 回车支持
+        document.getElementById('stuNameInput').addEventListener('keypress', e => { if(e.key === 'Enter') addStudent(); });
+        document.getElementById('classNameInput').addEventListener('keypress', e => { if(e.key === 'Enter') addClass(); });
 
-        render();
+        init();
     </script>
 </body>
 </html>
