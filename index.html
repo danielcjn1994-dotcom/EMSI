@@ -61,6 +61,9 @@
         .main-container { max-width: 1300px; width: 90%; margin: 40px auto; flex: 1; }
         .category-box { background: white; border-radius: 20px; padding: 30px; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eee; }
         .category-title { color: #1a4a8e; font-size: 24px; font-weight: bold; margin-bottom: 25px; display: flex; align-items: center; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; }
+        
+        .academic-box { border-top: 5px solid #1a4a8e; }
+
         .subcategory-title { color: #475569; font-size: 18px; font-weight: 600; margin: 25px 0 15px 5px; display: flex; align-items: center; }
         .subcategory-title::before { content: ""; display: inline-block; width: 4px; height: 18px; background-color: #f1c40f; margin-right: 10px; border-radius: 2px; }
         .button-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
@@ -107,9 +110,16 @@
 
     <div class="main-container">
         
+        <section class="category-box academic-box">
+            <div class="category-title">📂 Gestión Académica / 教务系统</div>
+            <div class="subcategory-title">📋 Administración / 行政管理</div>
+            <div class="button-grid">
+                <a href="考勤.html" class="nav-link"><span>📝</span>Registro de Asistencia<br>学生每周考勤</a>
+            </div>
+        </section>
+
         <section class="category-box">
             <div class="category-title">🔢 Matemáticas / 数学</div>
-
             <div class="subcategory-title">💡 Problemas / 应用题专项练习</div>
             <div class="button-grid">
                 <a href="应用题1年级.html" class="nav-link"><span>🌱</span>1º de Primaria<br>一年级</a>
@@ -119,7 +129,6 @@
                 <a href="应用题 5 年级.html" class="nav-link"><span>🌳</span>5º de Primaria<br>五年级</a>
                 <a href="应用题 6 年级.html" class="nav-link"><span>🎓</span>6º de Primaria<br>六年级</a>
             </div>
-
             <div class="subcategory-title">🧮 Aritmética / 算术基础</div>
             <div class="button-grid">
                 <a href="基础加减数学.html" class="nav-link"><span>➕</span>Aritmética Básica</a>
@@ -127,31 +136,16 @@
                 <a href="sumas.html" class="nav-link"><span>🚀</span>Sumas (11-18)<br>进阶阶梯表</a>
                 <a href="九九乘法练习.html" class="nav-link"><span>✖️</span>Tabla de Multiplicar</a>
             </div>
-
-            <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
-            <div class="button-grid">
-                <a href="分数理论.html" class="nav-link"><span>📘</span>Teoría de Fracciones</a>
-                <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
-                <a href="分数运算.html" class="nav-link"><span>📝</span>Fracciones: Advanced</a>
-            </div>
         </section>
 
         <section class="category-box">
             <div class="category-title">📚 Lengua / 西班牙语</div>
-            
             <div class="subcategory-title">🗣️ Sílabas y Lectura / 音节与阅读</div>
             <div class="button-grid">
                 <a href="alfabeto.html" class="nav-link"><span>🅰️</span>El Alfabeto<br>字母表</a>
                 <a href="silaborario.html" class="nav-link"><span>🔤</span>Silabario<br>拼读识字表</a>
                 <a href="juegos_silabas.html" class="nav-link"><span>🕹️</span>Laboratorio de Sílabas<br>音节实验室</a>
                 <a href="oraciones.html" class="nav-link"><span>📖</span>Lectura de Oraciones<br>句子阅读</a>
-            </div>
-
-            <div class="subcategory-title">🎨 Vocabulario / 分类词汇</div>
-            <div class="button-grid">
-                <a href="numeros.html" class="nav-link"><span>🔟</span>Los Números<br>数字教学</a>
-                <a href="color.html" class="nav-link"><span>🌈</span>Los Colores<br>颜色教学</a>
-                <a href="tiempo.html" class="nav-link"><span>📅</span>El Tiempo<br>时间与季节</a>
             </div>
         </section>
 

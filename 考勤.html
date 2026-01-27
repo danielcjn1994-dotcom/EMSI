@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 考勤登记 - 马德里国际中文学校</title>
+    <style>
+        /* --- 基础样式 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f; 
+        }
+
+        .header h1 {
+            color: #1a4a8e; 
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span { font-weight: 800; margin-right: 15px; }
+
+        .header .subtitle {
+            color: #6b7280; 
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        /* --- 顶部控制栏 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* 返回首页按钮复刻 */
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 25px;
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+            transition: 0.2s;
+        }
+
+        .btn-home:hover { transform: translateY(-2px); }
+        .btn-home::before { content: "←"; margin-right: 12px; font-weight: bold; }
+
+        /* 输入区域 */
+        .add-area { display: flex; gap: 10px; align-items: center; }
+
+        .input-name {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 120px;
+        }
+
+        .select-type {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .btn-action {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-blue { background-color: #1a4a8e; color: white; }
+        .btn-green { background-color: #27ae60; color: white; }
+
+        /* --- 表格区域 --- */
+        .main-content { flex: 1; padding: 0 20px 40px 20px; display: flex; justify-content: center; }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 20px;
+            border: 1px solid #eee;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; border-bottom: 2px solid #f1c40f; color: #1a4a8e; }
+        td { padding: 15px; border-bottom: 1px solid #eee; }
+
+        /* 学生类型标签 */
+        .tag {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: normal;
+        }
+        .tag-fixed { background-color: #e1effe; color: #1e429f; } /* 蓝色-固定 */
+        .tag-temp { background-color: #fef3c7; color: #92400e; }  /* 黄色-临时 */
+
+        .status-options { display: flex; gap: 12px; flex-wrap: wrap; }
+        label { font-size: 14px; color: #4b5563; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+
+        .btn-delete { color: #e74c3c; cursor: pointer; font-size: 14px; }
+
+        .footer { background-color: #1a4a8e; color: white; text-align: center; padding: 18px 20px; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">学生分类考勤管理系统</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-home">返回首页</a>
+        
+        <div class="add-area">
+            <input type="text" id="newName" class="input-name" placeholder="学生姓名">
+            <select id="newType" class="select-type">
+                <option value="固定班级">固定班级</option>
+                <option value="临时学生">临时学生</option>
+            </select>
+            <button class="btn-action btn-blue" onclick="addStudent()">添加学生</button>
+            <button class="btn-action btn-green" onclick="exportCSV()">导出考勤</button>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">学生姓名</th>
+                        <th style="width: 60%;">考勤状态 (出席 / 未出席 / 请假 / 固定不来)</th>
+                        <th style="width: 15%;">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="studentList"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+    <script>
+        // 数据结构改为对象数组: { name: "张三", type: "固定班级" }
+        let students = JSON.parse(localStorage.getItem('emsi_student_data')) || [];
+
+        function render() {
+            const container = document.getElementById('studentList');
+            container.innerHTML = '';
+
+            students.forEach((student, index) => {
+                const isFixed = student.type === "固定班级";
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <strong>${student.name}</strong>
+                        <span class="tag ${isFixed ? 'tag-fixed' : 'tag-temp'}">${student.type}</span>
+                    </td>
+                    <td>
+                        <div class="status-options">
+                            <label><input type="radio" name="status-${index}" value="出席" checked> 出席</label>
+                            <label><input type="radio" name="status-${index}" value="未出席"> 未出席</label>
+                            <label><input type="radio" name="status-${index}" value="请假"> 请假</label>
+                            <label><input type="radio" name="status-${index}" value="固定不来"> 固定不来</label>
+                        </div>
+                    </td>
+                    <td><span class="btn-delete" onclick="removeStudent(${index})">删除</span></td>
+                `;
+                container.appendChild(tr);
+            });
+        }
+
+        function addStudent() {
+            const nameInput = document.getElementById('newName');
+            const typeInput = document.getElementById('newType');
+            const name = nameInput.value.trim();
+            const type = typeInput.value;
+
+            if (name) {
+                students.push({ name: name, type: type });
+                
+                // 排序逻辑：
+                // 1. 先按类型排（固定班级在前）
+                // 2. 类型相同按拼音 A-Z 排
+                students.sort((a, b) => {
+                    if (a.type !== b.type) {
+                        return a.type === "固定班级" ? -1 : 1;
+                    }
+                    return a.name.localeCompare(b.name, 'zh');
+                });
+
+                saveAndRender();
+                nameInput.value = '';
+                nameInput.focus();
+            }
+        }
+
+        function removeStudent(index) {
+            if (confirm(`删除学生 [${students[index].name}]？`)) {
+                students.splice(index, 1);
+                saveAndRender();
+            }
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('emsi_student_data', JSON.stringify(students));
+            render();
+        }
+
+        function exportCSV() {
+            if (students.length === 0) return alert("名单为空");
+            const today = new Date().toLocaleDateString();
+            let csv = "\uFEFF姓名,学生类型,考勤状态,日期\n";
+            
+            students.forEach((s, index) => {
+                const status = document.querySelector(`input[name="status-${index}"]:checked`).value;
+                csv += `${s.name},${s.type},${status},${today}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `EMSI考勤_${today.replace(/\//g, '-')}.csv`;
+            link.click();
+        }
+
+        // 回车键支持
+        document.getElementById('newName').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addStudent();
+        });
+
+        render();
+    </script>
+</body>
+</html>
