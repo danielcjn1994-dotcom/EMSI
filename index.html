@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMSI - Dashboard de Aprendizaje</title>
+    <link rel="icon" href="校徽.png" type="image/png">
+    
     <style>
         /* --- EMSI 核心视觉风格 --- */
         :root {
@@ -101,7 +103,7 @@
 
         /* 二级菜单样式 */
         .submenu {
-            display: none; /* 默认隐藏 */
+            display: none; 
             background: #fcfcfc;
             overflow: hidden;
         }
@@ -375,8 +377,6 @@
         // 切换下拉菜单
         function toggleSubmenu(element) {
             const menu = document.getElementById('resSubmenu');
-            const isOpen = menu.classList.contains('open');
-            
             // 如果点击大类，仅切换展开状态
             menu.classList.toggle('open');
             element.classList.toggle('open');
