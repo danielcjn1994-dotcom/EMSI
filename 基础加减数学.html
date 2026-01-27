@@ -206,6 +206,8 @@
 
                 <h2 style="color: #1a4a8e; text-align: center; margin-bottom: 30px; font-size: 1.8rem;">Selecciona el nivel de dificultad</h2>
                 <div class="btn-grid">
+                    <button class="btn-emsi" onclick="startQuiz('add', 10)">Suma hasta 10</button>
+                    <button class="btn-emsi" onclick="startQuiz('sub', 10)">Resta hasta 10</button>
                     <button class="btn-emsi" onclick="startQuiz('add', 20)">Suma hasta 20</button>
                     <button class="btn-emsi" onclick="startQuiz('sub', 20)">Resta hasta 20</button>
                     <button class="btn-emsi" onclick="startQuiz('add', 100)">Suma hasta 100</button>
@@ -270,7 +272,8 @@
 
     function getQuestion(type, limit) {
         if (type === 'add') {
-            let a = getNum(limit - 5);
+            // 调整加数范围，确保和不超过 limit
+            let a = getNum(Math.max(1, limit - 2)); 
             let b = Math.floor(Math.random() * (limit - a)) + 1;
             return { text: `${a} + ${b}`, solve: `${a + b}` };
         } 
