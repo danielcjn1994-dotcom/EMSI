@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 阶段评价系统</title>
+    <style>
+        /* --- 延续 EMSI 视觉风格 --- */
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', 'PingFang SC', sans-serif; background-color: #f5f7fa; display: flex; flex-direction: column; min-height: 100vh; }
+        .header { background-color: white; text-align: center; padding: 35px 20px 10px; border-bottom: 5px solid #f1c40f; }
+        .header h1 { color: #1a4a8e; font-size: 32px; margin: 0; letter-spacing: 2px; }
+        .header h1 span { font-weight: 800; }
+        .header .subtitle { color: #6b7280; font-size: 16px; margin: 8px 0 20px 0; }
+
+        /* --- 顶部控制栏 --- */
+        .toolbar { width: 100%; max-width: 1100px; margin: 20px auto; display: flex; gap: 15px; padding: 0 20px; box-sizing: border-box; align-items: flex-start; }
+        .btn-home { display: inline-flex; align-items: center; padding: 10px 25px; background-color: white; color: #1a4a8e; text-decoration: none; border-radius: 50px; font-size: 18px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; white-space: nowrap; }
+        .btn-home::before { content: "←"; margin-right: 10px; font-weight: bold; }
+
+        .mgmt-card { background: white; flex: 1; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 12px; }
+        .input-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        input, select { padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; outline: none; font-size: 14px; }
+        
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-blue { background: #1a4a8e; color: white; }
+        .btn-orange { background: #f39c12; color: white; }
+        .btn-green { background: #27ae60; color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* --- 评价展示区 --- */
+        .main-content { flex: 1; padding: 0 20px 40px 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1100px; }
+
+        .class-section { margin-bottom: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee; }
+        .class-header { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 15px 20px; cursor: pointer; user-select: none; border-left: 6px solid #f1c40f; }
+        .class-name { font-size: 18px; font-weight: 800; color: #1a4a8e; }
+
+        .class-content { display: block; padding: 15px; }
+        .collapsed-content { display: none; }
+
+        /* --- 学生评价卡片 --- */
+        .student-row { display: flex; flex-direction: column; padding: 15px; border-bottom: 1px solid #f1f5f9; gap: 10px; }
+        .student-row:last-child { border-bottom: none; }
+        .stu-info { display: flex; justify-content: space-between; align-items: center; }
+        .stu-name { font-weight: bold; font-size: 16px; color: #334155; }
+        
+        .eval-textarea { width: 100%; min-height: 80px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; resize: vertical; font-family: inherit; font-size: 14px; line-height: 1.5; box-sizing: border-box; background: #fff; transition: border 0.3s; }
+        .eval-textarea:focus { border-color: #1a4a8e; background: #fafbfc; }
+
+        .tag { font-size: 11px; padding: 2px 8px; border-radius: 12px; margin-left: 8px; font-weight: 600; }
+        .tag-fixed { background: #dbeafe; color: #1e40af; }
+        .tag-temp { background: #fef3c7; color: #92400e; }
+
+        .btn-del-mini { color: #ef4444; font-size: 13px; cursor: pointer; text-decoration: none; }
+        .footer { background: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 阶段评价系统</h1>
+        <div class="subtitle">Registro de Progreso Académico</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-home">返回首页</a>
+        
+        <div class="mgmt-card">
+            <div class="input-group">
+                <input type="text" id="newClassName" placeholder="新班级名称">
+                <button class="btn btn-orange" onclick="addClass()">+ 创建班级</button>
+            </div>
+            <div class="input-group">
+                <input type="text" id="newStuName" placeholder="学生姓名" style="width: 120px;">
+                <select id="targetClass"></select>
+                <select id="stuType">
+                    <option value="固定班级">🏢 固定班级</option>
+                    <option value="临时学生">🌟 临时学生</option>
+                </select>
+                <button class="btn btn-blue" onclick="addStudent()">确认添加</button>
+                <div style="margin-left: auto; display: flex; gap: 10px;">
+                    <button class="btn btn-green" onclick="manualSave()">💾 保存所有评价</button>
+                    <button class="btn btn-blue" style="background:#475569" onclick="exportCSV()">📥 导出所有评价</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="container" id="mainDisplay"></div>
+    </main>
+
+    <footer class="footer">
+        © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+    </footer>
+
+    <script>
+        // 使用独立的数据库键名，防止覆盖考勤数据
+        const EVAL_KEY = 'EMSI_EVALUATION_DATABASE_2026';
+        
+        let db = JSON.parse(localStorage.getItem(EVAL_KEY)) || {
+            classes: [],
+            students: [],
+            collapsed: []
+        };
+
+        function init() { renderAll(); }
+
+        function addClass() {
+            const name = document.getElementById('newClassName').value.trim();
+            if (name && !db.classes.includes(name)) {
+                db.classes.push(name);
+                save();
+                document.getElementById('newClassName').value = '';
+                renderAll();
+            }
+        }
+
+        function toggleCollapse(cls) {
+            if (db.collapsed.includes(cls)) db.collapsed = db.collapsed.filter(c => c !== cls);
+            else db.collapsed.push(cls);
+            save();
+            renderAll();
+        }
+
+        function deleteClass(e, cls) {
+            e.stopPropagation();
+            if (confirm(`确定删除班级 [${cls}] 及其下所有学生评价吗？`)) {
+                db.classes = db.classes.filter(c => c !== cls);
+                db.students = db.students.filter(s => s.className !== cls);
+                save();
+                renderAll();
+            }
+        }
+
+        function addStudent() {
+            const name = document.getElementById('newStuName').value.trim();
+            const cls = document.getElementById('targetClass').value;
+            const type = document.getElementById('stuType').value;
+            if (name && cls) {
+                db.students.push({
+                    id: Date.now(),
+                    name: name,
+                    className: cls,
+                    type: type,
+                    comment: "" // 初始评价为空
+                });
+                db.students.sort((a, b) => a.name.localeCompare(b.name, 'zh'));
+                save();
+                document.getElementById('newStuName').value = '';
+                renderAll();
+            }
+        }
+
+        function removeStudent(id) {
+            if (confirm("确定移除该学生？")) {
+                db.students = db.students.filter(s => s.id !== id);
+                save();
+                renderAll();
+            }
+        }
+
+        // 实时更新评价内容
+        function updateComment(id, text) {
+            const stu = db.students.find(s => s.id === id);
+            if (stu) {
+                stu.comment = text;
+                // 注意：这里用 autoSave 靜默保存，不弹窗
+                save(); 
+            }
+        }
+
+        function save() { localStorage.setItem(EVAL_KEY, JSON.stringify(db)); }
+
+        function manualSave() {
+            save();
+            alert("✅ 所有学生评价已安全存入本地！");
+        }
+
+        function renderAll() {
+            const display = document.getElementById('mainDisplay');
+            const selector = document.getElementById('targetClass');
+            selector.innerHTML = db.classes.map(c => `<option value="${c}">${c}</option>`).join('');
+
+            if (db.classes.length === 0) {
+                display.innerHTML = '<div class="empty-state" style="text-align:center; padding:50px; color:#999;">请先创建班级开始管理</div>';
+                return;
+            }
+
+            let html = '';
+            db.classes.forEach(cls => {
+                const isCollapsed = db.collapsed.includes(cls);
+                const classStus = db.students.filter(s => s.className === cls);
+                
+                html += `
+                <div class="class-section">
+                    <div class="class-header" onclick="toggleCollapse('${cls}')">
+                        <span class="class-name">${isCollapsed ? '▶' : '▼'} ${cls} (${classStus.length}人)</span>
+                        <span class="btn-del-mini" onclick="deleteClass(event, '${cls}')">删除班级</span>
+                    </div>
+                    <div class="class-content ${isCollapsed ? 'collapsed-content' : ''}">
+                        ${classStus.map(s => `
+                            <div class="student-row">
+                                <div class="stu-info">
+                                    <span class="stu-name">${s.name} <span class="tag ${s.type==='固定班级'?'tag-fixed':'tag-temp'}">${s.type}</span></span>
+                                    <span class="btn-del-mini" onclick="removeStudent(${s.id})">移除学生</span>
+                                </div>
+                                <textarea 
+                                    class="eval-textarea" 
+                                    placeholder="输入该学生的阶段表现、优缺点或评估记录..."
+                                    oninput="updateComment(${s.id}, this.value)">${s.comment}</textarea>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            });
+            display.innerHTML = html;
+        }
+
+        function exportCSV() {
+            if (db.students.length === 0) return alert("没有评价数据");
+            const today = new Date().toLocaleDateString();
+            let csv = "\uFEFF班级,姓名,类型,阶段情况评价\n";
+            db.students.forEach(s => {
+                // 处理文本中的换行和逗号，防止 CSV 格式错乱
+                let cleanComment = s.comment.replace(/"/g, '""').replace(/\n/g, ' ');
+                csv += `"${s.className}","${s.name}","${s.type}","${cleanComment}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `EMSI阶段评价汇总_${today.replace(/\//g, '-')}.csv`;
+            link.click();
+        }
+
+        document.getElementById('newStuName').addEventListener('keypress', e => { if(e.key === 'Enter') addStudent(); });
+        init();
+    </script>
+</body>
+</html>
