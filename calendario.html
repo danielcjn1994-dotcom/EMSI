@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 中西合璧校历备忘录</title>
+    <style>
+        /* --- EMSI 核心视觉风格 --- */
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', 'PingFang SC', sans-serif; background-color: #f5f7fa; display: flex; flex-direction: column; min-height: 100vh; }
+        .header { background-color: white; text-align: center; padding: 35px 20px 10px; border-bottom: 5px solid #f1c40f; }
+        .header h1 { color: #1a4a8e; font-size: 32px; margin: 0; letter-spacing: 2px; }
+        .header h1 span { font-weight: 800; }
+        .header .subtitle { color: #6b7280; font-size: 16px; margin: 8px 0 20px 0; }
+
+        /* --- 顶部控制栏 --- */
+        .toolbar { width: 100%; max-width: 1250px; margin: 20px auto; display: flex; gap: 15px; padding: 0 20px; box-sizing: border-box; }
+        .btn-home { display: inline-flex; align-items: center; padding: 10px 25px; background-color: white; color: #1a4a8e; text-decoration: none; border-radius: 50px; font-size: 18px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+        .btn-home::before { content: "←"; margin-right: 10px; font-weight: bold; }
+
+        .main-grid { display: grid; grid-template-columns: 500px 1fr; gap: 20px; width: 100%; max-width: 1250px; margin: 0 auto 40px auto; padding: 0 20px; box-sizing: border-box; }
+
+        /* --- 日历样式 --- */
+        .card { background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 20px; border: 1px solid #eee; display: flex; flex-direction: column; }
+        .calendar-title { color: #1a4a8e; font-size: 22px; font-weight: 800; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; text-align: center; border: 1px solid #edf2f7; background: #edf2f7; }
+        
+        .day-name { font-size: 13px; font-weight: bold; color: #94a3b8; padding: 10px 0; background: #f8fafc; }
+        
+        .day { height: 75px; display: flex; flex-direction: column; justify-content: center; background: white; position: relative; }
+        .solar-num { font-size: 18px; font-weight: 600; color: #334155; }
+        .lunar-text { font-size: 11px; color: #94a3b8; margin-top: 3px; }
+
+        /* 状态颜色 */
+        .today { background: #1a4a8e !important; color: white !important; }
+        .today .lunar-text { color: #cbd5e1; }
+        
+        .holiday-es { background: #fee2e2; } /* 西语假期红色背景 */
+        .holiday-es .solar-num { color: #ef4444; }
+        
+        .holiday-cn { background: #fff7ed; } /* 中国节日橙色文字 */
+        .holiday-cn .lunar-text { color: #f97316; font-weight: bold; }
+
+        /* --- 备忘录样式 --- */
+        .memo-input-area { margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+        textarea { width: 100%; height: 110px; padding: 15px; border: 1px solid #d1d5db; border-radius: 12px; resize: none; font-size: 16px; font-family: inherit; box-sizing: border-box; }
+        
+        .btn-group { display: flex; gap: 10px; }
+        .btn { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-blue { background: #1a4a8e; color: white; }
+        .btn-green { background: #27ae60; color: white; }
+        .btn-gray { background: #64748b; color: white; }
+
+        .memo-item { background: #f8fafc; border-left: 5px solid #1a4a8e; padding: 18px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .memo-content { margin-bottom: 10px; color: #1e293b; line-height: 1.6; white-space: pre-wrap; outline: none; }
+        .memo-footer { font-size: 12px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 10px; }
+        .btn-del { color: #ef4444; cursor: pointer; font-weight: bold; }
+
+        .footer { background: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 2026 校历备忘录</h1>
+        <div class="subtitle">马德里假期 & 农历日期 (Año- Chino)</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-home">返回首页</a>
+    </div>
+
+    <main class="main-grid">
+        <div class="card">
+            <div class="calendar-title">
+                <span id="monthYear">2026年 1月</span>
+                <div style="display:flex; gap:10px;">
+                    <button onclick="changeMonth(-1)">◀ 上月</button>
+                    <button onclick="changeMonth(1)">下月 ▶</button>
+                </div>
+            </div>
+            <div class="calendar-grid" id="calendarBody"></div>
+            
+            <div id="holidayDisplay" style="margin-top:20px; font-size:13px; background:#f8fafc; padding:15px; border-radius:10px;">
+                <strong>💡 本月提示:</strong>
+                <div id="holidayItems" style="margin-top:5px; color:#475569; line-height:1.6;"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="memo-input-area">
+                <textarea id="memoInput" placeholder="输入新的教学备忘、会议记录或假期安排..."></textarea>
+                <div class="btn-group">
+                    <button class="btn btn-blue" onclick="addMemo()">+ 添加备忘</button>
+                    <button class="btn btn-green" onclick="manualSave()">💾 立即保存</button>
+                    <button class="btn btn-gray" style="margin-left:auto;" onclick="exportCSV()">📥 导出数据</button>
+                </div>
+            </div>
+            <div id="memoList"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+    </footer>
+
+    <script>
+        // --- 2026 农历与假期底层数据 ---
+        // 2026年各农历月初对应的公历日期 (用于推算初几)
+        const lunarMonths2026 = [
+            { solar: "2026-01-19", name: "腊月" },
+            { solar: "2026-02-17", name: "正月" }, // 春节
+            { solar: "2026-03-19", name: "二月" },
+            { solar: "2026-04-17", name: "三月" },
+            { solar: "2026-05-16", name: "四月" },
+            { solar: "2026-06-15", name: "五月" },
+            { solar: "2026-07-14", name: "六月" },
+            { solar: "2026-08-12", name: "七月" },
+            { solar: "2026-09-11", name: "八月" },
+            { solar: "2026-10-10", name: "九月" },
+            { solar: "2026-11-09", name: "十月" },
+            { solar: "2026-12-09", name: "冬月" }
+        ];
+
+        const festivals = {
+            "1-1": { es: "新年", cn: "元旦" },
+            "1-6": { es: "三王节" },
+            "2-17": { cn: "春节" },
+            "2-18": { cn: "初二" },
+            "2-19": { cn: "初三" },
+            "3-3": { cn: "元宵节" },
+            "3-19": { es: "圣若瑟节" },
+            "4-2": { es: "复活节周四" },
+            "4-3": { es: "复活节周五" },
+            "4-5": { cn: "清明" },
+            "5-1": { es: "劳动节" },
+            "5-2": { es: "马德里日" },
+            "5-15": { es: "圣伊西德罗节" },
+            "6-19": { cn: "端午节" },
+            "8-15": { es: "圣母升天节" },
+            "9-25": { cn: "中秋节" },
+            "10-1": { cn: "国庆节" },
+            "10-12": { es: "国庆节", cn: "重阳节" },
+            "11-1": { es: "万圣节" },
+            "11-9": { es: "马德里圣母日" },
+            "12-6": { es: "宪法日" },
+            "12-8": { es: "圣母无染日" },
+            "12-25": { es: "圣诞节" }
+        };
+
+        const MEMO_KEY = 'EMSI_MEMO_2026_PRO';
+        let memos = JSON.parse(localStorage.getItem(MEMO_KEY)) || [];
+        let currentNavDate = new Date(2026, 0, 1);
+
+        function init() { renderCalendar(); renderMemos(); }
+
+        // --- 农历计算逻辑 ---
+        function getLunarDate(y, m, d) {
+            const dateStr = `${y}-${(m+1).toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`;
+            const target = new Date(dateStr);
+            
+            // 找到最接近且小于当前日期的农历月初
+            let activeMonth = { solar: "2025-12-20", name: "冬月" }; // 兜底
+            for(let i=0; i<lunarMonths2026.length; i++) {
+                if(new Date(lunarMonths2026[i].solar) <= target) {
+                    activeMonth = lunarMonths2026[i];
+                }
+            }
+
+            const diffTime = target - new Date(activeMonth.solar);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            
+            if (diffDays === 1) return activeMonth.name;
+            const chineseNums = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+            if (diffDays <= 10) return "初" + chineseNums[diffDays];
+            if (diffDays < 20) return "十" + chineseNums[diffDays - 10];
+            if (diffDays === 20) return "二十";
+            if (diffDays < 30) return "廿" + chineseNums[diffDays - 20];
+            return "三十";
+        }
+
+        // --- 核心渲染 ---
+        function renderCalendar() {
+            const year = currentNavDate.getFullYear();
+            const month = currentNavDate.getMonth();
+            document.getElementById('monthYear').innerText = `${year}年 ${month + 1}月`;
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const calBody = document.getElementById('calendarBody');
+            calBody.innerHTML = '';
+
+            ['日','一','二','三','四','五','六'].forEach(d => calBody.innerHTML += `<div class="day-name">${d}</div>`);
+            for (let i = 0; i < firstDay; i++) calBody.innerHTML += `<div></div>`;
+
+            const holidayItems = [];
+            const today = new Date();
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const key = `${month + 1}-${d}`;
+                const festival = festivals[key];
+                const lunar = getLunarDate(year, month, d);
+                
+                let classes = 'day';
+                let displayLunar = lunar;
+
+                if (festival) {
+                    if (festival.es) classes += ' holiday-es';
+                    if (festival.cn) {
+                        classes += ' holiday-cn';
+                        displayLunar = festival.cn; // 节日优先于日期显示
+                    }
+                    holidayItems.push(`<span>${d}日: ${festival.cn || ''} ${festival.es || ''}</span>`);
+                }
+
+                if (year === today.getFullYear() && month === today.getMonth() && d === today.getDate()) classes += ' today';
+
+                calBody.innerHTML += `
+                    <div class="${classes}">
+                        <span class="solar-num">${d}</span>
+                        <span class="lunar-text">${displayLunar}</span>
+                    </div>`;
+            }
+            document.getElementById('holidayItems').innerHTML = holidayItems.join(' | ') || '本月暂无特殊节假日';
+        }
+
+        function changeMonth(step) { currentNavDate.setMonth(currentNavDate.getMonth() + step); renderCalendar(); }
+
+        // --- 备忘录管理 ---
+        function addMemo() {
+            const input = document.getElementById('memoInput');
+            if (!input.value.trim()) return;
+            memos.unshift({ id: Date.now(), text: input.value, time: new Date().toLocaleString() });
+            input.value = '';
+            save(); renderMemos();
+        }
+
+        function deleteMemo(id) {
+            if (confirm("确定要删除这条记录吗？")) {
+                memos = memos.filter(m => m.id !== id);
+                save(); renderMemos();
+            }
+        }
+
+        function updateMemo(id, text) {
+            const m = memos.find(x => x.id === id);
+            if (m) { m.text = text; save(); }
+        }
+
+        function save() { localStorage.setItem(MEMO_KEY, JSON.stringify(memos)); }
+        function manualSave() { save(); alert("✅ 备忘录已安全保存！"); }
+
+        function renderMemos() {
+            const container = document.getElementById('memoList');
+            if (!memos.length) { container.innerHTML = '<div style="text-align:center;color:#999;padding:40px;">📂 尚无备忘内容</div>'; return; }
+            container.innerHTML = memos.map(m => `
+                <div class="memo-item">
+                    <div class="memo-content" contenteditable="true" onblur="updateMemo(${m.id}, this.innerText)">${m.text}</div>
+                    <div class="memo-footer">
+                        <span>${m.time}</span>
+                        <span class="btn-del" onclick="deleteMemo(${m.id})">删除</span>
+                    </div>
+                </div>`).join('');
+        }
+
+        function exportCSV() {
+            let csv = "\uFEFF内容,时间\n";
+            memos.forEach(m => csv += `"${m.text.replace(/"/g, '""')}","${m.time}"\n`);
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `EMSI备忘录_${new Date().toLocaleDateString()}.csv`;
+            a.click();
+        }
+
+        init();
+    </script>
+</body>
+</html>
