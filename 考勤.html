@@ -3,103 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI 考勤登记 - 马德里国际中文学校</title>
+    <title>EMSI 考勤登记系统</title>
     <style>
         /* --- 核心视觉风格 --- */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
-            background-color: #f5f7fa; 
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .header {
-            background-color: white;
-            text-align: center;
-            padding: 35px 20px 10px;
-            border-bottom: 5px solid #f1c40f; 
-        }
-
-        .header h1 {
-            color: #1a4a8e; 
-            font-size: 32px;
-            margin: 0;
-            letter-spacing: 2px;
-        }
-
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', 'PingFang SC', sans-serif; background-color: #f5f7fa; display: flex; flex-direction: column; min-height: 100vh; }
+        .header { background-color: white; text-align: center; padding: 30px 20px 10px; border-bottom: 5px solid #f1c40f; }
+        .header h1 { color: #1a4a8e; font-size: 32px; margin: 0; letter-spacing: 2px; }
         .header h1 span { font-weight: 800; }
-
-        .header .subtitle {
-            color: #6b7280; 
-            font-size: 18px;
-            margin: 8px 0 20px 0;
-        }
+        .header .subtitle { color: #6b7280; font-size: 16px; margin: 8px 0 15px 0; }
 
         /* --- 顶部控制栏 --- */
-        .toolbar {
-            width: 100%;
-            max-width: 1100px;
-            margin: 20px auto;
-            display: flex;
-            gap: 15px;
-            padding: 0 20px;
-            box-sizing: border-box;
-            align-items: flex-start;
-        }
-
-        .btn-home {
-            display: inline-flex;
-            align-items: center;
-            padding: 10px 25px;
-            background-color: white;
-            color: #1a4a8e;
-            text-decoration: none;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 1px solid #e2e8f0;
-            white-space: nowrap;
-        }
+        .toolbar { width: 100%; max-width: 1100px; margin: 20px auto; display: flex; gap: 15px; padding: 0 20px; box-sizing: border-box; align-items: flex-start; }
+        .btn-home { display: inline-flex; align-items: center; padding: 10px 25px; background-color: white; color: #1a4a8e; text-decoration: none; border-radius: 50px; font-size: 18px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; white-space: nowrap; }
         .btn-home::before { content: "←"; margin-right: 10px; font-weight: bold; }
 
-        .mgmt-card {
-            background: white;
-            flex: 1;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
+        .mgmt-card { background: white; flex: 1; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 12px; }
         .input-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .label-text { font-weight: bold; color: #334155; min-width: 80px; }
-
-        input, select {
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            outline: none;
-            font-size: 14px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        input, select { padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; outline: none; font-size: 14px; }
+        
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .btn-blue { background: #1a4a8e; color: white; }
         .btn-orange { background: #f39c12; color: white; }
         .btn-green { background: #27ae60; color: white; }
@@ -107,62 +29,34 @@
 
         /* --- 考勤表格区 --- */
         .main-content { flex: 1; padding: 0 20px 40px 20px; display: flex; justify-content: center; }
-        
-        .attendance-container {
-            width: 100%;
-            max-width: 1100px;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
+        .container { width: 100%; max-width: 1100px; }
 
-        .class-section { margin-bottom: 20px; border: 1px solid #edf2f7; border-radius: 8px; overflow: hidden; }
-
-        .class-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #f8fafc;
-            padding: 15px 20px;
-            cursor: pointer;
-            transition: background 0.3s;
-            user-select: none;
-        }
-
-        .class-header:hover { background: #f1f5f9; }
-
-        .class-name-area { display: flex; align-items: center; gap: 10px; }
-        .toggle-icon { color: #1a4a8e; font-size: 14px; }
+        .class-section { margin-bottom: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee; }
+        .class-header { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 15px 20px; cursor: pointer; user-select: none; border-left: 6px solid #f1c40f; }
         .class-name { font-size: 18px; font-weight: 800; color: #1a4a8e; }
-
-        .class-content { display: block; }
+        .class-content { display: block; padding: 0; }
         .collapsed-content { display: none; }
 
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; color: #64748b; font-size: 14px; padding: 12px; border-bottom: 2px solid #edf2f7; background: #fff; }
+        th { text-align: left; background: #fff; color: #64748b; font-size: 14px; padding: 12px; border-bottom: 2px solid #edf2f7; }
         td { padding: 15px 12px; border-bottom: 1px solid #f1f5f9; }
 
-        .status-options { display: flex; gap: 15px; }
+        .status-options { display: flex; gap: 15px; flex-wrap: wrap; }
         label { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 4px; color: #475569; }
 
         .tag { font-size: 11px; padding: 2px 8px; border-radius: 12px; margin-left: 8px; font-weight: 600; }
         .tag-fixed { background: #dbeafe; color: #1e40af; }
         .tag-temp { background: #fef3c7; color: #92400e; }
 
-        .btn-del-class { color: #ef4444; font-size: 13px; font-weight: normal; text-decoration: underline; padding: 5px; }
-        .btn-del-stu { color: #ef4444; font-size: 13px; cursor: pointer; border:none; background:none; }
-
-        .empty-state { text-align: center; color: #94a3b8; padding: 60px 0; font-size: 18px; }
-
+        .btn-del-text { color: #ef4444; font-size: 13px; cursor: pointer; text-decoration: underline; background: none; border: none; padding: 5px; }
         .footer { background: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <h1><span>EMSI</span> 马德里国际中文学校</h1>
-        <div class="subtitle">学生班级考勤管理系统 (Gestión de Asistencia)</div>
+        <h1><span>EMSI</span> 考勤管理系统</h1>
+        <div class="subtitle">Gestión de Asistencia Escolar</div>
     </header>
 
     <div class="toolbar">
@@ -170,31 +64,27 @@
         
         <div class="mgmt-card">
             <div class="input-group">
-                <span class="label-text">1. 班级名:</span>
-                <input type="text" id="newClassName" placeholder="例如：一年级A班">
+                <input type="text" id="newClassName" placeholder="新班级名称（如：A1班）">
                 <button class="btn btn-orange" onclick="addClass()">+ 创建班级</button>
             </div>
-
             <div class="input-group">
-                <span class="label-text">2. 加学生:</span>
-                <input type="text" id="newStuName" placeholder="学生姓名" style="width: 140px;">
+                <input type="text" id="newStuName" placeholder="学生姓名" style="width: 120px;">
                 <select id="targetClass"></select>
                 <select id="stuType">
                     <option value="固定班级">🏢 固定班级</option>
                     <option value="临时学生">🌟 临时学生</option>
                 </select>
-                <button class="btn btn-blue" onclick="addStudent()">确认添加</button>
-                
+                <button class="btn btn-blue" onclick="addStudent()">添加学生</button>
                 <div style="margin-left: auto; display: flex; gap: 10px;">
                     <button class="btn btn-green" onclick="manualSave()">💾 保存数据</button>
-                    <button class="btn btn-blue" style="background:#475569" onclick="exportCSV()">📥 导出报表</button>
+                    <button class="btn btn-blue" style="background:#475569" onclick="exportCSV()">📥 导出考勤报表</button>
                 </div>
             </div>
         </div>
     </div>
 
     <main class="main-content">
-        <div class="attendance-container" id="mainDisplay"></div>
+        <div class="container" id="mainDisplay"></div>
     </main>
 
     <footer class="footer">
@@ -202,132 +92,119 @@
     </footer>
 
     <script>
-        const STORAGE_KEY = 'EMSI_ATTENDANCE_DATABASE_2026';
+        const STORAGE_KEY = 'EMSI_ATTENDANCE_V2026_FINAL';
         
         let db = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
             classes: [],
             students: [],
-            collapsed: [] 
+            collapsed: []
         };
 
-        function init() {
-            renderAll();
-        }
+        function init() { renderAll(); }
 
+        // --- 班级逻辑 ---
         function addClass() {
             const name = document.getElementById('newClassName').value.trim();
-            if (!name) return alert("请输入班级名称");
-            if (db.classes.includes(name)) return alert("班级已存在");
-            
-            db.classes.push(name);
-            autoSave();
-            document.getElementById('newClassName').value = '';
-            renderAll();
-        }
-
-        function deleteClass(e, className) {
-            e.stopPropagation(); 
-            if (confirm(`确定要删除 [${className}] 吗？\n该班级下的学生也会被同步移除。`)) {
-                db.classes = db.classes.filter(c => c !== className);
-                db.students = db.students.filter(s => s.className !== className);
-                db.collapsed = db.collapsed.filter(c => c !== className);
-                autoSave();
+            if (name && !db.classes.includes(name)) {
+                db.classes.push(name);
+                save();
+                document.getElementById('newClassName').value = '';
                 renderAll();
             }
         }
 
-        function toggleCollapse(className) {
-            if (db.collapsed.includes(className)) {
-                db.collapsed = db.collapsed.filter(c => c !== className);
-            } else {
-                db.collapsed.push(className);
-            }
-            autoSave();
+        function toggleCollapse(cls) {
+            if (db.collapsed.includes(cls)) db.collapsed = db.collapsed.filter(c => c !== cls);
+            else db.collapsed.push(cls);
+            save();
             renderAll();
         }
 
+        function deleteClass(e, cls) {
+            e.stopPropagation();
+            if (confirm(`确定彻底删除班级 [${cls}] 及其所有学生吗？`)) {
+                db.classes = db.classes.filter(c => c !== cls);
+                db.students = db.students.filter(s => s.className !== cls);
+                db.collapsed = db.collapsed.filter(c => c !== cls);
+                save();
+                renderAll();
+            }
+        }
+
+        // --- 学生逻辑 ---
         function addStudent() {
             const name = document.getElementById('newStuName').value.trim();
-            const className = document.getElementById('targetClass').value;
+            const cls = document.getElementById('targetClass').value;
             const type = document.getElementById('stuType').value;
-
-            if (!name) return alert("请输入学生姓名");
-            if (!className) return alert("请先创建一个班级");
-
-            db.students.push({
-                id: Date.now(),
-                name: name,
-                className: className,
-                type: type,
-                status: '出席'
-            });
-
-            db.students.sort((a, b) => {
-                if (a.type !== b.type) return a.type === "固定班级" ? -1 : 1;
-                return a.name.localeCompare(b.name, 'zh');
-            });
-
-            autoSave();
-            document.getElementById('newStuName').value = '';
-            document.getElementById('newStuName').focus();
-            renderAll();
+            if (name && cls) {
+                db.students.push({
+                    id: Date.now(),
+                    name: name,
+                    className: cls,
+                    type: type,
+                    status: "出席"
+                });
+                // 排序：先按类型，后按拼音
+                db.students.sort((a, b) => {
+                    if (a.type !== b.type) return a.type === "固定班级" ? -1 : 1;
+                    return a.name.localeCompare(b.name, 'zh');
+                });
+                save();
+                document.getElementById('newStuName').value = '';
+                document.getElementById('newStuName').focus();
+                renderAll();
+            }
         }
 
         function removeStudent(id) {
-            db.students = db.students.filter(s => s.id !== id);
-            autoSave();
-            renderAll();
+            if (confirm("确定移除该学生？")) {
+                db.students = db.students.filter(s => s.id !== id);
+                save();
+                renderAll();
+            }
         }
 
         function updateStatus(id, newStatus) {
-            const student = db.students.find(s => s.id === id);
-            if (student) student.status = newStatus;
-            autoSave();
+            const stu = db.students.find(s => s.id === id);
+            if (stu) {
+                stu.status = newStatus;
+                save();
+            }
         }
 
-        function autoSave() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-        }
+        // --- 存储逻辑 ---
+        function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); }
+        function manualSave() { save(); alert("✅ 数据已安全存档！"); }
 
-        function manualSave() {
-            autoSave();
-            alert("✅ 数据已安全保存！");
-        }
-
+        // --- 渲染引擎 ---
         function renderAll() {
             const display = document.getElementById('mainDisplay');
             const selector = document.getElementById('targetClass');
             
+            // 更新下拉框
             selector.innerHTML = db.classes.map(c => `<option value="${c}">${c}</option>`).join('');
 
             if (db.classes.length === 0) {
-                display.innerHTML = `
-                    <div class="empty-state">
-                        <p>📢 还没有班级数据</p>
-                        <p style="font-size:14px; color:#cbd5e1">请创建班级后开始添加学生</p>
-                    </div>`;
+                display.innerHTML = '<div style="text-align:center; padding:50px; color:#999;">请先创建班级开始使用</div>';
                 return;
             }
 
             let html = '';
             db.classes.forEach(cls => {
-                const classStus = db.students.filter(s => s.className === cls);
                 const isCollapsed = db.collapsed.includes(cls);
+                const classStus = db.students.filter(s => s.className === cls);
                 
                 html += `
                 <div class="class-section">
                     <div class="class-header" onclick="toggleCollapse('${cls}')">
-                        <div class="class-name-area">
-                            <span class="toggle-icon">${isCollapsed ? '▶' : '▼'}</span>
-                            <span class="class-name">${cls} (${classStus.length}人)</span>
-                        </div>
-                        <span class="btn-del-class" onclick="deleteClass(event, '${cls}')">删除此班级</span>
+                        <span class="class-name">${isCollapsed ? '▶' : '▼'} ${cls} (${classStus.length}人)</span>
+                        <button class="btn-del-text" onclick="deleteClass(event, '${cls}')">删除班级</button>
                     </div>
                     <div class="class-content ${isCollapsed ? 'collapsed-content' : ''}">
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width:25%">学生姓名</th>
+                                    <th style="width:25%">姓名</th>
                                     <th style="width:65%">考勤状态</th>
                                     <th style="width:10%">操作</th>
                                 </tr>
@@ -337,20 +214,20 @@
                                     <tr>
                                         <td>
                                             <strong>${s.name}</strong>
-                                            <span class="tag ${s.type === '固定班级' ? 'tag-fixed' : 'tag-temp'}">${s.type}</span>
+                                            <span class="tag ${s.type==='固定班级'?'tag-fixed':'tag-temp'}">${s.type}</span>
                                         </td>
                                         <td>
                                             <div class="status-options">
                                                 ${['出席', '未出席', '请假', '固定不来'].map(opt => `
                                                     <label onclick="event.stopPropagation()">
-                                                        <input type="radio" name="status-${s.id}" value="${opt}" 
+                                                        <input type="radio" name="st-${s.id}" value="${opt}" 
                                                         ${s.status === opt ? 'checked' : ''} 
                                                         onchange="updateStatus(${s.id}, '${opt}')"> ${opt}
                                                     </label>
                                                 `).join('')}
                                             </div>
                                         </td>
-                                        <td><button class="btn-del-stu" onclick="removeStudent(${s.id})">移除</button></td>
+                                        <td><button class="btn-del-text" onclick="removeStudent(${s.id})">移除</button></td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -361,21 +238,14 @@
             display.innerHTML = html;
         }
 
-        // --- 核心修改部分：导出CSV增加日期列 ---
+        // --- 导出逻辑 (含日期) ---
         function exportCSV() {
-            if (db.students.length === 0) return alert("目前没有学生考勤数据可导出");
-            
-            // 获取今日日期
+            if (db.students.length === 0) return alert("没有考勤数据可导出");
             const today = new Date().toLocaleDateString();
-            
-            // 增加 "考勤日期" 列
-            let csv = "\uFEFF班级,学生姓名,考勤日期,学生类型,今日考勤状态\n";
-            
+            let csv = "\uFEFF考勤日期,班级,姓名,类型,今日状态\n";
             db.students.forEach(s => {
-                // 每行数据都带上日期
-                csv += `"${s.className}","${s.name}","${today}","${s.type}","${s.status}"\n`;
+                csv += `"${today}","${s.className}","${s.name}","${s.type}","${s.status}"\n`;
             });
-
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
