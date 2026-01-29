@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 英语单词专项练习</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+            position: relative;
+        }
+
+        /* 返回主页按钮样式 (胶囊风格) */
+        .home-btn-container {
+            position: absolute;
+            left: 30px;
+            top: 40px;
+        }
+
+        .btn-back-home {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid #e2e8f0;
+            border-radius: 50px; /* 胶囊形状 */
+            color: #1a4a8e;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .btn-back-home:hover {
+            border-color: #1a4a8e;
+            background-color: #fff;
+            transform: translateX(-3px);
+        }
+
+        .btn-back-home::before {
+            content: '〈'; /* 模拟图片中的返回箭头 */
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 内容区：卡片链接 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .nav-card {
+            background: white;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+            border-radius: 30px; /* 超大圆角 */
+            border: 2px solid #edf2f7;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(26, 74, 142, 0.1);
+            border-color: #1a4a8e;
+        }
+
+        .nav-card .icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+        .nav-card .title {
+            color: #1a4a8e;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .menu-container { grid-template-columns: 1fr; }
+            .home-btn-container { position: static; margin-bottom: 20px; }
+            .header { padding-top: 20px; }
+        }
+
+        /* --- 页脚 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="home-btn-container">
+            <a href="index.html" class="btn-back-home">返回主页</a>
+        </div>
+
+        <h1><span>EMSI</span> 英语专项练习</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <main class="main-content">
+        <div class="menu-container">
+            <a href="英语单词练习完整版.html" class="nav-card">
+                <div class="icon">📖</div>
+                <div class="title">Vocabulario</div>
+            </a>
+
+            <a href="英语单词 2.html" class="nav-card">
+                <div class="icon">📝</div>
+                <div class="title">Vocabulario 2</div>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>

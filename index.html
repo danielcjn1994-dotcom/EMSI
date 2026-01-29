@@ -43,7 +43,6 @@
             min-height: 80px;
         }
 
-        /* 汉堡按钮：现在电脑端也显示 */
         .menu-toggle {
             display: block; 
             position: absolute;
@@ -59,7 +58,7 @@
 
         .header-logo {
             position: absolute;
-            left: 90px; /* 为汉堡按钮留出空间 */
+            left: 90px;
             height: 70px;
             width: auto;
             transition: 0.3s;
@@ -77,7 +76,6 @@
             position: relative;
         }
 
-        /* 侧边栏：全平台默认移出屏幕 */
         .sidebar {
             position: absolute;
             left: 0;
@@ -91,28 +89,22 @@
             padding: 20px 0;
             box-shadow: 5px 0 25px rgba(0,0,0,0.1);
             z-index: 2000;
-            transform: translateX(-100%); /* 隐藏 */
+            transform: translateX(-100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .sidebar.open {
-            transform: translateX(0); /* 展开 */
-        }
+        .sidebar.open { transform: translateX(0); }
 
-        /* 遮罩层：全平台通用 */
         .sidebar-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(2px); /* 增加一点毛玻璃效果 */
+            backdrop-filter: blur(2px);
             z-index: 1999;
         }
-        .sidebar-overlay.active {
-            display: block;
-        }
+        .sidebar-overlay.active { display: block; }
 
-        /* 导航项样式 */
         .nav-item {
             padding: 18px 25px;
             cursor: pointer;
@@ -147,7 +139,6 @@
         .arrow { font-size: 12px; transition: transform 0.3s; }
         .nav-item.open .arrow { transform: rotate(180deg); }
 
-        /* 内容舞台：全宽 */
         .main-stage {
             flex: 1;
             padding: 40px;
@@ -156,16 +147,7 @@
             width: 100%;
         }
 
-        /* --- 响应式细节调整 --- */
-        @media (max-width: 850px) {
-            .header-logo { left: 70px; height: 50px; }
-            .header h1 { font-size: 20px; }
-            .header p { font-size: 14px; }
-            .header-container { min-height: 60px; }
-            .main-stage { padding: 20px; }
-        }
-
-        /* 内部按钮布局 */
+        /* 内部内容卡片 */
         .category-content { display: none; animation: slideInUp 0.4s ease-out; }
         .category-content.active { display: block; }
         @keyframes slideInUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -187,38 +169,12 @@
         .welcome-screen { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #94a3b8; text-align: center; }
         .welcome-logo { width: 220px; height: auto; margin-bottom: 30px; }
 
-        /* 登录验证框 - 修复对齐与防泄露警告 */
         .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 3000; }
         .login-box { background: white; padding: 30px; border-radius: 15px; width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; box-sizing: border-box; }
         .login-box h3 { color: var(--emsi-blue); margin: 0 0 20px 0; }
-        .login-box input { 
-            width: 100%; 
-            padding: 12px; 
-            margin: 10px 0; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            outline: none; 
-            box-sizing: border-box; 
-            font-size: 16px;
-        }
-        /* 防泄露警告：使用 text-security 代替 password 类型 */
-        .password-mask {
-            -webkit-text-security: disc !important;
-            text-security: disc !important;
-        }
-        .login-box button { 
-            width: 100%; 
-            padding: 12px; 
-            background: var(--emsi-blue); 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            margin-top: 10px; 
-            box-sizing: border-box;
-            font-size: 16px;
-        }
+        .login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; outline: none; box-sizing: border-box; font-size: 16px; }
+        .password-mask { -webkit-text-security: disc !important; text-security: disc !important; }
+        .login-box button { width: 100%; padding: 12px; background: var(--emsi-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; box-sizing: border-box; font-size: 16px; }
 
         .footer { background: var(--emsi-blue); color: white; text-align: center; padding: 15px; font-size: 14px; }
     </style>
@@ -228,7 +184,6 @@
     <header class="header">
         <div class="header-container">
             <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
-            
             <img src="logo.png" alt="EMSI Logo" class="header-logo">
             <div class="header-text">
                 <h1>EMSI 马德里国际中文学校</h1>
@@ -244,11 +199,9 @@
             <div class="nav-item nav-reset" onclick="resetHome()">
                 <span style="display:flex; align-items:center;"><span class="icon">🏠</span><span>主页 / Home</span></span>
             </div>
-            
             <div class="nav-item" onclick="showCategory('academic', this)">
                 <span style="display:flex; align-items:center;"><span class="icon">📂</span><span>教务系统 / Gestión</span></span>
             </div>
-            
             <div class="nav-item" id="resTrigger" onclick="toggleSubmenu(this)">
                 <span style="display:flex; align-items:center;"><span class="icon">📚</span><span>教学资源 / Recursos</span></span>
                 <span class="arrow">▼</span>
@@ -291,18 +244,12 @@
                         <a href="应用题 5 年级.html" class="nav-link"><span>🌳</span>5º de Primaria</a>
                         <a href="应用题 6 年级.html" class="nav-link"><span>🎓</span>6º de Primaria</a>
                     </div>
-                    <div class="subcategory-title">🧮 Aritmética / 算术基础 1-4ºPrimaria</div>
+                    <div class="subcategory-title">🧮 Aritmética / 算术基础</div>
                     <div class="button-grid">
                         <a href="基础加减数学.html" class="nav-link"><span>➕</span>Aritmética Básica</a>
                         <a href="sumas_basicas.html" class="nav-link"><span>🐣</span>Sumas (2-10)</a>
                         <a href="sumas.html" class="nav-link"><span>🚀</span>Sumas (11-18)</a>
                         <a href="九九乘法练习.html" class="nav-link"><span>✖️</span>Tabla de Multiplicar</a>
-                    </div>
-                    <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
-                    <div class="button-grid">
-                        <a href="分数理论.html" class="nav-link"><span>📘</span>Teoría de Fracciones</a>
-                        <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
-                        <a href="分数运算.html" class="nav-link"><span>📝</span>Advanced</a>
                     </div>
                 </div>
             </div>
@@ -317,21 +264,21 @@
                         <a href="juegos_silabas.html" class="nav-link"><span>🕹️</span>Laboratorio</a>
                         <a href="oraciones.html" class="nav-link"><span>📖</span>Lectura</a>
                     </div>
-                    <div class="subcategory-title">🎨 Vocabulario / 分类词汇</div>
-                    <div class="button-grid">
-                        <a href="numeros.html" class="nav-link"><span>🔟</span>Los Números</a>
-                        <a href="color.html" class="nav-link"><span>🌈</span>Los Colores</a>
-                        <a href="tiempo.html" class="nav-link"><span>📅</span>El Tiempo</a>
-                    </div>
                 </div>
             </div>
 
             <div id="english" class="category-content">
                 <div class="content-card">
                     <div class="category-header">🔤 Inglés / 英语</div>
+                    
+                    <div class="subcategory-title">📖 Vocabulary / 单词专项</div>
                     <div class="button-grid">
-                        <a href="英语单词练习完整版.html" class="nav-link"><span>📖</span>Vocabulario</a>
-                        <a href="英语单词 2.html" class="nav-link"><span>📝</span>Vocabulario 2</a>
+                        <a href="Vocabrarioingles.html" class="nav-link"><span>📚</span>Vocabulario Center<br>词汇练习中心</a>
+                    </div>
+
+                    <div class="subcategory-title">✍️ Grammar / 语法专项</div>
+                    <div class="button-grid">
+                        <a href="javascript:alert('语法模块正在开发中...')" class="nav-link"><span>📝</span>Grammar Exercises<br>语法练习 (开发中)</a>
                     </div>
                 </div>
             </div>
@@ -355,7 +302,6 @@
     <script>
         let pendingPage = "";
 
-        // 统一导航栏开关逻辑
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('sidebarOverlay').classList.toggle('active');
@@ -366,7 +312,6 @@
             element.classList.toggle('open');
         }
 
-        // 内容显示并自动关闭菜单
         function showCategory(id, element) {
             document.getElementById('welcome').style.display = 'none';
             document.querySelectorAll('.nav-item, .submenu-item').forEach(el => el.classList.remove('active'));
@@ -375,7 +320,6 @@
             document.getElementById(id).classList.add('active');
             element.classList.add('active');
             
-            // 点击后自动收起侧边栏
             if(document.getElementById('sidebar').classList.contains('open')){
                 toggleSidebar();
             }
