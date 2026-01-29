@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI 英语词汇挑战</title>
+    <title>EMSI 英语词汇挑战系统</title>
     <style>
         :root {
             --emsi-blue: #1a4a8e;
@@ -15,229 +15,141 @@
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
             background-color: var(--emsi-gray);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
             color: var(--text-main);
+            display: flex; flex-direction: column; min-height: 100vh;
         }
 
-        /* --- EMSI Header --- */
-        .header {
-            background-color: white;
-            text-align: center;
-            padding: 30px 20px 0 20px;
-            border-bottom: 5px solid var(--emsi-gold);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .header h1 {
-            color: var(--emsi-blue);
-            font-size: 32px;
-            font-weight: 700;
-            margin: 0;
-        }
-        .header .subtitle {
-            color: #6b7280;
-            font-size: 16px;
-            margin: 8px 0 20px 0;
-        }
+        /* --- Header --- */
+        .header { background-color: white; text-align: center; padding: 20px 10px; border-bottom: 5px solid var(--emsi-gold); }
+        .header h1 { color: var(--emsi-blue); margin: 0; font-size: 28px; }
 
-        /* --- Main Content Area --- */
-        .main-content {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 30px 15px;
-        }
+        .main-content { flex: 1; padding: 20px; max-width: 1100px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
 
-        .card {
-            background: white;
-            width: 100%;
-            max-width: 600px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            padding: 25px;
-            box-sizing: border-box;
+        /* --- 导航按钮 --- */
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .btn {
+            padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px;
+            cursor: pointer; transition: 0.2s; border: none; display: flex; align-items: center; gap: 8px;
         }
+        .btn-home { border: 2px solid var(--emsi-blue); color: var(--emsi-blue); background: white; }
+        .btn-home:hover { background: var(--emsi-blue); color: white; }
+        .btn-gold { background: var(--emsi-gold); color: #1e293b; }
+        .btn-blue { background: var(--emsi-blue); color: white; }
 
         .screen { display: none; }
         .active { display: block; }
 
-        /* --- 新增：图片样式返回按钮 --- */
-        .btn-back-pill {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 30px;
-            background: white;
-            border: 1px solid #eef2f7;
-            border-radius: 100px;
-            color: var(--emsi-blue);
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transition: all 0.2s;
-            margin-bottom: 20px;
+        /* --- 单词展示表样式 (三列) --- */
+        .word-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+        .word-item { 
+            display: flex; align-items: center; padding: 10px; background: #fff; 
+            border-radius: 8px; border: 1px solid #eef2f7; transition: 0.2s;
         }
-        .btn-back-pill:hover {
-            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-            transform: translateY(-2px);
-        }
-        .btn-back-pill span {
-            margin-right: 12px;
-            font-size: 24px;
-        }
+        .word-num { color: #94a3b8; font-weight: bold; margin-right: 10px; min-width: 25px; }
+        .word-en { font-weight: 700; color: var(--emsi-blue); margin-right: 10px; border-radius: 4px; padding: 0 4px; }
+        .word-cn { color: #475569; font-size: 14px; }
 
-        /* 进度条与导航 */
-        .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .progress-bar { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
-        #progress-fill { height: 100%; background: var(--emsi-blue); width: 0%; transition: width 0.3s; }
-        
-        .btn-mini { padding: 6px 12px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; color: var(--emsi-blue); font-weight: 600; }
+        /* 听写模式隐藏英文 */
+        .dictation-mode .word-en { color: transparent; background: #dbeafe; cursor: pointer; user-select: none; }
+        .dictation-mode .word-en.show { color: var(--emsi-blue); background: transparent; }
 
-        /* 题目展示 */
-        .prompt { text-align: center; color: #64748b; font-size: 14px; margin-bottom: 10px; }
-        .word-display { text-align: center; font-size: 2.2rem; font-weight: 800; color: var(--emsi-blue); margin-bottom: 25px; }
-
-        /* 拼写模式 */
-        .spell-container { display: flex; justify-content: center; gap: 6px; margin-bottom: 25px; flex-wrap: wrap; }
-        .letter-box {
-            width: 40px; height: 50px; border: 2px solid #e2e8f0; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; font-weight: 700; color: var(--emsi-blue); text-transform: uppercase;
-        }
-        .letter-box.blank { border-color: var(--emsi-blue); background: #f0f4ff; cursor: pointer; }
-        .letter-box.active-blank { border-color: var(--emsi-gold); box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.2); background: white; }
-
-        /* 键盘 */
-        .keyboard { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; }
-        .key-btn { padding: 12px 0; border: none; background: #e2e8f0; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; }
-        .key-btn:hover { background: #cbd5e1; }
-        .key-btn.special { grid-column: span 2; background: #cbd5e1; }
-
-        /* 选择题 */
+        /* --- 练习系统样式 (保持原逻辑) --- */
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+        #progress-fill { height: 100%; background: var(--emsi-blue); width: 0%; transition: 0.3s; }
+        .word-display { text-align: center; font-size: 2.5rem; font-weight: 800; color: var(--emsi-blue); margin: 30px 0; }
         .options-grid { display: grid; gap: 12px; }
         .option-btn {
-            padding: 15px; border: 2px solid #f1f5f9; border-radius: 12px;
+            padding: 18px; border: 2px solid #f1f5f9; border-radius: 12px;
             background: white; font-size: 1.1rem; cursor: pointer; transition: 0.2s; text-align: left;
         }
         .option-btn:hover { border-color: var(--emsi-blue); background: #f0f7ff; }
         .correct { background: var(--success) !important; color: white; border-color: var(--success); }
         .wrong { background: var(--error) !important; color: white; border-color: var(--error); }
 
-        /* 结果详情列表样式 */
-        .details-list {
-            margin-top: 25px;
-            max-height: 350px;
-            overflow-y: auto;
-            text-align: left;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
+        /* 拼写键盘 */
+        .spell-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
+        .letter-box {
+            width: 40px; height: 50px; border: 2px solid #e2e8f0; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;
         }
-        .detail-item {
-            margin-bottom: 12px;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            border-left: 5px solid #ccc;
-        }
-        .detail-item.is-correct { background-color: #f0fdf4; border-left-color: var(--success); }
-        .detail-item.is-wrong { background-color: #fef2f2; border-left-color: var(--error); }
-        .detail-item b { color: var(--emsi-blue); }
+        .letter-box.blank { border-color: var(--emsi-blue); background: #f0f4ff; cursor: pointer; }
+        .letter-box.active-blank { border-color: var(--emsi-gold); box-shadow: 0 0 8px rgba(241, 196, 15, 0.5); }
+        .keyboard { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .key-btn { padding: 12px 0; border: none; background: #e2e8f0; border-radius: 6px; font-weight: 600; cursor: pointer; }
 
-        /* 菜单按钮 */
-        .menu-btn {
-            width: 100%; padding: 18px; margin-bottom: 15px; border: none; border-radius: 15px;
-            color: white; font-size: 1.1rem; font-weight: 700; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .btn-blue { background: var(--emsi-blue); }
-        .btn-gold { background: var(--emsi-gold); color: #1e293b; }
+        /* 响应式 */
+        @media (max-width: 900px) { .word-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .word-grid { grid-template-columns: 1fr; } .keyboard { grid-template-columns: repeat(6, 1fr); } }
 
-        /* 底部控制 */
-        .bottom-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 15px; border-top: 1px solid #f1f5f9; }
-        .nav-btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
-        .btn-prev { background: #f1f5f9; color: #64748b; }
-        .btn-next { background: var(--emsi-blue); color: white; }
-
-        /* --- EMSI Footer --- */
-        .footer {
-            background-color: var(--emsi-blue);
-            color: white;
-            text-align: center;
-            padding: 15px 20px;
-            font-size: 14px;
-        }
+        .footer { background: var(--emsi-blue); color: white; text-align: center; padding: 15px; font-size: 14px; margin-top: auto; }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <h1>EMSI 马德里国际中文学校</h1>
-        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+        <h1>EMSI 英语词汇综合学习系统</h1>
+        <div style="color: #6b7280; font-size: 14px; margin-top: 5px;">Colegio Chino Internacional de Madrid</div>
     </header>
 
     <main class="main-content">
         <div class="card">
+            
             <div id="menu-screen" class="screen active">
-                <h2 style="text-align: center; color: var(--emsi-blue); margin-bottom: 25px;">英语单词练习</h2>
-                <button class="menu-btn btn-blue" onclick="startMode('en-cn')">英译汉练习 <span>→</span></button>
-                <button class="menu-btn btn-blue" onclick="startMode('cn-en')">汉译英练习 <span>→</span></button>
-                <button class="menu-btn btn-gold" onclick="startMode('fill')">拼写填空挑战 <span>→</span></button>
+                <div class="nav-bar">
+                    <a href="index.html" class="btn btn-home">🏠 返回首页</a>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-home" onclick="toggleDictation()" id="dictBtn">✍️ 听写模式</button>
+                        <button class="btn btn-gold" onclick="downloadCSV()">📥 下载表</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 30px;">
+                    <button class="btn btn-blue" style="flex:1; justify-content:center;" onclick="startQuiz('en-cn')">英译汉练习</button>
+                    <button class="btn btn-blue" style="flex:1; justify-content:center;" onclick="startQuiz('cn-en')">汉译英练习</button>
+                    <button class="btn btn-gold" style="flex:1; justify-content:center;" onclick="startQuiz('fill')">拼写挑战</button>
+                </div>
+
+                <h3 style="border-left: 5px solid var(--emsi-gold); padding-left: 10px;">📖 本单元单词表 (1-31)</h3>
+                <div class="word-grid" id="mainWordTable"></div>
             </div>
 
             <div id="quiz-screen" class="screen">
-                <div style="text-align: left;">
-                    <button class="btn-back-pill" onclick="location.reload()">
-                        <span>←</span> 返回首页
-                    </button>
-                </div>
-                
-                <div class="quiz-nav">
-                    <span id="counter" style="font-size: 14px; font-weight: 600;">1 / 31</span>
-                    <button class="btn-mini" onclick="showResults()">交卷</button>
+                <div class="nav-bar">
+                    <button class="btn btn-home" onclick="location.reload()">⬅ 退出</button>
+                    <span id="quiz-counter" style="font-weight:bold;">1 / 31</span>
+                    <button class="btn btn-gold" onclick="showResults()">交卷</button>
                 </div>
                 <div class="progress-bar"><div id="progress-fill"></div></div>
+                <div id="quiz-prompt" style="text-align: center; color: #64748b;"></div>
+                <div id="quiz-display" class="word-display"></div>
                 
-                <div id="prompt" class="prompt"></div>
-                <div id="display" class="word-display"></div>
-                
-                <div id="spell-area" class="spell-container" style="display: none;"></div>
-                <div id="mcq-area" class="options-grid" style="display: none;"></div>
-                <div id="keyboard-area" class="keyboard" style="display: none;"></div>
+                <div id="spell-area" class="spell-container"></div>
+                <div id="mcq-area" class="options-grid"></div>
+                <div id="keyboard-area" class="keyboard"></div>
 
-                <div class="bottom-nav">
-                    <button class="nav-btn btn-prev" id="prev-btn" onclick="changeStep(-1)">上一题</button>
-                    <button class="nav-btn btn-next" id="next-btn" onclick="changeStep(1)">下一题</button>
+                <div style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                    <button class="btn btn-home" id="prev-btn" onclick="changeStep(-1)">上一题</button>
+                    <button class="btn btn-blue" id="next-btn" onclick="changeStep(1)">下一题</button>
                 </div>
             </div>
 
             <div id="result-screen" class="screen">
-                <div style="text-align: left;">
-                    <button class="btn-back-pill" onclick="location.reload()">
-                        <span>←</span> 返回首页
-                    </button>
-                </div>
-
-                <h2 style="text-align: center; color: var(--emsi-blue);">测试结果报告</h2>
-                <div style="text-align: center; font-size: 4rem; font-weight: 800; color: var(--emsi-gold); margin: 20px 0;" id="final-score">0%</div>
-                <div id="result-summary" style="text-align: center; line-height: 2; margin-bottom: 15px;"></div>
-                
-                <div id="detailed-results" class="details-list"></div>
-
-                <button class="menu-btn btn-blue" style="margin-top: 25px;" onclick="location.reload()">重新开始</button>
+                <h2 style="text-align: center; color: var(--emsi-blue);">练习结果报告</h2>
+                <div id="final-score" style="text-align: center; font-size: 4rem; font-weight: 800; color: var(--emsi-gold);">0%</div>
+                <div id="result-summary" style="text-align: center; line-height: 2; margin-bottom: 20px;"></div>
+                <button class="btn btn-blue" style="width:100%; justify-content:center; margin-bottom:10px;" onclick="location.reload()">回到单词表</button>
+                <a href="index.html" class="btn btn-home" style="justify-content:center;">返回 index.html</a>
             </div>
+
         </div>
     </main>
 
     <footer class="footer">
-        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un future mejor</span>
+        © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
     </footer>
 
     <script>
@@ -255,19 +167,36 @@
             {en: "Introduction", cn: "介绍"}
         ];
 
-        let currentMode = '';
-        let quizList = [];
-        let currentIndex = 0;
-        let userAnswers = {};
+        let currentMode = '', quizList = [], currentIndex = 0, userAnswers = {};
 
-        function startMode(mode) {
+        // 初始化首页单词表
+        function initMainTable() {
+            const container = document.getElementById('mainWordTable');
+            container.innerHTML = dictionary.map((item, i) => `
+                <div class="word-item">
+                    <span class="word-num">${i + 1}.</span>
+                    <span class="word-en" onclick="this.classList.toggle('show')">${item.en}</span>
+                    <span class="word-cn">${item.cn}</span>
+                </div>
+            `).join('');
+        }
+
+        function toggleDictation() {
+            const grid = document.getElementById('mainWordTable');
+            const btn = document.getElementById('dictBtn');
+            grid.classList.toggle('dictation-mode');
+            btn.innerText = grid.classList.contains('dictation-mode') ? "👀 显示英文" : "✍️ 听写模式";
+        }
+
+        // --- 练习逻辑 ---
+        function startQuiz(mode) {
             currentMode = mode;
             quizList = [...dictionary].sort(() => Math.random() - 0.5).map(item => ({
                 ...item, gaps: makeGaps(item.en)
             }));
             currentIndex = 0;
             userAnswers = {};
-            initKeyboard();
+            if(mode === 'fill') initKeyboard();
             showScreen('quiz-screen');
             renderQuestion();
         }
@@ -284,33 +213,52 @@
 
         function renderQuestion() {
             const item = quizList[currentIndex];
-            const display = document.getElementById('display');
+            const display = document.getElementById('quiz-display');
             const spellArea = document.getElementById('spell-area');
             const mcqArea = document.getElementById('mcq-area');
             const kbArea = document.getElementById('keyboard-area');
-            const prompt = document.getElementById('prompt');
-
-            document.getElementById('counter').innerText = `${currentIndex + 1} / ${quizList.length}`;
+            
+            document.getElementById('quiz-counter').innerText = `${currentIndex + 1} / ${quizList.length}`;
             document.getElementById('progress-fill').style.width = ((currentIndex + 1) / quizList.length * 100) + '%';
             document.getElementById('prev-btn').disabled = currentIndex === 0;
 
-            spellArea.style.display = 'none';
-            mcqArea.style.display = 'none';
-            kbArea.style.display = 'none';
+            spellArea.style.display = 'none'; mcqArea.style.display = 'none'; kbArea.style.display = 'none';
             display.style.display = 'block';
 
             if (currentMode === 'fill') {
                 display.style.display = 'none';
-                spellArea.style.display = 'flex';
-                kbArea.style.display = 'grid';
-                prompt.innerText = `根据中文补全单词：${item.cn}`;
+                spellArea.style.display = 'flex'; kbArea.style.display = 'grid';
+                document.getElementById('quiz-prompt').innerText = `根据中文补全单词：${item.cn}`;
                 renderSpellBoxes(item);
             } else {
                 mcqArea.style.display = 'grid';
-                prompt.innerText = currentMode === 'en-cn' ? '选择正确的翻译' : '选择对应的英文单词';
+                document.getElementById('quiz-prompt').innerText = currentMode === 'en-cn' ? '选择中文翻译' : '选择英文单词';
                 display.innerText = currentMode === 'en-cn' ? item.en : item.cn;
                 renderMCQ(item);
             }
+        }
+
+        function renderMCQ(item) {
+            const mcqArea = document.getElementById('mcq-area');
+            mcqArea.innerHTML = '';
+            const correct = currentMode === 'en-cn' ? item.cn : item.en;
+            if (!item.options) {
+                let distractors = dictionary.map(d => currentMode === 'en-cn' ? d.cn : d.en)
+                    .filter(v => v !== correct).sort(() => Math.random() - 0.5).slice(0, 3);
+                item.options = [correct, ...distractors].sort(() => Math.random() - 0.5);
+            }
+            item.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                if (userAnswers[currentIndex] === opt) btn.classList.add(opt === correct ? 'correct' : 'wrong');
+                btn.onclick = () => {
+                    userAnswers[currentIndex] = opt;
+                    renderQuestion();
+                    if(opt === correct) setTimeout(() => changeStep(1), 600);
+                };
+                mcqArea.appendChild(btn);
+            });
         }
 
         function renderSpellBoxes(item) {
@@ -336,117 +284,63 @@
             if (firstBlank) firstBlank.click();
         }
 
-        function renderMCQ(item) {
-            const mcqArea = document.getElementById('mcq-area');
-            mcqArea.innerHTML = '';
-            const correct = currentMode === 'en-cn' ? item.cn : item.en;
-            if (!item.options) {
-                let distractors = dictionary.map(d => currentMode === 'en-cn' ? d.cn : d.en)
-                    .filter(v => v !== correct).sort(() => Math.random() - 0.5).slice(0, 2);
-                item.options = [correct, ...distractors].sort(() => Math.random() - 0.5);
-            }
-            item.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                if (userAnswers[currentIndex] === opt) btn.classList.add(opt === correct ? 'correct' : 'wrong');
-                btn.onclick = () => {
-                    userAnswers[currentIndex] = opt;
-                    renderQuestion();
-                    if(opt === correct) setTimeout(() => changeStep(1), 500);
-                };
-                mcqArea.appendChild(btn);
-            });
-        }
-
         function initKeyboard() {
             const kb = document.getElementById('keyboard-area');
             kb.innerHTML = '';
             "abcdefghijklmnopqrstuvwxyz".split('').forEach(key => {
                 const btn = document.createElement('button');
-                btn.className = 'key-btn';
-                btn.innerText = key.toUpperCase();
-                btn.onclick = () => handleKeyPress(key);
+                btn.className = 'key-btn'; btn.innerText = key.toUpperCase();
+                btn.onclick = () => {
+                    const active = document.querySelector('.active-blank');
+                    if(!active) return;
+                    const idx = active.dataset.index;
+                    userAnswers[currentIndex][idx] = key;
+                    renderSpellBoxes(quizList[currentIndex]);
+                };
                 kb.appendChild(btn);
             });
-            const del = document.createElement('button');
-            del.className = 'key-btn special';
-            del.innerText = '删除';
-            del.onclick = () => handleKeyPress('BACKSPACE');
-            kb.appendChild(del);
         }
 
-        function handleKeyPress(key) {
-            const activeBox = document.querySelector('.active-blank');
-            if (!activeBox) return;
-            const idx = parseInt(activeBox.dataset.index);
-            if (key === 'BACKSPACE') {
-                userAnswers[currentIndex][idx] = '';
-            } else {
-                userAnswers[currentIndex][idx] = key.toLowerCase();
-                const blanks = Array.from(document.querySelectorAll('.blank'));
-                const currIdxInBlanks = blanks.indexOf(activeBox);
-                if (currIdxInBlanks < blanks.length - 1) blanks[currIdxInBlanks + 1].click();
-            }
-            renderSpellBoxes(quizList[currentIndex]);
-        }
-
-        function changeStep(step) {
-            if (step === 1 && currentIndex === quizList.length - 1) { showResults(); return; }
-            currentIndex += step;
+        function changeStep(s) {
+            currentIndex += s;
+            if(currentIndex >= quizList.length) { showResults(); return; }
+            if(currentIndex < 0) currentIndex = 0;
             renderQuestion();
         }
 
         function showResults() {
             showScreen('result-screen');
-            let correctCount = 0;
-            let detailsHtml = '';
-
+            let correct = 0;
             quizList.forEach((item, i) => {
-                const rawAns = userAnswers[i];
-                let isCorrect = false;
-                let userDisplay = '';
-                let correctDisplay = '';
-
-                if (currentMode === 'fill') {
-                    userDisplay = rawAns ? rawAns.join('').toLowerCase() : "(未答)";
-                    correctDisplay = item.en.toLowerCase();
-                    isCorrect = (userDisplay === correctDisplay);
-                } else if (currentMode === 'en-cn') {
-                    userDisplay = rawAns || "(未选)";
-                    correctDisplay = item.cn;
-                    isCorrect = (userDisplay === correctDisplay);
-                } else if (currentMode === 'cn-en') {
-                    userDisplay = rawAns || "(未选)";
-                    correctDisplay = item.en;
-                    isCorrect = (userDisplay === correctDisplay);
+                const ans = userAnswers[i];
+                if(currentMode === 'fill') {
+                    if(ans && ans.join('').toLowerCase() === item.en.toLowerCase()) correct++;
+                } else {
+                    const target = currentMode === 'en-cn' ? item.cn : item.en;
+                    if(ans === target) correct++;
                 }
-
-                if (isCorrect) correctCount++;
-
-                detailsHtml += `
-                    <div class="detail-item ${isCorrect ? 'is-correct' : 'is-wrong'}">
-                        <div><b>题目：</b>${currentMode === 'en-cn' ? item.en : item.cn}</div>
-                        <div><b>你的回答：</b><span style="color:${isCorrect ? 'var(--success)' : 'var(--error)'}">${userDisplay}</span></div>
-                        ${!isCorrect ? `<div><b>正确答案：</b><span style="color:var(--success); font-weight:bold;">${correctDisplay}</span></div>` : ''}
-                    </div>
-                `;
             });
+            const score = Math.round((correct / quizList.length) * 100);
+            document.getElementById('final-score').innerText = score + "%";
+            document.getElementById('result-summary').innerHTML = `答对: ${correct} / ${quizList.length}`;
+        }
 
-            const percent = Math.round((correctCount / quizList.length) * 100);
-            document.getElementById('final-score').innerText = percent + '%';
-            document.getElementById('result-summary').innerHTML = `
-                总计单词：${quizList.length} <br>
-                答对数量：<b style="color:var(--success)">${correctCount}</b> <br>
-                正确率：${percent}%
-            `;
-            document.getElementById('detailed-results').innerHTML = detailsHtml;
+        function downloadCSV() {
+            let csv = "\uFEFF序号,英文,中文\n";
+            dictionary.forEach((item, i) => csv += `${i+1},${item.en},${item.cn}\n`);
+            const blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = "EMSI单词表.csv";
+            link.click();
         }
 
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
+
+        initMainTable();
     </script>
 </body>
 </html>
