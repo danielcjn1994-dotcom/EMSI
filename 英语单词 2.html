@@ -31,6 +31,32 @@
 
         /* --- 导航按钮 --- */
         .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        
+        /* 复刻图片中的胶囊返回按钮 */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 20px;
+            background-color: white;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 50px;
+            color: var(--emsi-blue);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-back:hover {
+            border-color: var(--emsi-blue);
+            background-color: #f8fafc;
+            transform: translateX(-3px);
+        }
+        .btn-back::before {
+            content: '〈'; /* 箭头符号 */
+            margin-right: 5px;
+            font-weight: bold;
+        }
+
         .btn {
             padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px;
             cursor: pointer; transition: 0.2s; border: none; display: flex; align-items: center; gap: 8px;
@@ -43,7 +69,7 @@
         .screen { display: none; }
         .active { display: block; }
 
-        /* --- 单词展示表样式 (三列) --- */
+        /* --- 单词展示表样式 --- */
         .word-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
         .word-item { 
             display: flex; align-items: center; padding: 10px; background: #fff; 
@@ -53,11 +79,10 @@
         .word-en { font-weight: 700; color: var(--emsi-blue); margin-right: 10px; border-radius: 4px; padding: 0 4px; }
         .word-cn { color: #475569; font-size: 14px; }
 
-        /* 听写模式隐藏英文 */
         .dictation-mode .word-en { color: transparent; background: #dbeafe; cursor: pointer; user-select: none; }
         .dictation-mode .word-en.show { color: var(--emsi-blue); background: transparent; }
 
-        /* --- 练习系统样式 (保持原逻辑) --- */
+        /* --- 练习系统样式 --- */
         .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; overflow: hidden; margin: 20px 0; }
         #progress-fill { height: 100%; background: var(--emsi-blue); width: 0%; transition: 0.3s; }
         .word-display { text-align: center; font-size: 2.5rem; font-weight: 800; color: var(--emsi-blue); margin: 30px 0; }
@@ -70,7 +95,6 @@
         .correct { background: var(--success) !important; color: white; border-color: var(--success); }
         .wrong { background: var(--error) !important; color: white; border-color: var(--error); }
 
-        /* 拼写键盘 */
         .spell-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
         .letter-box {
             width: 40px; height: 50px; border: 2px solid #e2e8f0; border-radius: 8px;
@@ -81,7 +105,6 @@
         .keyboard { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
         .key-btn { padding: 12px 0; border: none; background: #e2e8f0; border-radius: 6px; font-weight: 600; cursor: pointer; }
 
-        /* 响应式 */
         @media (max-width: 900px) { .word-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 600px) { .word-grid { grid-template-columns: 1fr; } .keyboard { grid-template-columns: repeat(6, 1fr); } }
 
@@ -100,7 +123,8 @@
             
             <div id="menu-screen" class="screen active">
                 <div class="nav-bar">
-                    <a href="index.html" class="btn btn-home">🏠 返回首页</a>
+                    <a href="Vocabrarioingles.html" class="btn-back">返回</a>
+                    
                     <div style="display: flex; gap: 8px;">
                         <button class="btn btn-home" onclick="toggleDictation()" id="dictBtn">✍️ 听写模式</button>
                         <button class="btn btn-gold" onclick="downloadCSV()">📥 下载表</button>
@@ -126,11 +150,9 @@
                 <div class="progress-bar"><div id="progress-fill"></div></div>
                 <div id="quiz-prompt" style="text-align: center; color: #64748b;"></div>
                 <div id="quiz-display" class="word-display"></div>
-                
                 <div id="spell-area" class="spell-container"></div>
                 <div id="mcq-area" class="options-grid"></div>
                 <div id="keyboard-area" class="keyboard"></div>
-
                 <div style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
                     <button class="btn btn-home" id="prev-btn" onclick="changeStep(-1)">上一题</button>
                     <button class="btn btn-blue" id="next-btn" onclick="changeStep(1)">下一题</button>
@@ -142,7 +164,7 @@
                 <div id="final-score" style="text-align: center; font-size: 4rem; font-weight: 800; color: var(--emsi-gold);">0%</div>
                 <div id="result-summary" style="text-align: center; line-height: 2; margin-bottom: 20px;"></div>
                 <button class="btn btn-blue" style="width:100%; justify-content:center; margin-bottom:10px;" onclick="location.reload()">回到单词表</button>
-                <a href="index.html" class="btn btn-home" style="justify-content:center;">返回 index.html</a>
+                <a href="Vocabrarioingles.html" class="btn btn-home" style="justify-content:center;">返回 Vocabulario</a>
             </div>
 
         </div>
@@ -153,6 +175,7 @@
     </footer>
 
     <script>
+        // 脚本部分保持原样，确保功能正常
         const dictionary = [
             {en: "Member", cn: "成员"}, {en: "Allow", cn: "允许"}, {en: "Consider", cn: "考虑"},
             {en: "Attention", cn: "注意"}, {en: "Business", cn: "商业/生意"}, {en: "Captain", cn: "船长/队长"},
@@ -169,7 +192,6 @@
 
         let currentMode = '', quizList = [], currentIndex = 0, userAnswers = {};
 
-        // 初始化首页单词表
         function initMainTable() {
             const container = document.getElementById('mainWordTable');
             container.innerHTML = dictionary.map((item, i) => `
@@ -188,7 +210,6 @@
             btn.innerText = grid.classList.contains('dictation-mode') ? "👀 显示英文" : "✍️ 听写模式";
         }
 
-        // --- 练习逻辑 ---
         function startQuiz(mode) {
             currentMode = mode;
             quizList = [...dictionary].sort(() => Math.random() - 0.5).map(item => ({
