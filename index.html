@@ -147,16 +147,72 @@
             width: 100%;
         }
 
-        /* 内部内容卡片 */
+        /* --- 优化后的折叠样式 --- */
+        .subcategory-title { 
+            color: #475569; 
+            font-size: 18px; 
+            font-weight: 600; 
+            margin: 20px 0 10px 5px; 
+            display: flex; 
+            align-items: center; 
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .subcategory-title:hover { background: #f8fafc; }
+
+        .subcategory-title::before { 
+            content: ""; 
+            display: inline-block; 
+            width: 4px; 
+            height: 18px; 
+            background-color: var(--emsi-gold); 
+            margin-right: 10px; 
+            border-radius: 2px; 
+        }
+
+        /* 折叠箭头 */
+        .fold-icon {
+            margin-left: auto;
+            font-size: 12px;
+            transition: transform 0.3s;
+            color: #94a3b8;
+            transform: rotate(-90deg); /* 默认指向左侧，表示关闭 */
+        }
+
+        /* 展开后的状态 (当移除 folded 类或添加 active 时) */
+        .subcategory-title:not(.folded) .fold-icon {
+            transform: rotate(0deg); /* 指向下方，表示打开 */
+        }
+
+        /* 按钮容器动画 */
+        .button-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+            gap: 15px; 
+            max-height: 0; /* 默认关闭 */
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s, margin 0.3s;
+            opacity: 0; /* 默认透明 */
+            margin-bottom: 0;
+        }
+
+        /* 展开状态的容器 */
+        .button-grid.expanded {
+            max-height: 1000px;
+            opacity: 1;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+
         .category-content { display: none; animation: slideInUp 0.4s ease-out; }
         .category-content.active { display: block; }
         @keyframes slideInUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .content-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eee; margin-bottom: 20px; }
         .category-header { font-size: 26px; color: var(--emsi-blue); font-weight: bold; margin-bottom: 25px; border-bottom: 3px solid var(--emsi-gold); padding-bottom: 10px; display: inline-block; }
-        .subcategory-title { color: #475569; font-size: 18px; font-weight: 600; margin: 25px 0 15px 5px; display: flex; align-items: center; }
-        .subcategory-title::before { content: ""; display: inline-block; width: 4px; height: 18px; background-color: var(--emsi-gold); margin-right: 10px; border-radius: 2px; }
-        .button-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
         
         .nav-link {
             text-decoration: none; background: #f8fafc; color: #334155; padding: 15px; border-radius: 12px;
@@ -223,7 +279,7 @@
             <div id="academic" class="category-content">
                 <div class="content-card">
                     <div class="category-header">📂 Gestión Académica / 教务系统</div>
-                    <div class="subcategory-title">📋 Administración / 行政管理</div>
+                    <div class="subcategory-title folded" onclick="toggleFold(this)">📋 Administración / 行政管理 <span class="fold-icon">▼</span></div>
                     <div class="button-grid">
                         <a href="javascript:void(0)" onclick="openLogin('考勤.html')" class="nav-link"><span>📝</span>Registro de Asistencia<br>学生每周考勤</a>
                         <a href="javascript:void(0)" onclick="openLogin('评价.html')" class="nav-link"><span>📊</span>Progreso Académico<br>学生阶段评价</a>
@@ -235,7 +291,8 @@
             <div id="math" class="category-content">
                 <div class="content-card">
                     <div class="category-header">🔢 Matemáticas / 数学</div>
-                    <div class="subcategory-title">💡 Problemas / 应用题专项练习</div>
+                    
+                    <div class="subcategory-title folded" onclick="toggleFold(this)">💡 Problemas / 应用题专项练习 <span class="fold-icon">▼</span></div>
                     <div class="button-grid">
                         <a href="应用题1年级.html" class="nav-link"><span>🌱</span>1º de Primaria</a>
                         <a href="应用题 2 年级.html" class="nav-link"><span>🍀</span>2º de Primaria</a>
@@ -244,14 +301,16 @@
                         <a href="应用题 5 年级.html" class="nav-link"><span>🌳</span>5º de Primaria</a>
                         <a href="应用题 6 年级.html" class="nav-link"><span>🎓</span>6º de Primaria</a>
                     </div>
-                    <div class="subcategory-title">🧮 Aritmética / 算术基础 1-4ºPrimaria</div>
+
+                    <div class="subcategory-title folded" onclick="toggleFold(this)">🧮 Aritmética / 算术基础 1-4ºPrimaria <span class="fold-icon">▼</span></div>
                     <div class="button-grid">
                         <a href="基础加减数学.html" class="nav-link"><span>➕</span>Aritmética Básica</a>
                         <a href="sumas_basicas.html" class="nav-link"><span>🐣</span>Sumas (2-10)</a>
                         <a href="sumas.html" class="nav-link"><span>🚀</span>Sumas (11-18)</a>
                         <a href="九九乘法练习.html" class="nav-link"><span>✖️</span>Tabla de Multiplicar</a>
                     </div>
-                    <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
+
+                    <div class="subcategory-title folded" onclick="toggleFold(this)">🍰 Fracciones / 分数专项 <span class="fold-icon">▼</span></div>
                     <div class="button-grid">
                         <a href="分数理论.html" class="nav-link"><span>📘</span>Teoría de Fracciones</a>
                         <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
@@ -263,18 +322,26 @@
             <div id="lengua" class="category-content">
                 <div class="content-card">
                     <div class="category-header">📚 Lengua / 西班牙语</div>
-                    <div class="subcategory-title">🗣️ Sílabas与阅读</div>
+                    
+                    <div class="subcategory-title folded" onclick="toggleFold(this)">🗣️ Sílabas与阅读 <span class="fold-icon">▼</span></div>
                     <div class="button-grid">
                         <a href="alfabeto.html" class="nav-link"><span>🅰️</span>El Alfabeto</a>
                         <a href="silaborario.html" class="nav-link"><span>🔤</span>Silabario</a>
                         <a href="juegos_silabas.html" class="nav-link"><span>🕹️</span>Laboratorio</a>
                         <a href="oraciones.html" class="nav-link"><span>📖</span>Lectura</a>
                     </div>
-                    <div class="subcategory-title">🎨 Vocabulario / 分类词汇</div>
+
+                    <div class="subcategory-title folded" onclick="toggleFold(this)">🎨 Vocabulario / 分类词汇 <span class="fold-icon">▼</span></div>
                     <div class="button-grid">
                         <a href="numeros.html" class="nav-link"><span>🔟</span>Los Números</a>
                         <a href="color.html" class="nav-link"><span>🌈</span>Los Colores</a>
                         <a href="tiempo.html" class="nav-link"><span>📅</span>El Tiempo</a>
+                    </div>
+
+                    <div class="subcategory-title folded" onclick="toggleFold(this)">🌐 Recursos en Línea / 在线资源 <span class="fold-icon">▼</span></div>
+                    <div class="button-grid">
+                        <a href="Spanish grammar.html" class="nav-link"><span>🌍</span>Spanish.cl<br>语法词汇库</a>
+                        <a href="https://www.lingohut.com/zh/l2/%E5%AD%A6%E4%B9%A0%E8%A5%BF%E7%8F%AD%E7%89%99%E8%AF%AD" target="_blank" class="nav-link"><span>🎧</span>LingoHut<br>听力练习</a>
                     </div>
                 </div>
             </div>
@@ -283,12 +350,12 @@
                 <div class="content-card">
                     <div class="category-header">🔤 Inglés / 英语</div>
                     
-                    <div class="subcategory-title">📖 Vocabulary / 单词专项</div>
+                    <div class="subcategory-title folded" onclick="toggleFold(this)">📖 Vocabulary / 单词专项 <span class="fold-icon">▼</span></div>
                     <div class="button-grid">
                         <a href="Vocabrarioingles.html" class="nav-link"><span>📚</span>Vocabulario Center<br>词汇练习中心</a>
                     </div>
 
-                    <div class="subcategory-title">✍️ Grammar / 语法专项</div>
+                    <div class="subcategory-title folded" onclick="toggleFold(this)">✍️ Grammar / 语法专项 <span class="fold-icon">▼</span></div>
                     <div class="button-grid">
                         <a href="grammar.html" class="nav-link"><span>📝</span>Grammar Exercises<br>语法练习</a>
                     </div>
@@ -312,6 +379,18 @@
     </footer>
 
     <script>
+        // --- 修改后的折叠控制函数 ---
+        function toggleFold(titleElement) {
+            // 切换标题的 folded 类名（控制箭头旋转）
+            titleElement.classList.toggle('folded');
+            // 获取紧随其后的内容网格
+            const content = titleElement.nextElementSibling;
+            if (content && content.classList.contains('button-grid')) {
+                // 切换 expanded 类名（控制 max-height 和 opacity）
+                content.classList.toggle('expanded');
+            }
+        }
+
         let pendingPage = "";
 
         function toggleSidebar() {
