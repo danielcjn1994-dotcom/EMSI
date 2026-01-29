@@ -25,7 +25,7 @@
             overflow: hidden;
         }
 
-        /* --- 页眉：全平台统一汉堡按钮 --- */
+        /* --- 页眉 --- */
         .header {
             background-color: white;
             z-index: 1001;
@@ -68,7 +68,7 @@
         .header h1 { color: var(--emsi-blue); font-size: 32px; margin: 0; letter-spacing: 1px; }
         .header p { color: #6b7280; margin: 5px 0 0 0; font-size: 18px; }
 
-        /* --- 核心布局：全屏内容区 --- */
+        /* --- 核心布局 --- */
         .layout-wrapper {
             display: flex;
             flex: 1;
@@ -152,7 +152,7 @@
         .category-content.active { display: block; }
         @keyframes slideInUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        .content-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .content-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eee; margin-bottom: 20px; }
         .category-header { font-size: 26px; color: var(--emsi-blue); font-weight: bold; margin-bottom: 25px; border-bottom: 3px solid var(--emsi-gold); padding-bottom: 10px; display: inline-block; }
         .subcategory-title { color: #475569; font-size: 18px; font-weight: 600; margin: 25px 0 15px 5px; display: flex; align-items: center; }
         .subcategory-title::before { content: ""; display: inline-block; width: 4px; height: 18px; background-color: var(--emsi-gold); margin-right: 10px; border-radius: 2px; }
@@ -244,12 +244,18 @@
                         <a href="应用题 5 年级.html" class="nav-link"><span>🌳</span>5º de Primaria</a>
                         <a href="应用题 6 年级.html" class="nav-link"><span>🎓</span>6º de Primaria</a>
                     </div>
-                    <div class="subcategory-title">🧮 Aritmética / 算术基础</div>
+                    <div class="subcategory-title">🧮 Aritmética / 算术基础 1-4ºPrimaria</div>
                     <div class="button-grid">
                         <a href="基础加减数学.html" class="nav-link"><span>➕</span>Aritmética Básica</a>
                         <a href="sumas_basicas.html" class="nav-link"><span>🐣</span>Sumas (2-10)</a>
                         <a href="sumas.html" class="nav-link"><span>🚀</span>Sumas (11-18)</a>
                         <a href="九九乘法练习.html" class="nav-link"><span>✖️</span>Tabla de Multiplicar</a>
+                    </div>
+                    <div class="subcategory-title">🍰 Fracciones / 分数专项</div>
+                    <div class="button-grid">
+                        <a href="分数理论.html" class="nav-link"><span>📘</span>Teoría de Fracciones</a>
+                        <a href="分数基础练习.html" class="nav-link"><span>📏</span>Fracciones: Básico</a>
+                        <a href="分数运算.html" class="nav-link"><span>📝</span>Advanced运算</a>
                     </div>
                 </div>
             </div>
@@ -263,6 +269,12 @@
                         <a href="silaborario.html" class="nav-link"><span>🔤</span>Silabario</a>
                         <a href="juegos_silabas.html" class="nav-link"><span>🕹️</span>Laboratorio</a>
                         <a href="oraciones.html" class="nav-link"><span>📖</span>Lectura</a>
+                    </div>
+                    <div class="subcategory-title">🎨 Vocabulario / 分类词汇</div>
+                    <div class="button-grid">
+                        <a href="numeros.html" class="nav-link"><span>🔟</span>Los Números</a>
+                        <a href="color.html" class="nav-link"><span>🌈</span>Los Colores</a>
+                        <a href="tiempo.html" class="nav-link"><span>📅</span>El Tiempo</a>
                     </div>
                 </div>
             </div>
@@ -278,7 +290,7 @@
 
                     <div class="subcategory-title">✍️ Grammar / 语法专项</div>
                     <div class="button-grid">
-                        <a href="javascript:alert('语法模块正在开发中...')" class="nav-link"><span>📝</span>Grammar Exercises<br>语法练习 (开发中)</a>
+                        <a href="javascript:alert('语法模块正在开发中...')" class="nav-link"><span>📝</span>Grammar Exercises<br>语法练习</a>
                     </div>
                 </div>
             </div>
