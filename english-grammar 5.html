@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMSI English - 5º Primaria</title>
+<style>
+/* 核心布局：锁定高度，防止页面多重滚动 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', 'Segoe UI', 'PingFang SC', sans-serif;
+    background-color: #f0f9ff; 
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --- 英语课专用页眉 --- */
+.header {
+    background-color: white;
+    text-align: center;
+    padding: 15px 20px 10px 20px;
+    border-bottom: 4px solid #3498db; 
+    position: relative;
+    flex-shrink: 0;
+}
+
+.back-home {
+    position: absolute;
+    left: 20px;
+    top: 15px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1a4a8e;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #e1f5fe;
+    transition: 0.3s;
+}
+
+.back-home:hover { background: #b3e5fc; color: #0288d1; }
+
+.header h1 {
+    color: #1a4a8e;
+    font-size: clamp(18px, 4vw, 30px);
+    font-weight: 800;
+    margin: 0;
+}
+
+.header .subtitle {
+    color: #546e7a;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+/* --- 内容展示区：最大化屏占比 --- */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: #cfd8dc; 
+}
+
+/* 全屏沉浸按钮 */
+.fullscreen-btn {
+    margin-bottom: 8px;
+    padding: 10px 20px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 50px; 
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.fullscreen-btn:hover { background-color: #3498db; transform: scale(1.05); }
+
+.card {
+    background: white;
+    width: 100%;
+    max-width: 1400px;
+    flex: 1;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #3498db;
+}
+
+.pdf-viewer {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.footer {
+    background-color: #1a4a8e;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .header { padding-top: 50px; }
+    .back-home { top: 10px; left: 10px; }
+    .main-content { padding: 5px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+    <a href="grammar.html" class="back-home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        返回列表
+    </a>
+    <h1><span>EMSI</span> English Resources</h1>
+    <div class="subtitle">5º de Primaria - 五年级英语复习</div>
+</header>
+
+<main class="main-content">
+    <button class="fullscreen-btn" onclick="toggleFullScreen()">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>
+        全屏大图模式 (Full Screen)
+    </button>
+
+    <div class="card" id="pdfContainer">
+        <iframe 
+            src="5 年级.pdf#view=FitH" 
+            class="pdf-viewer"
+            title="Inglés 5º Primaria"
+            allowfullscreen="true">
+            您的浏览器不支持预览 PDF，请<a href="5 年级.pdf">下载文件</a>查看。
+        </iframe>
+    </div>
+</main>
+
+<footer class="footer">
+    <span>© 2026 EMSI English | Learn and Play</span>
+</footer>
+
+<script>
+function toggleFullScreen() {
+    const elem = document.getElementById("pdfContainer");
+    if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari/Chrome */
+            elem.webkitRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
+</script>
+
+</body>
+</html>
