@@ -136,7 +136,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr; 
             column-gap: 50px; 
-            row-gap: 15px; 
+            row-gap: 25px; 
         }
 
         .quiz-item {
@@ -170,10 +170,13 @@
             background: #f8fafc;
             border-left: 6px solid #f1c40f;
             display: none;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: #1a4a8e;
             font-weight: bold;
+            line-height: 1.8;
         }
+
+        .step-txt { color: #e67e22; margin-right: 10px; font-size: 1.1rem; }
 
         .hidden { display: none; }
 
@@ -194,7 +197,7 @@
 
     <header class="header">
         <h1><span>EMSI</span> 马德里国际中文学校</h1>
-        <div class="subtitle">Aritmética Decimal (小数进阶练习)</div>
+        <div class="subtitle">Aritmética Decimal (小数进阶与解题过程)</div>
     </header>
 
     <main class="main-content">
@@ -208,42 +211,21 @@
 
                 <h2 style="color: #1a4a8e; text-align: center; margin-bottom: 30px; font-size: 1.8rem;">Cálculo con Decimales (小数运算)</h2>
                 <div class="btn-grid">
-                    <button class="btn-emsi" onclick="startQuiz('dec_add_sub')">
-                        小数加减法
-                        <small>Suma y resta decimal</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('dec_mul')">
-                        小数乘法
-                        <small>Multiplicación decimal</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('dec_div')">
-                        小数除法 (整除)
-                        <small>División decimal exacta</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('dec_mix_basic')">
-                        小数加减混合
-                        <small>Mixta básica (+ -)</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('dec_mix_full')">
-                        小数四则混合
-                        <small>Mixta completa (+ - × ÷)</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('dec_mix_p1')">
-                        混合运算 (带小括号)
-                        <small>Con paréntesis ( )</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('dec_mix_p2')">
-                        混合运算 (带中括号)
-                        <small>Con corchetes [ ]</small>
-                    </button>
+                    <button class="btn-emsi" onclick="startQuiz('dec_add_sub')">小数加减法<small>Suma y resta decimal</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('dec_mul')">小数乘法<small>Multiplicación decimal</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('dec_div')">小数除法 (整除)<small>División decimal exacta</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('dec_mix_basic')">小数加减混合<small>Mixta básica (+ -)</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('dec_mix_full')">小数四则混合<small>Mixta completa (+ - × ÷)</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('dec_mix_p1')">混合运算 (带小括号)<small>Con paréntesis ( )</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('dec_mix_p2')">混合运算 (带中括号)<small>Con corchetes [ ]</small></button>
                 </div>
             </div>
 
             <div id="quiz-page" class="hidden">
                 <div class="quiz-header">
                     <div style="display: flex; gap: 10px;">
-                        <a href="index.html" class="btn-emsi btn-home" style="padding: 10px 20px; font-size: 1rem;">🏠 Inicio (主页)</a>
-                        <button class="btn-emsi btn-back" style="padding: 10px 20px; font-size: 1rem;" onclick="goHome()">← Menú (菜单)</button>
+                        <a href="index.html" class="btn-emsi btn-home" style="padding: 10px 20px; font-size: 1rem;">🏠 Inicio</a>
+                        <button class="btn-emsi btn-back" style="padding: 10px 20px; font-size: 1rem;" onclick="goHome()">← Menú</button>
                     </div>
                     <button class="btn-emsi btn-refresh" style="padding: 10px 20px; font-size: 1rem;" id="refresh-btn">Nuevas Preguntas (换一批)</button>
                 </div>
@@ -261,13 +243,9 @@
     let currentType = '';
 
     const titles = {
-        'dec_add_sub': '小数加减法 (Suma y resta)',
-        'dec_mul': '小数乘法 (Multiplicación)',
-        'dec_div': '小数除法 (División exacta)',
-        'dec_mix_basic': '加减混合 (Mixta + -)',
-        'dec_mix_full': '四则混合 (Mixta + - × ÷)',
-        'dec_mix_p1': '带小括号 (Con paréntesis)',
-        'dec_mix_p2': '带中括号 (Con corchetes)'
+        'dec_add_sub': '小数加减法', 'dec_mul': '小数乘法', 'dec_div': '小数除法 (整除)',
+        'dec_mix_basic': '小数加减混合', 'dec_mix_full': '小数四则混合',
+        'dec_mix_p1': '带小括号 ( )', 'dec_mix_p2': '带中括号 [ ]'
     };
 
     function startQuiz(type) {
@@ -280,7 +258,6 @@
 
     document.getElementById('refresh-btn').onclick = generateQuestions;
 
-    // 获取指定小数位的随机数
     function getDec(min, max, places) {
         let num = Math.random() * (max - min) + min;
         return parseFloat(num.toFixed(places));
@@ -296,67 +273,65 @@
             item.innerHTML = `
                 <div class="question">${i}. ${data.text} = ?</div>
                 <button class="ans-toggle" onclick="toggleAns(this)">Ver solución</button>
-                <div class="solution-box">${data.solve}</div>
+                <div class="solution-box">${data.solveHTML}</div>
             `;
             list.appendChild(item);
         }
     }
 
     function getQuestion(type) {
-        let a, b, c, d, res;
+        let a, b, c, d, res, s1, s2;
         switch(type) {
             case 'dec_add_sub':
-                a = getDec(10, 50, 3);
-                b = getDec(1, 9, 3);
-                if(Math.random() > 0.5) return { text: `${a} + ${b}`, solve: `${(a + b).toFixed(3)}` };
-                return { text: `${a} - ${b}`, solve: `${(a - b).toFixed(3)}` };
+                a = getDec(10, 50, 2); b = getDec(1, 9, 2);
+                if(Math.random() > 0.5) return { text: `${a} + ${b}`, solveHTML: `Resultado: ${(a + b).toFixed(2)}` };
+                return { text: `${a} - ${b}`, solveHTML: `Resultado: ${(a - b).toFixed(2)}` };
 
             case 'dec_mul':
-                a = getDec(1, 10, 2);
-                b = getDec(1, 5, 2);
-                return { text: `${a} × ${b}`, solve: `${(a * b).toFixed(4)}` };
+                a = getDec(1, 5, 2); b = getDec(1, 4, 1);
+                return { text: `${a} × ${b}`, solveHTML: `Resultado: ${(a * b).toFixed(3)}` };
 
             case 'dec_div':
-                // 确保结果是整数或1位小数
-                res = (Math.floor(Math.random() * 50) + 1) / (Math.random() > 0.5 ? 1 : 2);
-                b = getDec(1, 5, 2);
-                a = parseFloat((res * b).toFixed(4));
-                return { text: `${a} ÷ ${b}`, solve: `${res}` };
+                res = (Math.floor(Math.random() * 20) + 1) / 2;
+                b = getDec(1, 4, 1); a = parseFloat((res * b).toFixed(3));
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${res}` };
 
             case 'dec_mix_basic':
-                a = getDec(20, 50, 3);
-                b = getDec(5, 15, 3);
-                c = getDec(1, 5, 3);
-                return { text: `${a} - ${b} + ${c}`, solve: `${(a - b + c).toFixed(3)}` };
+                a = getDec(30, 50, 2); b = getDec(10, 20, 2); c = getDec(5, 10, 2);
+                s1 = (a - b).toFixed(2);
+                return { 
+                    text: `${a} - ${b} + ${c}`, 
+                    solveHTML: `<span class="step-txt">Paso 1:</span> ${a}-${b} = ${s1}<br><span class="step-txt">Paso 2:</span> ${s1}+${c} = ${(parseFloat(s1)+c).toFixed(2)}`
+                };
 
             case 'dec_mix_full':
-                // a * b + c / d -> 确保 c/d 和结果是1位小数
-                let part2 = (Math.floor(Math.random() * 20) + 1) / 2; // 结果
-                d = getDec(1, 3, 2);
-                c = parseFloat((part2 * d).toFixed(3));
-                a = getDec(2, 5, 2);
-                b = getDec(1, 4, 2);
-                res = (a * b) + part2;
-                return { text: `${a} × ${b} + ${c} ÷ ${d}`, solve: `${res.toFixed(4)}` };
+                a = getDec(2, 5, 1); b = getDec(1, 3, 1); d = 2; c = getDec(1, 5, 1);
+                s1 = (a * b).toFixed(2); s2 = (c / d).toFixed(2);
+                return { 
+                    text: `${a} × ${b} + ${c} ÷ ${d}`, 
+                    solveHTML: `<span class="step-txt">Paso 1 (×):</span> ${s1}<br><span class="step-txt">Paso 2 (÷):</span> ${s2}<br><span class="step-txt">Total:</span> ${(parseFloat(s1)+parseFloat(s2)).toFixed(2)}`
+                };
 
             case 'dec_mix_p1':
-                // a * (b + c)
-                a = getDec(2, 8, 2);
-                b = getDec(1, 5, 3);
-                c = getDec(1, 5, 3);
-                return { text: `${a} × (${b} + ${c})`, solve: `${(a * (b + c)).toFixed(4)}` };
+                a = getDec(2, 5, 1); b = getDec(1, 4, 2); c = getDec(1, 4, 2);
+                s1 = (b + c).toFixed(2);
+                return { 
+                    text: `${a} × (${b} + ${c})`, 
+                    solveHTML: `<span class="step-txt">Paso 1 ( ):</span> ${b}+${c} = ${s1}<br><span class="step-txt">Paso 2 (×):</span> ${a}×${s1} = ${(a*s1).toFixed(3)}`
+                };
 
             case 'dec_mix_p2':
-                // a * [(b - c) / d]
-                res = (Math.floor(Math.random() * 10) + 1); // 括号内结果
-                d = getDec(1, 2, 2);
-                let diff = parseFloat((res * d).toFixed(3));
-                c = getDec(1, 5, 3);
-                b = parseFloat((diff + c).toFixed(3));
-                a = getDec(2, 5, 2);
-                return { text: `${a} × [(${b} - ${c}) ÷ ${d}]`, solve: `${(a * res).toFixed(2)}` };
+                d = 0.5; c = getDec(1, 3, 2); res = getNum(2, 10); 
+                b = parseFloat(((res * d) + c).toFixed(2)); a = getDec(2, 4, 1);
+                s1 = (b - c).toFixed(2); s2 = (parseFloat(s1) / d).toFixed(2);
+                return { 
+                    text: `${a} × [(${b} - ${c}) ÷ ${d}]`, 
+                    solveHTML: `<span class="step-txt">Paso 1 ( ):</span> ${b}-${c} = ${s1}<br><span class="step-txt">Paso 2 [ ]:</span> ${s1}÷${d} = ${s2}<br><span class="step-txt">Paso 3 (×):</span> ${a}×${s2} = ${(a*s2).toFixed(2)}`
+                };
         }
     }
+
+    function getNum(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
     function toggleAns(btn) {
         const box = btn.nextElementSibling;

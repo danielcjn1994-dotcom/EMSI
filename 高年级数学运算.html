@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI - Panel de Aritmética</title>
+    <title>EMSI - Panel de Aritmética Avanzada</title>
     <style>
-        /* --- 严格复刻 EMSI 原始视觉风格 --- */
+        /* --- 严格复刻 EMSI 视觉风格 --- */
         body {
             margin: 0;
             padding: 0;
@@ -136,7 +136,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr; 
             column-gap: 50px; 
-            row-gap: 15px; 
+            row-gap: 25px; 
         }
 
         .quiz-item {
@@ -170,10 +170,13 @@
             background: #f8fafc;
             border-left: 6px solid #f1c40f;
             display: none;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: #1a4a8e;
             font-weight: bold;
+            line-height: 1.8;
         }
+
+        .step-txt { color: #e67e22; margin-right: 10px; font-size: 1.1rem; }
 
         .hidden { display: none; }
 
@@ -194,7 +197,7 @@
 
     <header class="header">
         <h1><span>EMSI</span> 马德里国际中文学校</h1>
-        <div class="subtitle">Aritmética Avanzada (进阶算术练习)</div>
+        <div class="subtitle">Aritmética Avanzada (进阶算术与解题过程)</div>
     </header>
 
     <main class="main-content">
@@ -202,52 +205,28 @@
             <div id="home-page">
                 <div style="margin-bottom: 35px;">
                     <a href="index.html" class="btn-back-pill">
-                        <span class="arrow">←</span> 返回首页
+                        <span class="arrow">←</span> Volver al inicio (返回首页)
                     </a>
                 </div>
 
                 <h2 style="color: #1a4a8e; text-align: center; margin-bottom: 30px; font-size: 1.8rem;">Selecciona el nivel de dificultad</h2>
                 <div class="btn-grid">
-                    <button class="btn-emsi" onclick="startQuiz('mul_2_1')">
-                        两位数 × 一位数
-                        <small>2 dígitos × 1 dígito</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('mul_2_2')">
-                        两位数 × 两位数
-                        <small>2 dígitos × 2 dígitos</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('mul_2_3')">
-                        两位数 × 三位数
-                        <small>2 dígitos × 3 dígitos</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('div_2_1')">
-                        两位数 ÷ 一位数
-                        <small>2 dígitos ÷ 1 dígito</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('div_2_2')">
-                        两位数 ÷ 两位数
-                        <small>2 dígitos ÷ 2 dígitos</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('mix_normal')">
-                        加减乘除混合运算
-                        <small>Operaciones mixtas (+ - × ÷)</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('mix_small')">
-                        混合运算 (带小括号)
-                        <small>Mixtas con paréntesis ( )</small>
-                    </button>
-                    <button class="btn-emsi" onclick="startQuiz('mix_middle')">
-                        混合运算 (带中括号)
-                        <small>Mixtas con corchetes [ ]</small>
-                    </button>
+                    <button class="btn-emsi" onclick="startQuiz('mul_2_1')">两位数 × 一位数<small>2 dígitos × 1 dígito</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('mul_2_2')">两位数 × 两位数<small>2 dígitos × 2 dígitos</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('mul_2_3')">两位数 × 三位数<small>2 dígitos × 3 dígitos</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('div_2_1')">两位数 ÷ 一位数<small>2 dígitos ÷ 1 dígito</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('div_2_2')">两位数 ÷ 两位数<small>2 dígitos ÷ 2 dígitos</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('mix_normal')">加减乘除混合运算<small>Operaciones mixtas (+ - × ÷)</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('mix_small')">混合运算 (带小括号)<small>Mixtas con paréntesis ( )</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('mix_middle')">混合运算 (带中括号)<small>Mixtas con corchetes [ ]</small></button>
                 </div>
             </div>
 
             <div id="quiz-page" class="hidden">
                 <div class="quiz-header">
                     <div style="display: flex; gap: 10px;">
-                        <a href="index.html" class="btn-emsi btn-home" style="padding: 10px 20px; font-size: 1rem;">🏠 Inicio (主页)</a>
-                        <button class="btn-emsi btn-back" style="padding: 10px 20px; font-size: 1rem;" onclick="goHome()">← Menú (菜单)</button>
+                        <a href="index.html" class="btn-emsi btn-home" style="padding: 10px 20px; font-size: 1rem;">🏠 Inicio</a>
+                        <button class="btn-emsi btn-back" style="padding: 10px 20px; font-size: 1rem;" onclick="goHome()">← Menú</button>
                     </div>
                     <button class="btn-emsi btn-refresh" style="padding: 10px 20px; font-size: 1rem;" id="refresh-btn">Nuevas Preguntas (换一批)</button>
                 </div>
@@ -265,14 +244,9 @@
     let currentType = '';
 
     const titles = {
-        'mul_2_1': '两位数 × 一位数 (2 dígitos × 1)',
-        'mul_2_2': '两位数 × 两位数 (2 dígitos × 2)',
-        'mul_2_3': '两位数 × 三位数 (2 dígitos × 3)',
-        'div_2_1': '两位数 ÷ 一位数 (2 dígitos ÷ 1)',
-        'div_2_2': '两位数 ÷ 两位数 (2 dígitos ÷ 2)',
-        'mix_normal': '混合运算 (Operaciones mixtas)',
-        'mix_small': '带小括号 (Con paréntesis)',
-        'mix_middle': '带中括号 (Con corchetes)'
+        'mul_2_1': '两位数 × 一位数', 'mul_2_2': '两位数 × 两位数', 'mul_2_3': '两位数 × 三位数',
+        'div_2_1': '两位数 ÷ 一位数', 'div_2_2': '两位数 ÷ 两位数', 'mix_normal': '混合运算',
+        'mix_small': '带小括号 ( )', 'mix_middle': '带中括号 [ ]'
     };
 
     function startQuiz(type) {
@@ -297,42 +271,58 @@
             item.innerHTML = `
                 <div class="question">${i}. ${data.text} = ?</div>
                 <button class="ans-toggle" onclick="toggleAns(this)">Ver solución</button>
-                <div class="solution-box">${data.solve}</div>
+                <div class="solution-box">${data.solveHTML}</div>
             `;
             list.appendChild(item);
         }
     }
 
     function getQuestion(type) {
-        let a, b, c, d, res;
+        let a, b, c, d, res, s1;
         switch(type) {
             case 'mul_2_1':
-                a = getNum(11, 99); b = getNum(2, 9);
-                return { text: `${a} × ${b}`, solve: `${a * b}` };
             case 'mul_2_2':
-                a = getNum(11, 99); b = getNum(11, 99);
-                return { text: `${a} × ${b}`, solve: `${a * b}` };
             case 'mul_2_3':
-                a = getNum(11, 99); b = getNum(101, 999);
-                return { text: `${a} × ${b}`, solve: `${a * b}` };
+                if(type === 'mul_2_1') { a = getNum(11, 99); b = getNum(2, 9); }
+                else if(type === 'mul_2_2') { a = getNum(11, 99); b = getNum(11, 99); }
+                else { a = getNum(11, 99); b = getNum(101, 999); }
+                return { text: `${a} × ${b}`, solveHTML: `Resultado: ${a * b}` };
+
             case 'div_2_1':
                 b = getNum(3, 9); res = getNum(11, 30); a = b * res;
-                return { text: `${a} ÷ ${b}`, solve: `${res}` };
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${res}` };
+
             case 'div_2_2':
                 b = getNum(11, 30); res = getNum(2, 9); a = b * res;
-                return { text: `${a} ÷ ${b}`, solve: `${res}` };
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${res}` };
+
             case 'mix_normal':
                 a = getNum(10, 50); b = getNum(2, 5); c = getNum(10, 50);
-                return { text: `${a} × ${b} + ${c}`, solve: `${a * b + c}` };
+                s1 = a * b;
+                return { 
+                    text: `${a} × ${b} + ${c}`, 
+                    solveHTML: `<span class="step-txt">Paso 1:</span> ${a}×${b} = ${s1}<br><span class="step-txt">Paso 2:</span> ${s1}+${c} = ${s1+c}` 
+                };
+
             case 'mix_small':
-                a = getNum(5, 15); b = getNum(10, 20); c = getNum(2, 9);
-                return { text: `${a} × (${b} - ${c})`, solve: `${a * (b - c)}` };
+                a = getNum(5, 15); b = getNum(10, 30); c = getNum(2, 9);
+                s1 = b - c;
+                return { 
+                    text: `${a} × (${b} - ${c})`, 
+                    solveHTML: `<span class="step-txt">Paso 1:</span> (${b}-${c}) = ${s1}<br><span class="step-txt">Paso 2:</span> ${a}×${s1} = ${a*s1}` 
+                };
+
             case 'mix_middle':
-                a = getNum(2, 5); b = getNum(40, 60); c = getNum(10, 20); d = getNum(2, 4);
-                let inner = (b - c);
+                a = getNum(2, 6); b = getNum(40, 80); c = getNum(10, 30); d = getNum(2, 5);
+                let inner = b - c;
                 let steps = Math.floor(inner / d) * d; 
-                let final_b = c + steps;
-                return { text: `${a} × [(${final_b} - ${c}) ÷ ${d}]`, solve: `${a * ((final_b - c) / d)}` };
+                let final_b = c + steps; // 确保能整除
+                let step1 = final_b - c;
+                let step2 = step1 / d;
+                return { 
+                    text: `${a} × [(${final_b} - ${c}) ÷ ${d}]`, 
+                    solveHTML: `<span class="step-txt">Paso 1:</span> (${final_b}-${c}) = ${step1}<br><span class="step-txt">Paso 2:</span> ${step1}÷${d} = ${step2}<br><span class="step-txt">Paso 3:</span> ${a}×${step2} = ${a*step2}` 
+                };
         }
     }
 
