@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三四年级阅读训练 | EMSI 马德里国际中文学校</title>
+    <style>
+        /* 核心样式 */
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            background-color: #f5f7fa;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* 页眉 */
+        .header {
+            background-color: white; text-align: center;
+            padding: 40px 20px 0 20px; border-bottom: 5px solid #f1c40f;
+            position: relative;
+        }
+        .header h1 { color: #1a4a8e; font-size: 36px; margin: 0; }
+        .header .subtitle { color: #6b7280; font-size: 20px; margin: 10px 0 25px; font-weight: bold; }
+
+        /* 返回首页按钮 */
+        .back-home {
+            position: absolute; top: 35px; left: 40px;
+            text-decoration: none; display: inline-flex; align-items: center;
+            background: white; padding: 10px 25px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: #1a4a8e;
+            font-weight: bold; font-size: 18px; transition: all 0.3s ease;
+        }
+        .back-home:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .back-home svg { margin-right: 10px; width: 24px; height: 24px; }
+
+        /* 内容区 */
+        .main-content { flex: 1; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+
+        /* 折叠组件 (课程级别) */
+        .lesson-container { width: 100%; max-width: 900px; background: white; margin-bottom: 20px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        summary { padding: 25px 40px; list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; border-left: 8px solid #1a4a8e; }
+        summary::-webkit-details-marker { display: none; }
+        summary h3 { margin: 0; color: #1a4a8e; font-size: 22px; }
+        summary::after { content: "展开内容 +"; color: #f1c40f; font-weight: bold; font-size: 14px; }
+        details[open] summary::after { content: "点击折叠 -"; }
+
+        .lesson-card { padding: 20px 50px 50px 50px; line-height: 1.8; border-top: 1px solid #eee; }
+
+        /* 内部排版 */
+        .lesson-title { border-left: 6px solid #f1c40f; padding-left: 15px; margin-bottom: 30px; margin-top: 20px; }
+        .lesson-title h2 { color: #1a4a8e; margin: 0; font-size: 28px; }
+        .lesson-title .es-title { color: #6b7280; font-size: 18px; font-weight: bold; }
+        
+        .section-header { color: #1a4a8e; font-size: 20px; font-weight: bold; margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #f1c40f; display: inline-block; }
+
+        .para-block { margin-bottom: 25px; }
+        .text-es { color: #2c3e50; font-size: 18px; display: block; }
+        .text-zh { color: #7f8c8d; font-size: 16px; display: block; margin-top: 5px; }
+
+        /* 词汇网格 */
+        .vocab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px; }
+        .vocab-item { display: flex; justify-content: space-between; padding: 8px 15px; border-bottom: 1px solid #eee; font-size: 15px; }
+        .vocab-item span:first-child { color: #1a4a8e; font-weight: bold; }
+
+        /* 练习题样式 */
+        .quiz-section { margin-top: 40px; border-top: 2px dashed #eee; padding-top: 30px; }
+        .quiz-title { color: #1a4a8e; font-weight: bold; font-size: 24px; margin-bottom: 25px; text-align: center; }
+        .question-box { background: #f9f9f9; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #edf2f7; }
+        .question-text { color: #1a4a8e; font-weight: bold; font-size: 18px; display: block; margin-bottom: 5px; }
+        .question-zh { color: #6b7280; font-size: 15px; display: block; margin-bottom: 15px; }
+        
+        /* 答案折叠样式 */
+        .answer-details { margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+        .answer-details summary { 
+            padding: 5px 0; border: none !important; background: transparent !important; color: #e67e22 !important; 
+            font-size: 16px; font-weight: bold; justify-content: flex-start !important; cursor: pointer;
+        }
+        .answer-details summary::after { content: " (点击查看答案)" !important; font-size: 12px; margin-left: 10px; color: #aaa; font-weight: normal; }
+        .answer-content { background: #fff3e0; padding: 10px 15px; border-radius: 8px; color: #d35400; margin-top: 5px; }
+
+        .footer { background-color: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
+
+        @media (max-width: 600px) {
+            .back-home { position: static; margin-bottom: 20px; }
+            .vocab-grid { grid-template-columns: 1fr; }
+            .lesson-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="index.html" class="back-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        返回首页
+    </a>
+    <h1><span>EMSI</span> 马德里国际中文学校</h1>
+    <div class="subtitle">三四年级阅读训练</div>
+</header>
+
+<main class="main-content">
+    <details class="lesson-container">
+        <summary>
+            <h3>第一课：粮仓里的老鼠 (El ratón del granero)</h3>
+        </summary>
+        
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div class="es-title">1- EL RATÓN DEL GRANERO</div>
+                <h2>粮仓里的老鼠</h2>
+            </div>
+
+            <section class="para-block">
+                <span class="text-es">Leyendo y comprendiendo este cuento que presentamos podréis comprobar qué puede ocurrir cuando actuamos sin reflexionar previamente y no se es precavido.</span>
+                <span class="text-zh">阅读并理解我们呈现的这个故事，你们可以发现：当我们做事不事先思考、不够谨慎时，可能会发生什么。</span>
+            </section>
+
+            <div class="section-header">Antes de comenzar la lectura / 在开始阅读之前</div>
+            <section class="para-block">
+                <p><strong>1. ¿Habéis oído alguna vez decir: “la avaricia rompe el saco”?</strong><br>
+                <span class="text-zh" style="margin-top:0;">你们有没有听过这样一句话：“贪心会把袋子撑破”？</span></p>
+                <p><strong>2. ¿Habéis visto alguna vez un ratón? ¿Sabéis lo que es un granero?</strong><br>
+                <span class="text-zh" style="margin-top:0;">你们有没有见过老鼠？你们知道什么是粮仓吗？</span></p>
+            </section>
+
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+            <div class="section-header">Lectura / 故事正文</div>
+            <section class="story-body">
+                <div class="para-block">
+                    <span class="text-es">Érase una vez un ratón que vivía debajo de un granero.</span>
+                    <span class="text-zh">从前，有一只老鼠住在一个粮仓下面。</span>
+                </div>
+                <div class="para-block">
+                    <span class="text-es">Las tablas que formaban el suelo del granero tenían un agujerito, por el que, uno tras otro, los granos de trigo caían poco a poco a la madriguera.</span>
+                    <span class="text-zh">组成粮仓地面的木板上有一个小洞，麦粒一颗接一颗地，慢慢掉进老鼠的洞穴里。</span>
+                </div>
+                <div class="para-block">
+                    <span class="text-es">De ese modo vivía el ratón espléndidamente, estando siempre bien alimentado.</span>
+                    <span class="text-zh">就这样，这只老鼠生活得非常富足，总是吃得很饱。</span>
+                </div>
+                <div class="para-block">
+                    <span class="text-es">Pero, al cabo de algún tiempo, comenzó a mortificarlo la idea de que ninguno de sus amigos supiese lo bien que le iba.</span>
+                    <span class="text-zh">但是，过了一段时间后，有一个想法开始折磨它：它的朋友们都不知道它过得有多好。</span>
+                </div>
+                <div class="para-block">
+                    <span class="text-es">Entonces se puso a roer la madera del granero, para agrandar el agujero de tal modo que pudiesen caer más granos en su madriguera.</span>
+                    <span class="text-zh">于是它开始啃咬粮仓的木板，把洞咬得更大，这样就能有更多的麦粒掉进它的洞里。</span>
+                </div>
+                <div class="para-block">
+                    <span class="text-es">Hecho esto, corrió en busca de los demás ratones de los alrededores y los invitó a una fiesta en su granero.</span>
+                    <span class="text-zh">做完这些后，它跑去找附近的其他老鼠，邀请它们来粮仓参加一场宴会。</span>
+                </div>
+                <div class="para-block">
+                    <span class="text-es">“Venid todos a mi casa –les decía–, que os voy a obsequiar.”</span>
+                    <span class="text-zh">“大家都来我家吧，”它对它们说，“我要请你们吃好东西。”</span>
+                </div>
+                <div class="para-block">
+                    <span class="text-es">Pero cuando llegaron los invitados, y quiso el ratón llevarlos hasta el agujero del granero, ya no había ningún agujero en las tablas, y en el nido no se veía ni un solo grano.</span>
+                    <span class="text-zh">可是，当客人们到来时，老鼠想带它们去粮仓的洞口，却发现木板上已经没有任何洞了，洞穴里连一粒麦子都看不到。</span>
+                </div>
+                <div class="para-block" style="background: #fff9db; padding: 15px; border-radius: 8px; border-left: 5px solid #f1c40f;">
+                    <span class="text-es">El gran tamaño del agujero que el ratón había abierto en el suelo del granero, llamó la atención del granjero. Y éste lo había tapado, clavándole una tabla.</span>
+                    <span class="text-zh">老鼠在粮仓地面上咬出的那个大洞，引起了农夫的注意。于是农夫用一块木板把洞钉住封了起来。</span>
+                </div>
+            </section>
+
+            <div class="quiz-section">
+                <div class="quiz-title">Vocabulario / 20个重点词汇</div>
+                <div class="vocab-grid">
+                    <div class="vocab-item"><span>1. Granero</span><span>粮仓</span></div>
+                    <div class="vocab-item"><span>2. Ratón</span><span>老鼠</span></div>
+                    <div class="vocab-item"><span>3. Agujero</span><span>洞口</span></div>
+                    <div class="vocab-item"><span>4. Trigo</span><span>小麦</span></div>
+                    <div class="vocab-item"><span>5. Madriguera</span><span>洞穴</span></div>
+                    <div class="vocab-item"><span>6. Espléndidamente</span><span>富足地</span></div>
+                    <div class="vocab-item"><span>7. Alimentado</span><span>喂养好的</span></div>
+                    <div class="vocab-item"><span>8. Mortificar</span><span>折磨/使苦恼</span></div>
+                    <div class="vocab-item"><span>9. Roer</span><span>啃咬</span></div>
+                    <div class="vocab-item"><span>10. Agrandar</span><span>变大/扩大</span></div>
+                    <div class="vocab-item"><span>11. Alrededores</span><span>周围/附近</span></div>
+                    <div class="vocab-item"><span>12. Invitar</span><span>邀请</span></div>
+                    <div class="vocab-item"><span>13. Fiesta</span><span>聚会/宴会</span></div>
+                    <div class="vocab-item"><span>14. Obsequiar</span><span>招待/赠送</span></div>
+                    <div class="vocab-item"><span>15. Invitados</span><span>客人</span></div>
+                    <div class="vocab-item"><span>16. Tamaño</span><span>尺寸/大小</span></div>
+                    <div class="vocab-item"><span>17. Granjero</span><span>农夫</span></div>
+                    <div class="vocab-item"><span>18. Tapar</span><span>遮盖/封住</span></div>
+                    <div class="vocab-item"><span>19. Avaricia</span><span>贪婪</span></div>
+                    <div class="vocab-item"><span>20. Precavido</span><span>谨慎的</span></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <div class="quiz-title">Comprensión / 阅读理解</div>
+
+                <div class="question-box">
+                    <span class="question-text">1. ¿Qué hizo el ratón con el agujero para que cayera más grano?</span>
+                    <span class="question-zh">老鼠对洞做了什么，让更多粮食掉下来？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">El ratón agrandó el agujero, para que cayeran más granos.<br>(老鼠把洞弄大了，这样就能掉下更多麦粒。)</div>
+                    </details>
+                </div>
+
+                <div class="question-box">
+                    <span class="question-text">2. ¿Qué adjetivo le podíamos dar a este ratón?</span>
+                    <span class="question-zh">我们可以用哪个形容词来形容这只老鼠？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">Avaricioso (贪心的)</div>
+                    </details>
+                </div>
+
+                <div class="question-box">
+                    <span class="question-text">3. ¿De qué se alimentaba el ratón?</span>
+                    <span class="question-zh">老鼠吃什么？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">El ratón se alimentaba de granos de trigo.<br>(老鼠吃的是麦粒。)</div>
+                    </details>
+                </div>
+
+                <div class="question-box">
+                    <span class="question-text">4. ¿Dónde vivía el ratón?</span>
+                    <span class="question-zh">老鼠住在哪里？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">Vivía debajo de un granero.<br>(它住在粮仓下面。)</div>
+                    </details>
+                </div>
+
+                <div class="question-box">
+                    <span class="question-text">5. El granero estaba en:</span>
+                    <span class="question-zh">粮仓在哪里？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">Una granja (在农场里)</div>
+                    </details>
+                </div>
+
+                <div class="question-box">
+                    <span class="question-text">6. ¿Por qué no pudieron darse el banquete?</span>
+                    <span class="question-zh">为什么没有举行成宴会？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">Porque el granjero tapó el agujero y ya no había grano.<br>(因为农夫把洞堵住了，粮食没有了。)</div>
+                    </details>
+                </div>
+
+                <div class="question-box">
+                    <span class="question-text">7. ¿Qué idea le causaba molestia?</span>
+                    <span class="question-zh">什么想法让老鼠感到不开心？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">Le molestaba que sus amigos no supieran lo bien que vivía.<br>(它不高兴的是：朋友们不知道它过得有多好。)</div>
+                    </details>
+                </div>
+
+                <div class="question-box">
+                    <span class="question-text">8. ¿Crees que tenía buen corazón al querer compartir su comida?</span>
+                    <span class="question-zh">你觉得它想分享食物是因为心地善良吗？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">No, porque lo hacía por orgullo y avaricia.<br>(不是，因为它是出于骄傲和贪心，不是出于好心。)</div>
+                    </details>
+                </div>
+
+                <div class="question-box">
+                    <span class="question-text">9. Inventa otro título para la lectura.</span>
+                    <span class="question-zh">给这个故事起一个新的标题。</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">El ratón avaricioso (《贪心的老鼠》)</div>
+                    </details>
+                </div>
+
+                <div class="question-box">
+                    <span class="question-text">10. ¿Qué nos enseña este cuento?</span>
+                    <span class="question-zh">这个故事教会了我们什么？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">Nos enseña que no debemos ser avariciosos y que hay que pensar antes de actuar.<br>(它告诉我们：不要贪心，做事前要先想一想。)</div>
+                    </details>
+                </div>
+
+            </div>
+        </article>
+    </details>
+</main>
+
+<footer class="footer">
+    © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+</footer>
+
+</body>
+</html>
