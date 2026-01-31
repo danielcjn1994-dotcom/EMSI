@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI - Panel de Aritmética</title>
+    <title>EMSI - Panel de Aritmética Avanzada</title>
     <style>
         /* --- EMSI 视觉风格复刻 --- */
         body {
@@ -59,7 +59,7 @@
             border: 1px solid #eee;
         }
 
-        /* --- 新增：图片样式的返回按钮 --- */
+        /* --- 按钮样式 --- */
         .btn-back-pill {
             display: inline-flex;
             align-items: center;
@@ -81,18 +81,14 @@
             background-color: #fcfcfc;
         }
 
-        .btn-back-pill .arrow {
-            font-size: 1.6rem;
-            margin-right: 15px;
-            line-height: 1;
-        }
+        .btn-back-pill .arrow { margin-right: 15px; line-height: 1; }
 
         /* --- 菜单按钮 --- */
         .btn-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .btn-emsi {
@@ -101,7 +97,7 @@
             border-radius: 12px;
             background: #1a4a8e;
             color: white;
-            font-size: 1.25rem; 
+            font-size: 1.15rem; 
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
@@ -109,9 +105,13 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
+            line-height: 1.4;
+            text-align: center;
         }
 
         .btn-emsi:hover { background: #2563eb; transform: translateY(-2px); }
+        .btn-emsi.secondary { background: #3b82f6; } /* 区分三位数运算的颜色 */
+        .btn-emsi.secondary:hover { background: #2563eb; }
 
         /* 顶部控制栏 */
         .quiz-header {
@@ -147,6 +147,7 @@
             color: #2d3748;
             margin-bottom: 15px;
             font-weight: bold;
+            font-variant-numeric: tabular-nums; /* 数字等宽对齐 */
         }
 
         .ans-toggle {
@@ -171,6 +172,14 @@
             font-weight: bold;
         }
 
+        .section-title {
+            color: #1a4a8e; 
+            margin: 40px 0 20px 0; 
+            font-size: 1.5rem; 
+            border-bottom: 2px solid #eee; 
+            padding-bottom: 10px;
+        }
+
         .hidden { display: none; }
 
         .footer {
@@ -192,19 +201,19 @@
 
     <header class="header">
         <h1><span>EMSI</span> 马德里国际中文学校</h1>
-        <div class="subtitle">Aritmética: Suma y Resta (Enteros)</div>
+        <div class="subtitle">Aritmética: Práctica de Cálculo (数学练习)</div>
     </header>
 
     <main class="main-content">
         <div class="card">
             <div id="home-page">
-                <div style="margin-bottom: 35px;">
+                <div style="margin-bottom: 20px;">
                     <a href="index.html" class="btn-back-pill">
                         <span class="arrow">←</span> 返回首页
                     </a>
                 </div>
 
-                <h2 style="color: #1a4a8e; text-align: center; margin-bottom: 30px; font-size: 1.8rem;">Selecciona el nivel de dificultad</h2>
+                <div class="section-title">Nivel Básico (基础运算)</div>
                 <div class="btn-grid">
                     <button class="btn-emsi" onclick="startQuiz('add', 10)">Suma hasta 10</button>
                     <button class="btn-emsi" onclick="startQuiz('sub', 10)">Resta hasta 10</button>
@@ -212,7 +221,16 @@
                     <button class="btn-emsi" onclick="startQuiz('sub', 20)">Resta hasta 20</button>
                     <button class="btn-emsi" onclick="startQuiz('add', 100)">Suma hasta 100</button>
                     <button class="btn-emsi" onclick="startQuiz('sub', 100)">Resta hasta 100</button>
-                    <button class="btn-emsi" onclick="startQuiz('mixed', 100)">Mixto (A+B-C) hasta 100</button>
+                    <button class="btn-emsi" onclick="startQuiz('mixed', 100)">Mixto (A±B±C) hasta 100</button>
+                </div>
+
+                <div class="section-title">Nivel Avanzado (3 Cifras / 三位数运算)</div>
+                <div class="btn-grid">
+                    <button class="btn-emsi secondary" onclick="startQuiz('add3d', 0)">Suma 2 números<br>(3 Cifras)</button>
+                    <button class="btn-emsi secondary" onclick="startQuiz('sub3d', 0)">Resta 2 números<br>(3 Cifras)</button>
+                    <button class="btn-emsi secondary" onclick="startQuiz('add3d_3', 0)">Suma 3 números<br>(3 Cifras)</button>
+                    <button class="btn-emsi secondary" onclick="startQuiz('sub3d_3', 0)">Resta 3 números<br>(3 Cifras)</button>
+                    <button class="btn-emsi secondary" onclick="startQuiz('mix3d', 0)">Mixto 3 números<br>(3 Cifras)</button>
                 </div>
             </div>
 
@@ -238,14 +256,30 @@
     let currentType = '';
     let currentLimit = 20;
 
+    // 启动练习，如果是三位数运算，limit 参数会被忽略
     function startQuiz(type, limit) {
         currentType = type;
         currentLimit = limit;
         document.getElementById('home-page').classList.add('hidden');
         document.getElementById('quiz-page').classList.remove('hidden');
         
-        const titles = { 'add': 'Suma', 'sub': 'Resta', 'mixed': 'Operaciones Mixtas' };
-        document.getElementById('quiz-title').innerText = `${titles[type]} (Máx. ${limit})`;
+        const titles = { 
+            'add': 'Suma', 
+            'sub': 'Resta', 
+            'mixed': 'Operaciones Mixtas',
+            'add3d': 'Suma de 3 Cifras (三位数加法)',
+            'sub3d': 'Resta de 3 Cifras (三位数减法)',
+            'add3d_3': 'Suma de 3 Números (三个三位数相加)',
+            'sub3d_3': 'Resta de 3 Números (三个三位数相减)',
+            'mix3d': 'Operaciones Mixtas (三位数混合运算)'
+        };
+
+        // 如果是基础运算，显示上限；如果是三位数，显示特定标题
+        let titleText = titles[type] || 'Ejercicio';
+        if (['add', 'sub', 'mixed'].includes(type)) {
+            titleText += ` (Máx. ${limit})`;
+        }
+        document.getElementById('quiz-title').innerText = titleText;
         
         generateQuestions();
     }
@@ -261,7 +295,7 @@
             item.className = 'quiz-item';
             item.innerHTML = `
                 <div class="question">${i}. ${data.text} = ?</div>
-                <button class="ans-toggle" onclick="toggleAns(this)">Ver solution</button>
+                <button class="ans-toggle" onclick="toggleAns(this)">Ver solución</button>
                 <div class="solution-box">${data.solve}</div>
             `;
             list.appendChild(item);
@@ -269,28 +303,29 @@
     }
 
     function getNum(max) { return Math.floor(Math.random() * max) + 1; }
+    
+    // 生成 100 - 999 之间的随机数
+    function get3Digit() { return Math.floor(Math.random() * 900) + 100; }
 
     function getQuestion(type, limit) {
+        // --- 基础运算 (原逻辑) ---
         if (type === 'add') {
-            // 调整加数范围，确保和不超过 limit
             let a = getNum(Math.max(1, limit - 2)); 
             let b = Math.floor(Math.random() * (limit - a)) + 1;
             return { text: `${a} + ${b}`, solve: `${a + b}` };
         } 
-        
         if (type === 'sub') {
             let a = getNum(limit);
             let b = Math.floor(Math.random() * a) + 1;
             return { text: `${a} - ${b}`, solve: `${a - b}` };
         }
-
         if (type === 'mixed') {
             while (true) {
                 let n1 = getNum(limit);
                 let op1 = Math.random() > 0.5 ? '+' : '-';
                 let n2 = Math.floor(Math.random() * (limit/2)) + 1;
                 let step1 = (op1 === '+') ? n1 + n2 : n1 - n2;
-                if (step1 < 0 || step1 > limit) continue;
+                if (step1 < 0 || step1 > limit) continue; // 避免中间结果负数或过大
 
                 let op2 = Math.random() > 0.5 ? '+' : '-';
                 let n3 = Math.floor(Math.random() * (limit/2)) + 1;
@@ -303,13 +338,78 @@
                 };
             }
         }
+
+        // --- 进阶运算 (三位数) ---
+        
+        // 1. 两个三位数加法
+        if (type === 'add3d') {
+            let a = get3Digit();
+            let b = get3Digit();
+            return { text: `${a} + ${b}`, solve: `${a + b}` };
+        }
+
+        // 2. 两个三位数减法 (无负数)
+        if (type === 'sub3d') {
+            let a = get3Digit();
+            let b = get3Digit();
+            // 确保大减小
+            if (a < b) [a, b] = [b, a]; 
+            return { text: `${a} - ${b}`, solve: `${a - b}` };
+        }
+
+        // 3. 三个三位数加法
+        if (type === 'add3d_3') {
+            let a = get3Digit();
+            let b = get3Digit();
+            let c = get3Digit();
+            return { text: `${a} + ${b} + ${c}`, solve: `${a + b + c}` };
+        }
+
+        // 4. 三个三位数减法 (A - B - C, 无负数)
+        if (type === 'sub3d_3') {
+            while (true) {
+                let a = get3Digit();
+                let b = get3Digit();
+                let c = get3Digit();
+                // 必须保证 a 足够大，能减去 b 和 c
+                if (a - b - c >= 0) {
+                    return { text: `${a} - ${b} - ${c}`, solve: `${a - b - c}` };
+                }
+            }
+        }
+
+        // 5. 三位数混合运算 (A +/- B +/- C)
+        if (type === 'mix3d') {
+            while (true) {
+                let a = get3Digit();
+                let b = get3Digit();
+                let c = get3Digit();
+                let op1 = Math.random() > 0.5 ? '+' : '-';
+                let op2 = Math.random() > 0.5 ? '+' : '-';
+
+                let step1 = (op1 === '+') ? a + b : a - b;
+                
+                // 检查第一步是否为负
+                if (step1 < 0) continue; 
+
+                let result = (op2 === '+') ? step1 + c : step1 - c;
+                
+                // 检查最终结果是否为负
+                if (result < 0) continue;
+
+                return { 
+                    text: `${a} ${op1} ${b} ${op2} ${c}`, 
+                    solve: `${a} ${op1} ${b} = ${step1};  ${step1} ${op2} ${c} = ${result}` 
+                };
+            }
+        }
     }
 
     function toggleAns(btn) {
         const box = btn.nextElementSibling;
         const isHidden = box.style.display === 'none' || box.style.display === '';
         box.style.display = isHidden ? 'block' : 'none';
-        btn.innerText = isHidden ? 'Ocultar' : 'Ver solution';
+        btn.innerText = isHidden ? 'Ocultar' : 'Ver solución';
     }
 
     function goHome() {
