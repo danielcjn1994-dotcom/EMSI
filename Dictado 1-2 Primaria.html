@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>词汇库 - EMSI 马德里国际中文学校</title>
+<style>
+    /* --- 基础样式 --- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+        background-color: #f5f7fa;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    /* --- 页眉设计 --- */
+    .header {
+        background-color: white;
+        text-align: center;
+        padding: 40px 20px 0 20px;
+        border-bottom: 5px solid #f1c40f; /* 核心金黄色横条 */
+    }
+
+    .header h1 {
+        color: #1a4a8e; /* 核心深蓝色 */
+        font-size: 42px;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    .header h1 span {
+        font-weight: 800;
+        margin-right: 15px;
+    }
+
+    .header .subtitle {
+        color: #6b7280;
+        font-size: 20px;
+        margin-top: 10px;
+        margin-bottom: 25px;
+        font-weight: 400;
+    }
+
+    /* --- 内容区设计 --- */
+    .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+    }
+
+    /* 返回按钮样式 (白底蓝字) */
+    .back-btn {
+        background-color: white;
+        color: #1a4a8e;
+        border: 2px solid #1a4a8e;
+        padding: 10px 25px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .back-btn:hover {
+        background-color: #1a4a8e;
+        color: white;
+        box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    }
+
+    .card {
+        background: white;
+        width: 100%;
+        max-width: 900px;
+        /* 移除 min-height 和居中对齐，改为自然高度 */
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        padding: 40px;
+        box-sizing: border-box;
+        border: 1px solid #eee;
+        color: #333; /* 字体颜色加深 */
+        font-size: 16px;
+    }
+
+    /* --- 词汇表折叠样式 --- */
+    details {
+        margin-bottom: 15px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    summary {
+        background-color: #1a4a8e;
+        color: white;
+        padding: 15px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 18px;
+        list-style: none; /* 移除默认三角 */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    summary::after {
+        content: '+';
+        font-size: 24px;
+        font-weight: bold;
+        color: #f1c40f;
+    }
+
+    details[open] summary::after {
+        content: '-';
+    }
+
+    .vocab-content {
+        padding: 20px;
+        background-color: #fff;
+    }
+
+    h3.sub-category {
+        color: #1a4a8e;
+        border-left: 4px solid #f1c40f;
+        padding-left: 10px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    /* 表格样式 */
+    .vocab-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    .vocab-table th {
+        text-align: left;
+        color: #666;
+        font-size: 0.9em;
+        border-bottom: 2px solid #eee;
+        padding: 8px;
+    }
+
+    .vocab-table td {
+        padding: 8px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .vocab-table tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+
+    .es-word {
+        font-weight: 600;
+        color: #2c3e50;
+        width: 40%;
+    }
+
+    .cn-word {
+        color: #555;
+    }
+
+    /* --- 页脚设计 --- */
+    .footer {
+        background-color: #1a4a8e;
+        color: white;
+        text-align: center;
+        padding: 18px 20px;
+        font-size: 15px;
+        letter-spacing: 0.5px;
+        margin-top: auto;
+    }
+
+    .footer span {
+        opacity: 0.9;
+    }
+</style>
+</head>
+<body>
+
+<header class="header">
+    <h1><span>EMSI</span> 马德里国际中文学校</h1>
+    <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+</header>
+
+<main class="main-content">
+    <a href="index.html" class="back-btn">← 返回主页</a>
+
+    <div class="card">
+        <details>
+            <summary>一、名词 (Sustantivos)</summary>
+            <div class="vocab-content">
+                
+                <h3 class="sub-category">1.1 El propio cuerpo（身体）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">barba</td><td class="cn-word">胡子</td></tr>
+                    <tr><td class="es-word">brazo</td><td class="cn-word">手臂</td></tr>
+                    <tr><td class="es-word">labio</td><td class="cn-word">嘴唇</td></tr>
+                    <tr><td class="es-word">vista</td><td class="cn-word">视力</td></tr>
+                    <tr><td class="es-word">vena</td><td class="cn-word">静脉</td></tr>
+                    <tr><td class="es-word">vivir</td><td class="cn-word">生活 / 生存</td></tr>
+                    <tr><td class="es-word">barriga</td><td class="cn-word">肚子</td></tr>
+                    <tr><td class="es-word">cabeza</td><td class="cn-word">头</td></tr>
+                    <tr><td class="es-word">rodilla</td><td class="cn-word">膝盖</td></tr>
+                    <tr><td class="es-word">Visto</td><td class="cn-word">看到的（原文如此保留）</td></tr>
+                    <tr><td class="es-word">vida</td><td class="cn-word">生命</td></tr>
+                    <tr><td class="es-word">voz</td><td class="cn-word">声音</td></tr>
+                    <tr><td class="es-word">bigote</td><td class="cn-word">小胡子</td></tr>
+                    <tr><td class="es-word">cuello</td><td class="cn-word">脖子</td></tr>
+                    <tr><td class="es-word">boca</td><td class="cn-word">嘴</td></tr>
+                    <tr><td class="es-word">huesos</td><td class="cn-word">骨头</td></tr>
+                    <tr><td class="es-word">vientre</td><td class="cn-word">腹部</td></tr>
+                    <tr><td class="es-word">yo</td><td class="cn-word">我</td></tr>
+                    <tr><td class="es-word">beso</td><td class="cn-word">亲吻</td></tr>
+                    <tr><td class="es-word">hombro</td><td class="cn-word">肩膀</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.2 La familia（家庭）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">abuelo</td><td class="cn-word">祖父 / 外祖父</td></tr>
+                    <tr><td class="es-word">hermano</td><td class="cn-word">兄弟</td></tr>
+                    <tr><td class="es-word">hijo</td><td class="cn-word">儿子 / 孩子</td></tr>
+                    <tr><td class="es-word">sobrino</td><td class="cn-word">侄子 / 外甥</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.3 Mis amigos y vecinos（朋友和邻居）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">vecino</td><td class="cn-word">邻居</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.4 Personas（人物）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">hombre</td><td class="cn-word">男人</td></tr>
+                    <tr><td class="es-word">gitano</td><td class="cn-word">吉普赛人</td></tr>
+                    <tr><td class="es-word">mujer</td><td class="cn-word">女人</td></tr>
+                    <tr><td class="es-word">obrero</td><td class="cn-word">工人</td></tr>
+                    <tr><td class="es-word">rey</td><td class="cn-word">国王</td></tr>
+                    <tr><td class="es-word">salvaje</td><td class="cn-word">野人 / 野蛮的人</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.5 Juguetes y juegos（玩具与游戏）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">balcón</td><td class="cn-word">阳台</td></tr>
+                    <tr><td class="es-word">balón</td><td class="cn-word">球</td></tr>
+                    <tr><td class="es-word">barra</td><td class="cn-word">杆 / 横杆</td></tr>
+                    <tr><td class="es-word">castillo</td><td class="cn-word">城堡</td></tr>
+                    <tr><td class="es-word">globo</td><td class="cn-word">气球</td></tr>
+                    <tr><td class="es-word">tobogán</td><td class="cn-word">滑梯</td></tr>
+                    <tr><td class="es-word">rompecabezas</td><td class="cn-word">拼图</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.6 Ropa, limpieza e higiene（衣物与清洁）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">abrigo</td><td class="cn-word">大衣</td></tr>
+                    <tr><td class="es-word">almohada</td><td class="cn-word">枕头</td></tr>
+                    <tr><td class="es-word">bañera</td><td class="cn-word">浴缸</td></tr>
+                    <tr><td class="es-word">blusa</td><td class="cn-word">女衬衫</td></tr>
+                    <tr><td class="es-word">bolsillo</td><td class="cn-word">口袋</td></tr>
+                    <tr><td class="es-word">bolso</td><td class="cn-word">包</td></tr>
+                    <tr><td class="es-word">botón</td><td class="cn-word">纽扣</td></tr>
+                    <tr><td class="es-word">braga</td><td class="cn-word">内裤</td></tr>
+                    <tr><td class="es-word">bufanda</td><td class="cn-word">围巾</td></tr>
+                    <tr><td class="es-word">cepillo</td><td class="cn-word">刷子</td></tr>
+                    <tr><td class="es-word">corbata</td><td class="cn-word">领带</td></tr>
+                    <tr><td class="es-word">hilo</td><td class="cn-word">线</td></tr>
+                    <tr><td class="es-word">jabón</td><td class="cn-word">肥皂</td></tr>
+                    <tr><td class="es-word">jersey</td><td class="cn-word">毛衣</td></tr>
+                    <tr><td class="es-word">nuevo</td><td class="cn-word">新的</td></tr>
+                    <tr><td class="es-word">sombrero</td><td class="cn-word">帽子</td></tr>
+                    <tr><td class="es-word">toalla</td><td class="cn-word">毛巾</td></tr>
+                    <tr><td class="es-word">traje</td><td class="cn-word">西装</td></tr>
+                    <tr><td class="es-word">vestido</td><td class="cn-word">连衣裙</td></tr>
+                    <tr><td class="es-word">vestirse</td><td class="cn-word">穿衣</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.7 Comer, beber y dormir（吃喝与睡眠）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">avellana</td><td class="cn-word">榛子</td></tr>
+                    <tr><td class="es-word">galleta</td><td class="cn-word">饼干</td></tr>
+                    <tr><td class="es-word">huevo</td><td class="cn-word">鸡蛋</td></tr>
+                    <tr><td class="es-word">probar</td><td class="cn-word">尝试</td></tr>
+                    <tr><td class="es-word">uva</td><td class="cn-word">葡萄</td></tr>
+                    <tr><td class="es-word">bocadillo</td><td class="cn-word">三明治</td></tr>
+                    <tr><td class="es-word">hambre</td><td class="cn-word">饥饿</td></tr>
+                    <tr><td class="es-word">levantarse</td><td class="cn-word">起床</td></tr>
+                    <tr><td class="es-word">sábana</td><td class="cn-word">床单</td></tr>
+                    <tr><td class="es-word">vaso</td><td class="cn-word">杯子</td></tr>
+                    <tr><td class="es-word">bocado</td><td class="cn-word">一口</td></tr>
+                    <tr><td class="es-word">vino</td><td class="cn-word">葡萄酒</td></tr>
+                    <tr><td class="es-word">kilo</td><td class="cn-word">千克</td></tr>
+                    <tr><td class="es-word">sed</td><td class="cn-word">口渴</td></tr>
+                    <tr><td class="es-word">botella</td><td class="cn-word">瓶子</td></tr>
+                    <tr><td class="es-word">helado</td><td class="cn-word">冰淇淋</td></tr>
+                    <tr><td class="es-word">tabaco</td><td class="cn-word">烟草</td></tr>
+                    <tr><td class="es-word">servilleta</td><td class="cn-word">餐巾纸</td></tr>
+                    <tr><td class="es-word">desayuno</td><td class="cn-word">早餐</td></tr>
+                    <tr><td class="es-word">hielo</td><td class="cn-word">冰</td></tr>
+                    <tr><td class="es-word">olla</td><td class="cn-word">锅</td></tr>
+                    <tr><td class="es-word">servir</td><td class="cn-word">端上 / 服务</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.8 Enfermedades（疾病）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">herida</td><td class="cn-word">伤口</td></tr>
+                    <tr><td class="es-word">hospital</td><td class="cn-word">医院</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.9 Casa y entorno（房屋与周围）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">balcón</td><td class="cn-word">阳台</td></tr>
+                    <tr><td class="es-word">habitación</td><td class="cn-word">房间</td></tr>
+                    <tr><td class="es-word">polvo</td><td class="cn-word">灰尘</td></tr>
+                    <tr><td class="es-word">bandeja</td><td class="cn-word">托盘</td></tr>
+                    <tr><td class="es-word">humo</td><td class="cn-word">烟</td></tr>
+                    <tr><td class="es-word">reloj</td><td class="cn-word">钟</td></tr>
+                    <tr><td class="es-word">baño</td><td class="cn-word">浴室</td></tr>
+                    <tr><td class="es-word">jabón</td><td class="cn-word">肥皂</td></tr>
+                    <tr><td class="es-word">silla</td><td class="cn-word">椅子</td></tr>
+                    <tr><td class="es-word">basura</td><td class="cn-word">垃圾</td></tr>
+                    <tr><td class="es-word">lavabo</td><td class="cn-word">洗手池</td></tr>
+                    <tr><td class="es-word">sillón</td><td class="cn-word">扶手椅</td></tr>
+                    <tr><td class="es-word">buzón</td><td class="cn-word">信箱</td></tr>
+                    <tr><td class="es-word">muelle</td><td class="cn-word">码头</td></tr>
+                    <tr><td class="es-word">televisión</td><td class="cn-word">电视</td></tr>
+                    <tr><td class="es-word">cuchillo</td><td class="cn-word">刀</td></tr>
+                    <tr><td class="es-word">nevera</td><td class="cn-word">冰箱</td></tr>
+                    <tr><td class="es-word">ventana</td><td class="cn-word">窗户</td></tr>
+                    <tr><td class="es-word">escoba</td><td class="cn-word">扫帚</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.10 Calle y tiendas（街道与商店）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">banco</td><td class="cn-word">银行 / 长椅</td></tr>
+                    <tr><td class="es-word">calle</td><td class="cn-word">街道</td></tr>
+                    <tr><td class="es-word">pueblo</td><td class="cn-word">村庄</td></tr>
+                    <tr><td class="es-word">bar</td><td class="cn-word">酒吧</td></tr>
+                    <tr><td class="es-word">garaje</td><td class="cn-word">车库</td></tr>
+                    <tr><td class="es-word">sobre</td><td class="cn-word">信封</td></tr>
+                    <tr><td class="es-word">barrio</td><td class="cn-word">街区</td></tr>
+                    <tr><td class="es-word">hotel</td><td class="cn-word">酒店</td></tr>
+                    <tr><td class="es-word">tubo</td><td class="cn-word">管子</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.11 Tiempo y estaciones（时间与季节）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">ayer</td><td class="cn-word">昨天</td></tr>
+                    <tr><td class="es-word">lluvia</td><td class="cn-word">下雨</td></tr>
+                    <tr><td class="es-word">primavera</td><td class="cn-word">春天</td></tr>
+                    <tr><td class="es-word">estrella</td><td class="cn-word">星星</td></tr>
+                    <tr><td class="es-word">mayo</td><td class="cn-word">五月</td></tr>
+                    <tr><td class="es-word">sábado</td><td class="cn-word">星期六</td></tr>
+                    <tr><td class="es-word">febrero</td><td class="cn-word">二月</td></tr>
+                    <tr><td class="es-word">Navidad</td><td class="cn-word">圣诞节</td></tr>
+                    <tr><td class="es-word">sombra</td><td class="cn-word">影子</td></tr>
+                    <tr><td class="es-word">hora</td><td class="cn-word">小时</td></tr>
+                    <tr><td class="es-word">nieve</td><td class="cn-word">雪</td></tr>
+                    <tr><td class="es-word">verano</td><td class="cn-word">夏天</td></tr>
+                    <tr><td class="es-word">hoy</td><td class="cn-word">今天</td></tr>
+                    <tr><td class="es-word">noviembre</td><td class="cn-word">十一月</td></tr>
+                    <tr><td class="es-word">viento</td><td class="cn-word">风</td></tr>
+                    <tr><td class="es-word">invierno</td><td class="cn-word">冬天</td></tr>
+                    <tr><td class="es-word">nube</td><td class="cn-word">云</td></tr>
+                    <tr><td class="es-word">viernes</td><td class="cn-word">星期五</td></tr>
+                    <tr><td class="es-word">jueves</td><td class="cn-word">星期四</td></tr>
+                    <tr><td class="es-word">octubre</td><td class="cn-word">十月</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.12 Plantas y animales（植物与动物）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">bestia</td><td class="cn-word">野兽</td></tr>
+                    <tr><td class="es-word">escarabajo</td><td class="cn-word">甲虫</td></tr>
+                    <tr><td class="es-word">árbol</td><td class="cn-word">树</td></tr>
+                    <tr><td class="es-word">buey</td><td class="cn-word">公牛</td></tr>
+                    <tr><td class="es-word">hormiga</td><td class="cn-word">蚂蚁</td></tr>
+                    <tr><td class="es-word">bosque</td><td class="cn-word">森林</td></tr>
+                    <tr><td class="es-word">burro</td><td class="cn-word">驴</td></tr>
+                    <tr><td class="es-word">gallo</td><td class="cn-word">公鸡</td></tr>
+                    <tr><td class="es-word">cueva</td><td class="cn-word">洞穴</td></tr>
+                    <tr><td class="es-word">caballo</td><td class="cn-word">马</td></tr>
+                    <tr><td class="es-word">gallina</td><td class="cn-word">母鸡</td></tr>
+                    <tr><td class="es-word">hierba</td><td class="cn-word">草</td></tr>
+                    <tr><td class="es-word">cabra</td><td class="cn-word">山羊</td></tr>
+                    <tr><td class="es-word">oveja</td><td class="cn-word">绵羊</td></tr>
+                    <tr><td class="es-word">hoja</td><td class="cn-word">叶子</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.13 Minerales（矿物）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">hierro</td><td class="cn-word">铁</td></tr>
+                    <tr><td class="es-word">barro</td><td class="cn-word">泥土</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.14 Viajes y vacaciones（旅行）</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">autobús</td><td class="cn-word">公共汽车</td></tr>
+                    <tr><td class="es-word">playa</td><td class="cn-word">海滩</td></tr>
+                    <tr><td class="es-word">vagón</td><td class="cn-word">车厢</td></tr>
+                    <tr><td class="es-word">avión</td><td class="cn-word">飞机</td></tr>
+                    <tr><td class="es-word">submarino</td><td class="cn-word">潜水艇</td></tr>
+                    <tr><td class="es-word">volante</td><td class="cn-word">方向盘</td></tr>
+                    <tr><td class="es-word">barco</td><td class="cn-word">船</td></tr>
+                    <tr><td class="es-word">taxi</td><td class="cn-word">出租车</td></tr>
+                    <tr><td class="es-word">volver</td><td class="cn-word">返回</td></tr>
+                    <tr><td class="es-word">bicicleta</td><td class="cn-word">自行车</td></tr>
+                    <tr><td class="es-word">vía</td><td class="cn-word">道路</td></tr>
+                    <tr><td class="es-word">viajes</td><td class="cn-word">旅行</td></tr>
+                    <tr><td class="es-word">billete</td><td class="cn-word">车票</td></tr>
+                    <tr><td class="es-word">viajar</td><td class="cn-word">旅行</td></tr>
+                    <tr><td class="es-word">vacaciones</td><td class="cn-word">假期</td></tr>
+                    <tr><td class="es-word">extranjero</td><td class="cn-word">外国的</td></tr>
+                    <tr><td class="es-word">visita</td><td class="cn-word">参观</td></tr>
+                </table>
+
+                <h3 class="sub-category">1.15 抽象名词</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">broma</td><td class="cn-word">玩笑</td></tr>
+                    <tr><td class="es-word">favor</td><td class="cn-word">帮忙</td></tr>
+                    <tr><td class="es-word">burla</td><td class="cn-word">嘲笑</td></tr>
+                    <tr><td class="es-word">nombre</td><td class="cn-word">名字</td></tr>
+                    <tr><td class="es-word">costumbre</td><td class="cn-word">习惯</td></tr>
+                    <tr><td class="es-word">palabra</td><td class="cn-word">单词</td></tr>
+                    <tr><td class="es-word">edad</td><td class="cn-word">年龄</td></tr>
+                    <tr><td class="es-word">verdad</td><td class="cn-word">真相</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>二、动词 (Verbos)</summary>
+            <div class="vocab-content">
+                <table class="vocab-table">
+                    <tr><td class="es-word">abrir</td><td class="cn-word">打开</td></tr>
+                    <tr><td class="es-word">dibujar</td><td class="cn-word">画画</td></tr>
+                    <tr><td class="es-word">moverse</td><td class="cn-word">移动</td></tr>
+                    <tr><td class="es-word">aburrir</td><td class="cn-word">使无聊</td></tr>
+                    <tr><td class="es-word">divertirse</td><td class="cn-word">玩得开心</td></tr>
+                    <tr><td class="es-word">obedecer</td><td class="cn-word">服从</td></tr>
+                    <tr><td class="es-word">ayudar</td><td class="cn-word">帮助</td></tr>
+                    <tr><td class="es-word">escribir</td><td class="cn-word">写</td></tr>
+                    <tr><td class="es-word">olvidar</td><td class="cn-word">忘记</td></tr>
+                    <tr><td class="es-word">bailar</td><td class="cn-word">跳舞</td></tr>
+                    <tr><td class="es-word">enviar</td><td class="cn-word">发送</td></tr>
+                    <tr><td class="es-word">pillar</td><td class="cn-word">抓住</td></tr>
+                    <tr><td class="es-word">bajar</td><td class="cn-word">下来</td></tr>
+                    <tr><td class="es-word">envolver</td><td class="cn-word">包裹</td></tr>
+                    <tr><td class="es-word">probar</td><td class="cn-word">尝试</td></tr>
+                    <tr><td class="es-word">bañarse</td><td class="cn-word">洗澡</td></tr>
+                    <tr><td class="es-word">equivocarse</td><td class="cn-word">弄错</td></tr>
+                    <tr><td class="es-word">prohibir</td><td class="cn-word">禁止</td></tr>
+                    <tr><td class="es-word">beber</td><td class="cn-word">喝</td></tr>
+                    <tr><td class="es-word">haber</td><td class="cn-word">有</td></tr>
+                    <tr><td class="es-word">recibir</td><td class="cn-word">接收</td></tr>
+                    <tr><td class="es-word">besar</td><td class="cn-word">亲吻</td></tr>
+                    <tr><td class="es-word">hablar</td><td class="cn-word">说话</td></tr>
+                    <tr><td class="es-word">robar</td><td class="cn-word">偷</td></tr>
+                    <tr><td class="es-word">borrar</td><td class="cn-word">删除</td></tr>
+                    <tr><td class="es-word">hacer</td><td class="cn-word">做</td></tr>
+                    <tr><td class="es-word">saber</td><td class="cn-word">知道</td></tr>
+                    <tr><td class="es-word">buscar</td><td class="cn-word">寻找</td></tr>
+                    <tr><td class="es-word">subir</td><td class="cn-word">上去</td></tr>
+                    <tr><td class="es-word">caber</td><td class="cn-word">装得下</td></tr>
+                    <tr><td class="es-word">ir</td><td class="cn-word">去</td></tr>
+                    <tr><td class="es-word">trabajar</td><td class="cn-word">工作</td></tr>
+                    <tr><td class="es-word">callar</td><td class="cn-word">沉默</td></tr>
+                    <tr><td class="es-word">valer</td><td class="cn-word">值得</td></tr>
+                    <tr><td class="es-word">cambiar</td><td class="cn-word">改变</td></tr>
+                    <tr><td class="es-word">lavar</td><td class="cn-word">洗</td></tr>
+                    <tr><td class="es-word">venir</td><td class="cn-word">来</td></tr>
+                    <tr><td class="es-word">cavar</td><td class="cn-word">挖</td></tr>
+                    <tr><td class="es-word">levantarse</td><td class="cn-word">起床</td></tr>
+                    <tr><td class="es-word">vender</td><td class="cn-word">卖</td></tr>
+                    <tr><td class="es-word">clavar</td><td class="cn-word">钉</td></tr>
+                    <tr><td class="es-word">llamar</td><td class="cn-word">打电话</td></tr>
+                    <tr><td class="es-word">ver</td><td class="cn-word">看</td></tr>
+                    <tr><td class="es-word">cobrar</td><td class="cn-word">收钱</td></tr>
+                    <tr><td class="es-word">llorar</td><td class="cn-word">哭</td></tr>
+                    <tr><td class="es-word">visitar</td><td class="cn-word">参观</td></tr>
+                    <tr><td class="es-word">coger</td><td class="cn-word">拿</td></tr>
+                    <tr><td class="es-word">llevar</td><td class="cn-word">带</td></tr>
+                    <tr><td class="es-word">vivir</td><td class="cn-word">生活</td></tr>
+                    <tr><td class="es-word">desayunar</td><td class="cn-word">吃早餐</td></tr>
+                    <tr><td class="es-word">volver</td><td class="cn-word">返回</td></tr>
+                    <tr><td class="es-word">volar</td><td class="cn-word">飞</td></tr>
+                    <tr><td class="es-word">devolver</td><td class="cn-word">归还</td></tr>
+                    <tr><td class="es-word">llover</td><td class="cn-word">下雨</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>三、形容词 (Adjetivos)</summary>
+            <div class="vocab-content">
+                <table class="vocab-table">
+                    <tr><td class="es-word">bajo</td><td class="cn-word">低的</td></tr>
+                    <tr><td class="es-word">hondo</td><td class="cn-word">深的</td></tr>
+                    <tr><td class="es-word">valiente</td><td class="cn-word">勇敢的</td></tr>
+                    <tr><td class="es-word">vivo</td><td class="cn-word">活着的</td></tr>
+                    <tr><td class="es-word">joven</td><td class="cn-word">年轻的</td></tr>
+                    <tr><td class="es-word">verde</td><td class="cn-word">绿色的</td></tr>
+                    <tr><td class="es-word">barato</td><td class="cn-word">便宜的</td></tr>
+                    <tr><td class="es-word">mayor</td><td class="cn-word">年纪大的</td></tr>
+                    <tr><td class="es-word">viejo</td><td class="cn-word">老的</td></tr>
+                    <tr><td class="es-word">blando</td><td class="cn-word">软的</td></tr>
+                    <tr><td class="es-word">pobre</td><td class="cn-word">贫穷的</td></tr>
+                    <tr><td class="es-word">rubio</td><td class="cn-word">金发的</td></tr>
+                    <tr><td class="es-word">blanco</td><td class="cn-word">白色的</td></tr>
+                    <tr><td class="es-word">nuevo</td><td class="cn-word">新的</td></tr>
+                    <tr><td class="es-word">vacío</td><td class="cn-word">空的</td></tr>
+                    <tr><td class="es-word">bonito</td><td class="cn-word">漂亮的</td></tr>
+                    <tr><td class="es-word">bueno</td><td class="cn-word">好的</td></tr>
+                </table>
+                
+                <h3 class="sub-category">物主代词</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">suyo</td><td class="cn-word">他的</td></tr>
+                    <tr><td class="es-word">tuyo</td><td class="cn-word">你的</td></tr>
+                    <tr><td class="es-word">vuestro</td><td class="cn-word">你们的</td></tr>
+                </table>
+
+                <h3 class="sub-category">数量</h3>
+                <table class="vocab-table">
+                    <tr><td class="es-word">diecinueve</td><td class="cn-word">19</td></tr>
+                    <tr><td class="es-word">octavo</td><td class="cn-word">第八</td></tr>
+                    <tr><td class="es-word">veinte</td><td class="cn-word">20</td></tr>
+                    <tr><td class="es-word">millón</td><td class="cn-word">百万</td></tr>
+                    <tr><td class="es-word">varios</td><td class="cn-word">几个</td></tr>
+                    <tr><td class="es-word">bastante</td><td class="cn-word">相当多</td></tr>
+                    <tr><td class="es-word">nueve</td><td class="cn-word">9</td></tr>
+                    <tr><td class="es-word">noventa</td><td class="cn-word">90</td></tr>
+                    <tr><td class="es-word">novecientos</td><td class="cn-word">900</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>四、副词 / 介词 / 连词</summary>
+            <div class="vocab-content">
+                <table class="vocab-table">
+                    <tr><td class="es-word">abajo</td><td class="cn-word">下面</td></tr>
+                    <tr><td class="es-word">hasta</td><td class="cn-word">直到</td></tr>
+                    <tr><td class="es-word">también</td><td class="cn-word">也</td></tr>
+                    <tr><td class="es-word">allá</td><td class="cn-word">那里</td></tr>
+                    <tr><td class="es-word">bien</td><td class="cn-word">好</td></tr>
+                    <tr><td class="es-word">todavía</td><td class="cn-word">仍然</td></tr>
+                    <tr><td class="es-word">allí</td><td class="cn-word">在那里</td></tr>
+                    <tr><td class="es-word">debajo</td><td class="cn-word">在下面</td></tr>
+                    <tr><td class="es-word">una vez</td><td class="cn-word">一次</td></tr>
+                    <tr><td class="es-word">al revés</td><td class="cn-word">相反</td></tr>
+                    <tr><td class="es-word">doble</td><td class="cn-word">双倍</td></tr>
+                    <tr><td class="es-word">arriba</td><td class="cn-word">上面</td></tr>
+                    <tr><td class="es-word">hacia</td><td class="cn-word">朝向</td></tr>
+                    <tr><td class="es-word">ya</td><td class="cn-word">已经</td></tr>
+                    <tr><td class="es-word">sobre</td><td class="cn-word">在……上面</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>五、感叹词 (Interjecciones)</summary>
+            <div class="vocab-content">
+                <table class="vocab-table">
+                    <tr><td class="es-word">¡ay!</td><td class="cn-word">哎呀</td></tr>
+                    <tr><td class="es-word">¡caramba!</td><td class="cn-word">天哪</td></tr>
+                    <tr><td class="es-word">¡bola!</td><td class="cn-word">啊！</td></tr>
+                </table>
+            </div>
+        </details>
+
+    </div>
+</main>
+
+<footer class="footer">
+    <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+</footer>
+
+</body>
+</html>

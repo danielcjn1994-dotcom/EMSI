@@ -1013,6 +1013,131 @@
 <footer class="footer">
     © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
 </footer>
+<style>
+    /* 默写按钮样式 */
+    .dictation-btn {
+        background-color: #f1c40f;
+        color: #1a4a8e;
+        border: none;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 15px; /* 距离标题的间距 */
+        vertical-align: middle;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        display: inline-block; /* 确保按钮显示 */
+    }
 
+    .dictation-btn:hover {
+        background-color: #f39c12;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .dictation-btn.active {
+        background-color: #e74c3c; /* 红色背景 */
+        color: white;
+    }
+
+    /* 默写模式下的单词遮挡 */
+    .vocab-grid.dictation-mode .vocab-item span:first-child {
+        background-color: #e2e8f0;
+        color: transparent !important; /* 强制文字透明 */
+        border-radius: 4px;
+        user-select: none;
+        cursor: pointer;
+        position: relative;
+        min-width: 80px; /* 保证最小宽度 */
+    }
+
+    /* 遮挡时的提示文字 */
+    .vocab-grid.dictation-mode .vocab-item span:first-child::after {
+        content: "点击查看";
+        position: absolute;
+        left: 0; top: 0; width: 100%; height: 100%;
+        color: #999;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center; /* 文字居中 */
+    }
+
+    /* 偷看模式 */
+    .vocab-grid.dictation-mode .vocab-item span:first-child.peek {
+        background-color: #fff3cd !important; /* 偷看时淡黄色背景 */
+        color: #1a4a8e !important;
+    }
+    .vocab-grid.dictation-mode .vocab-item span:first-child.peek::after {
+        content: ""; /* 移除提示文字 */
+    }
+</style>
+
+<script>
+    (function() {
+        console.log("默写功能脚本已启动..."); // 方便调试
+
+        // 1. 直接找到所有的词汇网格
+        var grids = document.querySelectorAll('.vocab-grid');
+        
+        if (grids.length === 0) {
+            console.error("未找到 .vocab-grid 元素，请检查 HTML 结构");
+            return;
+        }
+
+        grids.forEach(function(grid, index) {
+            // 找到网格前面的标题
+            var title = grid.previousElementSibling;
+            
+            // 如果前面不是标题，或者已经加过按钮了，就跳过
+            if (!title || !title.classList.contains('quiz-title') || title.querySelector('.dictation-btn')) {
+                return;
+            }
+
+            // 创建按钮
+            var btn = document.createElement('button');
+            btn.className = 'dictation-btn';
+            btn.innerHTML = '🙈 默写模式';
+            btn.type = 'button'; // 防止意外提交表单
+
+            // 绑定点击事件
+            btn.onclick = function(e) {
+                e.stopPropagation(); // 防止冒泡
+                
+                // 切换网格的模式
+                grid.classList.toggle('dictation-mode');
+                
+                // 切换按钮状态
+                if (grid.classList.contains('dictation-mode')) {
+                    this.innerHTML = '👁️ 显示答案';
+                    this.classList.add('active');
+                } else {
+                    this.innerHTML = '🙈 默写模式';
+                    this.classList.remove('active');
+                    // 关闭时清除所有偷看状态
+                    var peeks = grid.querySelectorAll('.peek');
+                    peeks.forEach(function(p) { p.classList.remove('peek'); });
+                }
+            };
+
+            // 把按钮加到标题里面去
+            title.appendChild(btn);
+        });
+
+        // 2. 绑定点击偷看功能 (使用事件委托，更稳定)
+        document.body.addEventListener('click', function(e) {
+            // 检查点击的是不是在默写模式下的第一个 span (西语单词)
+            var target = e.target;
+            
+            // 如果点到了伪元素(::after)，target可能是span本身
+            if (target.matches('.vocab-grid.dictation-mode .vocab-item span:first-child')) {
+                target.classList.toggle('peek');
+            }
+        });
+
+    })();
+</script>
 </body>
 </html>
