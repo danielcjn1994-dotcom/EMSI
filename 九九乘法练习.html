@@ -20,7 +20,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            font-size: 20px; /* 整体字体基础放大 */
+            font-size: 20px;
         }
 
         header {
@@ -92,7 +92,6 @@
             border-radius: 12px;
             padding: 12px 5px;
             font-size: 18px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
         .column-header {
             background: var(--emsi-blue);
@@ -145,10 +144,7 @@
             border-radius: 15px;
             font-size: 32px; 
             font-weight: bold;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
         }
-        .question-text { color: #2d3748; flex: 1; }
-        .answer-area { display: flex; align-items: center; gap: 15px; min-width: 160px; justify-content: flex-end; }
         .ans-box { 
             background: #eef6fc; 
             color: var(--emsi-blue); 
@@ -172,12 +168,69 @@
         .btn-home { background: #7f8c8d; color: white; border: none; padding: 18px 45px; border-radius: 45px; cursor: pointer; font-size: 24px; font-weight: bold; }
         .btn-refresh { background: var(--success); color: white; border: none; padding: 18px 45px; border-radius: 45px; cursor: pointer; font-size: 24px; font-weight: bold; }
 
+        /* --- 闪卡样式优化 --- */
+        #fc-area { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 20px;
+        }
+        /* 全屏容器 */
+        .fc-fullscreen-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+        }
+        /* 全屏时的特殊背景 */
+        .fc-fullscreen-wrapper:fullscreen {
+            background-color: white;
+            padding: 20px;
+        }
+        
+        .fc-card {
+            width: 100%;
+            max-width: 700px;
+            min-height: 350px;
+            background: #fff;
+            border: 6px solid var(--emsi-blue);
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            margin: 20px 0;
+        }
+        .fc-question { font-size: 100px; font-weight: 900; color: var(--emsi-blue); margin: 0; }
+        .fc-answer { 
+            font-size: 90px; 
+            font-weight: bold; 
+            color: var(--emsi-yellow); 
+            height: 100px;
+            visibility: hidden;
+            margin: 10px 0 0 0;
+        }
+        .fc-answer.show { visibility: visible; }
+        
+        .fc-controls { display: flex; gap: 15px; justify-content: center; width: 100%; margin-top: 10px; }
+        .btn-fc { padding: 15px 35px; font-size: 20px; border-radius: 50px; cursor: pointer; border: none; font-weight: bold; transition: 0.2s; }
+        .btn-fc-next { background: var(--emsi-blue); color: white; }
+        .btn-fc-next:hover { opacity: 0.9; }
+        .btn-fc-fs { background: #34495e; color: white; }
+
         footer { background: var(--emsi-blue); color: white; padding: 25px; text-align: center; margin-top: auto; font-size: 20px; }
 
         @media (max-width: 768px) {
-            .quiz-list { grid-template-columns: 1fr; }
-            .emsi-text { font-size: 40px; }
-            .cn-text { font-size: 34px; }
+            .fc-question { font-size: 70px; }
+            .fc-answer { font-size: 60px; }
         }
     </style>
 </head>
@@ -233,6 +286,24 @@
                     </script>
                     <button class="btn-table btn-mix" style="grid-column: 1 / -1; background-color: #9b59b6; border-color: #8e44ad; color: white;" onclick="startGame('div_mix')">★ 除法随机挑战 (Desafío Mixto) ★</button>
                 </div>
+
+                <div class="section-divider">⚡ Flash Cards (闪卡随机练习)</div>
+                <div id="fc-area">
+                    <div id="fc-fullscreen-target" class="fc-fullscreen-wrapper">
+                        <h2 id="fc-status" style="color: var(--emsi-blue); font-size: 28px; margin-bottom: 0;">第 1 / 10 题</h2>
+                        
+                        <div class="fc-card" onclick="toggleFcAnswer()">
+                            <div id="fc-q" class="fc-question">? × ?</div>
+                            <div id="fc-a" class="fc-answer">?</div>
+                            <div style="color: #aaa; font-size: 16px; position: absolute; bottom: 15px;">点击卡片显示答案</div>
+                        </div>
+
+                        <div class="fc-controls">
+                            <button class="btn-fc btn-fc-fs" onclick="toggleFullscreen()">全屏显示</button>
+                            <button class="btn-fc btn-fc-next" onclick="nextFlashCard()">下一题 (Next)</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="game-area">
@@ -250,6 +321,7 @@
     <footer>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</footer>
 
     <script>
+        // --- 原有逻辑保持不变 ---
         let currentType = '';
         let currentNum = 0;
 
@@ -294,13 +366,11 @@
             questions.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'quiz-item';
-                div.innerHTML = `
-                    <div class="question-text">${index + 1}. ${item.q} = </div>
+                div.innerHTML = `<div class="question-text">${index + 1}. ${item.q} = </div>
                     <div class="answer-area">
                         <div class="ans-box" id="ans-${index}">${item.a}</div>
                         <button class="btn-show" onclick="toggleAns(${index}, this)">答案</button>
-                    </div>
-                `;
+                    </div>`;
                 listContainer.appendChild(div);
             });
             window.scrollTo(0, 0);
@@ -311,11 +381,9 @@
             if (box.style.display === 'block') {
                 box.style.display = 'none';
                 btn.innerText = '答案';
-                btn.style.background = 'var(--emsi-yellow)';
             } else {
                 box.style.display = 'block';
                 btn.innerText = '隐藏';
-                btn.style.background = '#e2e8f0';
             }
         }
 
@@ -325,6 +393,67 @@
                 [arr[i], arr[j]] = [arr[j], arr[i]]; 
             } 
         }
+
+        // --- 闪卡增强逻辑 ---
+        let fcList = [];
+        let fcCurrentIdx = 0;
+
+        function initFlashCards() {
+            generateFcData();
+            showFcCard();
+        }
+
+        function generateFcData() {
+            fcList = [];
+            for (let i = 0; i < 10; i++) {
+                let a = Math.floor(Math.random() * 10) + 1;
+                let b = Math.floor(Math.random() * 10) + 1;
+                fcList.push({ q: `${a} × ${b}`, a: a * b });
+            }
+            fcCurrentIdx = 0;
+        }
+
+        function showFcCard() {
+            const data = fcList[fcCurrentIdx];
+            document.getElementById('fc-q').innerText = data.q;
+            document.getElementById('fc-a').innerText = data.a;
+            document.getElementById('fc-a').classList.remove('show');
+            document.getElementById('fc-status').innerText = `第 ${fcCurrentIdx + 1} / 10 题`;
+        }
+
+        function toggleFcAnswer() {
+            document.getElementById('fc-a').classList.toggle('show');
+        }
+
+        function nextFlashCard() {
+            fcCurrentIdx++;
+            if (fcCurrentIdx >= 10) {
+                if(confirm("10题练习结束！要再换一组吗？")) {
+                    generateFcData();
+                    showFcCard();
+                } else {
+                    fcCurrentIdx = 0;
+                    showFcCard();
+                }
+            } else {
+                showFcCard();
+            }
+        }
+
+        function toggleFullscreen() {
+            // 关键修复：让包含按钮的包装容器进入全屏
+            const elem = document.getElementById('fc-fullscreen-target');
+            if (!document.fullscreenElement) {
+                if (elem.requestFullscreen) elem.requestFullscreen();
+                else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+                else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // 页面加载后自动初始化闪卡
+        window.onload = initFlashCards;
     </script>
 </body>
 </html>
