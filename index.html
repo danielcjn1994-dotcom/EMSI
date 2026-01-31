@@ -202,6 +202,58 @@
             margin-bottom: 20px;
             margin-top: 10px;
         }
+         /* --- 内容区 --- */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        /* --- 表格样式 --- */
+        .content-inner {
+            padding: 20px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 600px;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #1a4a8e;
+            text-align: left;
+            padding: 14px;
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 700;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #f0f0f0;
+            line-height: 1.6;
+            vertical-align: top;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        .grade-badge {
+            background: #eef2ff;
+            color: #1a4a8e;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: inline-block;
+        }
 
         .category-content { display: none; animation: slideInUp 0.4s ease-out; }
         .category-content.active { display: block; }
@@ -273,6 +325,276 @@
                 <img src="校徽.png" alt="EMSI Logo" class="welcome-logo">
                 <h2>欢迎使用 EMSI 资源中心</h2>
                 <p>请点击左上角菜单开始操作</p>
+                <main class="main-content">
+    <h2 class="page-title">Currículo de Educación Primaria en España (西班牙小学课程大纲)</h2>
+
+    <details>
+        <summary>
+            <span class="icon">📐</span>
+            I. Matemáticas (数学课程)
+        </summary>
+        <div class="content-inner">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="10%">Curso (年级)</th>
+                            <th width="45%">Contenidos Principales (主要内容)</th>
+                            <th width="45%">Enfoque Didáctico (教学侧重点)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="grade-badge">1º</span></td>
+                            <td>Números naturales hasta 100（100 以内自然数）, Conteo, Sumas y restas sin llevadas（不进位加法、不退位减法）, Figuras geométricas básicas（基本图形）.</td>
+                            <td>Aprendizaje manipulativo y visual, uso de material concreto（操作性学习、借助实物和图像理解数学）.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">2º</span></td>
+                            <td>Números hasta 1.000（1000 以内数）, Sumas y restas con llevadas（进位加法、退位减法）, Iniciación a la multiplicación（乘法初步）, Unidades básicas de medida（基础单位）.</td>
+                            <td>Desarrollo del razonamiento numérico básico（基础数感）y la expresión verbal.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">3º</span></td>
+                            <td>Números hasta 10.000（一万以内）, Multiplicación y división exacta（乘法与整除）, Tablas de multiplicar（乘法表）, Fracciones simples（简单分数）.</td>
+                            <td>Consolidación de operaciones y comprensión del significado（理解运算含义）, no solo cálculo.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">4º</span></td>
+                            <td>Números hasta 1.000.000（百万以内）, División con resto（有余数的除法）, Fracciones: comparación y equivalencia（分数比较与等值）, Decimales hasta las centésimas（小数到百分位）.</td>
+                            <td>Introducción progresiva al pensamiento matemático estructurado（结构化数学思维）.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">5º</span></td>
+                            <td>Operaciones con fracciones y decimales（分数与小数四则运算）, Porcentajes básicos（基础百分数）, Múltiplos y divisores（倍数与因数）, Volumen y capacidad（体积与容积）.</td>
+                            <td>Aplicación de las matemáticas a situaciones reales（现实问题情境化）.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">6º</span></td>
+                            <td>Números enteros y decimales complejos（较复杂小数、整数概念）, Proporcionalidad y porcentajes avanzados（比例与进阶百分数）, Cuerpos geométricos（立体图形）, Resolución de problemas multietapa（多步骤问题）.</td>
+                            <td>Preparación para Educación Secundaria Obligatoria (ESO)（准备升入初中）， énfasis en lógica, estrategia y capacidad de explicación.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="extra-section">
+                <h4>Metodología Común (共通教学理念)</h4>
+                <ul>
+                    <li>Uso progresivo de resolución de problemas（问题解决）</li>
+                    <li>Integración de lenguaje matemático y expresión oral（数学语言表达）</li>
+                    <li>Aprendizaje significativo y contextualizado（有意义、情境化学习）</li>
+                    <li>Evaluación continua y formativa（形成性评价）</li>
+                </ul>
+            </div>
+        </div>
+        <details>
+        <summary>
+            <span class="icon">📖</span>
+            Glosario de Matemáticas (双语词汇表)
+        </summary>
+        <div class="content-inner">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th bgcolor="#f8fafc">Español (西班牙语)</th>
+                            <th bgcolor="#f8fafc">Chino (中文)</th>
+                            <th bgcolor="#f8fafc">Español (西班牙语)</th>
+                            <th bgcolor="#f8fafc">Chino (中文)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="2"><strong>Números y Numeración (数与数位)</strong></td><td colspan="2"><strong>Operaciones (运算)</strong></td></tr>
+                        <tr><td>número</td><td>数</td><td>operación</td><td>运算</td></tr>
+                        <tr><td>número natural</td><td>自然数</td><td>suma</td><td>加法</td></tr>
+                        <tr><td>cifra</td><td>数字（0–9）</td><td>resta</td><td>减法</td></tr>
+                        <tr><td>numeración</td><td>数的表示</td><td>multiplicación</td><td>乘法</td></tr>
+                        <tr><td>conteo</td><td>数数</td><td>división</td><td>除法</td></tr>
+                        <tr><td>orden ascendente</td><td>从小到大排序</td><td>sumando</td><td>加数</td></tr>
+                        <tr><td>valor posicional</td><td>数位值</td><td>resultado</td><td>结果</td></tr>
+                        <tr><td>número entero</td><td>整数</td><td>resto</td><td>余数</td></tr>
+                        <tr><td colspan="2"><strong>Problemas y Razonamiento (应用题与思维)</strong></td><td colspan="2"><strong>Fracciones y Decimales (分数与小数)</strong></td></tr>
+                        <tr><td>problema</td><td>应用题</td><td>fracción</td><td>分数</td></tr>
+                        <tr><td>datos</td><td>已知条件</td><td>numerador</td><td>分子</td></tr>
+                        <tr><td>pregunta</td><td>问题</td><td>denominador</td><td>分母</td></tr>
+                        <tr><td>solución</td><td>解答</td><td>número decimal</td><td>小数</td></tr>
+                        <tr><td>razonamiento</td><td>推理</td><td>décima</td><td>十分位</td></tr>
+                        <tr><td colspan="2"><strong>Geometría (几何)</strong></td><td colspan="2"><strong>Medidas y Tiempo (度量与时间)</strong></td></tr>
+                        <tr><td>figura plana</td><td>平面图形</td><td>longitud / masa</td><td>长度 / 质量</td></tr>
+                        <tr><td>perímetro / área</td><td>周长 / 面积</td><td>capacidad</td><td>容量</td></tr>
+                        <tr><td>cuerpo geométrico</td><td>立体图形</td><td>tiempo / moneda</td><td>时间 / 钱币</td></tr>
+                        <tr><td colspan="2"><strong>Estadística (统计)</strong></td><td colspan="2"><strong>Proporcionalidad (比例)</strong></td></tr>
+                        <tr><td>estadística / gráfico</td><td>统计 / 图表</td><td>porcentaje</td><td>百分数</td></tr>
+                        <tr><td>probabilidad</td><td>概率</td><td>proporcionalidad</td><td>比例关系</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </details>
+    </details>
+
+    
+
+    <details>
+        <summary>
+            <span class="icon">📚</span>
+            II. Lengua Castellana y Literatura (西班牙语与文学)
+        </summary>
+        <div class="content-inner">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Vocabulario (词汇)</th>
+                            <th>Gramática (语法)</th>
+                            <th>Sintaxis (句法)</th>
+                            <th>Semántica (语义)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="grade-badge">1º</span></td>
+                            <td>Léxico de uso cotidiano（日常词汇）</td>
+                            <td>Sustantivos y verbos（名词/动词识别）</td>
+                            <td>Oración simple mínima（简单句）</td>
+                            <td>Comprensión literal（字面理解）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">2º</span></td>
+                            <td>Adjetivos calificativos（形容词）</td>
+                            <td>Concordancia nominal（性数一致）</td>
+                            <td>Complementos funcionales（补足语）</td>
+                            <td>Polisemia inicial（多义词初步）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">3º</span></td>
+                            <td>Vocabulario temático（主题词汇）</td>
+                            <td>Tiempos verbales simples（简单时态）</td>
+                            <td>Conectores básicos（连接词）</td>
+                            <td>Comprensión global（整体理解）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">4º</span></td>
+                            <td>Uso del diccionario（词典使用）</td>
+                            <td>Determinantes y pronombres（限定词代词）</td>
+                            <td>Predicado y complementos（谓语补足语）</td>
+                            <td>Sinonimia y antonimia（同反义）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">5º</span></td>
+                            <td>Léxico abstracto（抽象词汇）</td>
+                            <td>Prefijos y sufijos（前后缀）</td>
+                            <td>Oración compuesta intro（复合句初步）</td>
+                            <td>Hecho y opinión（事实与观点）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">6º</span></td>
+                            <td>Léxico académico（学术词汇）</td>
+                            <td>Morfología reflexiva（形态意识）</td>
+                            <td>Subordinación funcional（从句功能）</td>
+                            <td>Significados implícitos（隐含意义）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span class="icon">🇬🇧</span>
+            III. Inglés (英语课程 – LOMLOE)
+        </summary>
+        <div class="content-inner">
+            <div class="extra-section">
+                <h4>Objetivos Generales (总体目标)</h4>
+                <ul>
+                    <li>Desarrollo de la competencia comunicativa básica en inglés（基础交际能力）.</li>
+                    <li>Fomento de listening, speaking, reading y writing（听说读写能力）.</li>
+                    <li>Promoción de la conciencia intercultural（跨文化意识）.</li>
+                </ul>
+            </div>
+            <div class="table-responsive" style="margin-top: 20px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Vocabulary (词汇)</th>
+                            <th>Grammar (语法)</th>
+                            <th>Functions (语言功能)</th>
+                            <th>Skills (技能)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="grade-badge">1º</span></td>
+                            <td>Family, Toys, Colors...（家庭、玩具、颜色）</td>
+                            <td>Be (am/is), a/an</td>
+                            <td>Greetings, I like...（问候、喜好）</td>
+                            <td>Listening instructions（听懂指令）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">2º</span></td>
+                            <td>Daily routines, Food...（日常、食物）</td>
+                            <td>Be (plural), This/That</td>
+                            <td>Describing people（描述人物）</td>
+                            <td>Short dialogues（简短对话）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">3º</span></td>
+                            <td>Subjects, City, Hobbies...（学科、城市）</td>
+                            <td>Present Simple</td>
+                            <td>Daily activities（日常活动）</td>
+                            <td>Reading short texts（阅读短文）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">4º</span></td>
+                            <td>Jobs, Transport...（职业、交通）</td>
+                            <td>Adverbs, Can/Can't</td>
+                            <td>Comparisons（进行比较）</td>
+                            <td>Short narratives（叙述文本）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">5º</span></td>
+                            <td>Travel, Tech...（旅行、科技）</td>
+                            <td>Present Continuous</td>
+                            <td>Expressing opinions（表达观点）</td>
+                            <td>Coherent paragraphs（连贯段落）</td>
+                        </tr>
+                        <tr>
+                            <td><span class="grade-badge">6º</span></td>
+                            <td>Media, Culture...（媒体、文化）</td>
+                            <td>Past Simple, Future</td>
+                            <td>Advice and intentions（建议与意图）</td>
+                            <td>Authentic texts（真实文本）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="extra-section">
+                <h4>Criterios de Evaluación (评价要点)</h4>
+                <ul>
+                    <li>Comprensión de mensajes orales y escritos（理解能力）</li>
+                    <li>Producción de textos simples（表达能力）</li>
+                    <li>Uso de gramática y vocabulario básicos（准确性）</li>
+                    <li>Actitud positiva y participación（学习态度）</li>
+                </ul>
+            </div>
+            <div class="extra-section">
+                <h4>Competencias Clave (核心素养 - LOMLOE)</h4>
+                <ul>
+                    <li>Competencia Lingüística（语言能力）</li>
+                    <li>Competencia personal, social y de aprender a aprender（个人与社会能力）</li>
+                    <li>Conciencia y expresión culturales（文化意识与表达）</li>
+                    <li>Competencia digital（数字素养）</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+</main>
+
             </div>
 
             <div id="academic" class="category-content">
@@ -283,7 +605,9 @@
                         <a href="javascript:void(0)" onclick="openLogin('考勤.html')" class="nav-link"><span>📝</span>Registro de Asistencia<br>学生每周考勤</a>
                         <a href="javascript:void(0)" onclick="openLogin('评价.html')" class="nav-link"><span>📊</span>Progreso Académico<br>学生阶段评价</a>
                         <a href="javascript:void(0)" onclick="openLogin('calendario.html')" class="nav-link"><span>📅</span>Calendario y Notas<br>校历与备忘录</a>
+                    
                     </div>
+                
                 </div>
             </div>
 
@@ -390,7 +714,6 @@
                             <span>👨‍🏫</span>Unprofesor<br>标准视频与教学
                         </a>
                     </div>
-                </div>
             </div>
         </main>
     </div>
@@ -404,7 +727,6 @@
             <button onclick="closeLogin()" style="background:#94a3b8; margin-top:10px;">取消</button>
         </div>
     </div>
-
     <footer class="footer">
         © 2026 EMSI 马德里国际中文学校
     </footer>
