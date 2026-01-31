@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMSI 数学练习题库 - TV版</title>
+<style>
+/* --- 基础样式 --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+    background-color: #f5f7fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- 页眉设计 --- */
+.header {
+    background-color: white;
+    text-align: center;
+    padding: 30px 20px 20px 20px;
+    border-bottom: 6px solid #f1c40f;
+}
+
+.header h1 {
+    color: #1a4a8e;
+    font-size: 48px; /* 标题加大 */
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+.header h1 span {
+    font-weight: 900;
+    margin-right: 15px;
+}
+
+.header .subtitle {
+    color: #555;
+    font-size: 32px; /* 副标题加大 */
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+/* --- 返回按钮 --- */
+.back-btn {
+    display: inline-block;
+    background-color: #ffffff;
+    color: #1a4a8e;
+    border: 3px solid #1a4a8e; /* 边框加粗 */
+    padding: 12px 30px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 20px; /* 按钮文字加大 */
+    border-radius: 40px;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.back-btn:hover {
+    background-color: #1a4a8e;
+    color: #ffffff;
+}
+
+/* --- 内容区域 --- */
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.card {
+    background: white;
+    width: 100%;
+    max-width: 1200px; /* 宽度增加适配大屏 */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    padding: 40px;
+    box-sizing: border-box;
+    border: 1px solid #eee;
+}
+
+/* --- 题目手风琴 --- */
+.problem-item {
+    margin-bottom: 25px; /* 间距加大 */
+    border: 2px solid #e0e0e0; /* 边框加粗 */
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* 标题栏 */
+.accordion-header {
+    background-color: #f8f9fa;
+    color: #1a4a8e;
+    cursor: pointer;
+    padding: 25px 35px; /* 点击区域加大 */
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 28px; /* 题目编号加大 */
+    font-weight: 800;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion-header:hover {
+    background-color: #e9ecef;
+}
+
+/* 三角箭头图标 */
+.accordion-header:after {
+    content: '\25BC'; /* 下三角 ▼ */
+    color: #1a4a8e;
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+.accordion-header.active:after {
+    content: '\25B2'; /* 上三角 ▲ */
+    color: #f1c40f; /* 展开时变色 */
+}
+
+/* 内容面板 */
+.panel {
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.panel-content {
+    padding: 30px 40px;
+}
+
+/* --- 题目文本 (TV优化版) --- */
+.es-text {
+    color: #2c3e50;
+    font-size: 34px; /* 西语超大字体 */
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.cn-text {
+    color: #666;
+    font-size: 30px; /* 中文大字体 */
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+/* --- 答案部分 --- */
+.toggle-answer-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px; /* 按钮文字加大 */
+    font-weight: 600;
+    transition: background 0.3s;
+    display: inline-block;
+}
+
+.toggle-answer-btn:hover {
+    background-color: #2980b9;
+}
+
+.answer-box {
+    margin-top: 25px;
+    padding: 25px;
+    background-color: #fffde7;
+    border-left: 8px solid #f1c40f; /* 醒目黄条 */
+    border-radius: 8px;
+    display: none;
+    color: #333;
+    font-size: 26px; /* 答案字体加大 */
+    line-height: 1.6;
+}
+
+.answer-box p {
+    margin: 10px 0;
+}
+
+.answer-box strong {
+    color: #1a4a8e;
+}
+
+/* --- 页脚 --- */
+.footer {
+    background-color: #1a4a8e;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    font-size: 18px;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+    <h1><span>EMSI</span> 马德里国际中文学校</h1>
+    <div class="subtitle">Problemas de Sumas y Restas de Fracciones / 分数加减应用题</div>
+    <a href="index.html" class="back-btn">← 返回主页 / Volver al Inicio</a>
+</header>
+
+<main class="main-content">
+    <div class="card">
+        
+        <div class="problem-item">
+            <button class="accordion-header">Problema 1</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un niño tenía 3/4 de una barra de chocolate y comió 1/4. <br>¿Cuánto chocolate le queda?</div>
+                    <div class="cn-text">一个孩子原来有 3/4 根巧克力，吃掉了 1/4。<br>还剩多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> Chocolate inicial: 3/4; Chocolate comido: 1/4</p>
+                        <p><strong>Operación:</strong> 3/4 − 1/4</p>
+                        <p><strong>Solución:</strong> Le queda 2/4 = 1/2.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 2</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Ana bebió 1/3 de litro de jugo por la mañana y 1/6 de litro por la tarde. <br>¿Cuántos litros bebió en total?</div>
+                    <div class="cn-text">Ana 早上喝了 1/3 升 果汁，下午又喝了 1/6 升。<br>一共喝了多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 1/3 y 1/6</p>
+                        <p><strong>Operación:</strong> 1/3 + 1/6 = 2/6 + 1/6</p>
+                        <p><strong>Solución:</strong> Bebió 3/6 = 1/2 de litro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 3</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Una jarra tenía 5/6 de litro de agua y se derramó 1/6. <br>¿Cuánta agua queda?</div>
+                    <div class="cn-text">水壶里有 5/6 升 水，洒掉了 1/6。<br>还剩多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> Agua inicial: 5/6; Agua derramada: 1/6</p>
+                        <p><strong>Operación:</strong> 5/6 − 1/6</p>
+                        <p><strong>Solución:</strong> Quedan 4/6 = 2/3 de litro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 4</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Pedro comió 1/2 de una pizza y luego 1/4 de otra pizza. <br>¿Cuánta pizza comió en total?</div>
+                    <div class="cn-text">Pedro 吃了 1/2 个披萨，又吃了 1/4 个披萨。<br>一共吃了多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 1/2 y 1/4</p>
+                        <p><strong>Operación:</strong> 1/2 + 1/4 = 2/4 + 1/4</p>
+                        <p><strong>Solución:</strong> Comió 3/4 de pizza.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 5</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un pastel tenía 7/8 y se comieron 3/8. <br>¿Qué parte del pastel queda?</div>
+                    <div class="cn-text">蛋糕原来有 7/8，被吃掉了 3/8。<br>还剩多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> Pastel inicial: 7/8; Parte comida: 3/8</p>
+                        <p><strong>Operación:</strong> 7/8 − 3/8</p>
+                        <p><strong>Solución:</strong> Quedan 4/8 = 1/2.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 6</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un niño caminó 2/5 de kilómetro por la mañana y 1/5 por la tarde. <br>¿Cuántos kilómetros caminó en total?</div>
+                    <div class="cn-text">男孩早上走了 2/5 千米，下午又走了 1/5 千米。<br>一共走了多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 2/5 y 1/5</p>
+                        <p><strong>Operación:</strong> 2/5 + 1/5</p>
+                        <p><strong>Solución:</strong> Caminó 3/5 de kilómetro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 7</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un helado tenía 6/10 y se derritió 2/10. <br>¿Cuánto helado queda?</div>
+                    <div class="cn-text">冰淇淋原来有 6/10，融化了 2/10。<br>还剩多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 6/10 y 2/10</p>
+                        <p><strong>Operación:</strong> 6/10 − 2/10</p>
+                        <p><strong>Solución:</strong> Quedan 4/10 = 2/5.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 8</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Laura usó 3/4 de hora para estudiar y 1/8 para leer. <br>¿Cuánto tiempo usó en total?</div>
+                    <div class="cn-text">Laura 用了 3/4 小时 学习，又用了 1/8 小时 阅读。<br>一共用了多久？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 3/4 y 1/8</p>
+                        <p><strong>Operación:</strong> 3/4 + 1/8 = 6/8 + 1/8</p>
+                        <p><strong>Solución:</strong> Usó 7/8 de hora.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 9</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Sofía tenía 2/3 de metro de cinta y usó 1/3. <br>¿Cuánta cinta le queda?</div>
+                    <div class="cn-text">Sofía 有 2/3 米 彩带，用掉了 1/3 米。<br>还剩多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 2/3 y 1/3</p>
+                        <p><strong>Operación:</strong> 2/3 − 1/3</p>
+                        <p><strong>Solución:</strong> Le queda 1/3 de metro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 10</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Una botella tenía 2/3 de litro de agua y se añadió 1/3. <br>¿Cuánta agua hay ahora?</div>
+                    <div class="cn-text">瓶子里原来有 2/3 升 水，又加了 1/3 升。<br>现在有多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 2/3 y 1/3</p>
+                        <p><strong>Operación:</strong> 2/3 + 1/3</p>
+                        <p><strong>Solución:</strong> Hay 1 litro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 11</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un niño tenía 1 litro de zumo y bebió 3/4. <br>¿Cuánto zumo le queda?</div>
+                    <div class="cn-text">孩子有 1 升 果汁，喝掉了 3/4 升。<br>还剩多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 1 y 3/4</p>
+                        <p><strong>Operación:</strong> 1 − 3/4 = 4/4 − 3/4</p>
+                        <p><strong>Solución:</strong> Queda 1/4 de litro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 12</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">María leyó 4/10 de un libro por la mañana y 3/10 por la noche. <br>¿Cuánto leyó en total?</div>
+                    <div class="cn-text">María 早上读了 4/10 本书，晚上又读了 3/10 本书。<br>一共读了多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 4/10 y 3/10</p>
+                        <p><strong>Operación:</strong> 4/10 + 3/10</p>
+                        <p><strong>Solución:</strong> Leyó 7/10 del libro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 13</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Una cuerda medía 5/6 de metro y se cortó 1/6. <br>¿Cuánto mide ahora?</div>
+                    <div class="cn-text">绳子长 5/6 米，剪掉了 1/6 米。<br>现在多长？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 5/6 y 1/6</p>
+                        <p><strong>Operación:</strong> 5/6 − 1/6</p>
+                        <p><strong>Solución:</strong> Mide 4/6 = 2/3 de metro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 14</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un pastelero usó 3/8 de kilo de harina y luego 2/8 más. <br>¿Cuánta harina usó en total?</div>
+                    <div class="cn-text">面包师用了 3/8 千克 面粉，又加了 2/8 千克。<br>一共用了多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 3/8 y 2/8</p>
+                        <p><strong>Operación:</strong> 3/8 + 2/8</p>
+                        <p><strong>Solución:</strong> Usó 5/8 de kilo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 15</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un vaso tiene 1/6 de litro de leche y otro 2/6. <br>¿Cuánta leche hay en total?</div>
+                    <div class="cn-text">一个杯子里有 1/6 升 牛奶，另一个有 2/6 升。<br>一共有多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 1/6 y 2/6</p>
+                        <p><strong>Operación:</strong> 1/6 + 2/6</p>
+                        <p><strong>Solución:</strong> Hay 3/6 = 1/2 de litro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 16</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un niño tenía 3/4 de litro de leche y usó 1/2. <br>¿Cuánta leche queda?</div>
+                    <div class="cn-text">原来有 3/4 升 牛奶，用掉了 1/2 升。<br>还剩多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 3/4 y 1/2</p>
+                        <p><strong>Operación:</strong> 3/4 − 1/2 = 3/4 − 2/4</p>
+                        <p><strong>Solución:</strong> Queda 1/4 de litro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 17</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un pastel tenía 5/6 y el perro se comió 1/3. <br>¿Qué fracción queda?</div>
+                    <div class="cn-text">蛋糕原来有 5/6，狗吃掉了 1/3。<br>还剩多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 5/6 y 1/3</p>
+                        <p><strong>Operación:</strong> 5/6 − 2/6</p>
+                        <p><strong>Solución:</strong> Queda 3/6 = 1/2.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 18</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un niño caminó 1/4 de kilómetro por la mañana y 1/4 por la tarde. <br>¿Cuánto caminó en total?</div>
+                    <div class="cn-text">孩子早上走了 1/4 千米，下午又走了 1/4 千米。<br>一共走了多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 1/4 y 1/4</p>
+                        <p><strong>Operación:</strong> 1/4 + 1/4</p>
+                        <p><strong>Solución:</strong> Caminó 1/2 kilómetro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 19</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Una caja tenía 6/6 de galletas y se comieron 2/6. <br>¿Cuánto queda?</div>
+                    <div class="cn-text">盒子里有 6/6 饼干，吃掉了 2/6。<br>还剩多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 6/6 y 2/6</p>
+                        <p><strong>Operación:</strong> 6/6 − 2/6</p>
+                        <p><strong>Solución:</strong> Quedan 4/6 = 2/3.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-item">
+            <button class="accordion-header">Problema 20</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="es-text">Un libro tiene 1/2 leído por la mañana y 1/4 por la noche. <br>¿Cuánto se leyó en total?</div>
+                    <div class="cn-text">一本书早上读了 1/2，晚上读了 1/4。<br>一共读了多少？</div>
+                    
+                    <button class="toggle-answer-btn" onclick="toggleAnswer(this)">查看答案 / Ver Respuesta</button>
+                    <div class="answer-box">
+                        <p><strong>Datos:</strong> 1/2 y 1/4</p>
+                        <p><strong>Operación:</strong> 1/2 + 1/4</p>
+                        <p><strong>Solución:</strong> Se leyó 3/4 del libro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer class="footer">
+    <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+</footer>
+
+<script>
+    // 题目手风琴功能
+    var acc = document.getElementsByClassName("accordion-header");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+        });
+    }
+
+    // 显示/隐藏答案功能
+    function toggleAnswer(btn) {
+        var answerBox = btn.nextElementSibling;
+        var panel = btn.parentElement.parentElement; // 获取父级Panel以便重新计算高度
+        
+        if (answerBox.style.display === "block") {
+            answerBox.style.display = "none";
+            btn.textContent = "查看答案 / Ver Respuesta";
+        } else {
+            answerBox.style.display = "block";
+            btn.textContent = "收起答案 / Ocultar Respuesta";
+        }
+
+        // 重新调整父级手风琴的高度，防止内容被遮挡
+        if (panel.style.maxHeight) {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+    }
+</script>
+
+</body>
+</html>
