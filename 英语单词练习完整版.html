@@ -180,18 +180,39 @@
     </footer>
 
     <script>
+        // 核心更新区域：这里已经替换为了你提供的31个单词
         const dictionary = [
-            {en: "Member", cn: "成员"}, {en: "Allow", cn: "允许"}, {en: "Consider", cn: "考虑"},
-            {en: "Attention", cn: "注意"}, {en: "Business", cn: "商业/生意"}, {en: "Captain", cn: "船长/队长"},
-            {en: "Celebrate", cn: "庆祝"}, {en: "Circle", cn: "圆/圈"}, {en: "Column", cn: "专栏/圆柱"},
-            {en: "Consonant", cn: "辅音"}, {en: "Country", cn: "国家"}, {en: "Curtain", cn: "窗帘"},
-            {en: "Decimal", cn: "小数"}, {en: "Details", cn: "详情/细节"}, {en: "Different", cn: "不同的"},
-            {en: "Division", cn: "除法/部门"}, {en: "Energy", cn: "能量"}, {en: "Factory", cn: "工厂"},
-            {en: "Explain", cn: "解释"}, {en: "Fault", cn: "故障/错误"}, {en: "Forward", cn: "向前"},
-            {en: "Future", cn: "未来"}, {en: "Mammal", cn: "哺乳动物"}, {en: "Guest", cn: "客人"},
-            {en: "Finish", cn: "完成"}, {en: "Human", cn: "人类"}, {en: "Indicate", cn: "表明/指示"},
-            {en: "Interesting", cn: "有趣的"}, {en: "Jungle", cn: "丛林"}, {en: "Mollusc", cn: "软体动物"},
-            {en: "Introduction", cn: "介绍"}
+            {en: "Speak", cn: "说话 / 演讲"},
+            {en: "Move", cn: "移动 / 搬家"},
+            {en: "Also", cn: "也 / 同样"},
+            {en: "Other", cn: "其他的"},
+            {en: "Bean", cn: "豆子"},
+            {en: "Park", cn: "公园 / 停车"},
+            {en: "Body", cn: "身体 / 躯体"},
+            {en: "Piece", cn: "块 / 片 / 件"},
+            {en: "Build", cn: "建造 / 建立"},
+            {en: "Smile", cn: "微笑"},
+            {en: "Change", cn: "改变 / 零钱"},
+            {en: "Roses", cn: "玫瑰（复数）"},
+            {en: "Class", cn: "班级 / 课程"},
+            {en: "School", cn: "学校"},
+            {en: "Coming", cn: "来临 / 即将到来的"},
+            {en: "Woman", cn: "女人 / 妇女"},
+            {en: "Doctor", cn: "医生"},
+            {en: "Place", cn: "地方 / 位置"},
+            {en: "Funny", cn: "有趣的 / 滑稽的"},
+            {en: "Three", cn: "三"},
+            {en: "Half", cn: "一半"},
+            {en: "House", cn: "房子 / 房屋"},
+            {en: "Heavy", cn: "重的 / 沉重的"},
+            {en: "Scream", cn: "尖叫"},
+            {en: "Sleep", cn: "睡觉"},
+            {en: "Match", cn: "比赛 / 火柴 / 匹配"},
+            {en: "Lamb", cn: "羔羊 / 羔羊肉"},
+            {en: "Left", cn: "左边 / 剩下的"},
+            {en: "Love", cn: "爱 / 喜爱"},
+            {en: "Meal", cn: "一餐 / 膳食"},
+            {en: "Monday", cn: "星期一"}
         ];
 
         let currentMode = '', quizList = [], currentIndex = 0, userAnswers = {};
@@ -228,6 +249,7 @@
 
         function makeGaps(word) {
             let indices = [];
+            // 如果单词很短，至少保留1个空，最长不超过单词长度的一半
             let gapCount = Math.max(1, Math.floor(word.length * 0.4));
             while(indices.length < gapCount) {
                 let r = Math.floor(Math.random() * word.length);
