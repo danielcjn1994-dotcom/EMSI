@@ -23,9 +23,31 @@
         .header h1 { color: var(--emsi-blue); margin: 0; font-size: 26px; }
         .header .subtitle { color: var(--text-light); font-size: 14px; margin-top: 8px; }
 
+        /* 新增：导航栏样式 */
+        .nav-bar { width: 100%; max-width: 1200px; margin: 20px auto 0 auto; padding: 0 15px; box-sizing: border-box; }
+        .btn-back { 
+            display: inline-flex; align-items: center; justify-content: center;
+            background-color: white; /* 白底 */
+            color: var(--emsi-blue); /* 蓝字 */
+            text-decoration: none; 
+            padding: 10px 25px; 
+            border-radius: 30px; 
+            font-weight: 600; 
+            font-size: 15px;
+            border: 1px solid var(--emsi-blue); /* 蓝色边框呼应风格 */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        .btn-back:hover {
+            background-color: #f0f7ff; /* 悬停微蓝背景 */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .btn-back span { margin-left: 8px; }
+
         /* 布局容器 */
         .container { 
-            width: 100%; max-width: 1200px; margin: 20px auto; padding: 0 15px; box-sizing: border-box; 
+            width: 100%; max-width: 1200px; margin: 15px auto; padding: 0 15px; box-sizing: border-box; 
             display: grid; grid-template-columns: 1fr 350px; gap: 20px;
         }
 
@@ -88,7 +110,6 @@
         
         /* 备忘录条目优化 */
         .memo-item { background: #f1f5f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; font-size: 14px; position: relative; border-left: 4px solid var(--emsi-blue); }
-        /* 强调日期标签 */
         .memo-tag { display: inline-block; background: #e0e7ff; color: #1a4a8e; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-right: 5px; margin-bottom: 5px; }
         .memo-content { line-height: 1.5; color: #334155; }
         .memo-footer { font-size: 11px; color: #94a3b8; margin-top: 6px; display: flex; justify-content: space-between; }
@@ -112,8 +133,14 @@
 
     <header class="header">
         <h1>EMSI 2026 马德里中西校历</h1>
-        <div class="subtitle">农历日期 & 马德里节假日</div>
+        <div class="subtitle">农历日期 & 马德里当地假期</div>
     </header>
+
+    <div class="nav-bar">
+        <a href="index.html" class="btn-back">
+            ← <span>返回首页</span>
+        </a>
+    </div>
 
     <div class="container">
         <main class="card">
@@ -163,9 +190,7 @@
     <script>
         const currentYear = 2026;
         
-        // --- 核心优化 1：打开时自动定位到当前月份 ---
-        // 逻辑：获取当前真实月份，并定位到2026年的该月。
-        // 这样无论您是在2025年备课还是2026年使用，打开都是“当前”的对应进度。
+        // 核心优化：打开时自动定位到当前月份
         let navDate = new Date(2026, new Date().getMonth(), 1);
 
         let memos = JSON.parse(localStorage.getItem('EMSI_MEMO_2026_V3')) || [];
@@ -252,7 +277,6 @@
                 if (dateObj.toDateString() === todayStr) divClass += " today";
                 let lunarDisplay = (holiday && holiday.type === 'cn') ? holiday.name : lunar;
 
-                // 修改点击事件，传入标准化的日期字符串
                 grid.innerHTML += `
                     <div class="${divClass}" onclick="quickMemo('${month+1}月${d}日')">
                         ${labelHtml}<div class="solar">${d}</div><div class="lunar">${lunarDisplay}</div>
@@ -263,34 +287,28 @@
 
         function changeMonth(offset) { navDate.setMonth(navDate.getMonth() + offset); renderCalendar(); }
 
-        // --- 核心优化 2：智能添加日期标签 ---
         function addMemo() {
             const input = document.getElementById('memoInput'); 
             let text = input.value.trim();
             if(!text) return;
 
-            // 检查文本是否已经包含了日期格式（例如通过点击日历生成的 "2月17日 -"）
             const datePattern = /^\d+月\d+日/;
             let dateTag = "";
             
             if (datePattern.test(text)) {
-                // 如果已经有日期，提取出来作为标签，并从正文中移除多余部分
                 const match = text.match(datePattern);
                 dateTag = match[0];
-                // 移除 "2月17日 - " 或 "2月17日" 前缀
                 text = text.replace(/^\d+月\d+日(\s*-\s*)?/, '').trim();
             } else {
-                // 如果用户没有写日期，自动使用当前系统日期
                 const now = new Date();
                 dateTag = `${now.getMonth()+1}月${now.getDate()}日`;
             }
 
-            // 如果移除日期后没有内容了，默认设为“无内容”
             if (!text) text = "备忘录";
 
             memos.unshift({ 
                 id: Date.now(), 
-                dateTag: dateTag, // 单独存储日期标签
+                dateTag: dateTag, 
                 text: text, 
                 createdTime: new Date().toLocaleString('zh-CN', { hour12: false }) 
             });
@@ -334,7 +352,6 @@
         function exportData() {
             let csv = "data:text/csv;charset=utf-8,\uFEFF日期,内容,记录时间\n";
             memos.forEach(m => { 
-                // 导出时也包含日期
                 csv += `"${m.dateTag}","${m.text.replace(/"/g, '""')}","${m.createdTime}"\n`; 
             });
             const link = document.createElement("a"); link.href = encodeURI(csv); link.download = "EMSI备忘录.csv"; document.body.appendChild(link); link.click();
