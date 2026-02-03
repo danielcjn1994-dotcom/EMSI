@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI - Ejercicios de Fracciones</title>
+    <title>EMSI - Ejercicios de Fracciones Avanzados</title>
     <style>
         /* --- 严格复刻 EMSI 视觉风格 --- */
         body {
@@ -86,20 +86,41 @@
             line-height: 1;
         }
 
+        /* 模块标题样式 */
+        .section-title {
+            color: #1a4a8e;
+            font-size: 1.5rem;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #edf2f7;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-badge {
+            background: #f1c40f;
+            color: #1a4a8e;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-right: 15px;
+        }
+
         .btn-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 稍微调小宽度以适应更多按钮 */
+            gap: 15px;
+            margin-bottom: 10px;
         }
 
         .btn-emsi {
-            padding: 20px;
+            padding: 15px;
             border: none;
             border-radius: 12px;
             background: #1a4a8e;
             color: white;
-            font-size: 1.1rem; 
+            font-size: 1rem; 
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
@@ -108,12 +129,18 @@
             align-items: center;
             justify-content: center;
             text-decoration: none; 
-            line-height: 1.4;
+            line-height: 1.3;
+            min-height: 80px;
         }
 
-        .btn-emsi small { font-weight: 400; font-size: 0.85rem; opacity: 0.9; margin-top: 4px; }
+        .btn-emsi small { font-weight: 400; font-size: 0.8rem; opacity: 0.9; margin-top: 4px; display: block; }
 
         .btn-emsi:hover { background: #2563eb; transform: translateY(-2px); }
+        
+        /* 不同模块按钮微调颜色以示区分 */
+        .btn-level-1 { background: #1a4a8e; }
+        .btn-level-2 { background: #2c5282; } /* 略深 */
+        .btn-level-3 { background: #2a4365; } /* 更深 */
 
         .quiz-header {
             display: flex;
@@ -188,28 +215,58 @@
 
     <header class="header">
         <h1><span>EMSI</span> 马德里国际中文学校</h1>
-        <div class="subtitle">Ejercicios de Fracciones (分数运算练习)</div>
+        <div class="subtitle">Ejercicios Completos de Fracciones (全功能分数运算练习)</div>
     </header>
 
     <main class="main-content">
         <div class="card">
             <div id="home-page">
-                <div style="margin-bottom: 35px;">
+                <div style="margin-bottom: 20px;">
                     <a href="index.html" class="btn-back-pill">
                         <span class="arrow">←</span> 返回首页
                     </a>
                 </div>
 
-                <h2 style="color: #1a4a8e; text-align: center; margin-bottom: 30px; font-size: 1.8rem;">Selecciona el nivel de dificultad</h2>
+                <h2 style="color: #1a4a8e; text-align: center; margin-bottom: 10px; font-size: 1.8rem;">Selecciona el nivel de dificultad</h2>
+
+                <div class="section-title">
+                    <span class="section-badge">Nivel 1</span> Fracciones Simples (纯分数运算)
+                </div>
                 <div class="btn-grid">
-                    <button class="btn-emsi" onclick="startQuiz('add')">Suma<small>分数加法 (3-4项)</small></button>
-                    <button class="btn-emsi" onclick="startQuiz('sub')">Resta<small>分数减法 (3-4项)</small></button>
-                    <button class="btn-emsi" onclick="startQuiz('addsub')">Suma y Resta<small>分数加减混合</small></button>
-                    <button class="btn-emsi" onclick="startQuiz('mul')">Multiplicación<small>分数乘法</small></button>
-                    <button class="btn-emsi" onclick="startQuiz('div')">División<small>分数除法</small></button>
-                    <button class="btn-emsi" onclick="startQuiz('mixed')">Operaciones mixtas<small>加减乘除混合</small></button>
-                    <button class="btn-emsi" onclick="startQuiz('parenthesis')">Con paréntesis ( )<small>带小括号混合运算</small></button>
-                    <button class="btn-emsi" onclick="startQuiz('brackets')">Con corchetes [ ]<small>带中括号混合运算</small></button>
+                    <button class="btn-emsi btn-level-1" onclick="startQuiz('add', 'normal')">Suma<small>加法</small></button>
+                    <button class="btn-emsi btn-level-1" onclick="startQuiz('sub', 'normal')">Resta<small>减法</small></button>
+                    <button class="btn-emsi btn-level-1" onclick="startQuiz('addsub', 'normal')">Suma/Resta<small>加减混合</small></button>
+                    <button class="btn-emsi btn-level-1" onclick="startQuiz('mul', 'normal')">Multiplicación<small>乘法</small></button>
+                    <button class="btn-emsi btn-level-1" onclick="startQuiz('div', 'normal')">División<small>除法</small></button>
+                    <button class="btn-emsi btn-level-1" onclick="startQuiz('mixed', 'normal')">Mixtas<small>加减乘除混合</small></button>
+                    <button class="btn-emsi btn-level-1" onclick="startQuiz('parenthesis', 'normal')">Paréntesis ( )<small>带小括号</small></button>
+                    <button class="btn-emsi btn-level-1" onclick="startQuiz('brackets', 'normal')">Corchetes [ ]<small>带中括号</small></button>
+                </div>
+
+                <div class="section-title">
+                    <span class="section-badge">Nivel 2</span> Fracción y Entero &lt; 100 (分数与100以内整数)
+                </div>
+                <div class="btn-grid">
+                    <button class="btn-emsi btn-level-2" onclick="startQuiz('add', 'int100')">Suma<small>加法</small></button>
+                    <button class="btn-emsi btn-level-2" onclick="startQuiz('sub', 'int100')">Resta<small>减法</small></button>
+                    <button class="btn-emsi btn-level-2" onclick="startQuiz('mul', 'int100')">Multiplicación<small>乘法</small></button>
+                    <button class="btn-emsi btn-level-2" onclick="startQuiz('div', 'int100')">División<small>除法</small></button>
+                    <button class="btn-emsi btn-level-2" onclick="startQuiz('mixed', 'int100')">Mixtas<small>四则混合</small></button>
+                    <button class="btn-emsi btn-level-2" onclick="startQuiz('parenthesis', 'int100')">Paréntesis ( )<small>带小括号</small></button>
+                    <button class="btn-emsi btn-level-2" onclick="startQuiz('brackets', 'int100')">Corchetes [ ]<small>带中括号</small></button>
+                </div>
+
+                <div class="section-title">
+                    <span class="section-badge">Nivel 3</span> Fracción y Entero (3 Cifras) (分数与三位数)
+                </div>
+                <div class="btn-grid">
+                    <button class="btn-emsi btn-level-3" onclick="startQuiz('add', 'int3digit')">Suma<small>加法</small></button>
+                    <button class="btn-emsi btn-level-3" onclick="startQuiz('sub', 'int3digit')">Resta<small>减法</small></button>
+                    <button class="btn-emsi btn-level-3" onclick="startQuiz('mul', 'int3digit')">Multiplicación<small>乘法</small></button>
+                    <button class="btn-emsi btn-level-3" onclick="startQuiz('div', 'int3digit')">División<small>除法</small></button>
+                    <button class="btn-emsi btn-level-3" onclick="startQuiz('mixed', 'int3digit')">Mixtas<small>四则混合</small></button>
+                    <button class="btn-emsi btn-level-3" onclick="startQuiz('parenthesis', 'int3digit')">Paréntesis ( )<small>带小括号</small></button>
+                    <button class="btn-emsi btn-level-3" onclick="startQuiz('brackets', 'int3digit')">Corchetes [ ]<small>带中括号</small></button>
                 </div>
             </div>
 
@@ -232,11 +289,13 @@
     </footer>
 
 <script>
+    // --- 核心数学库 ---
     const gcd = (a, b) => b === 0 ? Math.abs(a) : gcd(b, a % b);
     const lcm = (a, b) => (a === 0 || b === 0) ? 0 : Math.abs(a * b) / gcd(a, b);
 
     class Fraction {
         constructor(n, d) {
+            // 处理整数情况 d=1
             let common = gcd(n, d);
             this.n = n / common;
             this.d = d / common;
@@ -248,31 +307,78 @@
         }
     }
 
+    // 基本运算
     function add(f1, f2) { return new Fraction(f1.n * f2.d + f2.n * f1.d, f1.d * f2.d); }
     function sub(f1, f2) { return new Fraction(f1.n * f2.d - f2.n * f1.d, f1.d * f2.d); }
     function mul(f1, f2) { return new Fraction(f1.n * f2.n, f1.d * f2.d); }
     function div(f1, f2) { return new Fraction(f1.n * f2.d, f1.d * f2.n); }
 
+    // --- 随机数生成器 ---
     function randFrac() {
-        const d = [2, 3, 4, 5, 6, 8, 10][Math.floor(Math.random() * 7)];
+        const d = [2, 3, 4, 5, 6, 8, 10, 12][Math.floor(Math.random() * 8)];
         const n = Math.floor(Math.random() * (d - 1)) + 1;
         return new Fraction(n, d);
     }
 
-    let currentType = '';
+    function randInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
-    function startQuiz(type) {
+    // 智能操作数生成器：根据当前难度级别混合分数和整数
+    function getOperands(count, level) {
+        let ops = [];
+        if (level === 'normal') {
+            for(let i=0; i<count; i++) ops.push(randFrac());
+        } else {
+            // 定义整数范围
+            let min = (level === 'int100') ? 2 : 100;
+            let max = (level === 'int100') ? 99 : 999;
+
+            // 策略：生成混合数组。确保至少有一个分数，至少有一个整数。
+            // 先全部生成分数
+            for(let i=0; i<count; i++) ops.push(randFrac());
+            
+            // 随机选择一个位置强制变成整数
+            let intIdx = Math.floor(Math.random() * count);
+            ops[intIdx] = new Fraction(randInt(min, max), 1);
+
+            // 如果只有两个数，这就够了（一个分数一个整数）。
+            // 如果多于两个数，随机再把其他一些变成整数（50%概率），增加混合度
+            if(count > 2) {
+                for(let i=0; i<count; i++) {
+                    if (i !== intIdx && Math.random() > 0.6) {
+                        ops[i] = new Fraction(randInt(min, max), 1);
+                    }
+                }
+            }
+        }
+        return ops;
+    }
+
+    let currentType = '';
+    let currentLevel = 'normal'; // normal, int100, int3digit
+
+    function startQuiz(type, level) {
         currentType = type;
+        currentLevel = level || 'normal';
+        
         document.getElementById('home-page').classList.add('hidden');
         document.getElementById('quiz-page').classList.remove('hidden');
         
-        const titles = {
-            'add': 'Suma de Fracciones', 'sub': 'Resta de Fracciones', 
-            'addsub': 'Suma y Resta Mixta', 'mul': 'Multiplicación', 
-            'div': 'División', 'mixed': 'Operaciones Mixtas',
-            'parenthesis': 'Con Paréntesis ( )', 'brackets': 'Con Corchetes [ ]'
+        const typeTitles = {
+            'add': 'Suma (加法)', 'sub': 'Resta (减法)', 
+            'addsub': 'Suma y Resta (加减)', 'mul': 'Multiplicación (乘法)', 
+            'div': 'División (除法)', 'mixed': 'Operaciones Mixtas (混合运算)',
+            'parenthesis': 'Con Paréntesis (含括号)', 'brackets': 'Con Corchetes (含中括号)'
         };
-        document.getElementById('quiz-title').innerText = titles[type];
+        
+        const levelLabels = {
+            'normal': '',
+            'int100': ' [Fracción + Entero < 100]',
+            'int3digit': ' [Fracción + Entero 3 Cifras]'
+        };
+
+        document.getElementById('quiz-title').innerText = typeTitles[type] + levelLabels[currentLevel];
         generateQuestions();
     }
 
@@ -282,7 +388,8 @@
         const list = document.getElementById('quiz-list');
         list.innerHTML = '';
         for (let i = 1; i <= 10; i++) {
-            let q = generateQuestionData(currentType);
+            // 使用递归防止负数结果
+            let q = generateValidQuestion(currentType, currentLevel);
             const item = document.createElement('div');
             item.className = 'quiz-item';
             item.innerHTML = `
@@ -294,57 +401,84 @@
         }
     }
 
-    function generateQuestionData(type) {
-        let f1 = randFrac(), f2 = randFrac(), f3 = randFrac(), f4 = randFrac();
+    // 包装函数：生成并检查结果是否合法（非负数）
+    function generateValidQuestion(type, level) {
+        let maxAttempts = 20; // 防止无限循环
+        while (maxAttempts-- > 0) {
+            let q = generateQuestionData(type, level);
+            if (q.ans.n > 0) return q; // 结果为正数则返回
+        }
+        // 如果尝试多次都失败（极为罕见），返回一个简单的加法作为兜底
+        return generateQuestionData('add', level); 
+    }
+
+    function generateQuestionData(type, level) {
         let html, stepsHTML = '';
 
         if (['add', 'sub', 'addsub'].includes(type)) {
-            let ops = [type === 'add' ? '+' : (type === 'sub' ? '-' : (Math.random() > 0.5 ? '+' : '-'))];
-            ops.push(type === 'add' ? '+' : (type === 'sub' ? '-' : (Math.random() > 0.5 ? '+' : '-')));
+            // 获取3个操作数用于addsub，2个用于add/sub
+            let count = (type === 'addsub') ? 3 : 2;
+            let opsData = getOperands(count, level);
             
-            let commonDen = lcm(lcm(f1.d, f2.d), f3.d);
-            let n1 = f1.n * (commonDen / f1.d);
-            let n2 = f2.n * (commonDen / f2.d);
-            let n3 = f3.n * (commonDen / f3.d);
-            
-            let ansN = n1;
-            ansN = (ops[0] === '+') ? ansN + n2 : ansN - n2;
-            ansN = (ops[1] === '+') ? ansN + n3 : ansN - n3;
-            
-            if (ansN <= 0) return generateQuestionData(type);
+            let f1 = opsData[0];
+            let f2 = opsData[1];
+            let f3 = opsData[2] || null;
 
-            html = `${f1.toHTML()} <span class="op">${ops[0]}</span> ${f2.toHTML()} <span class="op">${ops[1]}</span> ${f3.toHTML()}`;
+            let operator1 = (type === 'add') ? '+' : (type === 'sub' ? '-' : (Math.random() > 0.5 ? '+' : '-'));
+            let operator2 = '';
             
-            stepsHTML = `
-                <div><span class="step-label">1. 通分 (Común denominador):</span> 
-                <span class="fraction"><span class="num">${n1}</span><span class="den">${commonDen}</span></span>
-                <span class="op">${ops[0]}</span>
-                <span class="fraction"><span class="num">${n2}</span><span class="den">${commonDen}</span></span>
-                <span class="op">${ops[1]}</span>
-                <span class="fraction"><span class="num">${n3}</span><span class="den">${commonDen}</span></span></div>
-                <div><span class="step-label">2. 计算 (Calcular):</span> <span class="fraction"><span class="num">${ansN}</span><span class="den">${commonDen}</span></span></div>
-                <div><span class="step-label">3. 约分 (Simplificar):</span> ${new Fraction(ansN, commonDen).toHTML()}</div>
-            `;
-            return { html, ans: new Fraction(ansN, commonDen), steps: stepsHTML };
+            if (count === 3) {
+                 operator2 = (Math.random() > 0.5 ? '+' : '-');
+            }
+
+            // 计算逻辑
+            let res1 = (operator1 === '+') ? add(f1, f2) : sub(f1, f2);
+            let finalAns = res1;
+            if (count === 3) {
+                finalAns = (operator2 === '+') ? add(res1, f3) : sub(res1, f3);
+            }
+
+            // 如果结果 <= 0，在此层返回（外层循环会重试）
+            if (finalAns.n <= 0) return { ans: finalAns };
+
+            // 构建 HTML 和 步骤
+            if (count === 2) {
+                html = `${f1.toHTML()} <span class="op">${operator1}</span> ${f2.toHTML()}`;
+                stepsHTML = `
+                    <div><span class="step-label">1. 通分/转化 (Común denominador):</span> 
+                    ${f1.toHTML()} <span class="op">${operator1}</span> ${f2.toHTML()}</div>
+                    <div><span class="step-label">2. 结果 (Resultado):</span> ${finalAns.toHTML()}</div>
+                `;
+            } else {
+                html = `${f1.toHTML()} <span class="op">${operator1}</span> ${f2.toHTML()} <span class="op">${operator2}</span> ${f3.toHTML()}`;
+                stepsHTML = `
+                    <div><span class="step-label">1. 第一步 (Paso 1):</span> 
+                    ${f1.toHTML()} <span class="op">${operator1}</span> ${f2.toHTML()} <span class="op">=</span> ${res1.toHTML()}</div>
+                    <div><span class="step-label">2. 第二步 (Paso 2):</span> 
+                    ${res1.toHTML()} <span class="op">${operator2}</span> ${f3.toHTML()} <span class="op">=</span> ${finalAns.toHTML()}</div>
+                `;
+            }
+            return { html, ans: finalAns, steps: stepsHTML };
         }
 
         if (type === 'mul') {
+            let [f1, f2] = getOperands(2, level);
             let ans = mul(f1, f2);
             html = `${f1.toHTML()} <span class="op">×</span> ${f2.toHTML()}`;
             stepsHTML = `
                 <div><span class="step-label">1. 乘法 (Multiplicar):</span> 
-                <span class="fraction"><span class="num">${f1.n} × ${f2.n}</span><span class="den">${f1.d} × ${f2.d}</span></span>
-                <span class="op">=</span> <span class="fraction"><span class="num">${f1.n * f2.n}</span><span class="den">${f1.d * f2.d}</span></span></div>
-                <div><span class="step-label">2. 约分 (Simplificar):</span> ${ans.toHTML()}</div>
+                <span class="fraction"><span class="num">${f1.n} × ${f2.n}</span><span class="den">${f1.d} × ${f2.d}</span></span></div>
+                <div><span class="step-label">2. 结果 (Resultado):</span> ${ans.toHTML()}</div>
             `;
             return { html, ans, steps: stepsHTML };
         }
 
         if (type === 'div') {
+            let [f1, f2] = getOperands(2, level);
             let ans = div(f1, f2);
             html = `${f1.toHTML()} <span class="op">÷</span> ${f2.toHTML()}`;
             stepsHTML = `
-                <div><span class="step-label">1. 转为乘法 (Convertir a ×):</span> 
+                <div><span class="step-label">1. 颠倒相乘 (Invertir y multiplicar):</span> 
                 ${f1.toHTML()} <span class="op">×</span> <span class="fraction"><span class="num">${f2.d}</span><span class="den">${f2.n}</span></span></div>
                 <div><span class="step-label">2. 结果 (Resultado):</span> ${ans.toHTML()}</div>
             `;
@@ -352,44 +486,72 @@
         }
 
         if (type === 'mixed') {
-            // a * b + c
-            let part1 = mul(f1, f2);
-            let final = add(part1, f3);
-            html = `${f1.toHTML()} <span class="op">×</span> ${f2.toHTML()} <span class="op">+</span> ${f3.toHTML()}`;
+            let [f1, f2, f3] = getOperands(3, level);
+            // 模式: f1 * f2 + f3 (先乘除后加减)
+            // 为了增加变化，随机选择操作符
+            let op1 = Math.random() > 0.5 ? '×' : '÷';
+            let op2 = Math.random() > 0.5 ? '+' : '-';
+            
+            let part1 = (op1 === '×') ? mul(f1, f2) : div(f1, f2);
+            let final = (op2 === '+') ? add(part1, f3) : sub(part1, f3);
+
+            html = `${f1.toHTML()} <span class="op">${op1}</span> ${f2.toHTML()} <span class="op">${op2}</span> ${f3.toHTML()}`;
             stepsHTML = `
-                <div><span class="step-label">1. 先乘法 (Primero ×):</span> ${part1.toHTML()} <span class="op">+</span> ${f3.toHTML()}</div>
-                <div><span class="step-label">2. 后加法 (Luego +):</span> ${final.toHTML()}</div>
+                <div><span class="step-label">1. 先乘除 (Primero ×/÷):</span> ${f1.toHTML()} <span class="op">${op1}</span> ${f2.toHTML()} <span class="op">=</span> ${part1.toHTML()}</div>
+                <div><span class="step-label">2. 后加减 (Luego +/-):</span> ${part1.toHTML()} <span class="op">${op2}</span> ${f3.toHTML()}</div>
+                <div><span class="step-label">3. 结果 (Resultado):</span> ${final.toHTML()}</div>
             `;
             return { html, ans: final, steps: stepsHTML };
         }
 
         if (type === 'parenthesis') {
-            // a * (b + c)
-            let inner = add(f2, f3);
-            let final = mul(f1, inner);
-            html = `${f1.toHTML()} <span class="op">×</span> <span class="bracket">(</span> ${f2.toHTML()} <span class="op">+</span> ${f3.toHTML()} <span class="bracket">)</span>`;
+            let [f1, f2, f3] = getOperands(3, level);
+            // 模式: f1 * (f2 + f3)
+            let opInner = Math.random() > 0.5 ? '+' : '-';
+            let inner = (opInner === '+') ? add(f2, f3) : sub(f2, f3);
+            
+            // 检查括号内是否为负，如果是，交换顺序或改加法
+            if (inner.n < 0) { 
+                opInner = '+'; 
+                inner = add(f2, f3); 
+            }
+
+            let opOuter = Math.random() > 0.5 ? '×' : '÷';
+            let final = (opOuter === '×') ? mul(f1, inner) : div(f1, inner);
+
+            html = `${f1.toHTML()} <span class="op">${opOuter}</span> <span class="bracket">(</span> ${f2.toHTML()} <span class="op">${opInner}</span> ${f3.toHTML()} <span class="bracket">)</span>`;
             stepsHTML = `
-                <div><span class="step-label">1. 括号内 (Paréntesis):</span> ${f1.toHTML()} <span class="op">×</span> ${inner.toHTML()}</div>
-                <div><span class="step-label">2. 计算结果 (Resultado):</span> ${final.toHTML()}</div>
+                <div><span class="step-label">1. 括号内 (Paréntesis):</span> ${f2.toHTML()} <span class="op">${opInner}</span> ${f3.toHTML()} <span class="op">=</span> ${inner.toHTML()}</div>
+                <div><span class="step-label">2. 括号外 (Fuera):</span> ${f1.toHTML()} <span class="op">${opOuter}</span> ${inner.toHTML()}</div>
+                <div><span class="step-label">3. 结果 (Resultado):</span> ${final.toHTML()}</div>
             `;
             return { html, ans: final, steps: stepsHTML };
         }
 
         if (type === 'brackets') {
-            // [(a + b) * c] / d
-            let inner = add(f1, f2);
-            let middle = mul(inner, f3);
-            let final = div(middle, f4);
-            html = `<span class="bracket">[</span> <span class="bracket">(</span> ${f1.toHTML()} <span class="op">+</span> ${f2.toHTML()} <span class="bracket">)</span> <span class="op">×</span> ${f3.toHTML()} <span class="bracket">]</span> <span class="op">÷</span> ${f4.toHTML()}`;
+            let [f1, f2, f3, f4] = getOperands(4, level);
+            // 模式: [(f1 + f2) * f3] ÷ f4
+            let op1 = Math.random() > 0.5 ? '+' : '-';
+            let inner = (op1 === '+') ? add(f1, f2) : sub(f1, f2);
+            if(inner.n < 0) { op1 = '+'; inner = add(f1, f2); }
+
+            let op2 = Math.random() > 0.5 ? '×' : '÷';
+            let middle = (op2 === '×') ? mul(inner, f3) : div(inner, f3);
+
+            let op3 = Math.random() > 0.5 ? '÷' : '×'; // 外层通常用乘除
+            let final = (op3 === '÷') ? div(middle, f4) : mul(middle, f4);
+
+            html = `<span class="bracket">[</span> <span class="bracket">(</span> ${f1.toHTML()} <span class="op">${op1}</span> ${f2.toHTML()} <span class="bracket">)</span> <span class="op">${op2}</span> ${f3.toHTML()} <span class="bracket">]</span> <span class="op">${op3}</span> ${f4.toHTML()}`;
             stepsHTML = `
-                <div><span class="step-label">1. 小括号 (Paréntesis):</span> <span class="bracket">[</span> ${inner.toHTML()} <span class="op">×</span> ${f3.toHTML()} <span class="bracket">]</span> <span class="op">÷</span> ${f4.toHTML()}</div>
-                <div><span class="step-label">2. 中括号 (Corchetes):</span> ${middle.toHTML()} <span class="op">÷</span> ${f4.toHTML()}</div>
-                <div><span class="step-label">3. 最终结果 (Resultado):</span> ${final.toHTML()}</div>
+                <div><span class="step-label">1. 小括号 (Paréntesis):</span> ${f1.toHTML()} <span class="op">${op1}</span> ${f2.toHTML()} <span class="op">=</span> ${inner.toHTML()}</div>
+                <div><span class="step-label">2. 中括号 (Corchetes):</span> ${inner.toHTML()} <span class="op">${op2}</span> ${f3.toHTML()} <span class="op">=</span> ${middle.toHTML()}</div>
+                <div><span class="step-label">3. 最终运算 (Final):</span> ${middle.toHTML()} <span class="op">${op3}</span> ${f4.toHTML()}</div>
+                <div><span class="step-label">4. 结果 (Resultado):</span> ${final.toHTML()}</div>
             `;
             return { html, ans: final, steps: stepsHTML };
         }
 
-        return generateQuestionData(type);
+        return generateQuestionData(type, level);
     }
 
     function toggleAns(btn) {
