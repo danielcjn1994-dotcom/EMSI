@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI 2026 中西校历 </title>
+    <title>EMSI 2026 中西校历</title>
     <style>
         :root {
             --emsi-blue: #1a4a8e;
@@ -23,27 +23,56 @@
         .header h1 { color: var(--emsi-blue); margin: 0; font-size: 26px; }
         .header .subtitle { color: var(--text-light); font-size: 14px; margin-top: 8px; }
 
-        /* 新增：导航栏样式 */
-        .nav-bar { width: 100%; max-width: 1200px; margin: 20px auto 0 auto; padding: 0 15px; box-sizing: border-box; }
-        .btn-back { 
-            display: inline-flex; align-items: center; justify-content: center;
-            background-color: white; /* 白底 */
-            color: var(--emsi-blue); /* 蓝字 */
-            text-decoration: none; 
-            padding: 10px 25px; 
-            border-radius: 30px; 
-            font-weight: 600; 
-            font-size: 15px;
-            border: 1px solid var(--emsi-blue); /* 蓝色边框呼应风格 */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
+        /* --- 新增：工具栏/返回按钮区域 (样式升级) --- */
+        .toolbar {
+            width: 100%;
+            max-width: 1200px; /* 与下方内容宽度对齐 */
+            margin: 30px auto 0 auto;
+            padding: 0 15px;
+            box-sizing: border-box;
         }
+
+        /* 复刻图片中的胶囊按钮样式 */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            /* 胶囊形状 */
+            padding: 12px 35px; 
+            background-color: white;
+            color: var(--emsi-blue); /* 使用变量保持统一 */
+            text-decoration: none;
+            border-radius: 50px; /* 圆角极大值，形成胶囊 */
+            font-size: 20px;
+            font-weight: 600;
+            /* 阴影效果：立体感 */
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent; 
+        }
+
+        /* 箭头样式 */
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px); 
+        }
+
+        /* 悬停交互效果 */
         .btn-back:hover {
-            background-color: #f0f7ff; /* 悬停微蓝背景 */
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-3px); /* 微微上浮 */
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15); /* 阴影加深 */
+            color: #153a70; 
         }
-        .btn-back span { margin-left: 8px; }
+
+        /* 点击效果 */
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
 
         /* 布局容器 */
         .container { 
@@ -136,10 +165,8 @@
         <div class="subtitle">农历日期 & 马德里当地假期</div>
     </header>
 
-    <div class="nav-bar">
-        <a href="index.html" class="btn-back">
-            ← <span>返回首页</span>
-        </a>
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
     </div>
 
     <div class="container">
