@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 数学笔记 - Unidades Decimales</title>
+    <style>
+        /* --- 基础样式复刻 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容主区域 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 40px 40px 40px;
+        }
+
+        /* 卡片容器 */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            min-height: 400px; 
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            padding: 40px; 
+            box-sizing: border-box;
+            color: #333; 
+            font-size: 16px; 
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+
+        /* =========================================
+           新增：折叠模块与数学内容样式
+           ========================================= */
+        
+        /* 折叠容器 */
+        details {
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-color: #1a4a8e;
+        }
+
+        /* 折叠标题栏 (Summary) */
+        summary {
+            background-color: #f8f9fa;
+            padding: 20px 25px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a4a8e;
+            cursor: pointer;
+            list-style: none; /* 隐藏默认三角 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        summary:hover {
+            background-color: #ecf0f5;
+        }
+
+        /* --- 箭头样式修改 START --- */
+        summary::after {
+            content: '\276F'; /* Unicode ❯ (粗体右箭头) */
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a4a8e;
+            transition: transform 0.3s ease; /* 添加旋转动画 */
+        }
+
+        /* 打开时旋转90度向下 */
+        details[open] summary::after {
+            transform: rotate(90deg); 
+        }
+        /* --- 箭头样式修改 END --- */
+
+        details[open] summary {
+            border-bottom: 1px solid #e0e0e0;
+            background-color: #fff;
+        }
+
+        /* 折叠内容区域 */
+        .module-content {
+            padding: 25px 30px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        /* 标题样式 */
+        .module-content h3 {
+            color: #1a4a8e;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f1c40f;
+            padding-left: 10px;
+        }
+        
+        .module-content h3:first-child {
+            margin-top: 0;
+        }
+
+        /* 列表样式 */
+        .module-content ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .module-content li {
+            margin-bottom: 10px;
+        }
+
+        /* 强调文字 */
+        strong {
+            color: #2c3e50;
+        }
+
+        /* --- 数学分数样式 (模拟 LaTeX) --- */
+        .fraction {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            margin: 0 2px;
+            font-size: 0.9em;
+        }
+        .fraction > span {
+            display: block;
+            padding: 0 2px;
+        }
+        .fraction span.numerator {
+            border-bottom: 1px solid #333;
+        }
+        .fraction span.denominator {
+            /* 分母 */
+        }
+
+        /* 重点概念框 */
+        .concept-box {
+            background-color: #fcf8e3;
+            border: 1px solid #faebcc;
+            color: #8a6d3b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .vocab-list code {
+            background-color: #eef2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #1a4a8e;
+            font-weight: bold;
+            font-family: inherit;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Apuntes de Decimales</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <details>
+                <summary>1. UNIDADES DECIMALES (十进制单位)</summary>
+                <div class="module-content">
+                    
+                    <p>Las unidades decimales se obtienen al dividir la <strong>unidad</strong> (单位) en 10, 100 o 1.000 partes iguales.</p>
+
+                    <h3>1. Definiciones principales (主要定义)</h3>
+                    <ul>
+                        <li>
+                            <strong>Décima (十分位):</strong> Es el resultado de dividir la unidad en 10 partes iguales. Su valor es:
+                            <div class="fraction">
+                                <span class="numerator">1</span>
+                                <span class="denominator">10</span>
+                            </div> = 0,1
+                        </li>
+                        <li>
+                            <strong>Centésima (百分位):</strong> Es el resultado de dividir la unidad en 100 partes iguales. Su valor es:
+                            <div class="fraction">
+                                <span class="numerator">1</span>
+                                <span class="denominator">100</span>
+                            </div> = 0,01
+                        </li>
+                        <li>
+                            <strong>Milésima (千分位):</strong> Es el resultado de dividir la unidad en 1.000 partes iguales. Su valor es:
+                            <div class="fraction">
+                                <span class="numerator">1</span>
+                                <span class="denominator">1.000</span>
+                            </div> = 0,001
+                        </li>
+                    </ul>
+
+                    <h3>2. Equivalencias (等值关系)</h3>
+                    <div class="concept-box">
+                        Cada unidad decimal es <strong>10 veces mayor</strong> que la inmediatamente inferior.
+                    </div>
+                    <ul>
+                        <li><strong>1 unidad</strong> = 10 décimas = 100 centésimas = 1.000 milésimas.</li>
+                        <li><strong>1 décima (d)</strong> = 10 centésimas (c).</li>
+                        <li><strong>1 centésima (c)</strong> = 10 milésimas (m).</li>
+                    </ul>
+
+                    <h3>3. Vocabulario y Abreviaturas (词汇与缩写)</h3>
+                    <ul class="vocab-list">
+                        <li><code>d</code> &rarr; décima</li>
+                        <li><code>c</code> &rarr; centésima</li>
+                        <li><code>m</code> &rarr; milésima</li>
+                    </ul>
+
+                </div>
+            </details>
+            <details>
+                <summary>2. LOS NÚMEROS DECIMALES (小数)</summary>
+                <div class="module-content">
+                    <p>Un número decimal se compone de dos partes separadas por una <strong>coma</strong> (逗号).</p>
+
+                    <h3>1. Estructura del número (数字结构)</h3>
+                    <ul>
+                        <li>
+                            <strong>Parte entera (整数部分):</strong> Se sitúa a la izquierda de la coma. Incluye las centenas (C), decenas (D) y unidades (U).
+                        </li>
+                        <li>
+                            <strong>Parte decimal (小数部分):</strong> Se sitúa a la derecha de la coma. Incluye las décimas (d), centésimas (c) y milésimas (m).
+                        </li>
+                    </ul>
+
+                    <h3>2. Lectura y Descomposición (读法与分解)</h3>
+                    <p>Tomando como ejemplo el número <strong>35,124</strong>:</p>
+                    
+                    <div class="concept-box">
+                        <p><strong>A. Lectura (读法):</strong></p>
+                        <ul>
+                            <li>"Treinta y cinco coma ciento veinticuatro".</li>
+                            <li>"35 unidades y 124 milésimas".</li>
+                        </ul>
+                        
+                        <p><strong>B. Descomposición (分解):</strong></p>
+                        <ul>
+                            <li style="margin-bottom: 15px;">
+                                <strong>Por unidades:</strong><br> 
+                                <span style="font-family: monospace; font-size: 1.1em; color: #1a4a8e;">35,124 = 3 D + 5 U + 1 d + 2 c + 4 m</span>
+                            </li>
+                            <li>
+                                <strong>Por valor posicional:</strong><br> 
+                                <span style="font-family: monospace; font-size: 1.1em; color: #1a4a8e;">35,124 = 30 + 5 + 0,1 + 0,02 + 0,004</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </details>
+            <details>
+                <summary>3. COMPARACIÓN DE NÚMEROS DECIMALES (小数比较)</summary>
+                <div class="module-content">
+                    <p>Para comparar números decimales, se sigue un orden jerárquico de izquierda a derecha.</p>
+
+                    <h3>1. El proceso paso a paso (比较步骤)</h3>
+                    <p>Para determinar qué número es mayor, seguimos estas reglas:</p>
+                    <ol style="padding-left: 20px;">
+                        <li style="margin-bottom: 15px;">
+                            <strong>Comparar la parte entera (比较整数部分):</strong><br>
+                            El número con la mayor parte entera es el mayor.
+                        </li>
+                        <li>
+                            <strong>Comparar la parte decimal (比较小数部分):</strong><br>
+                            Si las partes enteras son iguales, comparamos sucesivamente las <strong>décimas</strong> (十分位), <strong>centésimas</strong> (百分位) y <strong>milésimas</strong> (千分位).
+                        </li>
+                    </ol>
+
+                    <h3>Ejemplo del libro (Comparar 9,312 y 9,315):</h3>
+                    <div class="concept-box">
+                        <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+                            <li>• <strong>Unidades (个位):</strong> 9 = 9</li>
+                            <li>• <strong>Décimas (d):</strong> 3 = 3</li>
+                            <li>• <strong>Centésimas (c):</strong> 1 = 1</li>
+                            <li>• <strong>Milésimas (m):</strong> 2 < 5</li>
+                        </ul>
+                        <div style="margin-top: 15px; border-top: 1px solid #e0c483; padding-top: 10px; text-align: center;">
+                            <strong>Por lo tanto (所以):</strong><br>
+                            <span style="font-family: monospace; font-size: 1.4em; color: #1a4a8e; font-weight: bold;">9,312 < 9,315</span>
+                        </div>
+                    </div>
+                    
+                    <h3>Resumen de Símbolos (符号复习)</h3>
+                    <ul class="vocab-list">
+                        <li><code>&gt;</code> &rarr; mayor que (大于)</li>
+                        <li><code>&lt;</code> &rarr; menor que (小于)</li>
+                        <li><code>=</code> &rarr; igual a (等于)</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>4. CONECTA CON LA REALIDAD (联系实际)</summary>
+                <div class="module-content">
+                    <p>En esta etapa, el alumno aplica la <strong>comparación</strong> (比较) y la <strong>lectura</strong> (读法) de números decimales en situaciones cotidianas como la salud, el clima y el deporte.</p>
+
+                    <h3>1. Interpretación de Tablas de Crecimiento (解读生长图表)</h3>
+                    <p>Se utilizan datos de la Organización Mundial de la Salud para practicar la comparación de pesos:</p>
+                    <ul>
+                        <li>
+                            <strong>Peso (重量):</strong> Los valores se expresan en <strong>kilogramos</strong> (kg) con una cifra decimal (décimas).
+                        </li>
+                        <li>
+                            <strong>Actividad:</strong> Comparar el "Peso medio" (平均体重) entre niños y niñas según su edad (recién nacido, 3 meses, etc.) para identificar quién pesa más en cada etapa.
+                        </li>
+                    </ul>
+
+                    <h3>2. Análisis Crítico de Noticias (新闻批判性分析)</h3>
+                    <div class="concept-box">
+                        Esta actividad refuerza la <strong>lógica matemática</strong> (数学逻辑) al corregir errores en un texto sobre temperaturas y precipitaciones.
+                    </div>
+                    <ul>
+                        <li>
+                            <strong>Temperatura (温度):</strong> Se miden en grados Celsius (<strong>°C</strong>).
+                        </li>
+                        <li>
+                            <strong>Precipitaciones (降水量):</strong> Se miden en <strong>litros por metro cuadrado</strong> (l/m²) usando centésimas.
+                        </li>
+                        <li>
+                            <strong>Desafío:</strong> Identificar contradicciones lógicas. <em>Por ejemplo: si se dice que la temperatura "baja" pero el número indicado es mayor que el anterior.</em>
+                        </li>
+                    </ul>
+
+                    <h3>3. Resultados Deportivos (体育赛事结果)</h3>
+                    <p>Se analizan los resultados de la final de lanzamiento de jabalina (标枪投掷) de las Olimpiadas:</p>
+                    <ul>
+                        <li>
+                            <strong>Distancia (距离):</strong> Medida en <strong>metros</strong> (m) con dos cifras decimales (centésimas).
+                        </li>
+                        <li>
+                            <strong>Competencia:</strong> Los alumnos deben ordenar las distancias para determinar quiénes obtuvieron medalla (los tres mejores resultados).
+                        </li>
+                    </ul>
+                    <div class="concept-box" style="text-align: center;">
+                        <strong>Ejemplo:</strong><br>
+                        Comparar <span style="font-family: monospace; color: #1a4a8e;">87,58 m</span> frente a <span style="font-family: monospace; color: #1a4a8e;">86,67 m</span> para determinar el ganador.
+                    </div>
+                </div>
+            </details>
+            <details>
+                <summary>5. APROXIMACIONES DE NÚMEROS DECIMALES (小数近似)</summary>
+                <div class="module-content">
+                    <p>Aproximar un número decimal consiste en encontrar el número más cercano de un orden determinado (unidades, décimas o centésimas).</p>
+
+                    <h3>1. La Regla de Oro (基本规则)</h3>
+                    <p>Para aproximar, debemos fijarnos en la <strong>cifra del orden siguiente</strong> (看下一位数字) y compararla con el número <strong>5</strong>:</p>
+                    
+                    <div class="concept-box">
+                        <ul>
+                            <li style="margin-bottom: 15px;">
+                                <strong>Si es menor que 5 (&lt; 5):</strong><br> 
+                                La cifra del orden que estamos redondeando <strong>no cambia</strong> (保持不变).
+                            </li>
+                            <li>
+                                <strong>Si es igual o mayor que 5 (&ge; 5):</strong><br> 
+                                Se <strong>suma 1</strong> (加1) a la cifra del orden que estamos redondeando.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h3>2. Ejemplos de aplicación (应用实例)</h3>
+                    <p>Tomando el número del libro <strong>2,835</strong>:</p>
+                    <ul>
+                        <li style="margin-bottom: 10px;">
+                            <strong>A las unidades (个位):</strong> Nos fijamos en las décimas (8).<br>
+                            Como 8 &gt; 5, sumamos 1 a la unidad &rarr; <strong>Resultado: 3</strong>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>A las décimas (十分位):</strong> Nos fijamos en las centésimas (3).<br>
+                            Como 3 &lt; 5, la décima se queda igual &rarr; <strong>Resultado: 2,8</strong>
+                        </li>
+                        <li>
+                            <strong>A las centésimas (百分位):</strong> Nos fijamos en las milésimas (5).<br>
+                            Como 5 = 5, sumamos 1 a la centésima &rarr; <strong>Resultado: 2,84</strong>
+                        </li>
+                    </ul>
+
+                    <h3>3. Situaciones de dinero (金钱情境)</h3>
+                    <p>En la vida real, a veces debemos aproximar según las monedas que tenemos:</p>
+                    <ul>
+                        <li>Si una sandía cuesta <strong>2,48 €</strong> y solo tienes monedas de 1 € y 10 cts, debes redondear para saber cuánto entregar.</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>6. LAS FRACCIONES DECIMALES (十进制分数)</summary>
+                <div class="module-content">
+                    <p>Las fracciones decimales son aquellas que tienen como denominador la unidad seguida de ceros: 10, 100, 1.000...</p>
+
+                    <h3>1. Relación entre Fracción y Número Decimal (分数与小数的关系)</h3>
+                    <p>Una fracción decimal se puede escribir como un número decimal siguiendo una regla sencilla basada en los ceros del denominador:</p>
+                    
+                    <div class="concept-box">
+                        <ul style="list-style-type: none; padding-left: 0;">
+                            <li style="margin-bottom: 15px;">
+                                <strong>Décimas (十分位):</strong> Si el denominador es 10 (1 cero), el número tiene <strong>1 cifra decimal</strong>.<br>
+                                <span style="margin-left: 20px;">Ejemplo: 
+                                    <div class="fraction">
+                                        <span class="numerator">8</span>
+                                        <span class="denominator">10</span>
+                                    </div> = 0,8
+                                </span>
+                            </li>
+                            <li style="margin-bottom: 15px;">
+                                <strong>Centésimas (百分位):</strong> Si el denominador es 100 (2 ceros), el número tiene <strong>2 cifras decimales</strong>.<br>
+                                <span style="margin-left: 20px;">Ejemplo: 
+                                    <div class="fraction">
+                                        <span class="numerator">42</span>
+                                        <span class="denominator">100</span>
+                                    </div> = 0,42
+                                </span>
+                            </li>
+                            <li>
+                                <strong>Milésimas (千分位):</strong> Si el denominador es 1.000 (3 ceros), el número tiene <strong>3 cifras decimales</strong>.<br>
+                                <span style="margin-left: 20px;">Ejemplo: 
+                                    <div class="fraction">
+                                        <span class="numerator">289</span>
+                                        <span class="denominator">1.000</span>
+                                    </div> = 0,289
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h3>2. Cómo realizar la conversión (如何转换)</h3>
+                    <p>Simplemente dividimos el numerador entre el denominador moviendo la coma hacia la izquierda:</p>
+                    <ul>
+                        <li>
+                            <div class="fraction">
+                                <span class="numerator">389</span>
+                                <span class="denominator">100</span>
+                            </div> &rarr; Como hay 2 ceros, contamos dos posiciones desde la derecha &rarr; <strong>3,89</strong>
+                        </li>
+                        <li>
+                            <div class="fraction">
+                                <span class="numerator">56</span>
+                                <span class="denominator">1.000</span>
+                            </div> &rarr; Como hay 3 ceros y solo dos cifras, añadimos un cero a la izquierda &rarr; <strong>0,056</strong>
+                        </li>
+                    </ul>
+
+                    <h3>3. Actividad: Con las MANOS (动手实践)</h3>
+                    <p>El libro sugiere usar una <strong>baraja de decimales</strong> (小数卡片) para jugar:</p>
+                    <ul>
+                        <li>Si sacas una <strong>fracción decimal</strong>, debes decir su número decimal equivalente.</li>
+                        <li>Si sacas una <strong>figura coloreada</strong>, debes expresar qué fracción y qué decimal representa.</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>7. LOS PORCENTAJES (百分比)</summary>
+                <div class="module-content">
+                    <p>Un porcentaje o "tanto por ciento" es una forma de expresar una fracción que tiene como <strong>denominador el número 100</strong>.</p>
+
+                    <h3>1. Definición y Símbolo (定义与符号)</h3>
+                    <ul>
+                        <li>
+                            <strong>Concepto:</strong> Significa que dividimos una cantidad en 100 partes iguales y tomamos el número de partes indicado.
+                        </li>
+                        <li>
+                            <strong>Símbolo (%):</strong> Se lee como <strong>"por ciento"</strong> (百分之...).
+                        </li>
+                        <li>
+                            <strong>Ejemplo visual:</strong> Si de un cuadro de 100 cuadraditos coloreamos 37, decimos que el <strong>37%</strong> está coloreado.
+                            <div style="margin-top: 10px; padding-left: 20px;">
+                                Fracción: 
+                                <div class="fraction">
+                                    <span class="numerator">37</span>
+                                    <span class="denominator">100</span>
+                                </div> &rarr; Lectura: "37 por ciento"
+                            </div>
+                        </li>
+                    </ul>
+
+                    <h3>2. Cómo calcular un porcentaje (如何计算百分比)</h3>
+                    <p>Calcular un porcentaje es igual que hallar la fracción decimal correspondiente de ese número.</p>
+                    
+                    <div class="concept-box">
+                        <p><strong>Ejemplo: Calcular el 32% de 25</strong></p>
+                        <ol>
+                            <li>Transformamos el porcentaje en fracción: <br>
+                                <span style="font-family: monospace;">32% &rarr; <div class="fraction"><span class="numerator">32</span><span class="denominator">100</span></div></span>
+                            </li>
+                            <li>Multiplicamos el número por el numerador y dividimos por 100: <br>
+                                <span style="font-family: monospace; font-size: 1.1em; color: #1a4a8e;">(32 × 25) ÷ 100 = 8</span>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <h3>3. Aplicación en la Vida Real (实际应用)</h3>
+                    <p>Los porcentajes son esenciales para entender las <strong>rebajas</strong> (打折):</p>
+                    <ul>
+                        <li>Si algo cuesta 60 € y tiene un descuento del <strong>50%</strong>, pasará a costar la mitad (30 €).</li>
+                        <li>El término <strong>"A mitad de precio"</strong> es equivalente al 50%.</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>8. AUMENTOS Y DISMINUCIONES (百分数增减)</summary>
+                <div class="module-content">
+                    <p>Este tema enseña cómo aplicar porcentajes a situaciones donde una cantidad inicial cambia, ya sea porque sube (aumento) o porque baja (disminución).</p>
+
+                    <h3>1. Metodología de resolución (解题方法)</h3>
+                    <p>Para resolver estos problemas, se sigue un proceso de <strong>dos pasos</strong>:</p>
+                    
+                    <div class="concept-box">
+                        <ol>
+                            <li style="margin-bottom: 10px;">
+                                <strong>Calcular la variación (计算变化量):</strong><br>
+                                Primero se halla el valor del porcentaje indicado sobre la cantidad inicial.
+                            </li>
+                            <li>
+                                <strong>Aplicar al total (应用到总量):</strong>
+                                <ul style="margin-top: 5px;">
+                                    <li>Si es un <strong>aumento</strong> (增加) &rarr; Se <strong>suma (+)</strong> el resultado al número inicial.</li>
+                                    <li>Si es una <strong>disminución</strong> (减少) &rarr; Se <strong>resta (-)</strong> el resultado al número inicial.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <h3>2. Ejemplo práctico (实例)</h3>
+                    <p><em>"Había 120 personas en judo y este mes hay un 10% más."</em></p>
+                    <ul>
+                        <li><strong>Paso 1:</strong> Calcular el aumento. <br>
+                            <span style="font-family: monospace; color: #1a4a8e;">10% de 120 = 12</span>
+                        </li>
+                        <li><strong>Paso 2:</strong> Sumar al total. <br>
+                            <span style="font-family: monospace; color: #1a4a8e;">120 + 12 = 132 personas</span>
+                        </li>
+                    </ul>
+
+                    <h3>3. Conecta con la realidad: El IVA (增值税)</h3>
+                    <p>Una de las aplicaciones más comunes de los aumentos es el <strong>IVA</strong> (Impuesto sobre el Valor Añadido).</p>
+                    <ul>
+                        <li>Para calcular el precio final, se añade (suma) el <strong>21%</strong> al precio base del producto.</li>
+                    </ul>
+
+                    <h3>4. Reto: Matemática-MENTE (思维挑战)</h3>
+                    <div style="background-color: #e8f4fd; border-left: 4px solid #1a4a8e; padding: 15px; margin-top: 15px;">
+                        <p style="margin: 0; font-style: italic;">"¿Es lo mismo rebajar un 20% de golpe, que rebajar un 10% y luego otro 10%?"</p>
+                        <p style="margin-top: 10px; font-weight: bold; color: #c0392b;">NO es lo mismo.</p>
+                        <p style="margin: 0; font-size: 0.9em;">La segunda rebaja se aplica sobre una cantidad que ya es más pequeña, por lo que el descuento total final será menor.</p>
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
