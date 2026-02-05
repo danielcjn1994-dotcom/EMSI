@@ -155,9 +155,27 @@
         .btn-refresh { background: #27ae60; } 
         .btn-home { background: #334155; }
 
+        /* --- 新增：题目列表布局控制 --- */
+        #quiz-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 一行两列 */
+            gap: 40px; /* 列间距 */
+            align-items: start;
+        }
+
+        /* 移动端适配：屏幕变窄时自动变回单列，防止题目挤压 */
+        @media (max-width: 900px) {
+            #quiz-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .quiz-item {
             border-bottom: 1px solid #f0f4f8;
             padding: 25px 0;
+            /* 确保内容不会溢出格子 */
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .question {
