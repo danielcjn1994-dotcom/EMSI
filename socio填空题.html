@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EMSI Social Science Challenge</title>
+    <style>
+        :root {
+            --emsi-blue: #1a4a8e;
+            --emsi-gold: #f1c40f;
+            --emsi-gray: #f5f7fa;
+            --success: #10b981;
+            --error: #ef4444;
+            --text-main: #1e293b;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: var(--emsi-gray);
+            color: var(--text-main);
+            display: flex; flex-direction: column; min-height: 100vh;
+            font-size: 16px; 
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+
+        .header { background-color: white; text-align: center; padding: 12px; border-bottom: 4px solid var(--emsi-gold); position: sticky; top: 0; z-index: 1000; }
+        .header h1 { color: var(--emsi-blue); margin: 0; font-size: 20px; letter-spacing: 1px; }
+
+        /* 新增：返回按钮样式 */
+        .btn-back {
+            display: inline-flex; align-items: center;
+            padding: 8px 20px;
+            background-color: white; border: 2px solid #e2e8f0; border-radius: 60px;
+            color: var(--emsi-blue); text-decoration: none;
+            font-size: 14px; font-weight: 700; transition: all 0.2s;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .btn-back:active { transform: scale(0.95); background-color: #f8fafc; }
+        .btn-back::before { content: '〈'; margin-right: 8px; font-weight: 900; }
+
+        .main-content { flex: 1; padding: 10px; max-width: 900px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+        .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+
+        .local-word-bank {
+            background: #fff; border: 2px dashed var(--emsi-gold); border-radius: 10px;
+            padding: 10px; margin: 10px 0 15px 0;
+            display: flex; flex-wrap: wrap; gap: 6px; min-height: 45px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            align-items: center;
+        }
+
+        .drag-item {
+            padding: 6px 12px; background: var(--emsi-blue); color: white;
+            border-radius: 50px; font-weight: 700; font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            cursor: grab; position: relative; z-index: 10;
+            white-space: nowrap;
+        }
+        .drag-item.dragging { opacity: 0.7; z-index: 1000; transform: scale(1.05); pointer-events: none; }
+
+        .exercise-block { margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
+        .exercise-block:last-child { border: none; }
+        .exercise-area { line-height: 2.1; font-size: 17px; }
+        
+        .section-title { 
+            background: var(--emsi-blue); color: white; display: inline-block;
+            padding: 4px 12px; border-radius: 6px; margin-bottom: 8px; font-size: 16px;
+            font-weight: bold;
+        }
+
+        .drop-zone {
+            display: inline-flex; min-width: 110px; height: 32px;
+            background: #f1f5f9; border-bottom: 2px solid var(--emsi-blue);
+            margin: 0 4px; vertical-align: middle; border-radius: 4px;
+            align-items: center; justify-content: center; transition: all 0.2s;
+            font-weight: 800; color: var(--emsi-blue); font-size: 15px;
+            padding: 0 6px;
+        }
+        .drop-zone.over { background: var(--emsi-gold); }
+        .drop-zone.correct { background: var(--success); color: white; border-color: transparent; }
+
+        .drag-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 15px; }
+        .drag-table th { background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; color: var(--emsi-blue); }
+        .drag-table td { border: 1px solid #e2e8f0; padding: 10px; text-align: center; }
+
+        .stats { position: fixed; bottom: 15px; right: 15px; background: var(--emsi-gold); padding: 10px 20px; border-radius: 40px; font-weight: 800; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000;}
+        .instruction { text-align: center; color: #64748b; font-size: 14px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Social Science: UNIT 3 - Los Trabajos</h1>
+</header>
+
+<main class="main-content">
+    <a href="sociales单词.html" class="btn-back">Volver a la lista</a>
+
+    <div class="card">
+        <p class="instruction">Arrastra las palabras correctas a los espacios.</p>
+
+        <div class="exercise-block">
+            <div class="section-title">1. Los trabajos de la naturaleza</div>
+            <div class="local-word-bank"></div>
+            <div class="exercise-area">
+                <p>La <span class="drop-zone" data-ans="agricultura"></span> (🚜) consiste en cultivar la tierra para conseguir <span class="drop-zone" data-ans="frutas"></span> (🍎) y <span class="drop-zone" data-ans="verduras"></span> (🥬).</p>
+                <p>La <span class="drop-zone" data-ans="ganadería"></span> (🐄) es la cría de animales: obtenemos <span class="drop-zone" data-ans="carne"></span> (🥩), <span class="drop-zone" data-ans="leche"></span> (🥛) y <span class="drop-zone" data-ans="huevos"></span> (🥚).</p>
+                <p>La <span class="drop-zone" data-ans="pesca"></span> (🎣) es la captura de <span class="drop-zone" data-ans="peces"></span> (🐟) y <span class="drop-zone" data-ans="mariscos"></span> (🦐).</p>
+                <p>La <span class="drop-zone" data-ans="minería"></span> (⛏️) consiste en extraer de la <span class="drop-zone" data-ans="tierra"></span> (🌍) rocas y minerales.</p>
+            </div>
+        </div>
+
+        <div class="exercise-block">
+            <div class="section-title">2. De la naturaleza a la fábrica</div>
+            <div class="local-word-bank"></div>
+            <div class="exercise-area">
+                <p>Las <span class="drop-zone" data-ans="materias primas"></span> (🪵) se usan para fabricar otras cosas.</p>
+                <table class="drag-table">
+                    <tr><th>MATERIAS PRIMAS (🌿)</th><th>PRODUCTO ELABORADO (🛒)</th></tr>
+                    <tr><td><span class="drop-zone" data-ans="Algodón"></span> (☁️)</td><td><span class="drop-zone" data-ans="Ropa"></span> (👕)</td></tr>
+                    <tr><td><span class="drop-zone" data-ans="Metal"></span> (⛓️)</td><td><span class="drop-zone" data-ans="Bicicleta"></span> (🚲)</td></tr>
+                    <tr><td><span class="drop-zone" data-ans="Madera"></span> (🪵)</td><td><span class="drop-zone" data-ans="Mesa"></span> (🪑)</td></tr>
+                    <tr><td><span class="drop-zone" data-ans="Frambuesas"></span> (🍓)</td><td><span class="drop-zone" data-ans="Mermelada"></span> (🍯)</td></tr>
+                    <tr><td><span class="drop-zone" data-ans="Aceituna"></span> (🍸)</td><td><span class="drop-zone" data-ans="Aceite"></span> (🍶)</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="exercise-block">
+            <div class="section-title">3. Fábricas vs Talleres</div>
+            <div class="local-word-bank"></div>
+            <div class="exercise-area">
+                <p>Las <span class="drop-zone" data-ans="fábricas"></span> (🏭) son espacios <span class="drop-zone" data-ans="muy grandes"></span> (🏢) con <span class="drop-zone" data-ans="muchas personas"></span> (👥) y <span class="drop-zone" data-ans="grandes máquinas"></span> (⚙️).</p>
+                <p>Los <span class="drop-zone" data-ans="talleres"></span> (🏠) son <span class="drop-zone" data-ans="pequeños"></span> (📦) y allí trabajan los <span class="drop-zone" data-ans="artesanos"></span> (🏺).</p>
+                <p>Se elaboran <span class="drop-zone" data-ans="productos con las manos"></span> (🖐️).</p>
+            </div>
+        </div>
+
+        <div class="exercise-block">
+            <div class="section-title">4. Servicios y Compras</div>
+            <div class="local-word-bank"></div>
+            <div class="exercise-area">
+                <p>Los servicios <span class="drop-zone" data-ans="ayudan"></span> (🤝) a las personas: <span class="drop-zone" data-ans="médico"></span> (🩺), <span class="drop-zone" data-ans="profesores"></span> (👩‍🏫), <span class="drop-zone" data-ans="conductores"></span> (🚌), <span class="drop-zone" data-ans="policía"></span> (👮), <span class="drop-zone" data-ans="dependiente"></span> (🏷️), <span class="drop-zone" data-ans="arquitecto"></span> (📐).</p>
+                <p>En los <span class="drop-zone" data-ans="comercios"></span> (🏪), los <span class="drop-zone" data-ans="dependientes"></span> (👥) venden a los <span class="drop-zone" data-ans="clientes"></span> (🛒).</p>
+                <p>Usamos <span class="drop-zone" data-ans="billetes"></span> (💵) o <span class="drop-zone" data-ans="tarjeta bancaria"></span> (💳).</p>
+                <p>Compramos en <span class="drop-zone" data-ans="tiendas"></span> (🛍️) <span class="drop-zone" data-ans="pequeñas"></span> (📦), <span class="drop-zone" data-ans="mercados"></span> (🍎), <span class="drop-zone" data-ans="supermercados"></span> (🛒), <span class="drop-zone" data-ans="centros comerciales"></span> (🏢), <span class="drop-zone" data-ans="restaurantes"></span> (🍴) y <span class="drop-zone" data-ans="cines"></span> (🎬).</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="stats" id="stats">Progreso: 0 / 0</div>
+
+<script>
+    // ... (保持原有的 JS 逻辑不变) ...
+    const emojiMap = {
+        "agricultura": "🚜", "frutas": "🍎", "verduras": "🥬", "ganadería": "🐄", "carne": "🥩", "leche": "🥛", "huevos": "🥚",
+        "pesca": "🎣", "peces": "🐟", "mariscos": "🦐", "minería": "⛏️", "tierra": "🌍", "materias primas": "🪵",
+        "Algodón": "☁️", "Ropa": "👕", "Metal": "⛓️", "Bicicleta": "🚲", "Madera": "🪵", "Mesa": "🪑", "Frambuesas": "🍓", "Mermelada": "🍯", "Aceituna": "🍸", "Aceite": "🍶",
+        "fábricas": "🏭", "muy grandes": "🏢", "muchas personas": "👥", "grandes máquinas": "⚙️", "talleres": "🏠", "pequeños": "📦", "pequeñas": "📦", "artesanos": "🏺", "productos con las manos": "🖐️",
+        "ayudan": "🤝", "médico": "🩺", "profesores": "👩‍🏫", "conductores": "🚌", "policía": "👮", "dependiente": "🏷️", "arquitecto": "📐", "comercios": "🏪", "dependientes": "👥", "clientes": "🛒",
+        "billetes": "💵", "tarjeta bancaria": "💳", "tiendas": "🛍️", "mercados": "🍎", "supermercados": "🛒", "centros comerciales": "🏢", "restaurantes": "🍴", "cines": "🎬"
+    };
+
+    let activeItem = null;
+    let initialPos = { x: 0, y: 0 };
+    let finishedCount = 0;
+    let totalCount = 0;
+
+    function init() {
+        const blocks = document.querySelectorAll('.exercise-block');
+        const totalZones = document.querySelectorAll('.drop-zone');
+        totalCount = totalZones.length;
+
+        blocks.forEach(block => {
+            const bank = block.querySelector('.local-word-bank');
+            const zones = block.querySelectorAll('.drop-zone');
+            let blockAnswers = [];
+            zones.forEach(z => blockAnswers.push(z.dataset.ans));
+            blockAnswers.sort(() => Math.random() - 0.5);
+
+            blockAnswers.forEach(text => {
+                const div = document.createElement('div');
+                div.className = 'drag-item';
+                div.innerText = `${text} ${emojiMap[text] || ''}`;
+                div.dataset.raw = text;
+                div.addEventListener('pointerdown', onPointerDown);
+                bank.appendChild(div);
+            });
+        });
+        updateStats();
+    }
+
+    function onPointerDown(e) {
+        activeItem = e.currentTarget;
+        const rect = activeItem.getBoundingClientRect();
+        initialPos = { x: rect.left, y: rect.top };
+        activeItem.startX = e.clientX;
+        activeItem.startY = e.clientY;
+        activeItem.classList.add('dragging');
+        activeItem.style.position = 'fixed';
+        activeItem.style.left = rect.left + 'px';
+        activeItem.style.top = rect.top + 'px';
+        activeItem.setPointerCapture(e.pointerId);
+        activeItem.addEventListener('pointermove', onPointerMove);
+        activeItem.addEventListener('pointerup', onPointerUp);
+    }
+
+    function onPointerMove(e) {
+        if (!activeItem) return;
+        const dx = e.clientX - activeItem.startX;
+        const dy = e.clientY - activeItem.startY;
+        activeItem.style.transform = `translate(${dx}px, ${dy}px)`;
+        const zones = document.querySelectorAll('.drop-zone');
+        zones.forEach(zone => {
+            const zRect = zone.getBoundingClientRect();
+            if (e.clientX > zRect.left && e.clientX < zRect.right && e.clientY > zRect.top && e.clientY < zRect.bottom) {
+                zone.classList.add('over');
+            } else {
+                zone.classList.remove('over');
+            }
+        });
+    }
+
+    function onPointerUp(e) {
+        if (!activeItem) return;
+        activeItem.classList.remove('dragging');
+        const rawWord = activeItem.dataset.raw;
+        let matchedZone = null;
+        const currentBlock = activeItem.closest('.exercise-block');
+        const zones = currentBlock.querySelectorAll('.drop-zone');
+
+        zones.forEach(zone => {
+            const zRect = zone.getBoundingClientRect();
+            if (e.clientX > zRect.left && e.clientX < zRect.right && e.clientY > zRect.top && e.clientY < zRect.bottom) {
+                if (zone.dataset.ans === rawWord && !zone.classList.contains('correct')) {
+                    matchedZone = zone;
+                }
+            }
+        });
+
+        if (matchedZone) {
+            matchedZone.innerText = `${rawWord} ${emojiMap[rawWord] || ''}`;
+            matchedZone.classList.add('correct');
+            matchedZone.classList.remove('over');
+            activeItem.remove();
+            finishedCount++;
+            updateStats();
+        } else {
+            activeItem.style.transition = 'all 0.3s ease';
+            activeItem.style.transform = 'translate(0, 0)';
+            activeItem.style.background = 'var(--error)';
+            setTimeout(() => {
+                activeItem.style.position = 'static';
+                activeItem.style.transition = '';
+                activeItem.style.background = 'var(--emsi-blue)';
+            }, 300);
+        }
+        activeItem.removeEventListener('pointermove', onPointerMove);
+        activeItem.removeEventListener('pointerup', onPointerUp);
+        activeItem = null;
+    }
+
+    function updateStats() {
+        const stats = document.getElementById('stats');
+        stats.innerText = `Progreso: ${finishedCount} / ${totalCount}`;
+        if (finishedCount === totalCount && totalCount > 0) {
+            stats.style.background = 'var(--success)';
+            stats.innerText = "¡Completado! 🎉";
+        }
+    }
+
+    window.onload = init;
+</script>
+</body>
+</html>
