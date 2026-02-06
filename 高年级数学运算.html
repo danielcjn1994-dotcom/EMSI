@@ -85,11 +85,34 @@
             line-height: 1;
         }
 
+        /* 区域标题样式 */
+        .section-title {
+            color: #1a4a8e;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title span {
+            background: #f1c40f;
+            color: #1a4a8e;
+            padding: 5px 15px;
+            border-radius: 6px;
+            margin-right: 15px;
+            font-size: 1.1rem;
+        }
+
         .btn-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         .btn-emsi {
@@ -118,6 +141,14 @@
         }
 
         .btn-emsi:hover { background: #2563eb; transform: translateY(-2px); }
+
+        /* 新模块的颜色区分 */
+        .btn-emsi.mod-laws {
+            background: #2c3e50; /* 深灰蓝，区分于原有模块 */
+        }
+        .btn-emsi.mod-laws:hover {
+            background: #34495e;
+        }
 
         .quiz-header {
             display: flex;
@@ -209,7 +240,7 @@
                     </a>
                 </div>
 
-                <h2 style="color: #1a4a8e; text-align: center; margin-bottom: 30px; font-size: 1.8rem;">Selecciona el nivel de dificultad</h2>
+                <div class="section-title"><span>Module 1</span> 基础四则运算 (Aritmética Básica)</div>
                 <div class="btn-grid">
                     <button class="btn-emsi" onclick="startQuiz('mul_2_1')">两位数 × 一位数<small>2 dígitos × 1 dígito</small></button>
                     <button class="btn-emsi" onclick="startQuiz('mul_2_2')">两位数 × 两位数<small>2 dígitos × 2 dígitos</small></button>
@@ -220,6 +251,23 @@
                     <button class="btn-emsi" onclick="startQuiz('mix_small')">混合运算 (带小括号)<small>Mixtas con paréntesis ( )</small></button>
                     <button class="btn-emsi" onclick="startQuiz('mix_middle')">混合运算 (带中括号)<small>Mixtas con corchetes [ ]</small></button>
                 </div>
+
+                <div class="section-title"><span>Module 2</span> 运算定律 (Leyes de Operaciones)</div>
+                <div class="btn-grid">
+                    <button class="btn-emsi mod-laws" onclick="startQuiz('law_comm_add')">
+                        加法交换/结合律 (凑整)<small>Ley Conmutativa/Asociativa (+)</small>
+                    </button>
+                    <button class="btn-emsi mod-laws" onclick="startQuiz('law_assoc_mul')">
+                        乘法结合律 (找朋友)<small>Ley Asociativa (×)</small>
+                    </button>
+                    <button class="btn-emsi mod-laws" onclick="startQuiz('law_dist_merge')">
+                        乘法分配律 (提取公因数)<small>Ley Distributiva (Factor Común)</small>
+                    </button>
+                    <button class="btn-emsi mod-laws" onclick="startQuiz('law_dist_split')">
+                        乘法分配律 (拆分凑整)<small>Ley Distributiva (Descomposición)</small>
+                    </button>
+                </div>
+
             </div>
 
             <div id="quiz-page" class="hidden">
@@ -244,9 +292,15 @@
     let currentType = '';
 
     const titles = {
+        // 原有
         'mul_2_1': '两位数 × 一位数', 'mul_2_2': '两位数 × 两位数', 'mul_2_3': '两位数 × 三位数',
         'div_2_1': '两位数 ÷ 一位数', 'div_2_2': '两位数 ÷ 两位数', 'mix_normal': '混合运算',
-        'mix_small': '带小括号 ( )', 'mix_middle': '带中括号 [ ]'
+        'mix_small': '带小括号 ( )', 'mix_middle': '带中括号 [ ]',
+        // 新增
+        'law_comm_add': '加法巧算 (凑整)', 
+        'law_assoc_mul': '乘法巧算 (结合律)',
+        'law_dist_merge': '分配律 (提取公因数)',
+        'law_dist_split': '分配律 (拆分凑整)'
     };
 
     function startQuiz(type) {
@@ -278,8 +332,9 @@
     }
 
     function getQuestion(type) {
-        let a, b, c, d, res, s1;
+        let a, b, c, d, res, s1, s2;
         switch(type) {
+            // --- 原有逻辑 ---
             case 'mul_2_1':
             case 'mul_2_2':
             case 'mul_2_3':
@@ -316,12 +371,71 @@
                 a = getNum(2, 6); b = getNum(40, 80); c = getNum(10, 30); d = getNum(2, 5);
                 let inner = b - c;
                 let steps = Math.floor(inner / d) * d; 
-                let final_b = c + steps; // 确保能整除
+                let final_b = c + steps; 
                 let step1 = final_b - c;
                 let step2 = step1 / d;
                 return { 
                     text: `${a} × [(${final_b} - ${c}) ÷ ${d}]`, 
                     solveHTML: `<span class="step-txt">Paso 1:</span> (${final_b}-${c}) = ${step1}<br><span class="step-txt">Paso 2:</span> ${step1}÷${d} = ${step2}<br><span class="step-txt">Paso 3:</span> ${a}×${step2} = ${a*step2}` 
+                };
+
+            // --- 新增：运算定律模块 ---
+            
+            // 1. 加法交换律/结合律 (凑整到100)
+            // 形如: 37 + 58 + 63 -> (37+63) + 58
+            case 'law_comm_add':
+                a = getNum(11, 89);
+                c = 100 - a; // a + c = 100
+                b = getNum(12, 98);
+                // 随机打乱顺序显示
+                return {
+                    text: `${a} + ${b} + ${c}`,
+                    solveHTML: `<span class="step-txt">Paso 1 (凑整):</span> ${a} + ${c} = 100<br><span class="step-txt">Paso 2:</span> 100 + ${b} = ${100+b}`
+                };
+
+            // 2. 乘法结合律 (找朋友)
+            // 形如: 25 x 13 x 4 -> (25x4) x 13
+            case 'law_assoc_mul':
+                let pairs = [[25, 4], [125, 8], [20, 5], [50, 2]];
+                let p = pairs[getNum(0, 3)];
+                let factor = getNum(3, 19);
+                return {
+                    text: `${p[0]} × ${factor} × ${p[1]}`,
+                    solveHTML: `<span class="step-txt">Paso 1 (找朋友):</span> ${p[0]} × ${p[1]} = ${p[0]*p[1]}<br><span class="step-txt">Paso 2:</span> ${p[0]*p[1]} × ${factor} = ${p[0]*p[1]*factor}`
+                };
+
+            // 3. 乘法分配律 (提取公因数)
+            // 形如: 36 x 45 + 36 x 55 -> 36 x (45+55)
+            case 'law_dist_merge':
+                let common = getNum(11, 99);
+                let m = getNum(11, 89);
+                let n = 100 - m; // m + n = 100
+                if(Math.random() > 0.5) n = 10 - m; // 偶尔凑成10
+                if(n <= 0) n = 100 - m;
+                return {
+                    text: `${common} × ${m} + ${common} × ${n}`,
+                    solveHTML: `<span class="step-txt">Paso 1 (提取):</span> ${common} × (${m} + ${n})<br><span class="step-txt">Paso 2:</span> ${common} × ${m+n} = ${common*(m+n)}`
+                };
+
+            // 4. 乘法分配律 (拆分凑整)
+            // 形如: 102 x 35 -> (100+2) x 35
+            case 'law_dist_split':
+                let baseOptions = [101, 102, 99, 98];
+                let base = baseOptions[getNum(0, 3)];
+                let mult = getNum(11, 99);
+                
+                let splitBase = (base > 100) ? 100 : 100;
+                let splitDiff = base - 100; // 1, 2, -1, -2
+                let sign = (splitDiff > 0) ? '+' : '-';
+                let absDiff = Math.abs(splitDiff);
+
+                let calcStr = (splitDiff > 0) 
+                    ? `${mult}00 + ${mult*absDiff}` 
+                    : `${mult}00 - ${mult*absDiff}`;
+
+                return {
+                    text: `${base} × ${mult}`,
+                    solveHTML: `<span class="step-txt">Paso 1 (拆分):</span> (100 ${sign} ${absDiff}) × ${mult}<br><span class="step-txt">Paso 2:</span> ${mult}×100 ${sign} ${mult}×${absDiff}<br><span class="step-txt">Paso 3:</span> ${calcStr} = ${base*mult}`
                 };
         }
     }

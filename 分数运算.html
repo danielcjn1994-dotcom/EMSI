@@ -141,6 +141,7 @@
         .btn-level-1 { background: #1a4a8e; }
         .btn-level-2 { background: #2c5282; } /* 略深 */
         .btn-level-3 { background: #2a4365; } /* 更深 */
+        .btn-level-4 { background: #6b46c1; } /* 新增：紫色系，用于运算定律 */
 
         .quiz-header {
             display: flex;
@@ -286,6 +287,24 @@
                     <button class="btn-emsi btn-level-3" onclick="startQuiz('parenthesis', 'int3digit')">Paréntesis ( )<small>带小括号</small></button>
                     <button class="btn-emsi btn-level-3" onclick="startQuiz('brackets', 'int3digit')">Corchetes [ ]<small>带中括号</small></button>
                 </div>
+
+                <div class="section-title">
+                    <span class="section-badge">Nivel 4</span> Leyes de Operaciones (运算定律/巧算)
+                </div>
+                <div class="btn-grid">
+                    <button class="btn-emsi btn-level-4" onclick="startQuiz('law_add_comm', 'laws')">
+                        Conmutativa/Asociativa (+)<small>加法交换/结合律 (凑整)</small>
+                    </button>
+                    <button class="btn-emsi btn-level-4" onclick="startQuiz('law_mul_assoc', 'laws')">
+                        Asociativa (×)<small>乘法结合律 (约分技巧)</small>
+                    </button>
+                    <button class="btn-emsi btn-level-4" onclick="startQuiz('law_dist_merge', 'laws')">
+                        Distributiva (Unir)<small>分配律 (提取公因数)</small>
+                    </button>
+                    <button class="btn-emsi btn-level-4" onclick="startQuiz('law_dist_split', 'laws')">
+                        Distributiva (Separar)<small>分配律 (拆整数)</small>
+                    </button>
+                </div>
             </div>
 
             <div id="quiz-page" class="hidden">
@@ -374,7 +393,7 @@
     }
 
     let currentType = '';
-    let currentLevel = 'normal'; // normal, int100, int3digit
+    let currentLevel = 'normal'; // normal, int100, int3digit, laws
 
     function startQuiz(type, level) {
         currentType = type;
@@ -387,16 +406,22 @@
             'add': 'Suma (加法)', 'sub': 'Resta (减法)', 
             'addsub': 'Suma y Resta (加减)', 'mul': 'Multiplicación (乘法)', 
             'div': 'División (除法)', 'mixed': 'Operaciones Mixtas (混合运算)',
-            'parenthesis': 'Con Paréntesis (含括号)', 'brackets': 'Con Corchetes (含中括号)'
+            'parenthesis': 'Con Paréntesis (含括号)', 'brackets': 'Con Corchetes (含中括号)',
+            // 新增标题
+            'law_add_comm': 'Ley Conmutativa/Asociativa (+)',
+            'law_mul_assoc': 'Ley Asociativa (×)',
+            'law_dist_merge': 'Ley Distributiva (Factor Común)',
+            'law_dist_split': 'Ley Distributiva (Descomposición)'
         };
         
         const levelLabels = {
             'normal': '',
             'int100': ' [Fracción + Entero < 100]',
-            'int3digit': ' [Fracción + Entero 3 Cifras]'
+            'int3digit': ' [Fracción + Entero 3 Cifras]',
+            'laws': ' [Leyes / 运算定律]'
         };
 
-        document.getElementById('quiz-title').innerText = typeTitles[type] + levelLabels[currentLevel];
+        document.getElementById('quiz-title').innerText = typeTitles[type] + (levelLabels[currentLevel] || '');
         generateQuestions();
     }
 
@@ -427,12 +452,13 @@
             if (q.ans.n > 0) return q; // 结果为正数则返回
         }
         // 如果尝试多次都失败（极为罕见），返回一个简单的加法作为兜底
-        return generateQuestionData('add', level); 
+        return generateQuestionData('add', 'normal'); 
     }
 
     function generateQuestionData(type, level) {
         let html, stepsHTML = '';
 
+        // --- 原有逻辑 ---
         if (['add', 'sub', 'addsub'].includes(type)) {
             // 获取3个操作数用于addsub，2个用于add/sub
             let count = (type === 'addsub') ? 3 : 2;
@@ -505,8 +531,6 @@
 
         if (type === 'mixed') {
             let [f1, f2, f3] = getOperands(3, level);
-            // 模式: f1 * f2 + f3 (先乘除后加减)
-            // 为了增加变化，随机选择操作符
             let op1 = Math.random() > 0.5 ? '×' : '÷';
             let op2 = Math.random() > 0.5 ? '+' : '-';
             
@@ -524,15 +548,10 @@
 
         if (type === 'parenthesis') {
             let [f1, f2, f3] = getOperands(3, level);
-            // 模式: f1 * (f2 + f3)
             let opInner = Math.random() > 0.5 ? '+' : '-';
             let inner = (opInner === '+') ? add(f2, f3) : sub(f2, f3);
             
-            // 检查括号内是否为负，如果是，交换顺序或改加法
-            if (inner.n < 0) { 
-                opInner = '+'; 
-                inner = add(f2, f3); 
-            }
+            if (inner.n < 0) { opInner = '+'; inner = add(f2, f3); }
 
             let opOuter = Math.random() > 0.5 ? '×' : '÷';
             let final = (opOuter === '×') ? mul(f1, inner) : div(f1, inner);
@@ -548,7 +567,6 @@
 
         if (type === 'brackets') {
             let [f1, f2, f3, f4] = getOperands(4, level);
-            // 模式: [(f1 + f2) * f3] ÷ f4
             let op1 = Math.random() > 0.5 ? '+' : '-';
             let inner = (op1 === '+') ? add(f1, f2) : sub(f1, f2);
             if(inner.n < 0) { op1 = '+'; inner = add(f1, f2); }
@@ -556,7 +574,7 @@
             let op2 = Math.random() > 0.5 ? '×' : '÷';
             let middle = (op2 === '×') ? mul(inner, f3) : div(inner, f3);
 
-            let op3 = Math.random() > 0.5 ? '÷' : '×'; // 外层通常用乘除
+            let op3 = Math.random() > 0.5 ? '÷' : '×'; 
             let final = (op3 === '÷') ? div(middle, f4) : mul(middle, f4);
 
             html = `<span class="bracket">[</span> <span class="bracket">(</span> ${f1.toHTML()} <span class="op">${op1}</span> ${f2.toHTML()} <span class="bracket">)</span> <span class="op">${op2}</span> ${f3.toHTML()} <span class="bracket">]</span> <span class="op">${op3}</span> ${f4.toHTML()}`;
@@ -569,7 +587,110 @@
             return { html, ans: final, steps: stepsHTML };
         }
 
-        return generateQuestionData(type, level);
+        // --- 新增：运算定律模块 (Nivel 4) ---
+
+        // 1. 加法交换律/结合律 (凑整)
+        // 模式: A/D + B/E + C/D，其中 A/D + C/D 是整数
+        if (type === 'law_add_comm') {
+            let D = randInt(4, 9);
+            let A = randInt(1, D-1);
+            let C = D - A; // 保证 A/D + C/D = 1
+            
+            let f1 = new Fraction(A, D);
+            let f3 = new Fraction(C, D);
+            let f2 = randFrac(); // 中间的干扰项
+
+            let sumInt = add(f1, f3); // = 1
+            let final = add(sumInt, f2);
+
+            html = `${f1.toHTML()} <span class="op">+</span> ${f2.toHTML()} <span class="op">+</span> ${f3.toHTML()}`;
+            stepsHTML = `
+                <div><span class="step-label">1. 交换律 (Conmutativa):</span> ${f1.toHTML()} <span class="op">+</span> ${f3.toHTML()} <span class="op">+</span> ${f2.toHTML()}</div>
+                <div><span class="step-label">2. 凑整 (Agrupar):</span> (${f1.toHTML()} <span class="op">+</span> ${f3.toHTML()}) <span class="op">=</span> 1</div>
+                <div><span class="step-label">3. 结果 (Resultado):</span> 1 <span class="op">+</span> ${f2.toHTML()} <span class="op">=</span> ${final.toHTML()}</div>
+            `;
+            return { html, ans: final, steps: stepsHTML };
+        }
+
+        // 2. 乘法结合律 (约分技巧)
+        // 模式: (A/B) * (C/D) * (B/A) -> 首尾互为倒数
+        if (type === 'law_mul_assoc') {
+            let f1 = randFrac();
+            let f3 = new Fraction(f1.d, f1.n); // 倒数
+            let f2 = randFrac();
+
+            let prodAssoc = mul(f1, f3); // = 1
+            let final = f2; // 1 * f2 = f2
+
+            html = `${f1.toHTML()} <span class="op">×</span> ${f2.toHTML()} <span class="op">×</span> ${f3.toHTML()}`;
+            stepsHTML = `
+                <div><span class="step-label">1. 交换律 (Conmutativa):</span> ${f1.toHTML()} <span class="op">×</span> ${f3.toHTML()} <span class="op">×</span> ${f2.toHTML()}</div>
+                <div><span class="step-label">2. 结合律 (Asociativa):</span> (${f1.toHTML()} <span class="op">×</span> ${f3.toHTML()}) <span class="op">=</span> 1</div>
+                <div><span class="step-label">3. 结果 (Resultado):</span> 1 <span class="op">×</span> ${f2.toHTML()} <span class="op">=</span> ${final.toHTML()}</div>
+            `;
+            return { html, ans: final, steps: stepsHTML };
+        }
+
+        // 3. 乘法分配律 (提取公因数)
+        // 模式: K * A + K * B = K * (A + B)
+        if (type === 'law_dist_merge') {
+            let K = randFrac();
+            let D = randInt(5, 12);
+            let A_n = randInt(1, D-1);
+            let B_n = D - A_n; // 使得 A+B = 1
+            
+            let fA = new Fraction(A_n, D);
+            let fB = new Fraction(B_n, D);
+            
+            // 构造表达式: K * fA + K * fB
+            let term1 = mul(K, fA);
+            let term2 = mul(K, fB);
+            let final = K; // 因为 fA + fB = 1, 所以结果就是 K
+
+            // 注意：这里为了显示题目，不化简 term1 和 term2，直接显示乘法形式
+            // 否则如果化简了，学生看不出公因数
+            // 但我们的 Fraction 类会自动化简... 
+            // 这是一个显示上的妥协，我们构造 HTML 字符串来模拟未计算的状态
+            
+            html = `${K.toHTML()} <span class="op">×</span> ${fA.toHTML()} <span class="op">+</span> ${K.toHTML()} <span class="op">×</span> ${fB.toHTML()}`;
+            
+            stepsHTML = `
+                <div><span class="step-label">1. 提取公因数 (Factor Común):</span> ${K.toHTML()} <span class="op">×</span> (${fA.toHTML()} <span class="op">+</span> ${fB.toHTML()})</div>
+                <div><span class="step-label">2. 括号内求和 (Suma):</span> ${fA.toHTML()} <span class="op">+</span> ${fB.toHTML()} <span class="op">=</span> 1</div>
+                <div><span class="step-label">3. 结果 (Resultado):</span> ${K.toHTML()} <span class="op">×</span> 1 <span class="op">=</span> ${final.toHTML()}</div>
+            `;
+            return { html, ans: final, steps: stepsHTML };
+        }
+
+        // 4. 乘法分配律 (拆分整数)
+        // 模式: (Int + Frac) * Denom
+        if (type === 'law_dist_split') {
+            let Int = randInt(2, 9);
+            let Denom = randInt(3, 9);
+            let Num = 1; // 简单起见，分子为1，或者 randInt(1, Denom-1)
+            
+            let fracPart = new Fraction(Num, Denom);
+            let multiplier = new Fraction(Denom, 1);
+            
+            // 题目: (Int + Num/Denom) * Denom
+            // 显示为带分数形式不好打，用括号形式: (I + F) * D
+            
+            let term1Result = Int * Denom;
+            let term2Result = Num; // (Num/Denom) * Denom = Num
+            let finalVal = term1Result + term2Result;
+            let final = new Fraction(finalVal, 1);
+
+            html = `<span class="bracket">(</span> ${Int} <span class="op">+</span> ${fracPart.toHTML()} <span class="bracket">)</span> <span class="op">×</span> ${Denom}`;
+            
+            stepsHTML = `
+                <div><span class="step-label">1. 分配律 (Distributiva):</span> ${Int} <span class="op">×</span> ${Denom} <span class="op">+</span> ${fracPart.toHTML()} <span class="op">×</span> ${Denom}</div>
+                <div><span class="step-label">2. 分别计算 (Calcular):</span> ${term1Result} <span class="op">+</span> ${term2Result}</div>
+                <div><span class="step-label">3. 结果 (Resultado):</span> ${final.toHTML()}</div>
+            `;
+            return { html, ans: final, steps: stepsHTML };
+        }
+
+        return { html: 'Error', ans: new Fraction(0,1), steps: '' };
     }
 
     function toggleAns(btn) {

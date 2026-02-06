@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI - Teoría de Operaciones</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 900;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容占位区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 40px 40px 40px;
+        }
+
+        .card {
+            background: transparent; /* 改为透明，因为折叠卡片自带背景 */
+            width: 100%;
+            max-width: 900px;
+            min-height: 400px;
+            /* 去掉原有的 border 和 shadow，交给折叠项自己管理 */
+            border-radius: 0;
+            box-shadow: none;
+            border: none;
+            display: block; /* 改为块级布局 */
+        }
+
+        /* --- 折叠面板样式 (Accordion) --- */
+        .accordion-item {
+            margin-bottom: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        .accordion-btn {
+            background-color: #fff;
+            color: #1a4a8e;
+            cursor: pointer;
+            padding: 20px 25px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 6px solid #1a4a8e; /* 默认蓝色左边条 */
+        }
+
+        /* 悬停和激活状态 */
+        .accordion-btn:hover, .accordion-btn.active {
+            background-color: #f8fafc;
+            border-left-color: #f1c40f; /* 激活变黄色 */
+        }
+
+        .accordion-btn .cn-title {
+            font-size: 1rem;
+            color: #6b7280;
+            font-weight: 400;
+            margin-left: 10px;
+        }
+
+        /* 加号图标 */
+        .accordion-btn:after {
+            content: '\002B'; /* Unicode for + */
+            color: #1a4a8e;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-left: 10px;
+        }
+
+        .accordion-btn.active:after {
+            content: "\2212"; /* Unicode for - */
+        }
+
+        /* 内容区域 */
+        .panel {
+            padding: 0 25px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: #2d3748;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .panel-content {
+            padding: 20px 0;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        /* 内容排版 */
+        h3 {
+            color: #1a4a8e;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .concept-row {
+            margin-bottom: 15px;
+        }
+
+        .es-text {
+            font-weight: 700;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .cn-text {
+            color: #666;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .example-box {
+            background: #fdfae8; /* 浅黄背景 */
+            border-left: 4px solid #f1c40f;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            color: #555;
+        }
+
+        .formula {
+            font-weight: bold;
+            color: #1a4a8e;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Teoría de Matemáticas / 数学理论法则</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">Volver 返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <div class="accordion-item">
+                <button class="accordion-btn">
+                    <div>
+                        1. Reglas Básicas de Operaciones
+                        <span class="cn-title">四则运算基本规则</span>
+                    </div>
+                </button>
+                <div class="panel">
+                    <div class="panel-content">
+                        <div class="concept-row">
+                            <span class="es-text">Jerarquía de las Operaciones (Orden de cálculo)</span>
+                            <span class="cn-text">运算顺序：先乘除，后加减；如果有括号，先算括号里面的。</span>
+                            <div class="example-box">
+                                Ejemplo: 3 + 4 × 2 = 3 + 8 = 11 <br>
+                                (No es 7 × 2 = 14)
+                            </div>
+                        </div>
+                        
+                        <div class="concept-row">
+                            <span class="es-text">Uso de Paréntesis, Corchetes y Llaves</span>
+                            <span class="cn-text">括号的使用顺序：先算小括号，再算中括号，最后算大括号。</span>
+                            <ul>
+                                <li><span class="formula">( )</span> <strong>Paréntesis</strong> (小括号) - Prioridad 1</li>
+                                <li><span class="formula">[ ]</span> <strong>Corchetes</strong> (中括号) - Prioridad 2</li>
+                                <li><span class="formula">{ }</span> <strong>Llaves</strong> (大括号) - Prioridad 3</li>
+                            </ul>
+                            <div class="example-box">
+                                10 × { 5 + [ 8 - ( 2 + 3 ) ] } <br>
+                                = 10 × { 5 + [ 8 - 5 ] } &nbsp;&nbsp; <small>← 先算 ( )</small><br>
+                                = 10 × { 5 + 3 } &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <small>← 再算 [ ]</small><br>
+                                = 10 × 8 = 80 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <small>← 最后算 { }</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-btn">
+                    <div>
+                        2. Propiedades de las Operaciones
+                        <span class="cn-title">四则运算定律理论</span>
+                    </div>
+                </button>
+                <div class="panel">
+                    <div class="panel-content">
+                        <div class="concept-row">
+                            <span class="es-text">Propiedad Conmutativa</span>
+                            <span class="cn-text">交换律：交换两个数的位置，结果不变。适用于加法和乘法。</span>
+                            <div class="example-box">
+                                Suma: <span class="formula">a + b = b + a</span> <br>
+                                Mult: <span class="formula">a × b = b × a</span>
+                            </div>
+                        </div>
+
+                        <div class="concept-row">
+                            <span class="es-text">Propiedad Asociativa</span>
+                            <span class="cn-text">结合律：三个数相加或相乘，先把前两个数相加/乘，或者先把后两个数相加/乘，结果不变。</span>
+                            <div class="example-box">
+                                Suma: <span class="formula">(a + b) + c = a + (b + c)</span> <br>
+                                Mult: <span class="formula">(a × b) × c = a × (b × c)</span>
+                            </div>
+                        </div>
+
+                        <div class="concept-row">
+                            <span class="es-text">Propiedad Distributiva</span>
+                            <span class="cn-text">分配律：一个数乘两个数的和，等于这个数分别乘这两个数，再相加。</span>
+                            <div class="example-box">
+                                <span class="formula">a × (b + c) = a × b + a × c</span> <br>
+                                Ejemplo: 2 × (3 + 4) = 2×3 + 2×4 = 6 + 8 = 14
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-btn">
+                    <div>
+                        3. Aplicaciones Prácticas
+                        <span class="cn-title">定律在各数域中的应用</span>
+                    </div>
+                </button>
+                <div class="panel">
+                    <div class="panel-content">
+                        <h3>A. Números Enteros (整数)</h3>
+                        <div class="concept-row">
+                            <span class="cn-text">应用：主要用于凑整计算（凑成10, 100等）。</span>
+                            <div class="example-box">
+                                <strong>Calculo mental (巧算):</strong> <br>
+                                25 × 13 × 4 <br>
+                                = (25 × 4) × 13 &nbsp; <small>← Conmutativa y Asociativa</small><br>
+                                = 100 × 13 = 1300
+                            </div>
+                        </div>
+
+                        <h3>B. Decimales (小数)</h3>
+                        <div class="concept-row">
+                            <span class="cn-text">应用：使小数点后的数字相加减能凑成整数。</span>
+                            <div class="example-box">
+                                4.8 + 3.6 + 5.2 <br>
+                                = (4.8 + 5.2) + 3.6 &nbsp; <small>← Conmutativa</small><br>
+                                = 10 + 3.6 = 13.6
+                            </div>
+                        </div>
+
+                        <h3>C. Fracciones (分数)</h3>
+                        <div class="concept-row">
+                            <span class="cn-text">应用：主要用于分配律约分，或者结合同分母分数。</span>
+                            <div class="example-box">
+                                <strong>Uso de Distributiva (分配律应用):</strong> <br>
+                                12 × (1/3 + 1/4) <br>
+                                = 12 × 1/3 + 12 × 1/4 <br>
+                                = 4 + 3 = 7
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+    <script>
+        // 控制折叠面板的脚本
+        var acc = document.getElementsByClassName("accordion-btn");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                // 切换激活状态类
+                this.classList.toggle("active");
+                
+                // 获取对应的面板 div
+                var panel = this.nextElementSibling;
+                
+                // 切换显示高度
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -148,8 +148,12 @@
         .mod-100 { background: #2c3e50; } /* 深灰蓝 */
         .mod-300 { background: #5D4037; } /* 棕色风格区分 */
         
+        /* 新增：紫色系用于运算定律 */
+        .mod-laws { background: #6b46c1; } 
+        
         .btn-emsi.mod-100:hover { background: #34495e; }
         .btn-emsi.mod-300:hover { background: #795548; }
+        .btn-emsi.mod-laws:hover { background: #553c9a; }
 
         /* 测验页面样式 */
         .quiz-header {
@@ -271,6 +275,22 @@
                     <button class="btn-emsi mod-300" onclick="startQuiz('m2_mix_p1')">6. 含小括号<small>Con ( )</small></button>
                     <button class="btn-emsi mod-300" onclick="startQuiz('m2_mix_p2')">7. 含中括号<small>Con [ ]</small></button>
                 </div>
+
+                <div class="section-title"><span>Nivel 3</span> 运算定律 (Leyes de Operaciones)</div>
+                <div class="btn-grid">
+                    <button class="btn-emsi mod-laws" onclick="startQuiz('law_dec_add')">
+                        加法交换/结合律<small>Conmutativa/Asociativa (+)</small>
+                    </button>
+                    <button class="btn-emsi mod-laws" onclick="startQuiz('law_dec_mul')">
+                        乘法结合律 (找朋友)<small>Asociativa (×)</small>
+                    </button>
+                    <button class="btn-emsi mod-laws" onclick="startQuiz('law_dist_merge')">
+                        乘法分配律 (提取)<small>Distributiva (Factor Común)</small>
+                    </button>
+                    <button class="btn-emsi mod-laws" onclick="startQuiz('law_dist_split')">
+                        乘法分配律 (拆分)<small>Distributiva (Descomposición)</small>
+                    </button>
+                </div>
             </div>
 
             <div id="quiz-page" class="hidden">
@@ -306,7 +326,12 @@
         // 模块 2 (三位数)
         'm2_add': 'Mod 2: 小数+三位数', 'm2_sub': 'Mod 2: 小数-三位数', 
         'm2_mul': 'Mod 2: 小数×三位数', 'm2_div': 'Mod 2: 小数÷三位数',
-        'm2_mix': 'Mod 2: 混合运算', 'm2_mix_p1': 'Mod 2: 含小括号', 'm2_mix_p2': 'Mod 2: 含中括号'
+        'm2_mix': 'Mod 2: 混合运算', 'm2_mix_p1': 'Mod 2: 含小括号', 'm2_mix_p2': 'Mod 2: 含中括号',
+        // 新增 模块 3 (运算定律)
+        'law_dec_add': 'Mod 3: 加法巧算 (凑整)',
+        'law_dec_mul': 'Mod 3: 乘法巧算 (结合律)',
+        'law_dist_merge': 'Mod 3: 分配律 (提取公因数)',
+        'law_dist_split': 'Mod 3: 分配律 (拆分凑整)'
     };
 
     function startQuiz(type) {
@@ -401,6 +426,67 @@
             case 'm2_mix': return genMix(rangeMin2, rangeMax2);
             case 'm2_mix_p1': return genMixP1(rangeMin2, rangeMax2);
             case 'm2_mix_p2': return genMixP2(rangeMin2, rangeMax2);
+
+            /* ================= 新增 模块 3: 运算定律 (小数巧算) ================= */
+            
+            // 1. 加法交换/结合律 (凑整) A + B + C，其中 A+C = 整数
+            case 'law_dec_add':
+                let targetSum = [10, 20, 100][getInt(0, 2)];
+                let a_float = getDec(1.1, targetSum - 1.1, 1);
+                let c_compl = fix(targetSum - a_float, 1);
+                let b_dist = getDec(1.5, 9.9, 1);
+                return {
+                    text: `${a_float} + ${b_dist} + ${c_compl}`,
+                    solveHTML: `<span class="step-txt">① 凑整</span> (${a_float} + ${c_compl}) + ${b_dist} = ${targetSum} + ${b_dist}<br><span class="step-txt">② 结果</span> ${fix(targetSum + b_dist, 1)}`
+                };
+
+            // 2. 乘法结合律 (找朋友) 2.5 x 4, 1.25 x 8, 0.5 x 2
+            case 'law_dec_mul':
+                let pairs = [
+                    [2.5, 4], [0.25, 4], [2.5, 0.4], [1.25, 8], [0.125, 8], [12.5, 8], [0.5, 2], [5, 0.2]
+                ];
+                let p = pairs[getInt(0, pairs.length - 1)];
+                let factor = getDec(1.1, 9.9, 1);
+                // 随机打乱顺序
+                if(Math.random() > 0.5) {
+                    return {
+                        text: `${p[0]} × ${factor} × ${p[1]}`,
+                        solveHTML: `<span class="step-txt">① 结合</span> (${p[0]} × ${p[1]}) × ${factor} = ${fix(p[0]*p[1], 3)} × ${factor}<br><span class="step-txt">② 结果</span> ${fix(p[0]*p[1]*factor, 3)}`
+                    };
+                } else {
+                    return {
+                        text: `${factor} × ${p[0]} × ${p[1]}`,
+                        solveHTML: `<span class="step-txt">① 结合</span> ${factor} × (${p[0]} × ${p[1]}) = ${factor} × ${fix(p[0]*p[1], 3)}<br><span class="step-txt">② 结果</span> ${fix(p[0]*p[1]*factor, 3)}`
+                    };
+                }
+
+            // 3. 乘法分配律 (提取公因数) K*A + K*B = K*(A+B)
+            case 'law_dist_merge':
+                let K = getDec(1.1, 9.9, 1);
+                let A_sum = getDec(1.1, 8.9, 1);
+                let target = 10;
+                let B_sum = fix(target - A_sum, 1); // 凑成10
+                if (Math.random() > 0.6) { target = 1; B_sum = fix(1 - A_sum, 1); if(B_sum <= 0) B_sum = fix(10 - A_sum, 1); }
+                
+                return {
+                    text: `${K} × ${A_sum} + ${K} × ${B_sum}`,
+                    solveHTML: `<span class="step-txt">① 提取</span> ${K} × (${A_sum} + ${B_sum})<br><span class="step-txt">② 计算</span> ${K} × ${(A_sum+B_sum)} = ${fix(K * (A_sum+B_sum), 2)}`
+                };
+
+            // 4. 乘法分配律 (拆分凑整) 10.1 x A -> (10 + 0.1) x A
+            case 'law_dist_split':
+                let base = [10.1, 10.2, 9.9, 9.8, 100.1, 99.9][getInt(0, 5)];
+                let mult = getInt(2, 9);
+                
+                let bigPart = Math.round(base); 
+                let smallPart = fix(base - bigPart, 1);
+                let sign = smallPart > 0 ? '+' : '-';
+                smallPart = Math.abs(smallPart);
+
+                return {
+                    text: `${base} × ${mult}`,
+                    solveHTML: `<span class="step-txt">① 拆分</span> (${bigPart} ${sign} ${smallPart}) × ${mult}<br><span class="step-txt">② 分配</span> ${bigPart}×${mult} ${sign} ${smallPart}×${mult}<br><span class="step-txt">③ 结果</span> ${fix(base*mult, 2)}`
+                };
         }
         return { text: "Error", solveHTML: "Error" };
     }
