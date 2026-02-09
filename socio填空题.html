@@ -23,13 +23,12 @@
             font-size: 16px; 
             user-select: none;
             -webkit-user-select: none;
-            touch-action: none;
+            touch-action: pan-y; 
         }
 
         .header { background-color: white; text-align: center; padding: 12px; border-bottom: 4px solid var(--emsi-gold); position: sticky; top: 0; z-index: 1000; }
         .header h1 { color: var(--emsi-blue); margin: 0; font-size: 20px; letter-spacing: 1px; }
 
-        /* 新增：返回按钮样式 */
         .btn-back {
             display: inline-flex; align-items: center;
             padding: 8px 20px;
@@ -48,7 +47,7 @@
         .local-word-bank {
             background: #fff; border: 2px dashed var(--emsi-gold); border-radius: 10px;
             padding: 10px; margin: 10px 0 15px 0;
-            display: flex; flex-wrap: wrap; gap: 6px; min-height: 45px;
+            display: flex; flex-wrap: wrap; gap: 8px; min-height: 45px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
             align-items: center;
         }
@@ -57,20 +56,51 @@
             padding: 6px 12px; background: var(--emsi-blue); color: white;
             border-radius: 50px; font-weight: 700; font-size: 14px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            cursor: grab; position: relative; z-index: 10;
+            cursor: grab; 
+            position: relative; 
+            z-index: 10;
             white-space: nowrap;
+            touch-action: none; 
         }
-        .drag-item.dragging { opacity: 0.7; z-index: 1000; transform: scale(1.05); pointer-events: none; }
+        
+        .drag-item.dragging { 
+            opacity: 0.9; 
+            z-index: 9999; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transform: scale(1.1);
+        }
+
+        .drag-placeholder {
+            background: rgba(0,0,0,0.05);
+            border-radius: 50px;
+            border: 2px dashed #cbd5e1;
+            box-sizing: border-box;
+        }
 
         .exercise-block { margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
         .exercise-block:last-child { border: none; }
         .exercise-area { line-height: 2.1; font-size: 17px; }
         
+        /* 新增：头部包含标题和重置按钮 */
+        .block-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+        }
+
         .section-title { 
             background: var(--emsi-blue); color: white; display: inline-block;
-            padding: 4px 12px; border-radius: 6px; margin-bottom: 8px; font-size: 16px;
-            font-weight: bold;
+            padding: 4px 12px; border-radius: 6px; font-size: 16px;
+            font-weight: bold; margin: 0;
         }
+
+        /* 新增：重置按钮样式 */
+        .btn-reset {
+            background: #fff; border: 1px solid #cbd5e1; color: #64748b;
+            padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; gap: 4px;
+            transition: all 0.2s;
+        }
+        .btn-reset:active { background: #f1f5f9; transform: scale(0.95); }
+        .btn-reset:hover { color: var(--emsi-blue); border-color: var(--emsi-blue); }
 
         .drop-zone {
             display: inline-flex; min-width: 110px; height: 32px;
@@ -80,7 +110,7 @@
             font-weight: 800; color: var(--emsi-blue); font-size: 15px;
             padding: 0 6px;
         }
-        .drop-zone.over { background: var(--emsi-gold); }
+        .drop-zone.over { background: var(--emsi-gold); transform: scale(1.05); }
         .drop-zone.correct { background: var(--success); color: white; border-color: transparent; }
 
         .drag-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 15px; }
@@ -104,7 +134,10 @@
         <p class="instruction">Arrastra las palabras correctas a los espacios.</p>
 
         <div class="exercise-block">
-            <div class="section-title">1. Los trabajos de la naturaleza</div>
+            <div class="block-header">
+                <div class="section-title">1. Los trabajos de la naturaleza</div>
+                <button class="btn-reset" onclick="resetBlock(this)">↺ Reiniciar</button>
+            </div>
             <div class="local-word-bank"></div>
             <div class="exercise-area">
                 <p>La <span class="drop-zone" data-ans="agricultura"></span> (🚜) consiste en cultivar la tierra para conseguir <span class="drop-zone" data-ans="frutas"></span> (🍎) y <span class="drop-zone" data-ans="verduras"></span> (🥬).</p>
@@ -115,7 +148,10 @@
         </div>
 
         <div class="exercise-block">
-            <div class="section-title">2. De la naturaleza a la fábrica</div>
+            <div class="block-header">
+                <div class="section-title">2. De la naturaleza a la fábrica</div>
+                <button class="btn-reset" onclick="resetBlock(this)">↺ Reiniciar</button>
+            </div>
             <div class="local-word-bank"></div>
             <div class="exercise-area">
                 <p>Las <span class="drop-zone" data-ans="materias primas"></span> (🪵) se usan para fabricar otras cosas.</p>
@@ -131,7 +167,10 @@
         </div>
 
         <div class="exercise-block">
-            <div class="section-title">3. Fábricas vs Talleres</div>
+            <div class="block-header">
+                <div class="section-title">3. Fábricas vs Talleres</div>
+                <button class="btn-reset" onclick="resetBlock(this)">↺ Reiniciar</button>
+            </div>
             <div class="local-word-bank"></div>
             <div class="exercise-area">
                 <p>Las <span class="drop-zone" data-ans="fábricas"></span> (🏭) son espacios <span class="drop-zone" data-ans="muy grandes"></span> (🏢) con <span class="drop-zone" data-ans="muchas personas"></span> (👥) y <span class="drop-zone" data-ans="grandes máquinas"></span> (⚙️).</p>
@@ -141,7 +180,10 @@
         </div>
 
         <div class="exercise-block">
-            <div class="section-title">4. Servicios y Compras</div>
+            <div class="block-header">
+                <div class="section-title">4. Servicios y Compras</div>
+                <button class="btn-reset" onclick="resetBlock(this)">↺ Reiniciar</button>
+            </div>
             <div class="local-word-bank"></div>
             <div class="exercise-area">
                 <p>Los servicios <span class="drop-zone" data-ans="ayudan"></span> (🤝) a las personas: <span class="drop-zone" data-ans="médico"></span> (🩺), <span class="drop-zone" data-ans="profesores"></span> (👩‍🏫), <span class="drop-zone" data-ans="conductores"></span> (🚌), <span class="drop-zone" data-ans="policía"></span> (👮), <span class="drop-zone" data-ans="dependiente"></span> (🏷️), <span class="drop-zone" data-ans="arquitecto"></span> (📐).</p>
@@ -156,7 +198,6 @@
 <div class="stats" id="stats">Progreso: 0 / 0</div>
 
 <script>
-    // ... (保持原有的 JS 逻辑不变) ...
     const emojiMap = {
         "agricultura": "🚜", "frutas": "🍎", "verduras": "🥬", "ganadería": "🐄", "carne": "🥩", "leche": "🥛", "huevos": "🥚",
         "pesca": "🎣", "peces": "🐟", "mariscos": "🦐", "minería": "⛏️", "tierra": "🌍", "materias primas": "🪵",
@@ -167,44 +208,87 @@
     };
 
     let activeItem = null;
-    let initialPos = { x: 0, y: 0 };
+    let placeholder = null; 
+    let startX = 0, startY = 0;
     let finishedCount = 0;
     let totalCount = 0;
 
     function init() {
-        const blocks = document.querySelectorAll('.exercise-block');
         const totalZones = document.querySelectorAll('.drop-zone');
         totalCount = totalZones.length;
-
-        blocks.forEach(block => {
-            const bank = block.querySelector('.local-word-bank');
-            const zones = block.querySelectorAll('.drop-zone');
-            let blockAnswers = [];
-            zones.forEach(z => blockAnswers.push(z.dataset.ans));
-            blockAnswers.sort(() => Math.random() - 0.5);
-
-            blockAnswers.forEach(text => {
-                const div = document.createElement('div');
-                div.className = 'drag-item';
-                div.innerText = `${text} ${emojiMap[text] || ''}`;
-                div.dataset.raw = text;
-                div.addEventListener('pointerdown', onPointerDown);
-                bank.appendChild(div);
-            });
+        
+        // 初始生成所有板块的单词
+        document.querySelectorAll('.exercise-block').forEach(block => {
+            generateWordsForBlock(block);
         });
+
+        updateStats();
+    }
+
+    // 单独封装生成单词的逻辑，方便重置时调用
+    function generateWordsForBlock(block) {
+        const bank = block.querySelector('.local-word-bank');
+        const zones = block.querySelectorAll('.drop-zone');
+        
+        // 清空现有的单词库
+        bank.innerHTML = '';
+
+        let blockAnswers = [];
+        zones.forEach(z => blockAnswers.push(z.dataset.ans));
+        // 打乱顺序
+        blockAnswers.sort(() => Math.random() - 0.5);
+
+        blockAnswers.forEach(text => {
+            const div = document.createElement('div');
+            div.className = 'drag-item';
+            div.innerText = `${text} ${emojiMap[text] || ''}`;
+            div.dataset.raw = text;
+            div.addEventListener('pointerdown', onPointerDown);
+            bank.appendChild(div);
+        });
+    }
+
+    // 重置按钮点击事件
+    function resetBlock(btn) {
+        const block = btn.closest('.exercise-block');
+        const zones = block.querySelectorAll('.drop-zone');
+        
+        // 1. 恢复进度计数和填空区域
+        zones.forEach(zone => {
+            if (zone.classList.contains('correct')) {
+                finishedCount--; // 扣除已完成的数量
+                zone.classList.remove('correct');
+                zone.innerText = ''; // 清空文字
+            }
+        });
+
+        // 2. 重新生成该板块的单词库
+        generateWordsForBlock(block);
+        
+        // 3. 更新统计状态
         updateStats();
     }
 
     function onPointerDown(e) {
+        e.preventDefault(); 
         activeItem = e.currentTarget;
+        
         const rect = activeItem.getBoundingClientRect();
-        initialPos = { x: rect.left, y: rect.top };
-        activeItem.startX = e.clientX;
-        activeItem.startY = e.clientY;
-        activeItem.classList.add('dragging');
+        startX = e.clientX - rect.left;
+        startY = e.clientY - rect.top;
+
+        placeholder = document.createElement('div');
+        placeholder.className = 'drag-placeholder';
+        placeholder.style.width = rect.width + 'px';
+        placeholder.style.height = rect.height + 'px';
+        activeItem.parentNode.insertBefore(placeholder, activeItem);
+
         activeItem.style.position = 'fixed';
         activeItem.style.left = rect.left + 'px';
         activeItem.style.top = rect.top + 'px';
+        activeItem.style.width = rect.width + 'px'; 
+        activeItem.classList.add('dragging');
+
         activeItem.setPointerCapture(e.pointerId);
         activeItem.addEventListener('pointermove', onPointerMove);
         activeItem.addEventListener('pointerup', onPointerUp);
@@ -212,14 +296,16 @@
 
     function onPointerMove(e) {
         if (!activeItem) return;
-        const dx = e.clientX - activeItem.startX;
-        const dy = e.clientY - activeItem.startY;
-        activeItem.style.transform = `translate(${dx}px, ${dy}px)`;
+        const x = e.clientX - startX;
+        const y = e.clientY - startY;
+        activeItem.style.left = x + 'px';
+        activeItem.style.top = y + 'px';
+
         const zones = document.querySelectorAll('.drop-zone');
         zones.forEach(zone => {
             const zRect = zone.getBoundingClientRect();
             if (e.clientX > zRect.left && e.clientX < zRect.right && e.clientY > zRect.top && e.clientY < zRect.bottom) {
-                zone.classList.add('over');
+                if(!zone.classList.contains('correct')) zone.classList.add('over');
             } else {
                 zone.classList.remove('over');
             }
@@ -228,46 +314,70 @@
 
     function onPointerUp(e) {
         if (!activeItem) return;
-        activeItem.classList.remove('dragging');
+        
         const rawWord = activeItem.dataset.raw;
         let matchedZone = null;
-        const currentBlock = activeItem.closest('.exercise-block');
-        const zones = currentBlock.querySelectorAll('.drop-zone');
-
+        
+        const zones = document.querySelectorAll('.drop-zone');
         zones.forEach(zone => {
             const zRect = zone.getBoundingClientRect();
             if (e.clientX > zRect.left && e.clientX < zRect.right && e.clientY > zRect.top && e.clientY < zRect.bottom) {
                 if (zone.dataset.ans === rawWord && !zone.classList.contains('correct')) {
                     matchedZone = zone;
                 }
+                zone.classList.remove('over');
             }
         });
 
         if (matchedZone) {
             matchedZone.innerText = `${rawWord} ${emojiMap[rawWord] || ''}`;
             matchedZone.classList.add('correct');
-            matchedZone.classList.remove('over');
             activeItem.remove();
+            if(placeholder) placeholder.remove();
             finishedCount++;
             updateStats();
         } else {
-            activeItem.style.transition = 'all 0.3s ease';
-            activeItem.style.transform = 'translate(0, 0)';
+            activeItem.style.transition = 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
             activeItem.style.background = 'var(--error)';
+            
+            const pRect = placeholder.getBoundingClientRect();
+            activeItem.style.left = pRect.left + 'px';
+            activeItem.style.top = pRect.top + 'px';
+
             setTimeout(() => {
-                activeItem.style.position = 'static';
-                activeItem.style.transition = '';
-                activeItem.style.background = 'var(--emsi-blue)';
+                if(activeItem && placeholder) {
+                    activeItem.style.transition = '';
+                    activeItem.style.position = 'static';
+                    activeItem.style.width = ''; 
+                    activeItem.style.left = '';
+                    activeItem.style.top = '';
+                    activeItem.style.background = '';
+                    activeItem.classList.remove('dragging');
+                    
+                    if(placeholder.parentNode) {
+                        placeholder.parentNode.replaceChild(activeItem, placeholder);
+                    }
+                }
+                placeholder = null;
+                activeItem = null;
             }, 300);
+            
+            activeItem.removeEventListener('pointermove', onPointerMove);
+            activeItem.removeEventListener('pointerup', onPointerUp);
+            return; 
         }
+
         activeItem.removeEventListener('pointermove', onPointerMove);
         activeItem.removeEventListener('pointerup', onPointerUp);
         activeItem = null;
+        placeholder = null;
     }
 
     function updateStats() {
         const stats = document.getElementById('stats');
         stats.innerText = `Progreso: ${finishedCount} / ${totalCount}`;
+        stats.style.background = 'var(--emsi-gold)'; 
+
         if (finishedCount === totalCount && totalCount > 0) {
             stats.style.background = 'var(--success)';
             stats.innerText = "¡Completado! 🎉";
