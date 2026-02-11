@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1º Primaria Lengua - Repaso | EMSI</title>
+    <style>
+        /* --- 基础样式 (EMSI 标准风格) --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f; /* EMSI 经典黄 */
+        }
+
+        .header h1 {
+            color: #1a4a8e; /* EMSI 经典蓝 */
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 10px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 30px;
+            background-color: white;
+            color: #1a4a8e; /* 蓝色文字 */
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(26, 74, 142, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 10px;
+            font-weight: 800;
+            font-size: 22px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.15);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        /* --- 卡片容器 --- */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: block; 
+            overflow: hidden;
+            padding-bottom: 20px;
+        }
+
+        .footer {
+            background-color: #1a4a8e; /* 蓝色底 */
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- 折叠菜单 (Accordion) --- */
+        .accordion {
+            background-color: #fff;
+            color: #1a4a8e; /* 蓝色文字 */
+            cursor: pointer;
+            padding: 18px 25px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            font-weight: 700;
+            transition: 0.4s;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion:hover {
+            background-color: #f9fafb;
+        }
+
+        .accordion.active {
+            background-color: #eef2f6;
+            border-bottom: none;
+        }
+
+        .accordion:after {
+            content: '\25BC';
+            font-size: 14px;
+            color: #ccc;
+            float: right;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion.active:after {
+            transform: rotate(180deg);
+            color: #1a4a8e; /* 箭头变蓝 */
+        }
+
+        .panel {
+            padding: 0 25px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-bottom: 1px solid #eee;
+        }
+
+        .panel-content {
+            padding: 20px 0;
+        }
+
+        /* --- 内容排版 --- */
+        h3 {
+            color: #d35400; /* 深橙色强调 */
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 4px solid #f1c40f; /* 黄色左边框 */
+            padding-left: 10px;
+        }
+
+        h3:first-child {
+            margin-top: 0;
+        }
+
+        p {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .cn-text {
+            color: #888;
+            font-size: 14px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* 表格样式 */
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 15px;
+        }
+
+        .vocab-table th, .vocab-table td {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .vocab-table th {
+            background-color: #fafafa;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .vocab-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* 重点规则框 */
+        .rule-box {
+            background-color: #fff9db; /* 浅黄背景 */
+            border: 1px solid #f1c40f; /* 黄色边框 */
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .rule-box strong {
+            color: #d35400;
+        }
+
+        /* 例子框 */
+        .example-box {
+            background-color: #f0f7ff; /* 浅蓝背景 */
+            border-left: 4px solid #1a4a8e; /* 蓝色左边框 */
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-style: italic;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">1º Primaria - Repaso de Lengua (Santillana)</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <button class="accordion">1. Letra p</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Fonética y Palabras</h3>
+                    <p>La letra p suena fuerte y se practica en sílabas y palabras cortas.
+                    <span class="cn-text">字母 p 发清辅音，通常先练音节再练词。</span></p>
+                    <div class="example-box">
+                        "Pepa oye a papá."<br>
+                        "Pepa aupa a Pipo."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>papá</td><td>爸爸</td></tr>
+                        <tr><td>Pepa</td><td>佩帕（人名）</td></tr>
+                        <tr><td>Pipa</td><td>球/瓜子</td></tr>
+                        <tr><td>pie</td><td>脚</td></tr>
+                        <tr><td>pupa</td><td>伤口/疼痛</td></tr>
+                        <tr><td>Pepa oye</td><td>Pepa听</td></tr>
+                        <tr><td>oye</td><td>听见</td></tr>
+                        <tr><td>a</td><td>到/向</td></tr>
+                        <tr><td>aupa</td><td>抱起/举起</td></tr>
+                        <tr><td>Pipo</td><td>皮波（人名）</td></tr>
+                        <tr><td>Pepa aupa</td><td>Pepa抱起</td></tr>
+                        <tr><td>a papá</td><td>给爸爸</td></tr>
+                        <tr><td>a Pipo</td><td>给Pipo</td></tr>
+                        <tr><td>copia</td><td>抄写</td></tr>
+                        <tr><td>une</td><td>连线</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">2. Letra m</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Fonética y Familia</h3>
+                    <p>La letra m aparece mucho en "ma-me-mi-mo-mu" y en palabras de familia.
+                    <span class="cn-text">字母 m 常练“ma-me-mi-mo-mu”，也会放进简单词里反复出现。</span></p>
+                    <div class="example-box">
+                        "Mi mamá me mima."<br>
+                        "Amo a mi mamá."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>mamá</td><td>妈妈</td></tr>
+                        <tr><td>mimo</td><td>宠爱/疼爱</td></tr>
+                        <tr><td>momia</td><td>木乃伊</td></tr>
+                        <tr><td>mi</td><td>我的</td></tr>
+                        <tr><td>me</td><td>我（宾格）</td></tr>
+                        <tr><td>mima</td><td>疼爱/宠爱</td></tr>
+                        <tr><td>amo</td><td>我爱</td></tr>
+                        <tr><td>a</td><td>到/向</td></tr>
+                        <tr><td>Mi mamá</td><td>我的妈妈</td></tr>
+                        <tr><td>me mima</td><td>疼我</td></tr>
+                        <tr><td>Amo a mi mamá</td><td>我爱我妈妈</td></tr>
+                        <tr><td>copia</td><td>抄写</td></tr>
+                        <tr><td>escribe</td><td>写</td></tr>
+                        <tr><td>donde</td><td>在哪里</td></tr>
+                        <tr><td>dibujo</td><td>画画</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">3. Letra l</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Combinaciones</h3>
+                    <p>Con l se practican palabras y también combinaciones cortas como "la, al, lo, ol".
+                    <span class="cn-text">字母 l 会练单词，也会练“la, al, lo, ol”这类短组合。</span></p>
+                    <div class="example-box">
+                        "Amelia lee y lee."<br>
+                        "Pili lía el papel."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>alma</td><td>灵魂/心</td></tr>
+                        <tr><td>lomo</td><td>脊背/里脊</td></tr>
+                        <tr><td>olmo</td><td>榆树</td></tr>
+                        <tr><td>pala</td><td>铲子</td></tr>
+                        <tr><td>la</td><td>这/那（阴性）</td></tr>
+                        <tr><td>al</td><td>到…</td></tr>
+                        <tr><td>lo</td><td>这/那（中性）</td></tr>
+                        <tr><td>ol</td><td>ol（组合）</td></tr>
+                        <tr><td>Amelia</td><td>阿梅莉娅</td></tr>
+                        <tr><td>lee</td><td>读</td></tr>
+                        <tr><td>Pili</td><td>皮莉</td></tr>
+                        <tr><td>lía</td><td>缠/弄乱</td></tr>
+                        <tr><td>papel</td><td>纸</td></tr>
+                        <tr><td>completa</td><td>补全</td></tr>
+                        <tr><td>copia</td><td>抄写</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">4. Letra s</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Singular y Plural</h3>
+                    <p>La letra s se practica en singular/plural y en palabras como "suma / sumas".
+                    <span class="cn-text">字母 s 常用来练单复数，比如 “suma / sumas”。</span></p>
+                    <div class="example-box">
+                        "Luis asea al oso."<br>
+                        "la isla / las islas"
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>suma</td><td>加法</td></tr>
+                        <tr><td>sumas</td><td>加法（复数）</td></tr>
+                        <tr><td>isla</td><td>岛</td></tr>
+                        <tr><td>islas</td><td>岛屿（复数）</td></tr>
+                        <tr><td>la</td><td>这/那</td></tr>
+                        <tr><td>las</td><td>这些/那些</td></tr>
+                        <tr><td>mesa</td><td>桌子</td></tr>
+                        <tr><td>me</td><td>我</td></tr>
+                        <tr><td>sa</td><td>sa（音节）</td></tr>
+                        <tr><td>más</td><td>更多</td></tr>
+                        <tr><td>Luis</td><td>路易斯</td></tr>
+                        <tr><td>asea</td><td>清洗</td></tr>
+                        <tr><td>al</td><td>到…</td></tr>
+                        <tr><td>oso</td><td>熊</td></tr>
+                        <tr><td>copia</td><td>抄写</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">5. Letra t</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Palabras y Nombres</h3>
+                    <p>La letra t se trabaja con palabras sencillas y con nombres propios.
+                    <span class="cn-text">字母 t 常配合简单词，也会放进人名练读写。</span></p>
+                    <div class="example-box">
+                        "Mateo toma té."<br>
+                        "Maite toma tila."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>topo</td><td>鼹鼠</td></tr>
+                        <tr><td>tapa</td><td>盖子</td></tr>
+                        <tr><td>pato</td><td>鸭子</td></tr>
+                        <tr><td>lata</td><td>罐头</td></tr>
+                        <tr><td>maleta</td><td>行李箱</td></tr>
+                        <tr><td>tomate</td><td>番茄</td></tr>
+                        <tr><td>Mateo</td><td>马特奥</td></tr>
+                        <tr><td>Maite</td><td>玛伊特</td></tr>
+                        <tr><td>toma</td><td>喝/拿</td></tr>
+                        <tr><td>té</td><td>茶</td></tr>
+                        <tr><td>tila</td><td>菩提花茶</td></tr>
+                        <tr><td>escribe</td><td>写</td></tr>
+                        <tr><td>colorea</td><td>涂色</td></tr>
+                        <tr><td>camino</td><td>路径</td></tr>
+                        <tr><td>copia</td><td>抄写</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">6. Letra d</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Identificación visual</h3>
+                    <p>La letra d se reconoce dentro de palabras (dado/dedo, todo/toldo).
+                    <span class="cn-text">字母 d 会用“找一找/圈一圈”的方式放进词里辨认。</span></p>
+                    <div class="example-box">
+                        "La dama y su diadema."<br>
+                        "El soldado y su espada."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>dado</td><td>骰子</td></tr>
+                        <tr><td>dedo</td><td>手指</td></tr>
+                        <tr><td>medias</td><td>袜子</td></tr>
+                        <tr><td>medida</td><td>尺寸/测量</td></tr>
+                        <tr><td>todo</td><td>全部</td></tr>
+                        <tr><td>toldo</td><td>遮阳篷</td></tr>
+                        <tr><td>pomada</td><td>药膏</td></tr>
+                        <tr><td>tostada</td><td>烤面包片</td></tr>
+                        <tr><td>espada</td><td>剑</td></tr>
+                        <tr><td>diadema</td><td>头饰/发箍</td></tr>
+                        <tr><td>dama</td><td>女士</td></tr>
+                        <tr><td>soldado</td><td>士兵</td></tr>
+                        <tr><td>rodea</td><td>圈出来</td></tr>
+                        <tr><td>escribe</td><td>写</td></tr>
+                        <tr><td>completa</td><td>补全</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">7. Letra n</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Sílabas y Verbos</h3>
+                    <p>Con n se practican sílabas como "no/ne/en" y palabras en frases cortas.
+                    <span class="cn-text">字母 n 常练“no/ne/en”等音节，并放进简单短句。</span></p>
+                    <div class="example-box">
+                        "Natalia anda."<br>
+                        "Antonio nada."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>Natalia</td><td>娜塔莉娅</td></tr>
+                        <tr><td>Antonio</td><td>安东尼奥</td></tr>
+                        <tr><td>Diana</td><td>迪亚娜</td></tr>
+                        <tr><td>anda</td><td>走路</td></tr>
+                        <tr><td>patina</td><td>滑冰</td></tr>
+                        <tr><td>nada</td><td>游泳</td></tr>
+                        <tr><td>no</td><td>不</td></tr>
+                        <tr><td>ne</td><td>ne（音节）</td></tr>
+                        <tr><td>en</td><td>在…里</td></tr>
+                        <tr><td>peina</td><td>梳头</td></tr>
+                        <tr><td>peine</td><td>梳子</td></tr>
+                        <tr><td>domino</td><td>多米诺</td></tr>
+                        <tr><td>puente</td><td>桥</td></tr>
+                        <tr><td>elige</td><td>选择</td></tr>
+                        <tr><td>completa</td><td>补全</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">8. Letra f</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Sonido F</h3>
+                    <p>Con f se practican combinaciones "fa/fo" y palabras del entorno.
+                    <span class="cn-text">字母 f 会练“fa/fo”，并用生活词做拼读。</span></p>
+                    <div class="example-box">
+                        "sofá, estar, tele, no"<br>
+                        "Filomeno es un..."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>sofá</td><td>沙发</td></tr>
+                        <tr><td>estar</td><td>在/处于</td></tr>
+                        <tr><td>tele</td><td>电视</td></tr>
+                        <tr><td>no</td><td>不</td></tr>
+                        <tr><td>Filomeno</td><td>菲洛梅诺</td></tr>
+                        <tr><td>Faustino</td><td>福斯蒂诺</td></tr>
+                        <tr><td>Fino</td><td>菲诺</td></tr>
+                        <tr><td>Fidel</td><td>菲德尔</td></tr>
+                        <tr><td>es</td><td>是</td></tr>
+                        <tr><td>un</td><td>一个</td></tr>
+                        <tr><td>son</td><td>是（复数）</td></tr>
+                        <tr><td>completa</td><td>补全</td></tr>
+                        <tr><td>copia</td><td>抄写</td></tr>
+                        <tr><td>fa</td><td>fa（音节）</td></tr>
+                        <tr><td>fo</td><td>fo（音节）</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">9. Letra r (sonido fuerte)</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Regla de la R fuerte</h3>
+                    <div class="rule-box">
+                        La <strong>r</strong> suena fuerte al inicio de palabra y se escribe <strong>rr</strong> entre vocales.
+                        <span class="cn-text">r 在词首发强音；两个元音中间要写 rr。</span>
+                    </div>
+                    <div class="example-box">
+                        "La ropa de la reina."<br>
+                        "El remolino del río."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>ropa</td><td>衣服</td></tr>
+                        <tr><td>reina</td><td>王后</td></tr>
+                        <tr><td>remolino</td><td>漩涡</td></tr>
+                        <tr><td>río</td><td>河</td></tr>
+                        <tr><td>perro</td><td>狗</td></tr>
+                        <tr><td>Rosalía</td><td>罗萨莉娅</td></tr>
+                        <tr><td>r</td><td>r（字母）</td></tr>
+                        <tr><td>rr</td><td>rr（双写）</td></tr>
+                        <tr><td>la</td><td>这/那（阴）</td></tr>
+                        <tr><td>el</td><td>这/那（阳）</td></tr>
+                        <tr><td>de</td><td>的/从</td></tr>
+                        <tr><td>lee</td><td>读</td></tr>
+                        <tr><td>voz alta</td><td>大声</td></tr>
+                        <tr><td>escribe</td><td>写</td></tr>
+                        <tr><td>completa</td><td>补全</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">10. Letra h</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>H muda</h3>
+                    <div class="rule-box">
+                        La <strong>h</strong> no suena, pero se escribe en muchas palabras.
+                        <span class="cn-text">h 不发音，但很多词必须写。</span>
+                    </div>
+                    <div class="example-box">
+                        hotel, hospital, helados, almohadas
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>hotel</td><td>酒店</td></tr>
+                        <tr><td>hospital</td><td>医院</td></tr>
+                        <tr><td>hostal</td><td>旅馆</td></tr>
+                        <tr><td>helados</td><td>冰淇淋</td></tr>
+                        <tr><td>almohadas</td><td>枕头</td></tr>
+                        <tr><td>Oslo</td><td>奥斯陆</td></tr>
+                        <tr><td>Elsa</td><td>艾尔莎</td></tr>
+                        <tr><td>Adán</td><td>亚当</td></tr>
+                        <tr><td>Eloy</td><td>埃洛伊</td></tr>
+                        <tr><td>ha</td><td>已经</td></tr>
+                        <tr><td>ido</td><td>去过</td></tr>
+                        <tr><td>al</td><td>到…</td></tr>
+                        <tr><td>después</td><td>之后</td></tr>
+                        <tr><td>repasa</td><td>复习</td></tr>
+                        <tr><td>rótulos</td><td>招牌</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">11. Letras c y qu</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Sonido K</h3>
+                    <div class="rule-box">
+                        Con <strong>c</strong> escribimos "ca, co, cu".<br>
+                        Con <strong>qu</strong> escribimos "que, qui".
+                    </div>
+                    <div class="example-box">
+                        "Las focas comen."<br>
+                        "El caimán pesca."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>foca</td><td>海豹</td></tr>
+                        <tr><td>focas</td><td>海豹（复数）</td></tr>
+                        <tr><td>caimán</td><td>凯门鳄</td></tr>
+                        <tr><td>cuco</td><td>布谷鸟</td></tr>
+                        <tr><td>cucos</td><td>布谷鸟（复数）</td></tr>
+                        <tr><td>ca</td><td>ca（音节）</td></tr>
+                        <tr><td>co</td><td>co（音节）</td></tr>
+                        <tr><td>cu</td><td>cu（音节）</td></tr>
+                        <tr><td>que</td><td>que（音节）</td></tr>
+                        <tr><td>qui</td><td>qui（音节）</td></tr>
+                        <tr><td>comen</td><td>他们吃</td></tr>
+                        <tr><td>pescan</td><td>他们捕鱼</td></tr>
+                        <tr><td>cantan</td><td>他们唱歌</td></tr>
+                        <tr><td>forma</td><td>组成</td></tr>
+                        <tr><td>completa</td><td>补全</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">12. Letra g</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Sonido G suave</h3>
+                    <div class="rule-box">
+                        • <strong>ga, go, gu</strong> (gato, gusano)<br>
+                        • <strong>gue, gui</strong> (guitarra, águila)
+                    </div>
+                    <div class="example-box">
+                        "Al gato le gustan las golosinas."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>gato</td><td>猫</td></tr>
+                        <tr><td>le gustan</td><td>喜欢</td></tr>
+                        <tr><td>espaguetis</td><td>意大利面</td></tr>
+                        <tr><td>golosinas</td><td>糖果</td></tr>
+                        <tr><td>gaita</td><td>风笛</td></tr>
+                        <tr><td>guitarra</td><td>吉他</td></tr>
+                        <tr><td>gusano</td><td>虫子</td></tr>
+                        <tr><td>águila</td><td>鹰</td></tr>
+                        <tr><td>gafas</td><td>眼镜</td></tr>
+                        <tr><td>guantes</td><td>手套</td></tr>
+                        <tr><td>lana</td><td>羊毛</td></tr>
+                        <tr><td>seda</td><td>丝绸</td></tr>
+                        <tr><td>marrón</td><td>棕色</td></tr>
+                        <tr><td>rota</td><td>坏的</td></tr>
+                        <tr><td>antigua</td><td>古老的</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">13. Letra r (sonido suave)</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>R suave entre vocales</h3>
+                    <p>La r suena suave entre vocales y se reconoce en muchas palabras de animales.
+                    <span class="cn-text">r 在元音之间常是轻音，常用于动物名称。</span></p>
+                    <div class="example-box">
+                        mariposa, caracol, loro, canario
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>periquito</td><td>小鹦鹉</td></tr>
+                        <tr><td>mariposa</td><td>蝴蝶</td></tr>
+                        <tr><td>caracol</td><td>蜗牛</td></tr>
+                        <tr><td>orangután</td><td>红毛猩猩</td></tr>
+                        <tr><td>loro</td><td>鹦鹉</td></tr>
+                        <tr><td>ratón</td><td>老鼠</td></tr>
+                        <tr><td>mariquita</td><td>瓢虫</td></tr>
+                        <tr><td>canario</td><td>金丝雀</td></tr>
+                        <tr><td>canguro</td><td>袋鼠</td></tr>
+                        <tr><td>gorrión</td><td>麻雀</td></tr>
+                        <tr><td>sirena</td><td>美人鱼</td></tr>
+                        <tr><td>r</td><td>r（字母）</td></tr>
+                        <tr><td>suave</td><td>柔和的</td></tr>
+                        <tr><td>completa</td><td>补全</td></tr>
+                        <tr><td>copia</td><td>抄写</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">14. Letra b</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Identificación y Nombres</h3>
+                    <p>Con b se reconocen palabras y se completan frases con nombres.
+                    <span class="cn-text">字母 b 会通过“找词+补句”练习，人名也会反复出现。</span></p>
+                    <div class="example-box">
+                        "Bernabé tiene barba."<br>
+                        "Berta, Fabio, Isabel."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>abuelo</td><td>爷爷/外公</td></tr>
+                        <tr><td>batido</td><td>奶昔</td></tr>
+                        <tr><td>botas</td><td>靴子</td></tr>
+                        <tr><td>Berta</td><td>贝尔塔</td></tr>
+                        <tr><td>Fabio</td><td>法比奥</td></tr>
+                        <tr><td>Isabel</td><td>伊莎贝尔</td></tr>
+                        <tr><td>Bernabé</td><td>贝尔纳贝</td></tr>
+                        <tr><td>busca</td><td>找</td></tr>
+                        <tr><td>besa</td><td>亲吻</td></tr>
+                        <tr><td>bebé</td><td>宝宝</td></tr>
+                        <tr><td>barba</td><td>胡子</td></tr>
+                        <tr><td>bigote</td><td>小胡子</td></tr>
+                        <tr><td>tiene</td><td>有</td></tr>
+                        <tr><td>su</td><td>他的/她的</td></tr>
+                        <tr><td>completa</td><td>补全</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">15. Letra v</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Lectura y Escritura</h3>
+                    <p>Con v se buscan palabras en una sopa de letras y se completan frases.
+                    <span class="cn-text">字母 v 通过“找词游戏”和“补句抄写”来练。</span></p>
+                    <div class="example-box">
+                        "Valeria visitó una cueva."
+                    </div>
+                    <h3>15 Palabras Clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>Valeria</td><td>瓦莱里娅</td></tr>
+                        <tr><td>cueva</td><td>洞穴</td></tr>
+                        <tr><td>luego</td><td>然后</td></tr>
+                        <tr><td>casa</td><td>家</td></tr>
+                        <tr><td>visitó</td><td>参观了</td></tr>
+                        <tr><td>volvió</td><td>回来了</td></tr>
+                        <tr><td>uve</td><td>V(字母名)</td></tr>
+                        <tr><td>uvas</td><td>葡萄</td></tr>
+                        <tr><td>veleta</td><td>风向标</td></tr>
+                        <tr><td>vaso</td><td>杯子</td></tr>
+                        <tr><td>vivir</td><td>生活</td></tr>
+                        <tr><td>ver</td><td>看见</td></tr>
+                        <tr><td>busca</td><td>找</td></tr>
+                        <tr><td>escribe</td><td>写</td></tr>
+                        <tr><td>completa</td><td>补全</td></tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | 1º Primaria Lengua</span>
+    </footer>
+
+    <script>
+        // 获取所有的折叠按钮
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            });
+        }
+    </script>
+
+</body>
+</html>

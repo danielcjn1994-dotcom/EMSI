@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2º Primaria Lengua - Repaso | EMSI</title>
+    <style>
+        /* --- 基础样式 (保留原框架) --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 10px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 30px;
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(26, 74, 142, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 10px;
+            font-weight: 800;
+            font-size: 22px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.15);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        /* --- 卡片容器 --- */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: block; 
+            overflow: hidden;
+            padding-bottom: 20px;
+        }
+
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- 折叠菜单 (Accordion) --- */
+        .accordion {
+            background-color: #fff;
+            color: #1a4a8e;
+            cursor: pointer;
+            padding: 18px 25px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            font-weight: 700;
+            transition: 0.4s;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion:hover {
+            background-color: #f9fafb;
+        }
+
+        .accordion.active {
+            background-color: #eef2f6;
+            border-bottom: none;
+        }
+
+        .accordion:after {
+            content: '\25BC';
+            font-size: 14px;
+            color: #ccc;
+            float: right;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion.active:after {
+            transform: rotate(180deg);
+            color: #1a4a8e;
+        }
+
+        .panel {
+            padding: 0 25px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-bottom: 1px solid #eee;
+        }
+
+        .panel-content {
+            padding: 20px 0;
+        }
+
+        /* --- 内容排版 --- */
+        h3 {
+            color: #d35400;
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 4px solid #f1c40f;
+            padding-left: 10px;
+        }
+
+        h3:first-child {
+            margin-top: 0;
+        }
+
+        p {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .cn-text {
+            color: #888;
+            font-size: 14px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* 表格样式 */
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 15px;
+        }
+
+        .vocab-table th, .vocab-table td {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .vocab-table th {
+            background-color: #fafafa;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .vocab-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* 重点规则框 */
+        .rule-box {
+            background-color: #fff9db;
+            border: 1px solid #f1c40f;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .rule-box strong {
+            color: #d35400;
+        }
+
+        /* 例子框 */
+        .example-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid #1a4a8e;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-style: italic;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">2º Primaria - Repaso de Lengua (Santillana)</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <button class="accordion">Unidad 1 - La lengua</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>La comunicación</h3>
+                    <p>La lengua sirve para comunicarnos: hablamos, escribimos y leemos.
+                    <span class="cn-text">语言用来交流：我们会说、会写、会读。</span></p>
+                    <div class="example-box">
+                        Marta <strong>escribe</strong> una nota.<br>
+                        Don Ricardo <strong>lee</strong> el periódico.
+                    </div>
+
+                    <h3>Ortografía: El punto y la mayúscula</h3>
+                    <div class="rule-box">
+                        Usamos <strong>mayúscula</strong> al empezar un texto y después de punto.
+                        <span class="cn-text">句首和句号后要用大写字母。</span>
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>punto</td><td>句号</td></tr>
+                        <tr><td>mayúscula</td><td>大写字母</td></tr>
+                        <tr><td>Laura</td><td>劳拉</td></tr>
+                        <tr><td>bufanda</td><td>围巾</td></tr>
+                        <tr><td>invierno</td><td>冬天</td></tr>
+                        <tr><td>resfriarse</td><td>感冒</td></tr>
+                        <tr><td>olor</td><td>气味</td></tr>
+                        <tr><td>enseguida</td><td>立刻/马上</td></tr>
+                        <tr><td>mamá</td><td>妈妈</td></tr>
+                        <tr><td>colonia</td><td>香水/古龙水</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 2 - El abecedario</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>El abecedario</h3>
+                    <p>El abecedario es el orden de las letras, y sirve para buscar palabras.
+                    <span class="cn-text">字母表就是字母的顺序，用来查词、排序。</span></p>
+                    <div class="example-box">
+                        Ordenando letras: cubo, taza, azul, pozo.
+                    </div>
+
+                    <h3>Ortografía: Nombres propios</h3>
+                    <div class="rule-box">
+                        Los nombres propios (personas y lugares) se escriben con <strong>mayúscula</strong>.
+                        <span class="cn-text">专有名词（人名、地名）首字母要大写。</span>
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>Rosendo</td><td>罗森多（人名）</td></tr>
+                        <tr><td>Gertrudis</td><td>赫特鲁迪斯（人名）</td></tr>
+                        <tr><td>Lagunabaja</td><td>拉古纳巴哈（地名）</td></tr>
+                        <tr><td>Lagunalta</td><td>拉古纳阿尔塔（地名）</td></tr>
+                        <tr><td>Monteperdido</td><td>蒙特佩尔迪多（地名）</td></tr>
+                        <tr><td>Montencontrado</td><td>蒙特恩孔特拉多（地名）</td></tr>
+                        <tr><td>pueblo</td><td>小镇/村庄</td></tr>
+                        <tr><td>pirata</td><td>海盗</td></tr>
+                        <tr><td>tía</td><td>姑妈/姨妈</td></tr>
+                        <tr><td>visitar</td><td>拜访</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 3 - La palabra y la sílaba</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Las sílabas</h3>
+                    <p>Una palabra puede dividirse en sílabas (golpes de voz).
+                    <span class="cn-text">单词可以分成音节（说话时的“拍子”）。</span></p>
+                    <div class="example-box">
+                        cir-co, mu-ñe-ca, bi-ci-cle-ta
+                    </div>
+
+                    <h3>Ortografía: ca, co, cu, que, qui</h3>
+                    <div class="rule-box">
+                        • <strong>ca, co, cu</strong> (se escriben con C)<br>
+                        • <strong>que, qui</strong> (llevan C pero la U no suena)
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>Carla</td><td>卡拉（人名）</td></tr>
+                        <tr><td>queso</td><td>奶酪</td></tr>
+                        <tr><td>cuatro</td><td>四</td></tr>
+                        <tr><td>melocotones</td><td>桃子（复数）</td></tr>
+                        <tr><td>mantequilla</td><td>黄油</td></tr>
+                        <tr><td>caramelo</td><td>糖果</td></tr>
+                        <tr><td>corazón</td><td>心</td></tr>
+                        <tr><td>cuadro</td><td>画/相框</td></tr>
+                        <tr><td>quince</td><td>十五</td></tr>
+                        <tr><td>raqueta</td><td>球拍</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 4 - La oración</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>¿Qué es una oración?</h3>
+                    <p>Una oración tiene sentido completo y las palabras están en orden.
+                    <span class="cn-text">句子表达完整意思，词序要正确。</span></p>
+                    <div class="example-box">
+                        "La luna brilla."<br>
+                        "Los vecinos llegaron ayer."
+                    </div>
+
+                    <h3>Ortografía: za, zo, zu, ce, ci</h3>
+                    <div class="rule-box">
+                        • Con <strong>Z</strong>: za, zo, zu (zapato, zueco)<br>
+                        • Con <strong>C</strong>: ce, ci (cesta, cebra)
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>zapato</td><td>鞋子</td></tr>
+                        <tr><td>buzón</td><td>邮筒/信箱</td></tr>
+                        <tr><td>zueco</td><td>木底鞋</td></tr>
+                        <tr><td>cesta</td><td>篮子</td></tr>
+                        <tr><td>cebra</td><td>斑马</td></tr>
+                        <tr><td>pecera</td><td>鱼缸</td></tr>
+                        <tr><td>manzanas</td><td>苹果（复数）</td></tr>
+                        <tr><td>cerezas</td><td>樱桃（复数）</td></tr>
+                        <tr><td>cerditos</td><td>小猪（复数）</td></tr>
+                        <tr><td>once</td><td>十一</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 5 - El sustantivo</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>El sustantivo</h3>
+                    <p>Nombra personas, animales, cosas o lugares.
+                    <span class="cn-text">名词用来表示人、动物、事物或地点。</span></p>
+                    <div class="example-box">
+                        "En el <strong>zoo</strong>, <strong>Ana</strong> vio <strong>jirafas</strong>."
+                    </div>
+
+                    <h3>Ortografía: ga, go, gu, gue, gui...</h3>
+                    <div class="rule-box">
+                        • <strong>ga, go, gu</strong>: G suena fuerte (gato).<br>
+                        • <strong>gue, gui</strong>: U no suena (persigue).<br>
+                        • <strong>güe, güi</strong>: U sí suena, lleva diéresis (pingüino).
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>gato</td><td>猫</td></tr>
+                        <tr><td>Guillermo</td><td>吉列尔莫</td></tr>
+                        <tr><td>gusta</td><td>喜欢</td></tr>
+                        <tr><td>amigos</td><td>朋友们</td></tr>
+                        <tr><td>persigue</td><td>追赶</td></tr>
+                        <tr><td>pingüino</td><td>企鹅</td></tr>
+                        <tr><td>cigüeña</td><td>鹳/白鹳</td></tr>
+                        <tr><td>águila</td><td>鹰</td></tr>
+                        <tr><td>guepardo</td><td>猎豹</td></tr>
+                        <tr><td>manguera</td><td>水管</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 6 - El nombre propio</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Nombre propio vs Común</h3>
+                    <p>El nombre propio identifica a una persona, animal o lugar concreto y va con mayúscula.
+                    <span class="cn-text">专有名词指具体的人/动物/地点，首字母大写。</span></p>
+                    <div class="example-box">
+                        Marcos, Ángela, Zar, Galicia.
+                    </div>
+
+                    <h3>Ortografía: ja, jo, ju</h3>
+                    <div class="rule-box">
+                        El sonido /j/ se escribe con <strong>J</strong> en "ja, jo, ju".
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>Jacinta</td><td>哈辛塔</td></tr>
+                        <tr><td>José</td><td>何塞</td></tr>
+                        <tr><td>juegan</td><td>他们玩</td></tr>
+                        <tr><td>juntos</td><td>一起</td></tr>
+                        <tr><td>Julia</td><td>胡莉娅</td></tr>
+                        <tr><td>joven</td><td>年轻的</td></tr>
+                        <tr><td>bruja</td><td>女巫</td></tr>
+                        <tr><td>maja</td><td>讨喜的</td></tr>
+                        <tr><td>jabones</td><td>肥皂（复数）</td></tr>
+                        <tr><td>jazmín</td><td>茉莉</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 7 - El género</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Masculino y Femenino</h3>
+                    <p>Los sustantivos pueden ser masculinos (el) o femeninos (la).
+                    <span class="cn-text">名词有阴阳性，通常搭配“el / la”。</span></p>
+                    <div class="example-box">
+                        El sol, el coche (Masculino)<br>
+                        La sal, la luna (Femenino)
+                    </div>
+
+                    <h3>Ortografía: je, ge, ji, gi</h3>
+                    <div class="rule-box">
+                        El sonido /j/ puede escribirse con <strong>J</strong> (je, ji) o con <strong>G</strong> (ge, gi).
+                        <span class="cn-text">注意区分：Viaje (J) / Gigante (G)。</span>
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>cojín</td><td>靠垫</td></tr>
+                        <tr><td>jinete</td><td>骑士</td></tr>
+                        <tr><td>viaje</td><td>旅行</td></tr>
+                        <tr><td>gente</td><td>人们</td></tr>
+                        <tr><td>congelador</td><td>冷冻柜</td></tr>
+                        <tr><td>gigante</td><td>巨人</td></tr>
+                        <tr><td>Jimena</td><td>希梅娜</td></tr>
+                        <tr><td>Gerardo</td><td>赫拉尔多</td></tr>
+                        <tr><td>Jesús</td><td>赫苏斯</td></tr>
+                        <tr><td>girasol</td><td>向日葵</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 8 - El número</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Singular y Plural</h3>
+                    <p>Los sustantivos tienen singular (uno) y plural (muchos).
+                    <span class="cn-text">名词有单数和复数。</span></p>
+                    <div class="example-box">
+                        un caramelo / unos caramelos<br>
+                        una flor / unas flores
+                    </div>
+
+                    <h3>Ortografía: R suave</h3>
+                    <div class="rule-box">
+                        La r suena suave entre vocales o al final de sílaba.
+                        <br>Ej: ca-<strong>r</strong>o-col, a-<strong>r</strong>e-na.
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>playa</td><td>海滩</td></tr>
+                        <tr><td>solitaria</td><td>孤单的/寂静的</td></tr>
+                        <tr><td>marea</td><td>潮水</td></tr>
+                        <tr><td>arena</td><td>沙子</td></tr>
+                        <tr><td>orilla</td><td>岸边</td></tr>
+                        <tr><td>velero</td><td>帆船</td></tr>
+                        <tr><td>caracol</td><td>蜗牛</td></tr>
+                        <tr><td>pantera</td><td>黑豹</td></tr>
+                        <tr><td>canguro</td><td>袋鼠</td></tr>
+                        <tr><td>veterinaria</td><td>兽医</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 9 - El artículo</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Artículos determinados</h3>
+                    <p>El artículo acompaña al sustantivo: el, la, los, las.
+                    <span class="cn-text">冠词跟在名词前：el/la/los/las。</span></p>
+                    <div class="example-box">
+                        El estuche, la pelota, los botones, las uvas.
+                    </div>
+
+                    <h3>Ortografía: R fuerte</h3>
+                    <div class="rule-box">
+                        • Al inicio de palabra (<strong>r</strong>uido).<br>
+                        • Con "<strong>rr</strong>" entre vocales (a<strong>rr</strong>iba).
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>ruido</td><td>噪音</td></tr>
+                        <tr><td>arriba</td><td>上面</td></tr>
+                        <tr><td>radiante</td><td>耀眼的</td></tr>
+                        <tr><td>resplandor</td><td>闪光</td></tr>
+                        <tr><td>susurro</td><td>耳语</td></tr>
+                        <tr><td>terrorífico</td><td>可怕的</td></tr>
+                        <tr><td>alrededor</td><td>周围</td></tr>
+                        <tr><td>honrado</td><td>诚实的</td></tr>
+                        <tr><td>sonreír</td><td>微笑</td></tr>
+                        <tr><td>trueno</td><td>雷</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 10 - El adjetivo</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>¿Cómo es?</h3>
+                    <p>El adjetivo dice cómo es un sustantivo (tamaño, color, estado...).
+                    <span class="cn-text">形容词描述名词的样子（大小、颜色、状态等）。</span></p>
+                    <div class="example-box">
+                        La caja está <strong>vacía</strong>.<br>
+                        El reloj es <strong>antiguo</strong>.
+                    </div>
+
+                    <h3>Ortografía: ¿? ¡!</h3>
+                    <div class="rule-box">
+                        Las preguntas llevan <strong>¿?</strong> y las exclamaciones llevan <strong>¡!</strong>.
+                        <span class="cn-text">必须成对出现。</span>
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>pregunta</td><td>问句/问题</td></tr>
+                        <tr><td>exclamación</td><td>感叹句</td></tr>
+                        <tr><td>tren</td><td>火车</td></tr>
+                        <tr><td>hora</td><td>时间/点钟</td></tr>
+                        <tr><td>flores</td><td>花（复数）</td></tr>
+                        <tr><td>calor</td><td>热</td></tr>
+                        <tr><td>regalo</td><td>礼物</td></tr>
+                        <tr><td>por qué</td><td>为什么</td></tr>
+                        <tr><td>dónde</td><td>在哪里</td></tr>
+                        <tr><td>cómo</td><td>怎么/如何</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 11 - El verbo en presente</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>El presente</h3>
+                    <p>El presente expresa lo que pasa ahora o habitualmente.
+                    <span class="cn-text">现在时表示“现在发生”或“经常发生”。</span></p>
+                    <div class="example-box">
+                        "El jardinero <strong>riega</strong> las plantas."<br>
+                        "Pablo <strong>monta</strong> en bicicleta."
+                    </div>
+
+                    <h3>Ortografía: mp y mb</h3>
+                    <div class="rule-box">
+                        Antes de <strong>P</strong> y <strong>B</strong> se escribe siempre <strong>M</strong>.
+                        <br>Ej: ca<strong>mp</strong>esino, bo<strong>mb</strong>illa.
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>bombilla</td><td>灯泡</td></tr>
+                        <tr><td>lámpara</td><td>灯</td></tr>
+                        <tr><td>lombriz</td><td>蚯蚓</td></tr>
+                        <tr><td>campesino</td><td>农民</td></tr>
+                        <tr><td>sombra</td><td>阴影</td></tr>
+                        <tr><td>campana</td><td>铃/钟</td></tr>
+                        <tr><td>alambre</td><td>铁丝</td></tr>
+                        <tr><td>trompeta</td><td>小号</td></tr>
+                        <tr><td>hombro</td><td>肩膀</td></tr>
+                        <tr><td>cantimplora</td><td>水壶</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 12 - El verbo en pasado</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>El pasado</h3>
+                    <p>El pasado expresa acciones que ya ocurrieron (ayer, anoche...).
+                    <span class="cn-text">过去时表示已经发生的事。</span></p>
+                    <div class="example-box">
+                        "Ayer Emilio <strong>escribió</strong> a sus abuelos."
+                    </div>
+
+                    <h3>Ortografía: br y bl</h3>
+                    <div class="rule-box">
+                        Grupos consonánticos frecuentes con B: <strong>br</strong> y <strong>bl</strong>.
+                        <br>Ej: libro, biblioteca.
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>broche</td><td>胸针</td></tr>
+                        <tr><td>brillantes</td><td>钻石/亮晶晶的</td></tr>
+                        <tr><td>joyero</td><td>首饰盒</td></tr>
+                        <tr><td>niebla</td><td>雾</td></tr>
+                        <tr><td>pueblo</td><td>村镇</td></tr>
+                        <tr><td>biblioteca</td><td>图书馆</td></tr>
+                        <tr><td>hablar</td><td>说话</td></tr>
+                        <tr><td>alfombra</td><td>地毯</td></tr>
+                        <tr><td>blusa</td><td>女式上衣</td></tr>
+                        <tr><td>imposible</td><td>不可能的</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 13 - El verbo en futuro</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>El futuro</h3>
+                    <p>El futuro expresa acciones que ocurrirán después (mañana...).
+                    <span class="cn-text">将来时表示之后会发生的事。</span></p>
+                    <div class="example-box">
+                        "Pablo mañana <strong>correrá</strong> por el parque."
+                    </div>
+
+                    <h3>Ortografía: La coma</h3>
+                    <div class="rule-box">
+                        La coma se usa para separar elementos en una enumeración.
+                        <span class="cn-text">逗号用于分开列举的项目。</span>
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>coma</td><td>逗号</td></tr>
+                        <tr><td>bandera</td><td>旗子</td></tr>
+                        <tr><td>roja</td><td>红色的</td></tr>
+                        <tr><td>azul</td><td>蓝色</td></tr>
+                        <tr><td>verde</td><td>绿色</td></tr>
+                        <tr><td>amarilla</td><td>黄色的</td></tr>
+                        <tr><td>excursión</td><td>郊游</td></tr>
+                        <tr><td>César</td><td>塞萨尔</td></tr>
+                        <tr><td>Raquel</td><td>拉克尔</td></tr>
+                        <tr><td>Teresa</td><td>特蕾莎</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 14 - El sujeto</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>¿Quién?</h3>
+                    <p>El sujeto es quien realiza la acción del verbo.
+                    <span class="cn-text">主语是做动作的人/事物（谁？）。</span></p>
+                    <div class="example-box">
+                        "¿Quién organizó una fiesta? <strong>El rey</strong>."
+                    </div>
+
+                    <h3>Ortografía: Terminación -y</h3>
+                    <div class="rule-box">
+                        Muchas palabras frecuentes terminan en <strong>-y</strong>.
+                        <br>Ej: hoy, muy, hay, rey, buey.
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>estoy</td><td>我在/我是</td></tr>
+                        <tr><td>contenta</td><td>开心的</td></tr>
+                        <tr><td>hoy</td><td>今天</td></tr>
+                        <tr><td>muy</td><td>很/非常</td></tr>
+                        <tr><td>hay</td><td>有</td></tr>
+                        <tr><td>natación</td><td>游泳</td></tr>
+                        <tr><td>ayer</td><td>昨天</td></tr>
+                        <tr><td>seleccionada</td><td>被选中的</td></tr>
+                        <tr><td>equipo</td><td>队伍</td></tr>
+                        <tr><td>baloncesto</td><td>篮球</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 15 - El predicado</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>¿Qué hace?</h3>
+                    <p>El predicado es lo que se dice del sujeto (el verbo y la acción).
+                    <span class="cn-text">谓语包含动词，说明主语做什么。</span></p>
+                    <div class="example-box">
+                        "Los alumnos <strong>leen un cuento</strong>."
+                    </div>
+
+                    <h3>Ortografía: Palabras con h</h3>
+                    <div class="rule-box">
+                        La H no suena, pero se escribe en muchas palabras.
+                        <br>Ej: ha, han, había, hecho.
+                    </div>
+
+                    <h3>Vocabulario clave</h3>
+                    <table class="vocab-table">
+                        <tr><td>han</td><td>他们已经…</td></tr>
+                        <tr><td>ha</td><td>他/她已经…</td></tr>
+                        <tr><td>había</td><td>曾经有</td></tr>
+                        <tr><td>hecho</td><td>做了/完成</td></tr>
+                        <tr><td>aprendido</td><td>学到</td></tr>
+                        <tr><td>explicado</td><td>解释了</td></tr>
+                        <tr><td>interesante</td><td>有趣的</td></tr>
+                        <tr><td>clase</td><td>课堂</td></tr>
+                        <tr><td>profesora</td><td>女老师</td></tr>
+                        <tr><td>dijo</td><td>说了</td></tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | 2º Primaria Lengua</span>
+    </footer>
+
+    <script>
+        // 获取所有的折叠按钮
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                // 切换 active 类（用于旋转箭头和改变背景）
+                this.classList.toggle("active");
+
+                // 获取对应的面板
+                var panel = this.nextElementSibling;
+
+                // 切换面板的显示/隐藏
+                // 使用 max-height 实现平滑动画
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4º Primaria Lengua - Repaso | EMSI</title>
+    <style>
+        /* --- 基础样式 (保持 EMSI 风格) --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 10px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 30px;
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(26, 74, 142, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 10px;
+            font-weight: 800;
+            font-size: 22px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.15);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: block; 
+            overflow: hidden;
+            padding-bottom: 20px;
+        }
+
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- 折叠菜单样式 --- */
+        .accordion {
+            background-color: #fff;
+            color: #1a4a8e;
+            cursor: pointer;
+            padding: 18px 25px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            font-weight: 700;
+            transition: 0.4s;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion:hover {
+            background-color: #f9fafb;
+        }
+
+        .accordion.active {
+            background-color: #eef2f6;
+            border-bottom: none;
+        }
+
+        .accordion:after {
+            content: '\25BC';
+            font-size: 14px;
+            color: #ccc;
+            float: right;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion.active:after {
+            transform: rotate(180deg);
+            color: #1a4a8e;
+        }
+
+        .panel {
+            padding: 0 25px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-bottom: 1px solid #eee;
+        }
+
+        .panel-content {
+            padding: 20px 0;
+        }
+
+        /* --- 内容排版 --- */
+        h3 {
+            color: #d35400;
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 4px solid #f1c40f;
+            padding-left: 10px;
+        }
+
+        h3:first-child {
+            margin-top: 0;
+        }
+
+        p {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .cn-text {
+            color: #888;
+            font-size: 14px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* 表格样式 */
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 15px;
+        }
+
+        .vocab-table th, .vocab-table td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: top;
+        }
+
+        .vocab-table th {
+            background-color: #fafafa;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .arrow-sep {
+            color: #f1c40f;
+            font-weight: bold;
+            padding: 0 5px;
+        }
+
+        /* 重点规则框 */
+        .rule-box {
+            background-color: #fff9db;
+            border: 1px solid #f1c40f;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .rule-box strong {
+            color: #d35400;
+        }
+
+        /* 例子框 */
+        .example-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid #1a4a8e;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-style: italic;
+            color: #333;
+        }
+        
+        ul {
+            padding-left: 20px;
+            color: #444;
+            margin: 10px 0;
+        }
+        
+        li {
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">4º Primaria - Repaso de Lengua (Santillana)</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <button class="accordion">Unidad 1 · Sinónimos/Antónimos · Comunicación · Agudas/Llanas/Esdrújulas</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Sinónimos y antónimos</h3>
+                    <p>Los <strong>sinónimos</strong> son palabras con significado parecido; los <strong>antónimos</strong> expresan lo contrario.
+                    <span class="cn-text">同义词意思相近；反义词表达相反意思。</span></p>
+                    <div class="example-box">
+                        estrecha ↔ ancha<br>
+                        torcida ↔ recta<br>
+                        aburrido ↔ entretenido
+                    </div>
+
+                    <h3>La comunicación. Las lenguas</h3>
+                    <p>La comunicación puede ser verbal (hablar/escribir) o no verbal (gestos, señales, sonidos).
+                    <span class="cn-text">交流可以是语言的，也可以是非语言的。</span></p>
+                    <div class="example-box">
+                        "Suena el despertador" (sonido)<br>
+                        "Una niña levanta la mano" (gesto)
+                    </div>
+
+                    <h3>Sonidos: agudas, llanas y esdrújulas</h3>
+                    <div class="rule-box">
+                        • <strong>Aguda</strong>: sílaba tónica última.<br>
+                        • <strong>Llana</strong>: sílaba tónica penúltima.<br>
+                        • <strong>Esdrújula</strong>: sílaba tónica antepenúltima.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>águila</td><td>鹰</td></tr>
+                        <tr><td>jabalí</td><td>野猪</td></tr>
+                        <tr><td>búho</td><td>猫头鹰</td></tr>
+                        <tr><td>libélula</td><td>蜻蜓</td></tr>
+                        <tr><td>lombriz</td><td>蚯蚓</td></tr>
+                        <tr><td>elefante</td><td>大象</td></tr>
+                        <tr><td>codorniz</td><td>鹌鹑</td></tr>
+                        <tr><td>galápago</td><td>乌龟</td></tr>
+                        <tr><td>cóndor</td><td>秃鹰</td></tr>
+                        <tr><td>halcón</td><td>猎鹰</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 2 · Polisémicas · Sujeto/Predicado · Tilde en agudas</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Palabras polisémicas</h3>
+                    <p>Una palabra polisémica tiene varios significados según el contexto.
+                    <span class="cn-text">一词多义：在不同语境有不同意思。</span></p>
+                    <div class="example-box">
+                        mariposa (animal) / mariposa (estilo de natación)<br>
+                        móvil (colgante) / móvil (teléfono)
+                    </div>
+
+                    <h3>La oración: sujeto y predicado</h3>
+                    <p>El <strong>sujeto</strong> nombra quién realiza la acción; el <strong>predicado</strong> dice lo que se hace o sucede.
+                    <span class="cn-text">主语说明“谁”；谓语说明“做什么”。</span></p>
+                    <div class="example-box">
+                        <u>Los delfines</u> (Sujeto) no son peces...
+                    </div>
+
+                    <h3>Sonidos: tilde en agudas</h3>
+                    <div class="rule-box">
+                        Llevan tilde las agudas que terminan en <strong>vocal</strong>, <strong>-n</strong> o <strong>-s</strong>.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>maniquí</td><td>人体模特</td></tr>
+                        <tr><td>Perú</td><td>秘鲁</td></tr>
+                        <tr><td>veintidós</td><td>二十二</td></tr>
+                        <tr><td>orangután</td><td>红毛猩猩</td></tr>
+                        <tr><td>Rubén</td><td>鲁本</td></tr>
+                        <tr><td>inclinó</td><td>倾斜了</td></tr>
+                        <tr><td>cayó</td><td>掉下去了</td></tr>
+                        <tr><td>quedó</td><td>留下了</td></tr>
+                        <tr><td>chapuzón</td><td>猛地跳入水</td></tr>
+                        <tr><td>bebé</td><td>婴儿</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 3 · Homófonas · Clases oraciones · Tilde en llanas</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Palabras homófonas</h3>
+                    <p>Suenan igual pero se escriben diferente y significan cosas distintas.
+                    <span class="cn-text">同音异形异义词。</span></p>
+                    <div class="example-box">
+                        vaca (animal) / baca (coche)<br>
+                        hecho (hacer) / echo (echar)
+                    </div>
+
+                    <h3>Clases de oraciones</h3>
+                    <p>Enunciativas, interrogativas, exclamativas y exhortativas (órdenes).
+                    <span class="cn-text">陈述句、疑问句、感叹句、祈使句。</span></p>
+
+                    <h3>Sonidos: tilde en llanas</h3>
+                    <div class="rule-box">
+                        Llevan tilde las llanas que terminan en consonante <strong>distinta de n o s</strong>.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>tórax</td><td>胸腔</td></tr>
+                        <tr><td>néctar</td><td>花蜜</td></tr>
+                        <tr><td>inmóvil</td><td>不动的</td></tr>
+                        <tr><td>mármol</td><td>大理石</td></tr>
+                        <tr><td>dólar</td><td>美元</td></tr>
+                        <tr><td>tándem</td><td>双人自行车</td></tr>
+                        <tr><td>cáncer</td><td>癌症</td></tr>
+                        <tr><td>récord</td><td>纪录</td></tr>
+                        <tr><td>táctil</td><td>触控的</td></tr>
+                        <tr><td>fósil</td><td>化石</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 4 · Primitivas/Derivadas · Diptongo/Hiato · Tilde esdrújulas</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Palabras primitivas y derivadas</h3>
+                    <p>La primitiva es la base; la derivada se forma añadiendo prefijos o sufijos.
+                    <span class="cn-text">原始词是基础词；派生词通过加前缀/后缀构成。</span></p>
+                    <div class="example-box">
+                        color → colorado, colorete
+                    </div>
+
+                    <h3>La sílaba. Diptongo e hiato</h3>
+                    <p><strong>Diptongo</strong>: dos vocales en una misma sílaba. <strong>Hiato</strong>: vocales en sílabas distintas.
+                    <span class="cn-text">双元音连读；元音分开读。</span></p>
+
+                    <h3>Sonidos: tilde en esdrújulas</h3>
+                    <div class="rule-box">
+                        <strong>Todas</strong> las palabras esdrújulas llevan tilde.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>libélula</td><td>蜻蜓</td></tr>
+                        <tr><td>múltiple</td><td>多重的</td></tr>
+                        <tr><td>cerámica</td><td>陶瓷</td></tr>
+                        <tr><td>relámpago</td><td>闪电</td></tr>
+                        <tr><td>terrícola</td><td>地球人</td></tr>
+                        <tr><td>automóvil</td><td>汽车</td></tr>
+                        <tr><td>lágrima</td><td>眼泪</td></tr>
+                        <tr><td>tentáculo</td><td>触手</td></tr>
+                        <tr><td>cántaro</td><td>陶罐</td></tr>
+                        <tr><td>autómata</td><td>机器人</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 5 · Simples/Compuestas · Sustantivos/Adjetivos · Tilde diptongos/hiatos</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Palabras simples y compuestas</h3>
+                    <p>La simple tiene una sola base; la compuesta une dos palabras.
+                    <span class="cn-text">简单词一个词根；合成词由两个词组合。</span></p>
+                    <div class="example-box">
+                        guarda + meta = guardameta
+                    </div>
+
+                    <h3>Sustantivos y adjetivos</h3>
+                    <p>El sustantivo nombra; el adjetivo describe.
+                    <span class="cn-text">名词负责“命名”；形容词负责“描述”。</span></p>
+
+                    <h3>Sonidos: tilde en diptongos e hiatos</h3>
+                    <div class="rule-box">
+                        • <strong>Diptongos</strong>: siguen reglas generales.<br>
+                        • <strong>Hiatos</strong>: si es vocal cerrada tónica (í, ú), <strong>siempre</strong> lleva tilde.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>raíz</td><td>根</td></tr>
+                        <tr><td>radio</td><td>收音机</td></tr>
+                        <tr><td>avión</td><td>飞机</td></tr>
+                        <tr><td>navío</td><td>船只</td></tr>
+                        <tr><td>aéreo</td><td>空中的</td></tr>
+                        <tr><td>acuático</td><td>水生的</td></tr>
+                        <tr><td>laúd</td><td>鲁特琴</td></tr>
+                        <tr><td>huésped</td><td>客人</td></tr>
+                        <tr><td>camión</td><td>卡车</td></tr>
+                        <tr><td>también</td><td>也</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 6 · Familias palabras · Artículo · Uso de la h</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Familias de palabras</h3>
+                    <p>Una familia de palabras comparte la misma raíz.
+                    <span class="cn-text">同词根词族。</span></p>
+                    <div class="example-box">
+                        avión → hidroavión, aviación, aviador
+                    </div>
+
+                    <h3>El artículo</h3>
+                    <p>Determinados (el, la...) e Indeterminados (un, una...).
+                    <span class="cn-text">定冠词与不定冠词。</span></p>
+
+                    <h3>Sonidos: uso de la h</h3>
+                    <div class="rule-box">
+                        Se escriben con <strong>h</strong> palabras que empiezan por hum-, hie-, hue- y formas de haber/hacer.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>hielo</td><td>冰</td></tr>
+                        <tr><td>huelga</td><td>罢工</td></tr>
+                        <tr><td>humilde</td><td>谦虚的</td></tr>
+                        <tr><td>hierbabuena</td><td>薄荷</td></tr>
+                        <tr><td>Huelva</td><td>韦尔瓦</td></tr>
+                        <tr><td>humedad</td><td>湿气</td></tr>
+                        <tr><td>hueco</td><td>空的</td></tr>
+                        <tr><td>humano</td><td>人类的</td></tr>
+                        <tr><td>habría</td><td>会有</td></tr>
+                        <tr><td>harás</td><td>你将做</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 7 · Prefijos/Sufijos · Demostrativos · Uso del guion</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Prefijos y sufijos</h3>
+                    <p>El prefijo se coloca delante; el sufijo, detrás.
+                    <span class="cn-text">前缀加在词前；后缀加在词后。</span></p>
+                    <div class="example-box">
+                        precocinado, incómodo, leñador
+                    </div>
+
+                    <h3>Los demostrativos</h3>
+                    <p>Indican distancia: este (cerca), ese (media), aquel (lejos).
+                    <span class="cn-text">指示词表示远近。</span></p>
+
+                    <h3>Sonidos: uso del guion</h3>
+                    <div class="rule-box">
+                        Se divide por sílabas. No separar vocales seguidas ni dejar vocal sola. No dividir ch/ll/rr.
+                        <span class="cn-text">换行断词按音节。</span>
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>edificio</td><td>大楼</td></tr>
+                        <tr><td>villa</td><td>别墅</td></tr>
+                        <tr><td>azotea</td><td>屋顶平台</td></tr>
+                        <tr><td>terraza</td><td>露台</td></tr>
+                        <tr><td>rechinar</td><td>吱吱响</td></tr>
+                        <tr><td>redacción</td><td>作文</td></tr>
+                        <tr><td>corregir</td><td>改正</td></tr>
+                        <tr><td>entallar</td><td>收腰</td></tr>
+                        <tr><td>día</td><td>天</td></tr>
+                        <tr><td>raíz</td><td>根</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 8 · Diminutivos/Aumentativos · Posesivos · Uso de la b</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Sufijos diminutivos y aumentativos</h3>
+                    <p>Diminutivo (pequeño/cariño); Aumentativo (grande/intensidad).
+                    <span class="cn-text">指小后缀与指大后缀。</span></p>
+                    <div class="example-box">gotita, partidazo</div>
+
+                    <h3>Los posesivos</h3>
+                    <p>Indican pertenencia: mi, tu, su... y formas tónicas: mío, tuyo...
+                    <span class="cn-text">物主词表示所属。</span></p>
+
+                    <h3>Sonidos: uso de la b</h3>
+                    <div class="rule-box">
+                        Se escribe <strong>b</strong> en bu-/bur-/bus-, verbos -buir/-bir (salvo excepciones), imperfecto -aba, y formas de haber.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>bucanero</td><td>海盗</td></tr>
+                        <tr><td>burgués</td><td>中产的</td></tr>
+                        <tr><td>busca</td><td>寻找</td></tr>
+                        <tr><td>recibir</td><td>接收</td></tr>
+                        <tr><td>retribuir</td><td>报答</td></tr>
+                        <tr><td>estabas</td><td>你在</td></tr>
+                        <tr><td>íbamos</td><td>我们去</td></tr>
+                        <tr><td>habría</td><td>会有</td></tr>
+                        <tr><td>hubimos</td><td>我们曾有</td></tr>
+                        <tr><td>hubo</td><td>有/发生了</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 9 · Prefijos negación/lugar · Numerales/Indefinidos · Coma/Punto y coma</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Prefijos de negación y de lugar</h3>
+                    <p>Negación (in-, des-); Lugar (sub-, intra-).
+                    <span class="cn-text">否定前缀与地点前缀。</span></p>
+                    <div class="example-box">asimétrico, submarina</div>
+
+                    <h3>Numerales e indefinidos</h3>
+                    <p>Numerales (cantidad exacta); Indefinidos (cantidad imprecisa).
+                    <span class="cn-text">数词与不定词。</span></p>
+
+                    <h3>Sonidos: coma y punto y coma</h3>
+                    <div class="rule-box">
+                        • <strong>Coma</strong>: enumeraciones y vocativos.<br>
+                        • <strong>Punto y coma</strong>: enumeraciones largas o con comas internas.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>Camarero</td><td>服务员</td></tr>
+                        <tr><td>cuenta</td><td>账单</td></tr>
+                        <tr><td>Buenos días</td><td>早上好</td></tr>
+                        <tr><td>Paco</td><td>帕科</td></tr>
+                        <tr><td>ventana</td><td>窗户</td></tr>
+                        <tr><td>pan</td><td>面包</td></tr>
+                        <tr><td>leche</td><td>牛奶</td></tr>
+                        <tr><td>yogures</td><td>酸奶</td></tr>
+                        <tr><td>exposición</td><td>展览</td></tr>
+                        <tr><td>vitrina</td><td>展柜</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 10 · Otros prefijos · Grupo nominal · Uso de la g</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Otros prefijos</h3>
+                    <p>Multi-, semi-, pre-, super-, re-, mono- añaden significado.
+                    <span class="cn-text">常见前缀增加额外意义。</span></p>
+                    <div class="example-box">multicolor, preestreno</div>
+
+                    <h3>El grupo nominal</h3>
+                    <p>Tiene núcleo (sustantivo) y puede llevar determinante y adjetivo.
+                    <span class="cn-text">名词短语以名词为中心。</span></p>
+
+                    <h3>Sonidos: uso de la g</h3>
+                    <div class="rule-box">
+                        Se escriben con <strong>g</strong> verbos -ger/-gir (salvo tejer/crujir) y palabras con geo-/gen-/gest-.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>recoger</td><td>捡起</td></tr>
+                        <tr><td>dirigir</td><td>指挥</td></tr>
+                        <tr><td>genio</td><td>天才</td></tr>
+                        <tr><td>gesto</td><td>手势</td></tr>
+                        <tr><td>geógrafo</td><td>地理学家</td></tr>
+                        <tr><td>exigen</td><td>他们要求</td></tr>
+                        <tr><td>recogimos</td><td>我们捡起</td></tr>
+                        <tr><td>crujían</td><td>咯吱作响</td></tr>
+                        <tr><td>corregir</td><td>纠正</td></tr>
+                        <tr><td>proteger</td><td>保护</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 11 · Campo léxico · Pronombres · Punto y puntos suspensivos</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Campo léxico</h3>
+                    <p>Agrupa palabras relacionadas con un mismo ámbito.
+                    <span class="cn-text">词汇场：同一领域的词。</span></p>
+                    <div class="example-box">El transporte: avión, piloto, aterrizar</div>
+
+                    <h3>Los pronombres personales</h3>
+                    <p>Sustituyen al sustantivo: yo, tú, él, nosotros...
+                    <span class="cn-text">人称代词替代名词。</span></p>
+
+                    <h3>Sonidos: punto y puntos suspensivos</h3>
+                    <div class="rule-box">
+                        • <strong>Punto</strong>: cierra oraciones.<br>
+                        • <strong>Puntos suspensivos</strong> (...): enumeración incompleta.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>mercado</td><td>市场</td></tr>
+                        <tr><td>barrio</td><td>社区</td></tr>
+                        <tr><td>puestos</td><td>摊位</td></tr>
+                        <tr><td>vendedores</td><td>卖家</td></tr>
+                        <tr><td>productos</td><td>产品</td></tr>
+                        <tr><td>frescos</td><td>新鲜的</td></tr>
+                        <tr><td>calidad</td><td>质量</td></tr>
+                        <tr><td>clientes</td><td>顾客</td></tr>
+                        <tr><td>lechuga</td><td>生菜</td></tr>
+                        <tr><td>pepinos</td><td>黄瓜</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 12 · Campo semántico · El verbo · Terminadas en -z/-d</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Campo semántico</h3>
+                    <p>Agrupa palabras por significado.
+                    <span class="cn-text">语义场按“意义类别”归类。</span></p>
+                    <div class="example-box">Insectos: mosquito, hormiga</div>
+
+                    <h3>El verbo</h3>
+                    <p>Expresa acciones o estados. Infinitivos en -ar/-er/-ir.
+                    <span class="cn-text">动词：分三类变位。</span></p>
+
+                    <h3>Sonidos: terminadas en -z y -d</h3>
+                    <div class="rule-box">
+                        • <strong>-z</strong> final <span class="arrow-sep">→</span> plural <strong>-ces</strong>.<br>
+                        • <strong>-d</strong> final <span class="arrow-sep">→</span> plural <strong>-des</strong>.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>eficaz</td><td>有效的</td></tr>
+                        <tr><td>eficaces</td><td>有效的(复)</td></tr>
+                        <tr><td>casualidad</td><td>巧合</td></tr>
+                        <tr><td>casualidades</td><td>巧合(复)</td></tr>
+                        <tr><td>comprended</td><td>你们理解</td></tr>
+                        <tr><td>oíd</td><td>你们听</td></tr>
+                        <tr><td>hablad</td><td>你们说</td></tr>
+                        <tr><td>virtudes</td><td>美德</td></tr>
+                        <tr><td>hoces</td><td>镰刀</td></tr>
+                        <tr><td>tapices</td><td>挂毯</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 13 · Gentilicios · Número/Persona/Tiempo · Los dos puntos</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Gentilicios</h3>
+                    <p>Indican origen (ciudad/país).
+                    <span class="cn-text">籍贯形容词。</span></p>
+                    <div class="example-box">madrileña, bilbaína</div>
+
+                    <h3>Número, persona y tiempo (verbo)</h3>
+                    <p>El verbo marca singular/plural, persona y tiempo.
+                    <span class="cn-text">动词体现数、人称和时态。</span></p>
+
+                    <h3>Sonidos: los dos puntos</h3>
+                    <div class="rule-box">
+                        Se usan para enumeraciones, citas textuales y tras el saludo en cartas.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>zoo</td><td>动物园</td></tr>
+                        <tr><td>animales</td><td>动物</td></tr>
+                        <tr><td>panteras</td><td>黑豹</td></tr>
+                        <tr><td>elefantes</td><td>大象</td></tr>
+                        <tr><td>lobos</td><td>狼</td></tr>
+                        <tr><td>profesor</td><td>老师</td></tr>
+                        <tr><td>minutos</td><td>分钟</td></tr>
+                        <tr><td>charla</td><td>讲座</td></tr>
+                        <tr><td>agente</td><td>警员</td></tr>
+                        <tr><td>saludo</td><td>问候</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 14 · Frases hechas · Adverbio · Uso de la j</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Frases hechas</h3>
+                    <p>Expresiones fijas con sentido especial.
+                    <span class="cn-text">习语/惯用语。</span></p>
+                    <div class="example-box">"Pedir peras al olmo"</div>
+
+                    <h3>El adverbio</h3>
+                    <p>Modifica al verbo/adjetivo (lugar, tiempo, modo...).
+                    <span class="cn-text">副词修饰动词等。</span></p>
+
+                    <h3>Sonidos: uso de la j</h3>
+                    <div class="rule-box">
+                        Se escriben con <strong>j</strong> palabras en -aje/-eje, -jero y verbos pasados como dije/traje.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>homenaje</td><td>致敬</td></tr>
+                        <tr><td>callejero</td><td>街头的</td></tr>
+                        <tr><td>mensajero</td><td>信使</td></tr>
+                        <tr><td>cerrajería</td><td>锁匠店</td></tr>
+                        <tr><td>hospedaje</td><td>住宿</td></tr>
+                        <tr><td>tejemaneje</td><td>暗箱操作</td></tr>
+                        <tr><td>traje</td><td>我带了</td></tr>
+                        <tr><td>conduje</td><td>我驾驶了</td></tr>
+                        <tr><td>reduje</td><td>我减少了</td></tr>
+                        <tr><td>dije</td><td>我说了</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 15 · Siglas/Abreviaturas · Preposiciones · Uso de la v</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>Siglas y abreviaturas</h3>
+                    <p><strong>Siglas</strong>: iniciales (TVE). <strong>Abreviaturas</strong>: acortadas (Sr.).
+                    <span class="cn-text">缩略词与缩写。</span></p>
+
+                    <h3>Preposiciones y conjunciones</h3>
+                    <p>Relacionan o unen palabras (a, de, y, pero...).
+                    <span class="cn-text">介词与连词。</span></p>
+
+                    <h3>Sonidos: uso de la v</h3>
+                    <div class="rule-box">
+                        Se escriben con <strong>v</strong> adjetivos en -ave/-ivo etc., y verbos como detuvo/obtuve.
+                    </div>
+
+                    <h3>10 palabras (Sonidos)</h3>
+                    <table class="vocab-table">
+                        <tr><td>suave</td><td>柔和的</td></tr>
+                        <tr><td>breve</td><td>简短的</td></tr>
+                        <tr><td>longevo</td><td>长寿的</td></tr>
+                        <tr><td>educativo</td><td>教育的</td></tr>
+                        <tr><td>interrogativo</td><td>疑问的</td></tr>
+                        <tr><td>nocivo</td><td>有害的</td></tr>
+                        <tr><td>primitivo</td><td>原始的</td></tr>
+                        <tr><td>escandinavo</td><td>北欧的</td></tr>
+                        <tr><td>detuvo</td><td>停止了</td></tr>
+                        <tr><td>obtuve</td><td>获得了</td></tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | 4º Primaria Lengua</span>
+    </footer>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            });
+        }
+    </script>
+
+</body>
+</html>

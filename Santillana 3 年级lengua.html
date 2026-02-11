@@ -25,7 +25,7 @@
 
         .header h1 {
             color: #1a4a8e;
-            font-size: 36px; /* 稍微调小以适应移动端 */
+            font-size: 36px;
             font-weight: 600;
             margin: 0;
             letter-spacing: 1px;
@@ -89,16 +89,15 @@
             padding: 20px;
         }
 
-        /* --- 卡片容器调整 --- */
+        /* --- 卡片容器 --- */
         .card {
             background: white;
             width: 100%;
             max-width: 900px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            /* 取消原来的 flex center，改为块级布局以便放置内容 */
             display: block; 
-            overflow: hidden; /* 保证圆角 */
+            overflow: hidden;
             padding-bottom: 20px;
         }
 
@@ -111,7 +110,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* --- 折叠菜单 (Accordion) 样式 --- */
+        /* --- 折叠菜单 (Accordion) --- */
         .accordion {
             background-color: #fff;
             color: #1a4a8e;
@@ -135,13 +134,12 @@
         }
 
         .accordion.active {
-            background-color: #eef2f6; /* 展开时的背景色 */
+            background-color: #eef2f6;
             border-bottom: none;
         }
 
-        /* 三角箭头 */
         .accordion:after {
-            content: '\25BC'; /* Unicode 向下箭头 */
+            content: '\25BC';
             font-size: 14px;
             color: #ccc;
             float: right;
@@ -150,11 +148,10 @@
         }
 
         .accordion.active:after {
-            transform: rotate(180deg); /* 展开时旋转 */
+            transform: rotate(180deg);
             color: #1a4a8e;
         }
 
-        /* 折叠内容区域 */
         .panel {
             padding: 0 25px;
             background-color: white;
@@ -168,11 +165,11 @@
             padding: 20px 0;
         }
 
-        /* --- 知识点内容排版 --- */
+        /* --- 内容排版 --- */
         h3 {
             color: #d35400;
             font-size: 16px;
-            margin-top: 20px;
+            margin-top: 25px;
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -222,15 +219,9 @@
             border-bottom: none;
         }
 
-        .arrow-sep {
-            color: #f1c40f;
-            font-weight: bold;
-            padding: 0 5px;
-        }
-
         /* 重点规则框 */
         .rule-box {
-            background-color: #fff9db; /* 淡黄色背景 */
+            background-color: #fff9db;
             border: 1px solid #f1c40f;
             border-radius: 8px;
             padding: 15px;
@@ -266,380 +257,559 @@
     <main class="main-content">
         <div class="card">
             
-            <button class="accordion">Unidad 1</button>
+            <button class="accordion">Unidad 1 — Palabras sinónimas · La comunicación · El sonido K</button>
             <div class="panel">
                 <div class="panel-content">
-                    <h3>Palabras sinónimas</h3>
-                    <p>Los sinónimos son palabras diferentes que significan lo mismo o casi lo mismo.
-                    <span class="cn-text">同义词是形式不同但意义相同或相近的词。</span></p>
-                    <table class="vocab-table">
-                        <tr><td>Generoso <span class="arrow-sep">→</span> desprendido</td><td>慷慨的 → 大方的</td></tr>
-                        <tr><td>Extraño <span class="arrow-sep">→</span> raro</td><td>奇怪的 → 罕见的</td></tr>
-                        <tr><td>Guillermo está enfermo <span class="arrow-sep">→</span> malo</td><td>生病 → 不舒服</td></tr>
-                    </table>
-
-                    <h3>La comunicación</h3>
-                    <p>Es el intercambio de información (oral, escrita, gestos o señales).
-                    <span class="cn-text">交流就是信息的传递：可以用语言，也可以用手势和标志。</span></p>
+                    <h3>1) Palabras sinónimas</h3>
+                    <p>Un sinónimo es una palabra que significa casi lo mismo que otra.
+                    <span class="cn-text">同义词就是“意思相近”的词。</span></p>
                     <div class="example-box">
-                        Ej: ¿Qué desea? (Oral) / ¡Hasta luego! (Oral/Gesto)
+                        generoso → desprendido<br>
+                        extraño → raro<br>
+                        "Guillermo está enfermo" = "Guillermo está malo"
                     </div>
 
-                    <h3>El sonido K (c / qu)</h3>
+                    <h3>2) La comunicación</h3>
+                    <p>La comunicación puede ser con lenguaje (palabras) o con gestos (señales corporales).
+                    <span class="cn-text">交流可以用语言（说/写的词）也可以用动作/手势。</span></p>
+                    <div class="example-box">
+                        Oral: "¡Hasta luego, mamá!"<br>
+                        Señales: "Carril bici", "Prohibido hacer fotos"
+                    </div>
+
+                    <h3>3) El sonido K</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong> El sonido K se escribe <strong>c</strong> ante a, o, u (ca, co, cu) y <strong>qu</strong> ante e, i (que, qui).
+                    </div>
+                    
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>caballo</td><td>马</td></tr>
+                        <tr><td>arquero</td><td>弓箭手</td></tr>
+                        <tr><td>mariquita</td><td>瓢虫</td></tr>
+                        <tr><td>esqueleto</td><td>骷髅/骨架</td></tr>
+                        <tr><td>cuello</td><td>脖子</td></tr>
+                        <tr><td>compañero</td><td>同伴/同学</td></tr>
+                        <tr><td>helicóptero</td><td>直升机</td></tr>
+                        <tr><td>arquitecto</td><td>建筑师</td></tr>
+                        <tr><td>camión</td><td>卡车</td></tr>
+                        <tr><td>croquetas</td><td>炸丸子/可乐饼</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 2 — Palabras antónimas · Lenguaje y lenguas · El sonido Z</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>1) Palabras antónimas</h3>
+                    <p>Un antónimo expresa lo contrario: tranquilo ↔ nervioso, seco ↔ mojado.
+                    <span class="cn-text">反义词表示相反。</span></p>
+                    <div class="example-box">
+                        "Es de color claro" → "Es de color oscuro"
+                    </div>
+
+                    <h3>2) Lenguaje y lenguas</h3>
+                    <p>Una lengua es un sistema para comunicarse; distintas personas hablan distintas lenguas.
+                    <span class="cn-text">语言是交流系统，不同人说不同语言。</span></p>
+                    <div class="example-box">
+                        Kalin habla búlgaro. Andrei habla búlgaro y polaco.
+                    </div>
+
+                    <h3>3) El sonido Z</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong> El sonido Z se escribe con <strong>z</strong> ante a, o, u (za, zo, zu) y con <strong>c</strong> ante e, i (ce, ci).
+                    </div>
+
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>manzana</td><td>苹果</td></tr>
+                        <tr><td>cisne</td><td>天鹅</td></tr>
+                        <tr><td>zoo</td><td>动物园</td></tr>
+                        <tr><td>cebollas</td><td>洋葱</td></tr>
+                        <tr><td>azúcar</td><td>糖</td></tr>
+                        <tr><td>zarzas</td><td>荆棘</td></tr>
+                        <tr><td>zorro</td><td>狐狸</td></tr>
+                        <tr><td>azules</td><td>蓝色的</td></tr>
+                        <tr><td>cebra</td><td>斑马</td></tr>
+                        <tr><td>ciervo</td><td>鹿</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 3 — Palabras polisémicas · La oración · El sonido G suave</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>1) Palabras polisémicas</h3>
+                    <p>Una palabra polisémica tiene varios significados según el contexto.
+                    <span class="cn-text">一词多义：同一个词在不同语境有不同意思。</span></p>
+                    <div class="example-box">
+                        yema (del huevo) / yema (del dedo)
+                    </div>
+
+                    <h3>2) La oración: Sujeto y predicado</h3>
+                    <p>El sujeto es de quien se habla; el predicado dice lo que hace o le pasa.
+                    <span class="cn-text">主语=说“谁”；谓语=说“做什么/怎么样”。</span></p>
+                    <div class="example-box">
+                        "Mi vecina lee un cuento." (Sujeto: Mi vecina)
+                    </div>
+
+                    <h3>3) El sonido G suave</h3>
                     <div class="rule-box">
                         <strong>RECUERDA:</strong><br>
-                        • <strong>c</strong> + a, o, u (calabaza, cubo)<br>
-                        • <strong>qu</strong> + e, i (queso, máquina)
+                        • <strong>g</strong> ante a, o, u (manga)<br>
+                        • <strong>gu</strong> ante e, i (u muda: manguera)<br>
+                        • <strong>gü</strong> ante e, i (u sonora: cigüeña)
                     </div>
+
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>manga</td><td>袖子/芒果</td></tr>
+                        <tr><td>gorro</td><td>帽子</td></tr>
+                        <tr><td>gusano</td><td>虫子</td></tr>
+                        <tr><td>manguera</td><td>水管</td></tr>
+                        <tr><td>Guillermo</td><td>吉列尔莫</td></tr>
+                        <tr><td>cigüeña</td><td>鹳</td></tr>
+                        <tr><td>pingüino(s)</td><td>企鹅</td></tr>
+                        <tr><td>higuera</td><td>无花果树</td></tr>
+                        <tr><td>guantes</td><td>手套</td></tr>
+                        <tr><td>espaguetis</td><td>意大利面</td></tr>
+                    </table>
                 </div>
             </div>
 
-            <button class="accordion">Unidad 2</button>
+            <button class="accordion">Unidad 4 — Frases hechas · Sonidos y letras · El punto</button>
             <div class="panel">
                 <div class="panel-content">
-                    <h3>Palabras antónimas</h3>
-                    <p>Los antónimos son palabras con significado contrario.
-                    <span class="cn-text">反义词是意义相反的词。</span></p>
+                    <h3>1) Frases hechas</h3>
+                    <p>Una frase hecha tiene un significado “fijo” que no siempre es literal.
+                    <span class="cn-text">固定短语常常不能按字面直译。</span></p>
+                    <div class="example-box">
+                        "Hablar por los codos" (hablar mucho)<br>
+                        "Estar en las nubes" (distraído)
+                    </div>
+
+                    <h3>2) Sonidos y letras</h3>
+                    <p>Una letra puede representar uno o dos sonidos, y el abecedario se completa y se ordena.
+                    <span class="cn-text">一个字母可能对应一个或两个发音。</span></p>
+                    
+                    <h3>3) El punto</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong> Punto y seguido, punto y aparte, punto final. Después de punto va <strong>mayúscula</strong>.
+                    </div>
+
+                    <h3>Vocabulario</h3>
                     <table class="vocab-table">
-                        <tr><td>Salado <span class="arrow-sep">↔</span> soso</td><td>咸 ↔ 淡</td></tr>
-                        <tr><td>Nervioso <span class="arrow-sep">↔</span> tranquilo</td><td>紧张 ↔ 平静</td></tr>
-                        <tr><td>Seco <span class="arrow-sep">↔</span> mojado</td><td>干 ↔ 湿</td></tr>
-                        <tr><td>Trabajador <span class="arrow-sep">↔</span> holgazán</td><td>勤奋 ↔ 懒惰</td></tr>
+                        <tr><td>abecedario</td><td>字母表</td></tr>
+                        <tr><td>letra</td><td>字母</td></tr>
+                        <tr><td>sonido</td><td>读音</td></tr>
+                        <tr><td>Hugo</td><td>乌戈</td></tr>
+                        <tr><td>Pilar</td><td>皮拉尔</td></tr>
+                        <tr><td>Carlos</td><td>卡洛斯</td></tr>
+                        <tr><td>Hortensia</td><td>奥尔滕西亚</td></tr>
+                        <tr><td>punto</td><td>句号</td></tr>
+                        <tr><td>mayúscula</td><td>大写字母</td></tr>
+                        <tr><td>tambor</td><td>鼓</td></tr>
                     </table>
+                </div>
+            </div>
 
-                    <h3>Lenguaje y lenguas</h3>
-                    <p><strong>Lenguaje:</strong> capacidad de comunicar. <strong>Lengua:</strong> sistema concreto (español, inglés...).
-                    <span class="cn-text">语言能力是“会交流”的能力；一种具体语言是一个系统。</span></p>
+            <button class="accordion">Unidad 5 — Refranes · La sílaba · El sonido R fuerte</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>1) Refranes</h3>
+                    <p>Un refrán transmite una enseñanza popular y suele rimar o ser breve.
+                    <span class="cn-text">谚语是民间经验总结，常短而顺口。</span></p>
+                    <div class="example-box">
+                        "A las diez, en la cama estés."
+                    </div>
 
-                    <h3>El sonido Z (z / c)</h3>
+                    <h3>2) La sílaba</h3>
+                    <p>Las palabras se dividen en sílabas (mono/bi/tri/polisílabas).
+                    <span class="cn-text">单词可分音节。</span></p>
+                    <div class="example-box">
+                        amigo → a-mi-go (trisílaba)
+                    </div>
+
+                    <h3>3) El sonido R fuerte</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong> Se escribe con <strong>r</strong> al inicio (Rocío) o con <strong>rr</strong> entre vocales (arroz).
+                    </div>
+
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>Rocío</td><td>罗西奥</td></tr>
+                        <tr><td>Enrique</td><td>恩里克</td></tr>
+                        <tr><td>torre</td><td>塔</td></tr>
+                        <tr><td>arroz</td><td>米饭</td></tr>
+                        <tr><td>marrón</td><td>棕色</td></tr>
+                        <tr><td>relámpago</td><td>闪电</td></tr>
+                        <tr><td>ramo</td><td>花束</td></tr>
+                        <tr><td>rosas</td><td>玫瑰</td></tr>
+                        <tr><td>alrededor</td><td>周围</td></tr>
+                        <tr><td>ruiseñor</td><td>夜莺</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 6 — Palabras derivadas · Clases de sílabas · El sonido J</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>1) Palabras derivadas</h3>
+                    <p>Una palabra derivada se forma añadiendo prefijos o sufijos.
+                    <span class="cn-text">派生词：在词根上加后缀等形成新词。</span></p>
+                    <div class="example-box">
+                        guitarra → guitarrista<br>
+                        ambiente → ambientador
+                    </div>
+
+                    <h3>2) Clases de sílabas</h3>
+                    <p>La sílaba tónica es la que se pronuncia con más fuerza; a veces lleva tilde.
+                    <span class="cn-text">重读音节读得更重，有时要加重音符号。</span></p>
+                    <div class="example-box">
+                        tiburón, pantalón (con tilde)
+                    </div>
+
+                    <h3>3) El sonido J</h3>
                     <div class="rule-box">
                         <strong>RECUERDA:</strong><br>
-                        • <strong>z</strong> + a, o, u (zapato, zorro, zumo)<br>
-                        • <strong>c</strong> + e, i (cebra, cielo)
+                        • Con <strong>j</strong> ante a/o/u (jabón).<br>
+                        • Ante e/i a veces <strong>j</strong> y a veces <strong>g</strong> (jersey, colegio).
                     </div>
-                </div>
-            </div>
 
-            <button class="accordion">Unidad 3</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <h3>Palabras polisémicas</h3>
-                    <p>Una palabra tiene varios significados según el contexto.
-                    <span class="cn-text">一词多义：同一个词有多个意思，要靠语境判断。</span></p>
+                    <h3>Vocabulario</h3>
                     <table class="vocab-table">
-                        <tr><th>Palabra</th><th>Significados</th></tr>
-                        <tr><td><strong>Copa</strong></td><td>1. Vaso con pie (高脚杯)<br>2. Premio (奖杯)</td></tr>
-                        <tr><td><strong>Yema</strong></td><td>1. De huevo (蛋黄)<br>2. Del dedo (指尖肉垫)</td></tr>
+                        <tr><td>jabón</td><td>肥皂</td></tr>
+                        <tr><td>joyero</td><td>首饰盒</td></tr>
+                        <tr><td>juguete</td><td>玩具</td></tr>
+                        <tr><td>jersey</td><td>毛衣</td></tr>
+                        <tr><td>jirafa</td><td>长颈鹿</td></tr>
+                        <tr><td>colegio</td><td>学校</td></tr>
+                        <tr><td>geranio</td><td>天竺葵</td></tr>
+                        <tr><td>Jorge</td><td>豪尔赫</td></tr>
+                        <tr><td>Gema</td><td>赫玛</td></tr>
+                        <tr><td>Jesús</td><td>耶稣/赫苏斯</td></tr>
                     </table>
+                </div>
+            </div>
 
-                    <h3>La oración</h3>
-                    <p><strong>Sujeto:</strong> de quién se habla. <strong>Predicado:</strong> lo que se dice.
-                    <span class="cn-text">主语是“谈论谁”，谓语说明主语“做什么”。</span></p>
+            <button class="accordion">Unidad 7 — Palabras compuestas · El sustantivo · Terminación -y</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>1) Palabras compuestas</h3>
+                    <p>Una palabra compuesta une dos palabras.
+                    <span class="cn-text">合成词：把两个词合在一起。</span></p>
                     <div class="example-box">
-                        <u>Mi vecina</u> (Sujeto) <u>lee un cuento</u> (Predicado).
+                        posavasos, reposapiés, abrecartas
                     </div>
 
-                    <h3>El sonido G suave</h3>
-                    <div class="rule-box">
-                        • <strong>g</strong> + a, o, u (gato, gota)<br>
-                        • <strong>gu</strong> + e, i (u no suena: guerra, guitarra)<br>
-                        • <strong>gü</strong> + e, i (u sí suena: pingüino)
-                    </div>
-                </div>
-            </div>
-
-            <button class="accordion">Unidad 4</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <h3>Frases hechas</h3>
-                    <p>Expresiones fijas con sentido no literal.
-                    <span class="cn-text">固定表达/习语：整体意思不是字面意思。</span></p>
-                    <ul style="list-style-type: disc; padding-left: 20px; color: #444;">
-                        <li><strong>Hablar por los codos:</strong> Hablar mucho. (话很多)</li>
-                        <li><strong>Estar en las nubes:</strong> Estar distraído. (心不在焉)</li>
-                    </ul>
-
-                    <h3>Sonidos y letras</h3>
-                    <p>Las letras se escriben, los sonidos se pronuncian. No siempre coinciden.
-                    <span class="cn-text">字母是书写符号，语音是读音，数量不一定对应。</span></p>
-                    <div class="example-box">Hugo: 4 letras (H-u-g-o) pero 3 sonidos (la H es muda).</div>
-
-                    <h3>El punto</h3>
-                    <p><strong>Punto y seguido:</strong> separa oraciones. <strong>Punto y aparte:</strong> separa párrafos. <strong>Punto final:</strong> cierra el texto.
-                    <span class="cn-text">注意：句号后首字母必须大写。</span></p>
-                </div>
-            </div>
-
-            <button class="accordion">Unidad 5</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <h3>Refranes</h3>
-                    <p>Frases tradicionales que dan consejos.
-                    <span class="cn-text">谚语：用来给建议或讲道理。</span></p>
+                    <h3>2) El sustantivo</h3>
+                    <p>Nombra personas, animales, cosas o lugares; puede ser común o propio.
+                    <span class="cn-text">名词：分普通名词和专有名词。</span></p>
                     <div class="example-box">
-                        "A caballo regalado no le mires el diente."<br>
-                        "Cada maestrillo tiene su librillo."
+                        mesa (común), María (propio)
                     </div>
 
-                    <h3>La sílaba</h3>
-                    <p>Es cada "golpe de voz" al pronunciar.
-                    <span class="cn-text">音节是发音时的“一个节拍”。</span></p>
-                    <div class="example-box">a - mi - go (3 sílabas / trisílaba)</div>
-
-                    <h3>El sonido R fuerte</h3>
+                    <h3>3) Palabras terminadas en -y</h3>
                     <div class="rule-box">
-                        • <strong>rr</strong>: Solo entre vocales (pe<strong>rr</strong>o, a<strong>rr</strong>oz).<br>
-                        • <strong>r</strong>: Al principio (<strong>R</strong>atón) o tras l, n, s (al<strong>r</strong>ededor).
+                        <strong>RECUERDA:</strong> Se escriben con <strong>y</strong> las palabras que terminan en diptongos ay, ey, oy, uy (excepto "fui").
                     </div>
-                </div>
-            </div>
 
-            <button class="accordion">Unidad 6</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <h3>Palabras derivadas</h3>
-                    <p>Se forman añadiendo sufijos a una palabra base.
-                    <span class="cn-text">派生词：在词根上加后缀构词。</span></p>
+                    <h3>Vocabulario</h3>
                     <table class="vocab-table">
-                        <tr><td>Guitarra <span class="arrow-sep">→</span> Guitarr<strong>ista</strong></td><td>(-ista: 职业)</td></tr>
-                        <tr><td>Ambiente <span class="arrow-sep">→</span> Ambientad<strong>or</strong></td><td>(-dor: 工具)</td></tr>
-                        <tr><td>Calor <span class="arrow-sep">→</span> Calur<strong>oso</strong></td><td>(-oso: 形容词)</td></tr>
+                        <tr><td>hoy</td><td>今天</td></tr>
+                        <tr><td>estoy</td><td>我在</td></tr>
+                        <tr><td>muy</td><td>很/非常</td></tr>
+                        <tr><td>soy</td><td>我是</td></tr>
+                        <tr><td>voy</td><td>我去</td></tr>
+                        <tr><td>rey</td><td>国王</td></tr>
+                        <tr><td>hay</td><td>有</td></tr>
+                        <tr><td>fui</td><td>我去了</td></tr>
+                        <tr><td>jersey</td><td>毛衣</td></tr>
+                        <tr><td>ley</td><td>法律</td></tr>
                     </table>
-
-                    <h3>Sílaba tónica</h3>
-                    <p>La sílaba que se pronuncia con más fuerza.
-                    <span class="cn-text">重读音节是读得最用力的音节。</span></p>
-                    <div class="example-box">ti-bu-<strong>rón</strong>, or-de-na-<strong>dor</strong></div>
-
-                    <h3>El sonido J</h3>
-                    <div class="rule-box">
-                        • <strong>j</strong> + a, o, u (jamón, joya, juego)<br>
-                        • <strong>j</strong> o <strong>g</strong> + e, i (jirafa / gente)<br>
-                        <small>*需要记忆具体单词的拼写</small>
-                    </div>
                 </div>
             </div>
 
-            <button class="accordion">Unidad 7</button>
+            <button class="accordion">Unidad 8 — Diminutivos · El género · División de palabras</button>
             <div class="panel">
                 <div class="panel-content">
-                    <h3>Palabras compuestas</h3>
-                    <p>Se forman uniendo dos palabras.
-                    <span class="cn-text">合成词：把两个词组合成一个新词。</span></p>
-                    <table class="vocab-table">
-                        <tr><td>Lavar + vajillas</td><td><span class="arrow-sep">→</span> Lavavajillas (洗碗机)</td></tr>
-                        <tr><td>Sacar + corchos</td><td><span class="arrow-sep">→</span> Sacacorchos (开瓶器)</td></tr>
-                        <tr><td>Romper + cabezas</td><td><span class="arrow-sep">→</span> Rompecabezas (拼图)</td></tr>
-                    </table>
-
-                    <h3>El sustantivo</h3>
-                    <p>Nombra personas, animales, cosas o lugares.
-                    <span class="cn-text">名词分为普通名词 (Común) 和专有名词 (Propio)。</span></p>
-                    <div class="example-box">Común: mariposa, mesa <br> Propio: María, Madrid (首字母大写)</div>
-
-                    <h3>Palabras terminadas en -y</h3>
-                    <p>Diptongos finales se escriben con <strong>y</strong> (ay, ey, oy, uy), excepto <em>fui</em>.</p>
-                </div>
-            </div>
-
-            <button class="accordion">Unidad 8</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <h3>Diminutivos</h3>
-                    <p>Expresan tamaño pequeño o cariño (-ito, -illa...).
-                    <span class="cn-text">指小词表示“小/可爱/亲昵”。</span></p>
-                    <table class="vocab-table">
-                        <tr><td>Ojo <span class="arrow-sep">→</span> ojito</td><td>Gota <span class="arrow-sep">→</span> gotita</td></tr>
-                        <tr><td>Cuchara <span class="arrow-sep">→</span> cucharilla</td><td>Pastel <span class="arrow-sep">→</span> pastelillo</td></tr>
-                    </table>
-
-                    <h3>El género</h3>
-                    <p>Masculino (el) o Femenino (la).
-                    <span class="cn-text">词尾变化规则：</span></p>
+                    <h3>1) Diminutivos</h3>
+                    <p>El diminutivo expresa pequeño o cariño.
+                    <span class="cn-text">指小词表示“小/可爱”。</span></p>
                     <div class="example-box">
-                        alumno/alumna, doctor/doctora, león/leona, rey/reina.
+                        ojo → ojito
                     </div>
 
-                    <h3>División de palabras</h3>
-                    <div class="rule-box">
-                        Al final de línea usamos guion (-).<br>
-                        <strong>No separar:</strong> vocales juntas (cie-lo) ni dejar una vocal sola (a-migo ❌).
-                    </div>
-                </div>
-            </div>
-
-            <button class="accordion">Unidad 9</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <h3>Aumentativos</h3>
-                    <p>Expresan tamaño grande o intensidad (-azo, -ón, -ote).
-                    <span class="cn-text">指大词表示“大/很强烈”。</span></p>
+                    <h3>2) El género</h3>
+                    <p>Los sustantivos pueden ser masculinos o femeninos.
+                    <span class="cn-text">名词有阴阳性。</span></p>
                     <div class="example-box">
-                        Sol → Solazo, Coche → Cochazo, Casa → Casona/Casoplón
+                        el trueno / la luna
                     </div>
 
-                    <h3>El número</h3>
-                    <p>Singular (uno) o Plural (varios).
-                    <span class="cn-text">复数构成规则：</span></p>
-                    <ul style="list-style: circle; padding-left: 20px;">
-                        <li>Vocal → +s (roca → rocas)</li>
-                        <li>Consonante → +es (reloj → relojes)</li>
-                        <li>-z → -ces (pez → peces)</li>
-                    </ul>
+                    <h3>3) División de palabras</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong> Se usa guion "<strong>-</strong>" al final de línea. No separar vocales juntas ni dejar vocal sola.
+                    </div>
 
-                    <h3>¿? ¡!</h3>
-                    <p>En español se escriben al principio y al final.<br>
-                    <span class="cn-text">西语疑问/感叹号必须成对出现。</span></p>
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>guion</td><td>连字符</td></tr>
+                        <tr><td>calabaza</td><td>南瓜</td></tr>
+                        <tr><td>tobogán</td><td>滑梯</td></tr>
+                        <tr><td>zorro</td><td>狐狸</td></tr>
+                        <tr><td>compañeros</td><td>同学们</td></tr>
+                        <tr><td>mariposa</td><td>蝴蝶</td></tr>
+                        <tr><td>fenomenal</td><td>极好的</td></tr>
+                        <tr><td>espárrago</td><td>芦笋</td></tr>
+                        <tr><td>paquete</td><td>包裹</td></tr>
+                        <tr><td>bicicleta</td><td>自行车</td></tr>
+                    </table>
                 </div>
             </div>
 
-            <button class="accordion">Unidad 10</button>
+            <button class="accordion">Unidad 9 — Aumentativos · El número · Interrogación/Exclamación</button>
             <div class="panel">
                 <div class="panel-content">
-                    <h3>Familias de palabras</h3>
+                    <h3>1) Aumentativos</h3>
+                    <p>El aumentativo indica tamaño grande o intensidad.
+                    <span class="cn-text">指大词表示“很大/很厉害”。</span></p>
+                    <div class="example-box">
+                        pisazo, cochazo, hombretón
+                    </div>
+
+                    <h3>2) El número</h3>
+                    <p>Singular (uno) y plural (varios).
+                    <span class="cn-text">单复数：reloj → relojes。</span></p>
+
+                    <h3>3) Signos ¿? y ¡!</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong> Las preguntas llevan <strong>¿?</strong> y las exclamaciones llevan <strong>¡!</strong> (al principio y al final).
+                    </div>
+
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>interrogación</td><td>疑问</td></tr>
+                        <tr><td>exclamación</td><td>感叹</td></tr>
+                        <tr><td>¿Qué</td><td>什么</td></tr>
+                        <tr><td>¡Qué</td><td>多么…</td></tr>
+                        <tr><td>día</td><td>天</td></tr>
+                        <tr><td>hoy</td><td>今天</td></tr>
+                        <tr><td>idea</td><td>主意</td></tr>
+                        <tr><td>cómo</td><td>怎么</td></tr>
+                        <tr><td>duele</td><td>疼</td></tr>
+                        <tr><td>pierna</td><td>腿</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 10 — Familias de palabras · El artículo · mp/mb</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>1) Familias de palabras</h3>
                     <p>Comparten la misma raíz.
-                    <span class="cn-text">同族词共享词根。</span></p>
-                    <div class="example-box">
-                        <strong>Papel</strong>: papelería, papeleo, empapelar.<br>
-                        <strong>Boca</strong>: bocado, boquilla, boquiabierto.
-                    </div>
+                    <span class="cn-text">同词族共享词根：papel → papelería。</span></p>
 
-                    <h3>El artículo</h3>
-                    <table class="vocab-table">
-                        <tr><th>Tipo</th><th>Ejemplos</th></tr>
-                        <tr><td><strong>Determinado</strong> (定冠词)</td><td>el, la, los, las</td></tr>
-                        <tr><td><strong>Indeterminado</strong> (不定冠词)</td><td>un, una, unos, unas</td></tr>
-                    </table>
+                    <h3>2) El artículo</h3>
+                    <p>Determinado (el, la...) e Indeterminado (un, una...).
+                    <span class="cn-text">定冠词与不定冠词。</span></p>
 
-                    <h3>mp y mb</h3>
+                    <h3>3) Palabras con mp y mb</h3>
                     <div class="rule-box">
-                        Antes de <strong>p</strong> y <strong>b</strong>, siempre se escribe <strong>m</strong>.
-                        <br>Ej: ca<strong>mb</strong>io, tie<strong>mp</strong>o.
+                        <strong>RECUERDA:</strong> Antes de <strong>b</strong> o <strong>p</strong> se escribe siempre <strong>m</strong>.
                     </div>
-                </div>
-            </div>
 
-            <button class="accordion">Unidad 11</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <h3>Gentilicios</h3>
-                    <p>Indican de dónde es alguien.
-                    <span class="cn-text">地名形容词/籍贯。</span></p>
+                    <h3>Vocabulario</h3>
                     <table class="vocab-table">
-                        <tr><td>Sevilla <span class="arrow-sep">→</span> sevillano</td><td>Palencia <span class="arrow-sep">→</span> palentino</td></tr>
-                        <tr><td>Barcelona <span class="arrow-sep">→</span> barcelonés</td><td>Ceuta <span class="arrow-sep">→</span> ceutí</td></tr>
+                        <tr><td>sombra</td><td>阴影</td></tr>
+                        <tr><td>cambio</td><td>改变</td></tr>
+                        <tr><td>lámpara</td><td>灯</td></tr>
+                        <tr><td>tiempo</td><td>时间</td></tr>
+                        <tr><td>campamento</td><td>营地</td></tr>
+                        <tr><td>tiendas</td><td>帐篷</td></tr>
+                        <tr><td>campaña</td><td>活动/野营</td></tr>
+                        <tr><td>lombriz</td><td>蚯蚓</td></tr>
+                        <tr><td>salamandra</td><td>蝾螈</td></tr>
+                        <tr><td>ciempiés</td><td>蜈蚣</td></tr>
                     </table>
-
-                    <h3>Posesivos</h3>
-                    <p>Indican pertenencia (mi, tu, su, nuestro...).
-                    <span class="cn-text">物主形容词，要与名词保持性数一致。</span></p>
-                    <div class="example-box">Mis plantas, Nuestra pelota, Vuestros pijamas.</div>
-
-                    <h3>La coma</h3>
-                    <p>Separa elementos en enumeraciones. Antes del último se usa "y".
-                    <span class="cn-text">逗号用于分隔列举项，最后用 y 连接。</span></p>
                 </div>
             </div>
 
-            <button class="accordion">Unidad 12</button>
+            <button class="accordion">Unidad 11 — Gentilicios · Los posesivos · La coma</button>
             <div class="panel">
                 <div class="panel-content">
-                    <h3>Palabras colectivas</h3>
-                    <p>En singular, nombran a un grupo.
-                    <span class="cn-text">集合名词：单数形式表示“一群”。</span></p>
+                    <h3>1) Gentilicios</h3>
+                    <p>Indica de dónde es alguien.
+                    <span class="cn-text">地域形容词：Sevilla → sevillano。</span></p>
+
+                    <h3>2) Los posesivos</h3>
+                    <p>Indican posesión: mi, tu, su, nuestro...
+                    <span class="cn-text">物主词，要和名词性数一致。</span></p>
+                    <div class="example-box">
+                        "Mi casa", "Tus zanahorias"
+                    </div>
+
+                    <h3>3) La coma</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong> Se usa coma para separar elementos en enumeraciones.
+                    </div>
+
+                    <h3>Vocabulario</h3>
                     <table class="vocab-table">
-                        <tr><td>Peces <span class="arrow-sep">→</span> <strong>Banco</strong></td><td>Perros <span class="arrow-sep">→</span> <strong>Jauría</strong></td></tr>
-                        <tr><td>Pájaros <span class="arrow-sep">→</span> <strong>Bandada</strong></td><td>Cerdos <span class="arrow-sep">→</span> <strong>Piara</strong></td></tr>
+                        <tr><td>coma</td><td>逗号</td></tr>
+                        <tr><td>enumeración</td><td>列举</td></tr>
+                        <tr><td>plátanos</td><td>香蕉</td></tr>
+                        <tr><td>uvas</td><td>葡萄</td></tr>
+                        <tr><td>cerezas</td><td>樱桃</td></tr>
+                        <tr><td>bolígrafo</td><td>圆珠笔</td></tr>
+                        <tr><td>goma</td><td>橡皮</td></tr>
+                        <tr><td>lápiz</td><td>铅笔</td></tr>
+                        <tr><td>regla</td><td>直尺</td></tr>
+                        <tr><td>matemáticas</td><td>数学</td></tr>
                     </table>
-
-                    <h3>Demostrativos</h3>
-                    <p>Indican distancia.
-                    <span class="cn-text">指示词：近、中、远。</span></p>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>📍 Cerca: <strong>este, esta</strong> (这)</li>
-                        <li>📍 Media: <strong>ese, esa</strong> (那)</li>
-                        <li>📍 Lejos: <strong>aquel, aquella</strong> (那边那)</li>
-                    </ul>
-
-                    <h3>-illo, -illa</h3>
-                    <p>Se escriben con <strong>ll</strong> (tobillo, vajilla, grillo).</p>
                 </div>
             </div>
 
-            <button class="accordion">Unidad 13</button>
+            <button class="accordion">Unidad 12 — Palabras colectivas · Los demostrativos · -illo/-illa</button>
             <div class="panel">
                 <div class="panel-content">
-                    <h3>Onomatopeyas</h3>
-                    <p>Imitan sonidos reales.
+                    <h3>1) Palabras colectivas</h3>
+                    <p>Una palabra colectiva nombra un conjunto en singular.
+                    <span class="cn-text">集合名词：jauría (一群狗), banco (一群鱼)。</span></p>
+
+                    <h3>2) Los demostrativos</h3>
+                    <p>Indican distancia: este (cerca), ese (media), aquel (lejos).
+                    <span class="cn-text">指示词表示远近。</span></p>
+
+                    <h3>3) Terminación -illo, -illa</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong> Se escriben con <strong>ll</strong>.
+                    </div>
+
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>-illo</td><td>后缀(阳)</td></tr>
+                        <tr><td>-illa</td><td>后缀(阴)</td></tr>
+                        <tr><td>ll</td><td>双写ll</td></tr>
+                        <tr><td>tobillo</td><td>脚踝</td></tr>
+                        <tr><td>vajilla</td><td>餐具</td></tr>
+                        <tr><td>grillo</td><td>蟋蟀</td></tr>
+                        <tr><td>cosquillas</td><td>挠痒痒</td></tr>
+                        <tr><td>cuchara</td><td>勺子</td></tr>
+                        <tr><td>zapato</td><td>鞋子</td></tr>
+                        <tr><td>molino</td><td>磨坊</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 13 — Onomatopeyas · El adjetivo · Terminación -z/-d</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>1) Onomatopeyas</h3>
+                    <p>Imitan un sonido: zumbido, rugido.
                     <span class="cn-text">拟声词模仿声音。</span></p>
-                    <div class="example-box">
-                        Sonidos: zumbido, rugido.<br>
-                        Verbos: cacarear (gallina), mugir (vaca), croar (rana).
-                    </div>
 
-                    <h3>El adjetivo</h3>
-                    <p>Describe cómo es o cómo está el sustantivo.
-                    <span class="cn-text">形容词修饰名词。</span></p>
-                    <div class="example-box">Coche <strong>rápido</strong>, niños <strong>estudiosos</strong>.</div>
+                    <h3>2) El adjetivo</h3>
+                    <p>Describe cómo es o está algo.
+                    <span class="cn-text">形容词描述“怎样”。</span></p>
 
-                    <h3>-z y -d finales</h3>
+                    <h3>3) Terminadas en -z y -d</h3>
                     <div class="rule-box">
-                        Plural en -ces <span class="arrow-sep">→</span> singular <strong>-z</strong> (luz/luces).<br>
-                        Plural en -des <span class="arrow-sep">→</span> singular <strong>-d</strong> (pared/paredes).
+                        <strong>RECUERDA:</strong><br>
+                        • <strong>-z</strong> plural en <strong>-ces</strong> (luz/luces).<br>
+                        • <strong>-d</strong> plural en <strong>-des</strong> (pared/paredes).
                     </div>
+
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>luz</td><td>光</td></tr>
+                        <tr><td>nuez</td><td>核桃</td></tr>
+                        <tr><td>pez</td><td>鱼</td></tr>
+                        <tr><td>red</td><td>网</td></tr>
+                        <tr><td>pared</td><td>墙</td></tr>
+                        <tr><td>ciudad</td><td>城市</td></tr>
+                        <tr><td>jueces</td><td>法官(复)</td></tr>
+                        <tr><td>oportunidades</td><td>机会(复)</td></tr>
+                        <tr><td>lombrices</td><td>蚯蚓(复)</td></tr>
+                        <tr><td>verdades</td><td>真相(复)</td></tr>
+                    </table>
                 </div>
             </div>
 
-             <button class="accordion">Unidad 14</button>
-             <div class="panel">
-                 <div class="panel-content">
-                     <h3>Palabras parónimas</h3>
-                     <p>Se parecen pero significan cosas distintas.
-                     <span class="cn-text">近形/近音词：拼写相近但意思不同。</span></p>
-                     <table class="vocab-table">
-                        <tr><td>Decena (10)</td><td>Docena (12)</td></tr>
-                        <tr><td>Ahí (lugar)</td><td>Hay (verbo haber)</td></tr>
-                        <tr><td>Trompa (elefante)</td><td>Tromba (de agua)</td></tr>
-                     </table>
- 
-                     <h3>Pronombres personales</h3>
-                     <p>Sustituyen al nombre (Yo, tú, él/ella, nosotros, vosotros, ellos).
-                     <span class="cn-text">人称代词替代人名。</span></p>
- 
-                     <h3>Dos puntos (:)</h3>
-                     <p>Para introducir enumeraciones o diálogos.
-                     <span class="cn-text">冒号：用于引出列举或对话。</span></p>
-                 </div>
-             </div>
+            <button class="accordion">Unidad 14 — Palabras parónimas · Pronombres · Los dos puntos</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>1) Palabras parónimas</h3>
+                    <p>Suenan parecido pero significan distinto.
+                    <span class="cn-text">近音词：decena (十) / docena (十二)。</span></p>
 
-             <button class="accordion">Unidad 15</button>
-             <div class="panel">
-                 <div class="panel-content">
-                     <h3>Campo semántico</h3>
-                     <p>Palabras relacionadas por un tema.
-                     <span class="cn-text">语义场：同一主题下的一组词。</span></p>
-                     <div class="example-box">
-                         <strong>Profesiones:</strong> pintor, periodista, profesor...<br>
-                         <strong>Tiendas:</strong> frutería, joyería, papelería...
-                     </div>
- 
-                     <h3>El verbo</h3>
-                     <p>Acciones o estados. Infinitivos terminan en -ar, -er, -ir.
-                     <span class="cn-text">动词原形以 -ar, -er, -ir 结尾。</span></p>
- 
-                     <h3>ha y a</h3>
-                     <div class="rule-box">
-                         <strong>Ha</strong> (verbo haber) <span class="arrow-sep">→</span> María <strong>ha</strong> comido.<br>
-                         <strong>A</strong> (preposición) <span class="arrow-sep">→</span> Voy <strong>a</strong> casa.
-                     </div>
-                 </div>
-             </div>
+                    <h3>2) Pronombres personales</h3>
+                    <p>Sustituyen a nombres: yo, tú, él, nosotros...
+                    <span class="cn-text">人称代词代替名词。</span></p>
+
+                    <h3>3) Los dos puntos (:)</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong> Se usan para introducir una enumeración o diálogo.
+                    </div>
+
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>dos puntos</td><td>冒号</td></tr>
+                        <tr><td>pescadería</td><td>鱼店</td></tr>
+                        <tr><td>pescados</td><td>鱼类</td></tr>
+                        <tr><td>mero</td><td>石斑鱼</td></tr>
+                        <tr><td>salmón</td><td>三文鱼</td></tr>
+                        <tr><td>lenguado</td><td>舌鳎鱼</td></tr>
+                        <tr><td>bonito</td><td>鲣鱼</td></tr>
+                        <tr><td>peonzas</td><td>陀螺</td></tr>
+                        <tr><td>muñecas</td><td>娃娃</td></tr>
+                        <tr><td>puzles</td><td>拼图</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="accordion">Unidad 15 — Campo semántico · El verbo · Ha y a</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <h3>1) Campo semántico</h3>
+                    <p>Grupo de palabras de un mismo tema.
+                    <span class="cn-text">语义场：如职业、商店、衣服。</span></p>
+
+                    <h3>2) El verbo</h3>
+                    <p>Expresa acción: saltar, bailar, escribir.
+                    <span class="cn-text">动词表示动作。</span></p>
+
+                    <h3>3) Ha y a</h3>
+                    <div class="rule-box">
+                        <strong>RECUERDA:</strong><br>
+                        • <strong>Ha</strong> (verbo haber, lleva h).<br>
+                        • <strong>A</strong> (preposición, sin h).
+                    </div>
+                    <div class="example-box">
+                        "María <strong>ha</strong> estudiado." / "Voy <strong>a</strong> casa."
+                    </div>
+
+                    <h3>Vocabulario</h3>
+                    <table class="vocab-table">
+                        <tr><td>ha</td><td>已经 (haber)</td></tr>
+                        <tr><td>a</td><td>到/向</td></tr>
+                        <tr><td>he</td><td>我已经</td></tr>
+                        <tr><td>has</td><td>你已经</td></tr>
+                        <tr><td>hemos</td><td>我们已经</td></tr>
+                        <tr><td>han</td><td>他们已经</td></tr>
+                        <tr><td>estudiado</td><td>学习了</td></tr>
+                        <tr><td>ido</td><td>去了</td></tr>
+                        <tr><td>venir</td><td>来</td></tr>
+                        <tr><td>cine</td><td>电影院</td></tr>
+                    </table>
+                </div>
+            </div>
 
         </div>
     </main>
 
     <footer class="footer">
-        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+        <span>© 2026 EMSI 马德里国际中文学校 | 3º Primaria Lengua</span>
     </footer>
 
     <script>
