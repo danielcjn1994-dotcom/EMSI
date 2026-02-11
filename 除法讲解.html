@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 数学课堂 - La División (Completo)</title>
+    <style>
+        /* --- 基础样式复刻 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        /* --- 内容主区域 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 40px 40px 40px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            min-height: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column; /* 改为纵向排列 */
+            overflow: hidden; /* 保证圆角 */
+            border: 1px solid #eee;
+            padding: 0; /* 清除内边距，由子元素控制 */
+        }
+
+        /* --- 手风琴折叠样式 (New) --- */
+        .accordion-item {
+            border-bottom: 1px solid #eee;
+        }
+
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: 25px 30px;
+            background-color: white;
+            border: none;
+            outline: none;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.3s;
+        }
+
+        .accordion-header:hover {
+            background-color: #fcfcfc;
+        }
+
+        .header-title {
+            font-size: 18px;
+            color: #1a4a8e;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .header-title small {
+            display: block;
+            color: #888;
+            font-weight: 400;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* 三角图标 */
+        .triangle {
+            color: #f1c40f; /* EMSI 黄 */
+            font-size: 14px;
+            transition: transform 0.3s ease;
+            transform: rotate(0deg); /* 默认向右，用JS控制旋转 */
+        }
+
+        /* 激活状态 */
+        .accordion-header.active {
+            background-color: #f0f6ff;
+        }
+
+        .accordion-header.active .triangle {
+            transform: rotate(90deg); /* 展开时向下 */
+        }
+
+        /* 折叠内容区 */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: white;
+        }
+
+        .content-inner {
+            padding: 20px 30px 40px 30px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .concept-text {
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid #f1c40f;
+        }
+
+        .concept-text h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+
+        .concept-text p {
+            margin: 0;
+            color: #666;
+        }
+
+        .lesson-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #f0f0f0;
+            display: block;
+            margin: 10px auto;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .header h1 { font-size: 28px; }
+            .accordion-header { padding: 20px; }
+            .content-inner { padding: 15px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回主页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        1. 什么是除法？
+                        <small>Conceptos básicos: Dividendo, divisor, cociente y resto</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>核心概念 (Concepto):</h4>
+                            <p>除法就是均分。除法的四个部分是：被除数、除数、商和余数。</p>
+                            <p><i>Una división es un reparto en partes iguales. Los términos son: dividendo, divisor, cociente y resto.</i></p>
+                        </div>
+                        <img src="除法 5.png" alt="Conceptos básicos" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        2. 除法的分类：整除与有余数
+                        <small>División exacta y división entera</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>记忆要点 (Recuerda):</h4>
+                            <p>整除：余数等于0。<br>有余数除法：余数不等于0。</p>
+                            <p><i>Exacta: si su resto es igual a cero.<br>Entera: si su resto es distinto de cero.</i></p>
+                        </div>
+                        <img src="除法.png" alt="Tipos de división" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        3. 如何验算除法？
+                        <small>La prueba de la división</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>重要规则 (Reglas):</h4>
+                            <p>1. 余数必须小于除数。<br>2. 被除数 = 除数 × 商 + 余数。</p>
+                            <p><i>1. El resto es menor que el divisor.<br>2. Dividendo = divisor × cociente + resto.</i></p>
+                        </div>
+                        <img src="除法 1.png" alt="Prueba de la división" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        4. 开始计算：前两位数够除
+                        <small>Cuando las dos primeras cifras son mayores</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>步骤 (Paso):</h4>
+                            <p>当被除数的前两位数字大于或等于除数时，直接取前两位开始计算。</p>
+                            <p><i>Cuando las dos primeras cifras del dividendo forman un número mayor o igual que el divisor, se toman para comenzar.</i></p>
+                        </div>
+                        <img src="除法 3.png" alt="Paso 1" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        5. 开始计算：前两位数不够除
+                        <small>Cuando las dos primeras cifras son menores</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>步骤 (Paso):</h4>
+                            <p>当被除数的前两位数字小于除数时，需要取前三位数字开始计算。</p>
+                            <p><i>Cuando las dos primeras cifras son menores que el divisor, se toman las tres primeras cifras.</i></p>
+                        </div>
+                        <img src="除法 4.png" alt="Paso 2" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+             <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        6. 特殊情况：商中间有0
+                        <small>Cero en el cociente</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>注意 (Atención):</h4>
+                            <p>如果在计算过程中，落下的数字组成的新数比除数小，就要在商的位置写0，然后再落下下一位数字。</p>
+                            <p><i>Si se forma un número menor que el divisor, se escribe 0 en el cociente y se baja la siguiente cifra.</i></p>
+                        </div>
+                        <img src="除法 2.png" alt="Cero en el cociente" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        7. 进阶练习：三位数除以一位数
+                        <small>Práctica: División de tres cifras</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>多加练习 (Más práctica):</h4>
+                            <p>熟能生巧，请仔细观察这个例子的计算过程。</p>
+                            <p><i>La práctica hace al maestro. Observa detenidamente el proceso de cálculo en este ejemplo.</i></p>
+                        </div>
+                        <img src="除法 6.png" alt="Práctica avanzada" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        8. 巩固练习：注意余数
+                        <small>Consolidación: Cuidado con el resto</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>关键点 (Punto clave):</h4>
+                            <p>请记住：在每一步计算中，余数都必须比除数小。</p>
+                            <p><i>Recuerda: en cada paso, el resto siempre debe ser menor que el divisor.</i></p>
+                        </div>
+                        <img src="除法 7.png" alt="Consolidación" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        9. 挑战题：步骤增多
+                        <small>Desafío: Más pasos</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>保持耐心 (Paciencia):</h4>
+                            <p>即使数字变大了，方法也是一样的。一步一步来！</p>
+                            <p><i>Aunque los números sean más grandes, el método es el mismo. ¡Paso a paso!</i></p>
+                        </div>
+                        <img src="除法 8.png" alt="Desafío" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        10. 更多挑战：复杂计算
+                        <small>Más desafíos: Cálculos complejos</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>观察数字 (Observa):</h4>
+                            <p>注意被除数中是否有0，或者是否需要连续退位。</p>
+                            <p><i>Fíjate si hay ceros en el dividendo o si necesitas llevar números.</i></p>
+                        </div>
+                        <img src="除法 9.png" alt="Más desafíos" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        11. 实际应用：解决问题
+                        <small>Aplicación: Resolución de problemas</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>学以致用 (Aplicación):</h4>
+                            <p>我们可以用除法来解决生活中的平均分配问题。</p>
+                            <p><i>Podemos usar la división para resolver problemas de reparto equitativo en la vida real.</i></p>
+                        </div>
+                        <img src="除法 10.png" alt="Aplicación" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        12. 课程总结与复习
+                        <small>Resumen y repaso final</small>
+                    </div>
+                    <span class="triangle">▶</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        <div class="concept-text">
+                            <h4>恭喜你 (¡Felicidades!):</h4>
+                            <p>你已经学习了所有的除法规则。现在通过最后一张图来复习吧！</p>
+                            <p><i>Has aprendido todas las reglas de la división. ¡Repasemos con esta última imagen!</i></p>
+                        </div>
+                        <img src="除法 11.png" alt="Resumen" class="lesson-image">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+    <script>
+        // 获取所有的折叠头部
+        const headers = document.querySelectorAll('.accordion-header');
+
+        headers.forEach(header => {
+            header.addEventListener('click', function() {
+                // 1. 切换当前标题的激活状态（用于旋转三角形和背景色）
+                this.classList.toggle('active');
+
+                // 2. 获取对应的内容区域
+                const content = this.nextElementSibling;
+
+                // 3. 切换内容的显示/隐藏 (通过 max-height 实现平滑动画)
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    // scrollHeight 获取内容的实际高度
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
