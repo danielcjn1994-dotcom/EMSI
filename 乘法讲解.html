@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 乘法教程 / Tutorial de Multiplicación</title>
+    <style>
+        /* --- 基础样式 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 30px; 
+            background-color: white;
+            color: #1a4a8e; 
+            text-decoration: none;
+            border-radius: 50px; 
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent; 
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 20px;
+            line-height: 1;
+            transform: translateY(-2px); 
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15); 
+            color: #153a70; 
+        }
+
+        /* --- 主要内容区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: transparent;
+        }
+
+        /* --- 手风琴折叠样式 (已修改为箭头) --- */
+        .accordion {
+            background-color: white;
+            color: #1a4a8e;
+            cursor: pointer;
+            padding: 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: 0.3s;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .active, .accordion:hover {
+            background-color: #eef4ff;
+        }
+
+        /* 箭头图标样式 */
+        .accordion:after {
+            content: '\25B6'; /* Unicode 黑色实心右三角 ▶ */
+            color: #1a4a8e;
+            font-size: 18px;
+            float: right;
+            margin-left: 10px;
+            transition: transform 0.3s ease; /* 添加旋转动画 */
+        }
+
+        /* 激活状态下旋转箭头 */
+        .active:after {
+            transform: rotate(90deg); /* 旋转向下 */
+        }
+
+        /* --- 折叠内容区域 --- */
+        .panel {
+            padding: 0 25px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-radius: 0 0 15px 15px;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.03);
+        }
+
+        .panel-content {
+            padding: 25px 0;
+        }
+
+        .panel img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            margin: 15px 0;
+            display: block;
+        }
+
+        /* --- 教学内容样式 --- */
+        .step-title {
+            color: #f1c40f; /* EMSI Yellow */
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .explanation {
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .example-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #1a4a8e;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example-box h4 {
+            margin: 0 0 10px 0;
+            color: #1a4a8e;
+        }
+
+        /* --- 页脚 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        /* 移动端优化 */
+        @media screen and (max-width: 600px) {
+            .header h1 { font-size: 28px; }
+            .header .subtitle { font-size: 16px; }
+            .accordion { font-size: 16px; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Matemáticas: Multiplicación / 数学：乘法</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回 / Volver</a>
+    </div>
+
+    <main class="main-content">
+        <div class="container">
+
+            <button class="accordion">
+                1. Nivel Básico: Una cifra × Tres cifras<br>
+                <span style="font-size: 0.85em; font-weight: normal; color: #666;">基础篇：一位数乘三位数 (例如: 245 × 3)</span>
+            </button>
+            <div class="panel">
+                <div class="panel-content">
+                    <img src="一位数乘三位数.png" alt="Multiplicación 1 cifra">
+                    
+                    <div class="step-title">Paso a paso / 步骤讲解</div>
+                    <div class="explanation">
+                        <p><strong>Español:</strong>
+                            <br>1. Multiplica 3 por las unidades (5): 3 × 5 = 15.
+                            <br>2. Multiplica 3 por las decenas (4): 3 × 4 = 12, más 1 que te llevas = 13.
+                            <br>3. Multiplica 3 por las centenas (2): 3 × 2 = 6, más 1 que te llevas = 7.
+                        </p>
+                        <p><strong>中文：</strong> 
+                            <br>1. 先用 3 乘个位 5，得 15（进1写5）。
+                            <br>2. 再用 3 乘十位 4，得 12，加上进位的 1，得 13（进1写3）。
+                            <br>3. 最后用 3 乘百位 2，得 6，加上进位的 1，得 7。
+                        </p>
+                    </div>
+
+                    <div class="example-box">
+                        <h4>Practica / 练习题:</h4>
+                        <p>Calcula: <strong>216 × 4 = ?</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion">
+                2. Nivel Intermedio: Dos cifras × Tres cifras<br>
+                <span style="font-size: 0.85em; font-weight: normal; color: #666;">进阶篇：两位数乘三位数 (例如: 345 × 36)</span>
+            </button>
+            <div class="panel">
+                <div class="panel-content">
+                    <img src="多位数乘法 1.png" alt="Multiplicación 2 cifras simple">
+                    
+                    <div class="step-title">Paso a paso / 步骤讲解</div>
+                    <div class="explanation">
+                        <p><strong>Español:</strong>
+                            <br>1. Multiplica 345 por las unidades (6).
+                            <br>2. Multiplica 345 por las decenas (3), <strong>dejando un hueco</strong> a la derecha.
+                            <br>3. Suma los resultados.
+                        </p>
+                        <p><strong>中文：</strong>
+                            <br>1. 先用个位（6）去乘345。
+                            <br>2. 再用十位（3）去乘345，注意结果要<strong>向左移一位</strong>（末尾空出来）。
+                            <br>3. 最后把两次乘得的结果加起来。
+                        </p>
+                    </div>
+
+                    <div class="example-box">
+                        <h4>Practica / 练习题:</h4>
+                        <p>Calcula: <strong>124 × 23 = ?</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion">
+                3. Nivel Avanzado: Dos cifras × Cuatro cifras<br>
+                <span style="font-size: 0.85em; font-weight: normal; color: #666;">提高篇：两位数乘四位数 (例如: 1367 × 45)</span>
+            </button>
+            <div class="panel">
+                <div class="panel-content">
+                    <img src="多位数乘法 2.png" alt="Multiplicación 2 cifras dificil">
+                    
+                    <div class="step-title">Consejo / 提示</div>
+                    <div class="explanation">
+                        <p><strong>Español:</strong> El proceso es el mismo, aunque los números sean más grandes. Mantén el orden y cuidado con las sumas.</p>
+                        <p><strong>中文：</strong> 虽然数字变大了，但是方法是一样的。保持整洁，注意进位和对齐。</p>
+                    </div>
+
+                    <div class="example-box">
+                        <h4>Practica / 练习题:</h4>
+                        <p>Calcula: <strong>2045 × 34 = ?</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion">
+                4. Nivel Experto: Tres cifras × Cuatro cifras<br>
+                <span style="font-size: 0.85em; font-weight: normal; color: #666;">挑战篇：三位数乘四位数 (例如: 1753 × 125)</span>
+            </button>
+            <div class="panel">
+                <div class="panel-content">
+                    <img src="多位数乘法.png" alt="Multiplicación 3 cifras">
+                    
+                    <div class="step-title">Paso a paso / 步骤讲解</div>
+                    <div class="explanation">
+                        <p><strong>Español:</strong>
+                            <br>1. Multiplica por las unidades (5).
+                            <br>2. Multiplica por las decenas (2), dejando <strong>un</strong> lugar.
+                            <br>3. Multiplica por las centenas (1), dejando <strong>dos</strong> lugares.
+                            <br>4. Suma todo.
+                        </p>
+                        <p><strong>中文：</strong>
+                            <br>1. 先乘个位（5）。
+                            <br>2. 再乘十位（2），末尾空<strong>一</strong>位。
+                            <br>3. 最后乘百位（1），末尾空<strong>两</strong>位（或者补两个0）。
+                            <br>4. 将三层结果相加。
+                        </p>
+                    </div>
+
+                    <div class="example-box">
+                        <h4>Practica / 练习题:</h4>
+                        <p>Calcula: <strong>1532 × 142 = ?</strong></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+    <script>
+        // JavaScript for Accordion Functionality
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                /* Toggle between adding and removing the "active" class,
+                to highlight the button that controls the panel */
+                this.classList.toggle("active");
+
+                /* Toggle between hiding and showing the active panel */
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            });
+        }
+    </script>
+
+</body>
+</html>
