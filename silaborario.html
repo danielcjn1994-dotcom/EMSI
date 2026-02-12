@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EMSI Lengua - Silabario 分类音节表</title>
+<title>EMSI Lengua - Silabario Completo (30 Páginas)</title>
 <style>
 /* --- 基础布局 --- */
 body {
@@ -84,22 +84,92 @@ body {
     gap: 8px;
 }
 
-.card-pdf {
+/* --- 电子书/图片浏览器样式 --- */
+.book-viewer-container {
     background: white;
     width: 100%;
     max-width: 1000px;
-    height: 70vh; /* 稍微调低一点，让下方分类露出更多 */
+    height: 75vh; /* 调整高度以适应图片 */
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    overflow: hidden;
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
 }
 
-.pdf-viewer {
-    width: 100%;
-    height: 100%;
-    border: none;
+.book-viewport {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333; /*以此衬托图片*/
+    overflow: hidden;
+    position: relative;
 }
+
+.book-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 保持图片比例 */
+    transition: opacity 0.3s ease;
+}
+
+.book-controls {
+    height: 50px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.page-btn {
+    background: #1a4a8e;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.page-btn:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+}
+
+.page-indicator {
+    font-weight: 600;
+    color: #475569;
+}
+
+/* 覆盖层的大箭头，方便在图片上直接点击 */
+.overlay-nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background: rgba(0,0,0,0.1);
+    color: white;
+    font-size: 40px;
+}
+.overlay-nav:hover { opacity: 1; }
+.nav-prev { left: 0; }
+.nav-next { right: 0; }
+
 
 /* --- 分类音节卡片 --- */
 .syllable-card {
@@ -119,7 +189,7 @@ body {
     font-size: 24px;
     font-weight: 800;
     text-align: center;
-    margin: 30px 0 20px 0;
+    margin: 40px 0 20px 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -168,6 +238,14 @@ body {
 .special-row .syllable-box {
     border-left: 4px solid #f1c40f;
 }
+
+/* 装饰性分割线 */
+.divider {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 40px 20px 0 20px;
+}
+
 /* --- Flash Card 核心样式优化 --- */
 .flashcard-container {
     background: white;
@@ -184,7 +262,7 @@ body {
     position: relative;
 }
 
-/* --- 全屏模式优化：防止文字离谱 --- */
+/* --- 全屏模式优化 --- */
 .flashcard-container:fullscreen {
     width: 100vw;
     height: 100vh;
@@ -214,7 +292,7 @@ body {
     background: white;
     border: 3px solid #e2e8f0;
     border-radius: 20px;
-    /* 字体优化：最小100px，理想值15vh，最大300px */
+    /* 字体优化 */
     font-size: clamp(80px, 15vh, 250px); 
     font-weight: 800;
     color: #1a4a8e;
@@ -223,19 +301,18 @@ body {
     user-select: none;
     box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     padding: 20px;
-    overflow: hidden; /* 防止溢出 */
-    white-space: nowrap; /* 防止换行 */
+    overflow: hidden; 
+    white-space: nowrap;
 }
 
 /* 全屏时的卡片高度自适应 */
 .flashcard-container:fullscreen .flashcard {
     height: 50vh; 
     border: 6px solid #1a4a8e;
-    /* 全屏时文字可以稍微大一点，但依然限制最大值 */
     font-size: clamp(120px, 30vh, 400px); 
 }
 
-/* 初始状态“点击开始”这种长文字调小一点 */
+/* 初始状态“点击开始” */
 #current-card:contains("点击开始") {
     font-size: clamp(40px, 8vw, 100px);
 }
@@ -257,6 +334,7 @@ body {
     padding: 2vh 10vw;
     font-size: 4vh;
 }
+
 /* --- 页脚 --- */
 .footer {
     background-color: #1a4a8e;
@@ -270,6 +348,7 @@ body {
 @media (max-width: 768px) {
     .syllable-box { font-size: 15px; width: 19%; }
     .section-title { font-size: 20px; }
+    .overlay-nav { width: 50px; font-size: 30px; background: rgba(0,0,0,0.2); opacity: 1; } /* 手机上常驻显示箭头 */
 }
 </style>
 </head>
@@ -285,17 +364,28 @@ body {
 </header>
 
 <main class="main-content">
-    <button class="fullscreen-btn" onclick="toggleFullScreen()">
-        全屏预览 PDF
+    
+    <button class="fullscreen-btn" onclick="toggleBookFullScreen()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        全屏查看课件 (Ver Pantalla Completa)
     </button>
 
-    <div class="card-pdf" id="pdfContainer">
-        <iframe src="Silabario.pdf#view=FitH" class="pdf-viewer"></iframe>
+    <div class="book-viewer-container" id="bookContainer">
+        <div class="book-viewport">
+            <div class="overlay-nav nav-prev" onclick="changePage(-1)">&#10094;</div>
+            <div class="overlay-nav nav-next" onclick="changePage(1)">&#10095;</div>
+            <img id="bookImage" src="" alt="Silabario Page" class="book-image">
+        </div>
+        <div class="book-controls">
+            <button class="page-btn" onclick="changePage(-1)" id="btnPrev">上一页</button>
+            <span class="page-indicator" id="pageIndicator">Página 1 / 30</span>
+            <button class="page-btn" onclick="changePage(1)" id="btnNext">下一页</button>
+        </div>
     </div>
 
     <div class="syllable-card">
         
-        <div class="section-title">Sílabas Simples 基础音节</div>
+        <div class="section-title">Sílabas Simples 基础音节 (Parte 1)</div>
         <div class="syllable-row"><div class="syllable-box">Ma</div><div class="syllable-box">Me</div><div class="syllable-box">Mi</div><div class="syllable-box">Mo</div><div class="syllable-box">Mu</div></div>
         <div class="syllable-row"><div class="syllable-box">Ba</div><div class="syllable-box">Be</div><div class="syllable-box">Bi</div><div class="syllable-box">Bo</div><div class="syllable-box">Bu</div></div>
         <div class="syllable-row"><div class="syllable-box">Da</div><div class="syllable-box">De</div><div class="syllable-box">Di</div><div class="syllable-box">Do</div><div class="syllable-box">Du</div></div>
@@ -316,7 +406,7 @@ body {
         <div class="syllable-row special-row"><div class="syllable-box">Za</div><div class="syllable-box">Ce</div><div class="syllable-box">Ci</div><div class="syllable-box">Zo</div><div class="syllable-box">Zu</div></div>
         <div class="syllable-row special-row"><div class="syllable-box">Ga</div><div class="syllable-box">Gue</div><div class="syllable-box">Gui</div><div class="syllable-box">Go</div><div class="syllable-box">Gu</div></div>
 
-        <div class="section-title">Grupos con "R" 复合音节</div>
+        <div class="section-title">Sílabas Compuestas 复合音节 (Parte 1)</div>
         <div class="syllable-row"><div class="syllable-box">Bra</div><div class="syllable-box">Bre</div><div class="syllable-box">Bri</div><div class="syllable-box">Bro</div><div class="syllable-box">Bru</div></div>
         <div class="syllable-row"><div class="syllable-box">Pra</div><div class="syllable-box">Pre</div><div class="syllable-box">Pri</div><div class="syllable-box">Pro</div><div class="syllable-box">Pru</div></div>
         <div class="syllable-row"><div class="syllable-box">Cra</div><div class="syllable-box">Cre</div><div class="syllable-box">Cri</div><div class="syllable-box">Cro</div><div class="syllable-box">Cru</div></div>
@@ -324,165 +414,130 @@ body {
         <div class="syllable-row"><div class="syllable-box">Gra</div><div class="syllable-box">Gre</div><div class="syllable-box">Gri</div><div class="syllable-box">Gro</div><div class="syllable-box">Gru</div></div>
         <div class="syllable-row"><div class="syllable-box">Tra</div><div class="syllable-box">Tre</div><div class="syllable-box">Tri</div><div class="syllable-box">Tro</div><div class="syllable-box">Tru</div></div>
         <div class="syllable-row"><div class="syllable-box">Dra</div><div class="syllable-box">Dre</div><div class="syllable-box">Dri</div><div class="syllable-box">Dro</div><div class="syllable-box">Dru</div></div>
-
-        <div class="section-title">Grupos con "L" 复合音节</div>
         <div class="syllable-row"><div class="syllable-box">Bla</div><div class="syllable-box">Ble</div><div class="syllable-box">Bli</div><div class="syllable-box">Blo</div><div class="syllable-box">Blu</div></div>
         <div class="syllable-row"><div class="syllable-box">Pla</div><div class="syllable-box">Ple</div><div class="syllable-box">Pli</div><div class="syllable-box">Plo</div><div class="syllable-box">Plu</div></div>
         <div class="syllable-row"><div class="syllable-box">Cla</div><div class="syllable-box">Cle</div><div class="syllable-box">Cli</div><div class="syllable-box">Clo</div><div class="syllable-box">Clu</div></div>
         <div class="syllable-row"><div class="syllable-box">Fla</div><div class="syllable-box">Fle</div><div class="syllable-box">Fli</div><div class="syllable-box">Flo</div><div class="syllable-box">Flu</div></div>
         <div class="syllable-row"><div class="syllable-box">Gla</div><div class="syllable-box">Gle</div><div class="syllable-box">Gli</div><div class="syllable-box">Glo</div><div class="syllable-box">Glu</div></div>
+
+        <div class="divider"></div>
+
+        <div class="section-title">Sílabas Inversas 反向音节 (Parte 2)</div>
+        <div class="syllable-row"><div class="syllable-box">As</div><div class="syllable-box">Es</div><div class="syllable-box">Is</div><div class="syllable-box">Os</div><div class="syllable-box">Us</div></div>
+        <div class="syllable-row"><div class="syllable-box">Al</div><div class="syllable-box">El</div><div class="syllable-box">Il</div><div class="syllable-box">Ol</div><div class="syllable-box">Ul</div></div>
+        <div class="syllable-row"><div class="syllable-box">An</div><div class="syllable-box">En</div><div class="syllable-box">In</div><div class="syllable-box">On</div><div class="syllable-box">Un</div></div>
+        <div class="syllable-row"><div class="syllable-box">Ar</div><div class="syllable-box">Er</div><div class="syllable-box">Ir</div><div class="syllable-box">Or</div><div class="syllable-box">Ur</div></div>
+        <div class="syllable-row"><div class="syllable-box">Am</div><div class="syllable-box">Em</div><div class="syllable-box">Im</div><div class="syllable-box">Om</div><div class="syllable-box">Um</div></div>
+        <div class="syllable-row"><div class="syllable-box">Ac</div><div class="syllable-box">Ec</div><div class="syllable-box">Ic</div><div class="syllable-box">Oc</div><div class="syllable-box">Uc</div></div>
+        <div class="syllable-row"><div class="syllable-box">Az</div><div class="syllable-box">Ez</div><div class="syllable-box">Iz</div><div class="syllable-box">Oz</div><div class="syllable-box">Uz</div></div>
+        <div class="syllable-row"><div class="syllable-box">Ay</div><div class="syllable-box">Ey</div><div class="syllable-box">Iy</div><div class="syllable-box">Oy</div><div class="syllable-box">Uy</div></div>
+
+        <div class="section-title">Diptongos 二重元音 (Parte 2)</div>
+        <div class="syllable-row"><div class="syllable-box">Ia</div><div class="syllable-box">Ie</div><div class="syllable-box">Io</div><div class="syllable-box">Ua</div><div class="syllable-box">Ue</div></div>
+        <div class="syllable-row"><div class="syllable-box">Ai</div><div class="syllable-box">Ei</div><div class="syllable-box">Oi</div><div class="syllable-box">Au</div><div class="syllable-box">Eu</div></div>
+        <div class="syllable-row"><div class="syllable-box">Cia</div><div class="syllable-box">Cie</div><div class="syllable-box">Cio</div><div class="syllable-box">Gua</div><div class="syllable-box">Guo</div></div>
+
     </div>
+
     <div class="section-title">Reto de Lectura 认读挑战</div>
-<div class="flashcard-container" id="flashcard-game">
-    <div class="card-meta">
-        <span id="card-progress">准备好了吗？</span>
-        <div class="card-controls">
-            <button class="control-btn" onclick="toggleFlashcardFullScreen()" title="全屏显示">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                全屏放大
-            </button>
-            <button class="refresh-btn" onclick="initChallenge()">换一批</button>
+    <div class="flashcard-container" id="flashcard-game">
+        <div class="card-meta">
+            <span id="card-progress">准备好了吗？</span>
+            <div class="card-controls">
+                <button class="control-btn" onclick="toggleFlashcardFullScreen()" title="全屏显示">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                    全屏放大
+                </button>
+                <button class="refresh-btn" onclick="initChallenge()">换一批</button>
+            </div>
+        </div>
+        
+        <div class="flashcard-wrapper">
+            <div class="flashcard" id="current-card" onclick="nextCard()">
+                点击开始
+            </div>
+        </div>
+
+        <div class="hint-text">点击卡片或按“空格键”切换到下一个</div>
+        
+        <div style="margin-top: 25px;">
+            <button class="next-btn" id="next-btn" onclick="nextCard()">下一个 (Siguiente)</button>
         </div>
     </div>
-    
-    <div class="flashcard-wrapper">
-        <div class="flashcard" id="current-card" onclick="nextCard()">
-            点击开始
-        </div>
-    </div>
+</main>
 
-    <div class="hint-text">点击卡片或按“空格键”切换到下一个</div>
-    
-    <div style="margin-top: 25px;">
-        <button class="next-btn" id="next-btn" onclick="nextCard()">下一个 (Siguiente)</button>
-    </div>
-</div>
-
-<style>
-/* --- Flash Card 核心样式 --- */
-.flashcard-container {
-    background: white;
-    width: 100%;
-    max-width: 1000px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    padding: 30px;
-    box-sizing: border-box;
-    margin: 20px auto 60px auto;
-    text-align: center;
-    border-top: 6px solid #f1c40f;
-    transition: all 0.3s ease;
-}
-
-/* 全屏状态样式优化 */
-.flashcard-container:fullscreen {
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #f8fafc;
-}
-
-.card-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 20px;
-    color: #64748b;
-    font-weight: 600;
-}
-
-.card-controls { display: flex; gap: 10px; }
-
-.flashcard-wrapper {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.flashcard {
-    height: 250px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    border: 3px solid #e2e8f0;
-    border-radius: 20px;
-    font-size: 100px;
-    font-weight: 800;
-    color: #1a4a8e;
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-
-.flashcard:hover { border-color: #1a4a8e; transform: translateY(-2px); }
-.flashcard:active { transform: scale(0.98); }
-
-/* 全屏时的超大字体 */
-.flashcard-container:fullscreen .flashcard {
-    height: 60vh;
-    width: 85vw;
-    font-size: 25vw; /* 占据屏幕宽度的四分之一，非常醒目 */
-    border: 6px solid #1a4a8e;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-}
-
-.control-btn, .refresh-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: #f1f5f9;
-    border: 1px solid #cbd5e1;
-    padding: 8px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #475569;
-    font-weight: 600;
-}
-
-.control-btn:hover { background: #e2e8f0; color: #1a4a8e; }
-
-.next-btn {
-    padding: 18px 60px;
-    background-color: #f1c40f;
-    color: #1a4a8e;
-    border: none;
-    border-radius: 50px;
-    font-size: 22px;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 5px 0 #d4ac0d;
-    transition: all 0.1s;
-}
-
-.next-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #d4ac0d; }
-
-.flashcard-container:fullscreen .next-btn {
-    padding: 25px 100px;
-    font-size: 30px;
-    margin-top: 40px;
-}
-
-.hint-text { margin-top: 15px; color: #94a3b8; font-size: 14px; }
-.flashcard-container:fullscreen .hint-text { font-size: 18px; }
-</style>
+<footer class="footer">
+    © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+</footer>
 
 <script>
-// 初始化变量
+// --- 书籍浏览器逻辑 ---
+// 修改点：总页数变为 30
+const totalPages = 30; 
+let currentPage = 1;
+
+// 生成文件名数组: 01, 02, ..., 30
+const bookImages = Array.from({length: totalPages}, (_, i) => {
+    const num = (i + 1).toString().padStart(2, '0');
+    return `音节/Silabario_${num}.png`;
+});
+
+function updateBook() {
+    const img = document.getElementById('bookImage');
+    const indicator = document.getElementById('pageIndicator');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    img.style.opacity = '0.5'; // 简单的切换动画
+    
+    setTimeout(() => {
+        // 加载图片
+        img.src = bookImages[currentPage - 1];
+        
+        // 图片加载成功后的处理
+        img.onload = () => { img.style.opacity = '1'; };
+        
+        // 图片加载失败的容错处理
+        img.onerror = () => {
+            console.log(`无法加载图片: ${bookImages[currentPage - 1]}`);
+            img.alt = "Imagen no encontrada / 图片未找到";
+            img.style.opacity = '1';
+        };
+        
+        indicator.innerText = `Página ${currentPage} / ${totalPages}`;
+        
+        btnPrev.disabled = currentPage === 1;
+        btnNext.disabled = currentPage === totalPages;
+    }, 150);
+}
+
+function changePage(delta) {
+    const newPage = currentPage + delta;
+    if (newPage >= 1 && newPage <= totalPages) {
+        currentPage = newPage;
+        updateBook();
+    }
+}
+
+function toggleBookFullScreen() {
+    const elem = document.getElementById("bookContainer");
+    if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) elem.requestFullscreen();
+        else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+    } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+    }
+}
+
+// 初始化第一页
+updateBook();
+
+// --- 认读挑战逻辑 ---
 let allSyllables = [];
 let challengeList = [];
 let currentIndex = -1;
 
-// 页面加载后提取所有音节
+// 提取所有音节
 function extractSyllables() {
     allSyllables = Array.from(document.querySelectorAll('.syllable-box')).map(box => box.innerText);
 }
@@ -490,7 +545,7 @@ function extractSyllables() {
 function initChallenge() {
     if(allSyllables.length === 0) extractSyllables();
     
-    // 随机抽取 20 个不重复的（如果总量够的话）
+    // 随机抽取 20 个不重复
     challengeList = [...allSyllables]
         .sort(() => Math.random() - 0.5)
         .slice(0, 20);
@@ -524,46 +579,31 @@ function updateUI() {
 function toggleFlashcardFullScreen() {
     const elem = document.getElementById("flashcard-game");
     if (!document.fullscreenElement) {
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        }
-    }
-}
-
-// 增加键盘支持：按空格键或回车键切换
-document.addEventListener('keydown', (e) => {
-    if ((e.code === 'Space' || e.code === 'Enter') && currentIndex !== -1) {
-        // 防止全屏模式下空格键导致页面滚动
-        e.preventDefault(); 
-        nextCard();
-    }
-});
-
-// 初始化
-window.addEventListener('DOMContentLoaded', extractSyllables);
-</script>
-</main>
-
-<footer class="footer">
-    © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
-</footer>
-
-<script>
-function toggleFullScreen() {
-    const elem = document.getElementById("pdfContainer");
-    if (!document.fullscreenElement) {
         if (elem.requestFullscreen) elem.requestFullscreen();
         else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
     } else {
         if (document.exitFullscreen) document.exitFullscreen();
     }
 }
+
+// --- 键盘支持 ---
+document.addEventListener('keydown', (e) => {
+    // 认读挑战：空格或回车
+    if ((e.code === 'Space' || e.code === 'Enter') && currentIndex !== -1) {
+        e.preventDefault(); 
+        nextCard();
+    }
+    // 图片翻页：左右箭头
+    if (e.code === 'ArrowLeft') {
+        changePage(-1);
+    }
+    if (e.code === 'ArrowRight') {
+        changePage(1);
+    }
+});
+
+// 初始化
+window.addEventListener('DOMContentLoaded', extractSyllables);
 </script>
 
 </body>
