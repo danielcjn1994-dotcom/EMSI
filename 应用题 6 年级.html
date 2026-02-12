@@ -5,121 +5,185 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EMSI 教学资源 - 六年级数学练习</title>
 <style>
-/* 核心布局：锁定高度，消除冗余滚动 */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
-    background-color: #f5f7fa;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-}
+    /* --- 基础布局：Flexbox 撑满全屏，防止双滚动条 --- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+        background-color: #f5f7fa;
+        display: flex;
+        flex-direction: column;
+        height: 100vh; /* 强制占用 100% 视口高度 */
+        overflow: hidden; /* 禁止页面整体滚动 */
+    }
 
-/* --- 紧凑页眉设计 --- */
-.header {
-    background-color: white;
-    text-align: center;
-    padding: 15px 20px 10px 20px;
-    border-bottom: 4px solid #f1c40f;
-    position: relative;
-    flex-shrink: 0;
-}
+    /* --- 1. 页眉 --- */
+    .header {
+        background-color: white;
+        text-align: center;
+        padding: 10px 20px;
+        border-bottom: 4px solid #f1c40f;
+        position: relative;
+        flex-shrink: 0; /* 防止页眉被压缩 */
+        z-index: 20;
+    }
 
-.back-home {
-    position: absolute;
-    left: 20px;
-    top: 15px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #1a4a8e;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background: #f0f4f8;
-    transition: 0.3s;
-}
+    .back-home {
+        position: absolute;
+        left: 20px;
+        top: 15px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #1a4a8e;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: #f0f4f8;
+        transition: 0.3s;
+    }
 
-.back-home:hover { background: #e2e8f0; color: #f1c40f; }
+    .back-home:hover { 
+        color: #f1c40f; 
+        background-color: #e2e8f0; 
+    }
 
-.header h1 {
-    color: #1a4a8e;
-    font-size: clamp(18px, 4vw, 30px);
-    font-weight: 800;
-    margin: 0;
-}
+    .header h1 {
+        color: #1a4a8e;
+        font-size: 24px;
+        font-weight: 800;
+        margin: 0;
+    }
 
-.header .subtitle {
-    color: #6b7280;
-    font-size: 16px;
-    margin-top: 5px;
-}
+    .header .subtitle {
+        color: #6b7280;
+        font-size: 14px;
+        margin-top: 4px;
+    }
 
-/* --- 内容区：极致屏占比 --- */
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    background-color: #d1d5db;
-}
+    /* --- 2. 主要内容区 (自动填充剩余空间) --- */
+    .main-content {
+        flex: 1; /* 关键：自动占据剩余的所有高度 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        background-color: #d1d5db; /* 深色背景让白纸更显眼 */
+        position: relative;
+        overflow: hidden;
+    }
 
-/* 沉浸式全屏按钮 */
-.fullscreen-btn {
-    margin-bottom: 8px;
-    padding: 8px 18px;
-    background-color: #1a4a8e;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s;
-}
+    /* 全屏按钮 */
+    .fullscreen-btn {
+        margin-bottom: 8px;
+        padding: 6px 12px;
+        background-color: #1a4a8e;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: 0.3s;
+        flex-shrink: 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
 
-.fullscreen-btn:hover { background-color: #2c5282; transform: scale(1.02); }
+    .fullscreen-btn:hover { background-color: #2c5282; }
 
-.card {
-    background: white;
-    width: 100%;
-    max-width: 1400px;
-    flex: 1;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    overflow: hidden;
-    position: relative;
-}
+    /* --- 图片容器卡片 --- */
+    .card {
+        background: white;
+        width: 100%;
+        max-width: 1400px;
+        flex: 1; /* 关键：让卡片撑满 main-content 的剩余高度 */
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
 
-.pdf-viewer {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
+    /* 图片包装层 */
+    .image-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background-color: #f0f2f5;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
 
-/* --- 页脚 --- */
-.footer {
-    background-color: #1a4a8e;
-    color: white;
-    text-align: center;
-    padding: 8px;
-    font-size: 12px;
-    flex-shrink: 0;
-}
+    /* 图片本体适配 */
+    #currentImage {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; /* 保证图片完整显示不裁剪 */
+        display: block;
+    }
 
-/* 移动端适配 */
-@media (max-width: 768px) {
-    .header { padding-top: 50px; }
-    .back-home { top: 10px; left: 10px; }
-    .main-content { padding: 5px; }
-}
+    /* --- 导航按钮 --- */
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(26, 74, 142, 0.1); /* 默认半透明，不遮挡题目 */
+        color: #1a4a8e;
+        border: none;
+        padding: 20px 15px;
+        font-size: 28px;
+        cursor: pointer;
+        transition: 0.3s;
+        border-radius: 8px;
+        user-select: none;
+        z-index: 5;
+    }
+
+    .nav-btn:hover {
+        background-color: rgba(26, 74, 142, 0.8);
+        color: white;
+    }
+
+    .prev-btn { left: 10px; }
+    .next-btn { right: 10px; }
+
+    /* --- 页码指示器 --- */
+    .page-indicator {
+        text-align: center;
+        padding: 8px;
+        background-color: white;
+        color: #1a4a8e;
+        font-weight: 600;
+        font-size: 14px;
+        border-top: 1px solid #e5e7eb;
+        flex-shrink: 0;
+    }
+
+    /* --- 3. 页脚 --- */
+    .footer {
+        background-color: #1a4a8e;
+        color: white;
+        text-align: center;
+        padding: 6px;
+        font-size: 11px;
+        flex-shrink: 0;
+    }
+
+    /* --- 移动端特别适配 --- */
+    @media (max-width: 768px) {
+        .header h1 { font-size: 18px; }
+        .back-home span { display: none; } /* 手机上只显示箭头图标，不显示文字 */
+        .back-home { padding: 8px; }
+        .main-content { padding: 5px; }
+        .nav-btn { padding: 15px 10px; font-size: 20px; }
+    }
 </style>
 </head>
 <body>
@@ -127,7 +191,7 @@ body {
 <header class="header">
     <a href="index.html" class="back-home">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        返回首页
+        <span>返回首页</span>
     </a>
     <h1><span>EMSI</span> 马德里国际中文学校</h1>
     <div class="subtitle">6º de Primaria - 六年级数学练习</div>
@@ -139,16 +203,13 @@ body {
         全屏模式
     </button>
 
-    <div class="card" id="pdfContainer">
-        <iframe 
-            src="Problemas 6ª.pdf#view=FitH" 
-            class="pdf-viewer"
-            title="六年级数学练习题"
-            allowfullscreen="true"
-            webkitallowfullscreen="true"
-            mozallowfullscreen="true">
-            您的浏览器不支持预览 PDF，请<a href="Problemas 6ª.pdf">下载文件</a>查看。
-        </iframe>
+    <div class="card" id="imageViewerContainer">
+        <div class="image-wrapper">
+            <img id="currentImage" src="" alt="正在加载练习题...">
+            <button class="nav-btn prev-btn" onclick="changeImage(-1)">❮</button>
+            <button class="nav-btn next-btn" onclick="changeImage(1)">❯</button>
+        </div>
+        <div class="page-indicator" id="pageIndicator">第 1 / 24 页</div>
     </div>
 </main>
 
@@ -157,22 +218,79 @@ body {
 </footer>
 
 <script>
-function toggleFullScreen() {
-    const elem = document.getElementById("pdfContainer");
-    if (!document.fullscreenElement) {
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-            elem.msRequestFullscreen();
+    // --- 1. 配置参数 ---
+    const totalImages = 24; 
+    const imageFolder = "六年级应用题/"; // 文件夹名称
+    let images = [];
+
+    // --- 2. 路径生成逻辑 ---
+    // 目标文件名格式: Problemas 6ª_01.png, Problemas 6ª_02.png ...
+    for (let i = 1; i <= totalImages; i++) {
+        // padStart(2, '0') 确保生成 01, 02... 09, 10
+        let num = i.toString().padStart(2, '0');
+        
+        // 拼接完整路径 (注意这里包含了 'º' 符号)
+        let filename = `Problemas 6ª_${num}.png`;
+        
+        images.push(imageFolder + filename);
+    }
+
+    // --- 3. 核心浏览功能 ---
+    let currentIndex = 0; 
+    const imageElement = document.getElementById('currentImage');
+    const pageIndicator = document.getElementById('pageIndicator');
+
+    function showImage(index) {
+        // 处理首尾循环翻页
+        if (index < 0) {
+            currentIndex = totalImages - 1;
+        } else if (index >= totalImages) {
+            currentIndex = 0;
+        } else {
+            currentIndex = index;
         }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
+
+        imageElement.src = images[currentIndex];
+        imageElement.alt = `六年级数学练习题 - 第 ${currentIndex + 1} 页`;
+        pageIndicator.textContent = `第 ${currentIndex + 1} / ${totalImages} 页`;
+    }
+
+    function changeImage(direction) {
+        showImage(currentIndex + direction);
+    }
+
+    // 简单的预加载功能，提升翻页速度
+    function preloadImages() {
+        images.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+    }
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        showImage(currentIndex);
+        // 延迟1秒加载其他图片，优先显示第一张
+        setTimeout(preloadImages, 1000);
+    });
+
+    // --- 4. 全屏功能 ---
+    function toggleFullScreen() {
+        const elem = document.getElementById("imageViewerContainer");
+        if (!document.fullscreenElement) {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
         }
     }
-}
 </script>
 
 </body>
