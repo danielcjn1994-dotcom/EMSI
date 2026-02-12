@@ -59,7 +59,6 @@
             border: 1px solid #eee;
         }
 
-        /* --- 恢复：顶部返回按钮样式 --- */
         .btn-back-pill {
             display: inline-flex;
             align-items: center;
@@ -86,7 +85,6 @@
             line-height: 1;
         }
 
-        /* 区域标题样式 */
         .section-title {
             color: #1a4a8e;
             font-size: 1.4rem;
@@ -143,19 +141,11 @@
 
         .btn-emsi:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(26,74,142,0.2); }
         
-        /* 颜色区分不同模块 */
         .mod-original { background: #1a4a8e; }
-        .mod-100 { background: #2c3e50; } /* 深灰蓝 */
-        .mod-300 { background: #5D4037; } /* 棕色风格区分 */
-        
-        /* 新增：紫色系用于运算定律 */
+        .mod-100 { background: #2c3e50; }
+        .mod-300 { background: #5D4037; }
         .mod-laws { background: #6b46c1; } 
-        
-        .btn-emsi.mod-100:hover { background: #34495e; }
-        .btn-emsi.mod-300:hover { background: #795548; }
-        .btn-emsi.mod-laws:hover { background: #553c9a; }
 
-        /* 测验页面样式 */
         .quiz-header {
             display: flex;
             justify-content: space-between;
@@ -168,7 +158,6 @@
         }
 
         .btn-action { padding: 8px 16px; font-size: 0.95rem; border-radius: 6px; cursor: pointer; color: white; border: none; font-weight: bold; }
-        .btn-back { background: #6b7280; }
         .btn-refresh { background: #27ae60; } 
         .btn-home { background: #334155; }
 
@@ -313,26 +302,36 @@
 <script>
     let currentType = '';
 
-    // 题目类型标题映射
     const titles = {
-        // 原有
         'dec_add_sub': '基础: 小数加减法', 'dec_mul': '基础: 小数乘法', 'dec_div': '基础: 小数除法',
         'dec_mix_basic': '基础: 加减混合', 'dec_mix_full': '基础: 四则混合',
         'dec_mix_p1': '基础: 带小括号', 'dec_mix_p2': '基础: 带中括号',
-        // 模块 1 (<100)
         'm1_add': 'Mod 1: 小数+整数 (<100)', 'm1_sub': 'Mod 1: 小数-整数 (<100)', 
         'm1_mul': 'Mod 1: 小数×整数 (<100)', 'm1_div': 'Mod 1: 小数÷整数 (<100)',
         'm1_mix': 'Mod 1: 混合运算', 'm1_mix_p1': 'Mod 1: 含小括号', 'm1_mix_p2': 'Mod 1: 含中括号',
-        // 模块 2 (三位数)
         'm2_add': 'Mod 2: 小数+三位数', 'm2_sub': 'Mod 2: 小数-三位数', 
         'm2_mul': 'Mod 2: 小数×三位数', 'm2_div': 'Mod 2: 小数÷三位数',
         'm2_mix': 'Mod 2: 混合运算', 'm2_mix_p1': 'Mod 2: 含小括号', 'm2_mix_p2': 'Mod 2: 含中括号',
-        // 新增 模块 3 (运算定律)
         'law_dec_add': 'Mod 3: 加法巧算 (凑整)',
         'law_dec_mul': 'Mod 3: 乘法巧算 (结合律)',
         'law_dist_merge': 'Mod 3: 分配律 (提取公因数)',
         'law_dist_split': 'Mod 3: 分配律 (拆分凑整)'
     };
+
+    // --- 工具函数 ---
+    function getDec(min, max, places) {
+        let num = Math.random() * (max - min) + min;
+        return parseFloat(num.toFixed(places));
+    }
+
+    function getInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // 核心修正：修复JS浮点数精度丢失
+    function fix(num, places=3) {
+        return parseFloat(parseFloat(num).toFixed(places));
+    }
 
     function startQuiz(type) {
         currentType = type;
@@ -344,25 +343,6 @@
 
     document.getElementById('refresh-btn').onclick = generateQuestions;
 
-    // --- 工具函数 ---
-    
-    // 生成小数 (min到max之间，保留places位小数)
-    function getDec(min, max, places) {
-        let num = Math.random() * (max - min) + min;
-        return parseFloat(num.toFixed(places));
-    }
-
-    // 生成整数
-    function getInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    // 四舍五入修正精度问题
-    function fix(num, places=2) {
-        return parseFloat(num.toFixed(places));
-    }
-
-    // 生成题目逻辑主控
     function generateQuestions() {
         const list = document.getElementById('quiz-list');
         list.innerHTML = '';
@@ -379,37 +359,43 @@
         }
     }
 
-    // 核心逻辑：生成各种类型的题目
     function getQuestion(type) {
-        let d, i_val, res, s1, s2, temp;
-        // 定义整数范围
-        let rangeMin1 = 2, rangeMax1 = 99;    // 模块1范围
-        let rangeMin2 = 100, rangeMax2 = 999; // 模块2范围
+        let rangeMin1 = 2, rangeMax1 = 99;    
+        let rangeMin2 = 100, rangeMax2 = 999; 
 
         switch(type) {
-            /* ================= 原有模块 (逻辑保持不变) ================= */
             case 'dec_add_sub':
                 let a0 = getDec(10, 50, 2), b0 = getDec(1, 9, 2);
-                if(Math.random() > 0.5) return { text: `${a0} + ${b0}`, solveHTML: `= ${(a0 + b0).toFixed(2)}` };
-                return { text: `${a0} - ${b0}`, solveHTML: `= ${(a0 - b0).toFixed(2)}` };
+                if(Math.random() > 0.5) return { text: `${a0} + ${b0}`, solveHTML: `= ${fix(a0 + b0, 2)}` };
+                return { text: `${a0} - ${b0}`, solveHTML: `= ${fix(a0 - b0, 2)}` };
+
             case 'dec_mul':
-                return { text: `${getDec(1,5,2)} × ${getDec(1,4,1)}`, solveHTML: `= ${(getDec(1,5,2) * getDec(1,4,1)).toFixed(3)}` }; 
+                let m1 = getDec(1, 5, 2), m2 = getDec(1, 4, 1);
+                return { text: `${m1} × ${m2}`, solveHTML: `= ${fix(m1 * m2, 3)}` }; 
+
             case 'dec_div': 
-                res = getInt(2, 20) / 2; let bd = getDec(1,4,1); let ad = parseFloat((res * bd).toFixed(3));
-                return { text: `${ad} ÷ ${bd}`, solveHTML: `= ${res}` };
+                let q_res = getInt(2, 20) / 2; 
+                let d_div = getDec(1, 4, 1); 
+                let d_dividend = fix(q_res * d_div, 3);
+                return { text: `${d_dividend} ÷ ${d_div}`, solveHTML: `= ${q_res}` };
             
             case 'dec_mix_basic':
-                let db1 = getDec(30,50,2), db2 = getDec(10,20,2), db3 = getDec(5,10,2);
-                return { text: `${db1} - ${db2} + ${db3}`, solveHTML: `= ${(db1-db2+db3).toFixed(2)}` };
-            case 'dec_mix_full':
-                let df1 = getDec(2,5,1), df2 = getDec(1,3,1), df3 = getDec(4,8,1);
-                return { text: `${df1} × ${df2} + ${df3} ÷ 2`, solveHTML: `= ${(df1*df2 + df3/2).toFixed(2)}` };
-            case 'dec_mix_p1':
-                return { text: `2.5 × (1.2 + 0.8)`, solveHTML: `= 5` }; 
-            case 'dec_mix_p2':
-                return { text: `2 × [(5.5 - 0.5) ÷ 2.5]`, solveHTML: `= 4` }; 
+                let db1 = getDec(30, 50, 2), db2 = getDec(10, 20, 2), db3 = getDec(5, 10, 2);
+                return { text: `${db1} - ${db2} + ${db3}`, solveHTML: `= ${fix(db1 - db2 + db3, 2)}` };
 
-            /* ================= 模块 1: 小数 与 <100 整数 ================= */
+            case 'dec_mix_full':
+                let df1 = getDec(2, 5, 1), df2 = getDec(1, 3, 1), df3 = getDec(4, 8, 1);
+                let mix_res = fix(df1 * df2 + df3 / 2, 2);
+                return { text: `${df1} × ${df2} + ${df3} ÷ 2`, solveHTML: `= ${mix_res}` };
+
+            case 'dec_mix_p1':
+                let dp1 = getDec(1.1, 2.5, 1), dp2 = getDec(0.5, 4.5, 1), dp3 = getInt(2, 5);
+                let p1_sum = fix(dp1 + dp2, 1);
+                return { text: `(${dp1} + ${dp2}) × ${dp3}`, solveHTML: `= ${p1_sum} × ${dp3} = ${fix(p1_sum * dp3, 2)}` }; 
+
+            case 'dec_mix_p2':
+                return { text: `2.4 × [(5.5 - 0.5) ÷ 2.5]`, solveHTML: `= 2.4 × [5 ÷ 2.5] = 2.4 × 2 = 4.8` }; 
+
             case 'm1_add': return genAdd(rangeMin1, rangeMax1);
             case 'm1_sub': return genSub(rangeMin1, rangeMax1);
             case 'm1_mul': return genMul(rangeMin1, rangeMax1);
@@ -418,7 +404,6 @@
             case 'm1_mix_p1': return genMixP1(rangeMin1, rangeMax1);
             case 'm1_mix_p2': return genMixP2(rangeMin1, rangeMax1);
 
-            /* ================= 模块 2: 小数 与 3位数 (100-999) ================= */
             case 'm2_add': return genAdd(rangeMin2, rangeMax2);
             case 'm2_sub': return genSub(rangeMin2, rangeMax2);
             case 'm2_mul': return genMul(rangeMin2, rangeMax2);
@@ -427,180 +412,100 @@
             case 'm2_mix_p1': return genMixP1(rangeMin2, rangeMax2);
             case 'm2_mix_p2': return genMixP2(rangeMin2, rangeMax2);
 
-            /* ================= 新增 模块 3: 运算定律 (小数巧算) ================= */
-            
-            // 1. 加法交换/结合律 (凑整) A + B + C，其中 A+C = 整数
             case 'law_dec_add':
-                let targetSum = [10, 20, 100][getInt(0, 2)];
-                let a_float = getDec(1.1, targetSum - 1.1, 1);
-                let c_compl = fix(targetSum - a_float, 1);
-                let b_dist = getDec(1.5, 9.9, 1);
+                let tSum = [10, 20, 100][getInt(0, 2)];
+                let la = getDec(1.1, tSum - 1.1, 1);
+                let lc = fix(tSum - la, 1);
+                let lb = getDec(1.5, 9.9, 1);
                 return {
-                    text: `${a_float} + ${b_dist} + ${c_compl}`,
-                    solveHTML: `<span class="step-txt">① 凑整</span> (${a_float} + ${c_compl}) + ${b_dist} = ${targetSum} + ${b_dist}<br><span class="step-txt">② 结果</span> ${fix(targetSum + b_dist, 1)}`
+                    text: `${la} + ${lb} + ${lc}`,
+                    solveHTML: `<span class="step-txt">① 凑整</span> (${la} + ${lc}) + ${lb} = ${tSum} + ${lb}<br><span class="step-txt">② 结果</span> = ${fix(tSum + lb, 1)}`
                 };
 
-            // 2. 乘法结合律 (找朋友) 2.5 x 4, 1.25 x 8, 0.5 x 2
             case 'law_dec_mul':
-                let pairs = [
-                    [2.5, 4], [0.25, 4], [2.5, 0.4], [1.25, 8], [0.125, 8], [12.5, 8], [0.5, 2], [5, 0.2]
-                ];
-                let p = pairs[getInt(0, pairs.length - 1)];
-                let factor = getDec(1.1, 9.9, 1);
-                // 随机打乱顺序
-                if(Math.random() > 0.5) {
-                    return {
-                        text: `${p[0]} × ${factor} × ${p[1]}`,
-                        solveHTML: `<span class="step-txt">① 结合</span> (${p[0]} × ${p[1]}) × ${factor} = ${fix(p[0]*p[1], 3)} × ${factor}<br><span class="step-txt">② 结果</span> ${fix(p[0]*p[1]*factor, 3)}`
-                    };
-                } else {
-                    return {
-                        text: `${factor} × ${p[0]} × ${p[1]}`,
-                        solveHTML: `<span class="step-txt">① 结合</span> ${factor} × (${p[0]} × ${p[1]}) = ${factor} × ${fix(p[0]*p[1], 3)}<br><span class="step-txt">② 结果</span> ${fix(p[0]*p[1]*factor, 3)}`
-                    };
-                }
-
-            // 3. 乘法分配律 (提取公因数) K*A + K*B = K*(A+B)
-            case 'law_dist_merge':
-                let K = getDec(1.1, 9.9, 1);
-                let A_sum = getDec(1.1, 8.9, 1);
-                let target = 10;
-                let B_sum = fix(target - A_sum, 1); // 凑成10
-                if (Math.random() > 0.6) { target = 1; B_sum = fix(1 - A_sum, 1); if(B_sum <= 0) B_sum = fix(10 - A_sum, 1); }
-                
+                let pairs = [[2.5, 4], [0.25, 4], [1.25, 8], [0.125, 8], [0.5, 2]];
+                let pair = pairs[getInt(0, pairs.length - 1)];
+                let fVal = getDec(1.1, 9.9, 1);
+                let pRes = fix(pair[0] * pair[1], 3);
                 return {
-                    text: `${K} × ${A_sum} + ${K} × ${B_sum}`,
-                    solveHTML: `<span class="step-txt">① 提取</span> ${K} × (${A_sum} + ${B_sum})<br><span class="step-txt">② 计算</span> ${K} × ${(A_sum+B_sum)} = ${fix(K * (A_sum+B_sum), 2)}`
+                    text: `${pair[0]} × ${fVal} × ${pair[1]}`,
+                    solveHTML: `<span class="step-txt">① 结合</span> (${pair[0]} × ${pair[1]}) × ${fVal} = ${pRes} × ${fVal}<br><span class="step-txt">② 结果</span> = ${fix(pRes * fVal, 3)}`
                 };
 
-            // 4. 乘法分配律 (拆分凑整) 10.1 x A -> (10 + 0.1) x A
-            case 'law_dist_split':
-                let base = [10.1, 10.2, 9.9, 9.8, 100.1, 99.9][getInt(0, 5)];
-                let mult = getInt(2, 9);
-                
-                let bigPart = Math.round(base); 
-                let smallPart = fix(base - bigPart, 1);
-                let sign = smallPart > 0 ? '+' : '-';
-                smallPart = Math.abs(smallPart);
-
+            case 'law_dist_merge':
+                let kVal = getDec(1.1, 9.9, 1);
+                let aSum = getDec(1.1, 8.9, 1);
+                let bSum = fix(10 - aSum, 1); 
                 return {
-                    text: `${base} × ${mult}`,
-                    solveHTML: `<span class="step-txt">① 拆分</span> (${bigPart} ${sign} ${smallPart}) × ${mult}<br><span class="step-txt">② 分配</span> ${bigPart}×${mult} ${sign} ${smallPart}×${mult}<br><span class="step-txt">③ 结果</span> ${fix(base*mult, 2)}`
+                    text: `${kVal} × ${aSum} + ${kVal} × ${bSum}`,
+                    solveHTML: `<span class="step-txt">① 提取</span> ${kVal} × (${aSum} + ${bSum}) = ${kVal} × 10<br><span class="step-txt">② 结果</span> = ${fix(kVal * 10, 2)}`
+                };
+
+            case 'law_dist_split':
+                let bVal = [10.1, 10.2, 9.9, 9.8][getInt(0, 3)];
+                let mVal = getInt(2, 9);
+                let big = Math.round(bVal);
+                let small = fix(bVal - big, 1);
+                return {
+                    text: `${bVal} × ${mVal}`,
+                    solveHTML: `<span class="step-txt">① 拆分</span> (${big} ${small > 0 ? '+' : '-'} ${Math.abs(small)}) × ${mVal}<br><span class="step-txt">② 结果</span> = ${fix(bVal * mVal, 2)}`
                 };
         }
         return { text: "Error", solveHTML: "Error" };
     }
 
-    /* ================= 通用生成逻辑函数 ================= */
-
-    // 1. 加法 (Decimal + Int 或 Int + Decimal)
     function genAdd(min, max) {
-        let i = getInt(min, max);
-        let d = getDec(1, 99, 2);
-        if (Math.random() > 0.5) {
-            return { text: `${d} + ${i}`, solveHTML: `Result: ${fix(d+i)}` };
-        } else {
-            return { text: `${i} + ${d}`, solveHTML: `Result: ${fix(i+d)}` };
-        }
+        let i = getInt(min, max), d = getDec(1, 99, 2);
+        return { text: `${d} + ${i}`, solveHTML: `= ${fix(d + i, 2)}` };
     }
 
-    // 2. 减法 (确保结果非负)
     function genSub(min, max) {
-        let i = getInt(min, max);
-        let d = getDec(1, max - 1, 2); 
-        
-        if (i > d) {
-            return { text: `${i} - ${d}`, solveHTML: `Result: ${fix(i-d)}` };
-        } else {
-            d = i + getDec(1, 20, 2);
-            return { text: `${d} - ${i}`, solveHTML: `Result: ${fix(d-i)}` };
-        }
+        let i = getInt(min, max), d = getDec(1, max - 1, 2); 
+        let res = i > d ? i - d : d - i;
+        let text = i > d ? `${i} - ${d}` : `${d} - ${i}`;
+        return { text: text, solveHTML: `= ${fix(res, 2)}` };
     }
 
-    // 3. 乘法
     function genMul(min, max) {
-        let i = getInt(min, max);
-        let d = getDec(0.1, 9.9, 2); 
-        if (Math.random() > 0.5) return { text: `${d} × ${i}`, solveHTML: `Result: ${fix(d*i, 3)}` };
-        return { text: `${i} × ${d}`, solveHTML: `Result: ${fix(i*d, 3)}` };
+        let i = getInt(min, max), d = getDec(0.1, 9.9, 2); 
+        return { text: `${i} × ${d}`, solveHTML: `= ${fix(i * d, 3)}` };
     }
 
-    // 4. 除法 (整除保证：逆向生成)
     function genDiv(min, max) {
-        let divisor = getInt(2, 50); 
-        if (min > 99) divisor = getInt(2, 25); 
-
+        let divisor = getInt(2, 20);
         let quotient = getDec(min/10, max/10, 2); 
         let dividend = fix(quotient * divisor, 3);
-        
-        return { text: `${dividend} ÷ ${divisor}`, solveHTML: `Result: ${quotient}` };
+        return { text: `${dividend} ÷ ${divisor}`, solveHTML: `= ${quotient}` };
     }
 
-    // 5. 混合运算 (不带括号) 
     function genMix(min, max) {
-        let i = getInt(min, max);
-        let d1 = getDec(1, 10, 1);
-        let d2 = getDec(1, 5, 1);
-        
-        if (Math.random() > 0.5) {
-            // 类型：D + I × d
-            let s1 = fix(i * d2);
-            return { 
-                text: `${d1} + ${i} × ${d2}`, 
-                solveHTML: `<span class="step-txt">①</span> ${i}×${d2}=${s1} <br> <span class="step-txt">②</span> ${d1}+${s1}=${fix(d1+s1)}`
-            };
-        } else {
-            // 类型：I - D ÷ 2
-            let divisor = 2; 
-            let dividend = getDec(2, 20, 1) * 2; 
-            let startInt = getInt(Math.ceil(dividend/2) + 5, max);
-            
-            let s1 = fix(dividend / divisor);
-            return {
-                text: `${startInt} - ${dividend} ÷ ${divisor}`,
-                solveHTML: `<span class="step-txt">①</span> ${dividend}÷${divisor}=${s1} <br> <span class="step-txt">②</span> ${startInt}-${s1}=${fix(startInt-s1)}`
-            };
-        }
-    }
-
-    // 6. 含小括号 (A + B) × C
-    function genMixP1(min, max) {
-        let i = getInt(min, max);
-        let d1 = getDec(1, 9, 1);
-        let d2 = getInt(2, 9); 
-        
-        let sum = fix(i + d1);
-        return {
-            text: `(${i} + ${d1}) × ${d2}`,
-            solveHTML: `<span class="step-txt">① ( )</span> ${i}+${d1}=${sum} <br> <span class="step-txt">② ×</span> ${sum}×${d2}=${fix(sum*d2)}`
+        let i = getInt(min, max), d1 = getDec(1, 10, 1), d2 = getDec(1, 5, 1);
+        let subRes = fix(i * d2, 2);
+        return { 
+            text: `${d1} + ${i} × ${d2}`, 
+            solveHTML: `<span class="step-txt">①</span> ${i} × ${d2} = ${subRes} <br> <span class="step-txt">②</span> ${d1} + ${subRes} = ${fix(d1 + subRes, 2)}`
         };
     }
 
-    // 7. 含中括号 D × [(A - B) ÷ C]
-    function genMixP2(min, max) {
-        let C = [2, 4, 5][Math.floor(Math.random()*3)];
-        let Q = getDec(1, 5, 1); 
-        let diff = fix(C * Q);   
-        
-        let B = getDec(1, 10, 1); 
-        let A = fix(diff + B);    
-        let D = getInt(2, 10);
-        
-        if (A < min) {
-            let offset = Math.ceil((min - A));
-            A += offset;
-            D = getInt(min, max);
-        }
+    function genMixP1(min, max) {
+        let i = getInt(min, max), d1 = getDec(1, 9, 1), d2 = getInt(2, 9); 
+        let sum = fix(i + d1, 1);
+        return {
+            text: `(${i} + ${d1}) × ${d2}`,
+            solveHTML: `<span class="step-txt">①</span> ${i} + ${d1} = ${sum} <br> <span class="step-txt">②</span> ${sum} × ${d2} = ${fix(sum * d2, 2)}`
+        };
+    }
 
-        let s1 = fix(A - B);
-        let s2 = fix(s1 / C);
-        
+    function genMixP2(min, max) {
+        let C = [2, 4, 5][getInt(0, 2)];
+        let Q = getDec(1, 5, 1); 
+        let diff = fix(C * Q, 1);   
+        let B = getDec(1, 10, 1), A = fix(diff + B, 1);    
+        let D = getInt(2, 10);
+        let s1 = fix(A - B, 1);
         return {
             text: `${D} × [(${A} - ${B}) ÷ ${C}]`,
-            solveHTML: `
-                <span class="step-txt">① ( )</span> ${A}-${B}=${s1} <br> 
-                <span class="step-txt">② [ ]</span> ${s1}÷${C}=${s2} <br> 
-                <span class="step-txt">③ ×</span> ${D}×${s2}=${fix(D*s2)}`
+            solveHTML: `<span class="step-txt">①</span> ${A} - ${B} = ${s1} <br> <span class="step-txt">②</span> ${s1} ÷ ${C} = ${Q} <br> <span class="step-txt">③</span> ${D} × ${Q} = ${fix(D * Q, 2)}`
         };
     }
 
