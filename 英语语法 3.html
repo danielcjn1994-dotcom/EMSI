@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 英语语法 3 完整版</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 38px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 1000px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        /* --- 语法内容区 --- */
+        .main-content {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 折叠组件细节 */
+        details {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        summary {
+            padding: 20px 25px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a4a8e;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            outline: none;
+            transition: background 0.2s;
+        }
+
+        summary:hover {
+            background-color: #f8fafc;
+        }
+
+        /* 三角形箭头 */
+        summary::before {
+            content: '▶';
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 16px;
+            color: #f1c40f;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .details-inner {
+            padding: 0 25px 30px 25px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        /* 知识点标题 */
+        h3 {
+            color: #2d3748;
+            font-size: 20px;
+            margin: 30px 0 15px 0;
+            border-bottom: 2px solid #f1c40f;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        /* 文本框样式 */
+        .point-box {
+            background-color: #f0f7ff;
+            border-left: 5px solid #1a4a8e;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* 表格样式 */
+        .grammar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 30px 0;
+            background: white;
+        }
+
+        .grammar-table th, .grammar-table td {
+            border: 1px solid #edf2f7;
+            padding: 15px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .grammar-table th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .txt-en { color: #1a4a8e; font-weight: 700; font-size: 16px; }
+        .txt-es { color: #718096; font-style: italic; }
+        .txt-zh { color: #2d3748; }
+        .txt-note { color: #d53f8c; font-size: 14px; font-weight: 500; }
+
+        /* --- 页脚 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 15px;
+        }
+
+        /* 适配移动端 */
+        @media (max-width: 768px) {
+            .grammar-table th { display: none; }
+            .grammar-table td { display: block; border: none; padding: 5px 15px; }
+            .grammar-table tr { display: block; padding: 15px 0; border-bottom: 2px solid #f1f5f9; }
+            .header h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 英语语法手册 3</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+
+        <details>
+            <summary>File 1: Word Order & Present Tenses (语序与现在时)</summary>
+            <div class="details-inner">
+                <h3>1. Word order in questions (特殊疑问句语序)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 牢记 QUASI (Question word + Auxiliary + Subject + Infinitive) 或 ASIO (Auxiliary + Subject + Infinitive + Object).
+                </div>
+                <table class="grammar-table">
+                    <tr><th>英语原文</th><th>西班牙语对比</th><th>中文意思与备注</th></tr>
+                    <tr>
+                        <td class="txt-en">Where were you born?</td>
+                        <td class="txt-es">¿Dónde naciste?</td>
+                        <td class="txt-zh">你是在哪里出生的？ <span class="txt-note">(Be 动词作助动词)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">What are you thinking about?</td>
+                        <td class="txt-es">¿En qué estás pensando?</td>
+                        <td class="txt-zh">你在想什么？ <span class="txt-note">(介词后置是英语特色，西语介词在前)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">How often do you go to the gym?</td>
+                        <td class="txt-es">¿Con qué frecuencia vas al gimnasio?</td>
+                        <td class="txt-zh">你多久去一次健身房？ (常规)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Who did you go with?</td>
+                        <td class="txt-es">¿Con quién fuiste?</td>
+                        <td class="txt-zh">你是和谁去的？ <span class="txt-note">(注意：Who...with, 西语 Con quién)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Which shirt do you prefer?</td>
+                        <td class="txt-es">¿Qué camisa prefieres?</td>
+                        <td class="txt-zh">你更喜欢哪件衬衫？ (Which + 名词)</td>
+                    </tr>
+                </table>
+
+                <h3>2. Present Simple vs Continuous (两种现在时的对比)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 习惯/真理 (Simple) vs 此时动作/近期安排 (Continuous).
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">I usually cook dinner.</td>
+                        <td class="txt-es">Normalmente hago la cena.</td>
+                        <td class="txt-zh">我通常做晚饭。 (习惯)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">But tonight I am eating out.</td>
+                        <td class="txt-es">Pero esta noche ceno fuera.</td>
+                        <td class="txt-zh">但今晚我在外面吃。 (临时安排)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">He doesn't work on Sundays.</td>
+                        <td class="txt-es">Él no trabaja los domingos.</td>
+                        <td class="txt-zh">他周日不工作。 (事实)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">She is looking for a job.</td>
+                        <td class="txt-es">Ella está buscando trabajo.</td>
+                        <td class="txt-zh">她正在找工作。 (现阶段的状态)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">My flight leaves at 9:00.</td>
+                        <td class="txt-es">Mi vuelo sale a las 9:00.</td>
+                        <td class="txt-zh">我的航班9点起飞。 (时刻表用一般现在时)</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 2: Past Tenses (过去时)</summary>
+            <div class="details-inner">
+                <h3>1. Past Simple vs Past Continuous (过去时 vs 过去进行时)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 过去发生的一瞬间 (Simple) vs 过去正在持续的背景动作 (Continuous).
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">It was raining when I left.</td>
+                        <td class="txt-es">Estaba lloviendo cuando salí.</td>
+                        <td class="txt-zh">我离开时正在下雨。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I was watching TV when the phone rang.</td>
+                        <td class="txt-es">Estaba viendo la tele cuando sonó el teléfono.</td>
+                        <td class="txt-zh">电话响时我正在看电视。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">What were you doing at 8:00?</td>
+                        <td class="txt-es">¿Qué estabas haciendo a las 8:00?</td>
+                        <td class="txt-zh">8点钟你在做什么？</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I didn't see you.</td>
+                        <td class="txt-es">No te vi.</td>
+                        <td class="txt-zh">我没看见你。 (Simple)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">He was driving too fast.</td>
+                        <td class="txt-es">Él conducía (estaba conduciendo) demasiado rápido.</td>
+                        <td class="txt-zh">他当时开得太快了。</td>
+                    </tr>
+                </table>
+
+                <h3>2. Time sequencers (时间连接词)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 用来串联故事逻辑。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">Although it was cold, we went out.</td>
+                        <td class="txt-es">Aunque hacía frío, salimos.</td>
+                        <td class="txt-zh">虽然很冷，我们还是出去了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I was tired, so I went to bed.</td>
+                        <td class="txt-es">Estaba cansado, así que me fui a la cama.</td>
+                        <td class="txt-zh">我累了，所以我去睡了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Because it was raining, we stayed home.</td>
+                        <td class="txt-es">Como estaba lloviendo, nos quedamos en casa.</td>
+                        <td class="txt-zh">因为在下雨，我们留在了家里。 (Because 放句首)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Suddenly, the lights went out.</td>
+                        <td class="txt-es">De repente, se fue la luz.</td>
+                        <td class="txt-zh">突然灯灭了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">But I didn't buy it.</td>
+                        <td class="txt-es">Pero no lo compré.</td>
+                        <td class="txt-zh">但是我没买。</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 3: Future Forms (将来时态)</summary>
+            <div class="details-inner">
+                <h3>1. Be going to vs Present Continuous (计划 vs 安排)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> Going to 是意图/预测；Present Continuous 是已确定的安排（通常有具体时间/地点）。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">I am going to study medicine.</td>
+                        <td class="txt-es">Voy a estudiar medicina.</td>
+                        <td class="txt-zh">我打算学医。 (人生计划)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Look at the clouds! It is going to rain.</td>
+                        <td class="txt-es">¡Mira las nubes! Va a llover.</td>
+                        <td class="txt-zh">要下雨了。 (基于证据的预测)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I am meeting Juan tonight.</td>
+                        <td class="txt-es">He quedado con Juan esta noche.</td>
+                        <td class="txt-zh">我今晚约了 Juan。 (已确定的安排)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">We are flying to Paris tomorrow.</td>
+                        <td class="txt-es">Volamos a París mañana.</td>
+                        <td class="txt-zh">我们明天飞巴黎。 (有机票了)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Are you going to eat that?</td>
+                        <td class="txt-es">¿Te vas a comer eso?</td>
+                        <td class="txt-zh">你打算吃那个吗？</td>
+                    </tr>
+                </table>
+
+                <h3>2. Defining relative clauses (限制性定语从句)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> Person -> Who/That; Thing -> Which/That; Place -> Where.
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">He is the man who lives next door.</td>
+                        <td class="txt-es">Él es el hombre que vive al lado.</td>
+                        <td class="txt-zh">他是住在隔壁的那个人。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">This is the book which I bought.</td>
+                        <td class="txt-es">Este es el libro que compré.</td>
+                        <td class="txt-zh">这就是我买的那本书。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">That's the shop where I work.</td>
+                        <td class="txt-es">Esa es la tienda donde trabajo.</td>
+                        <td class="txt-zh">那是我工作的商店。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">She is the girl that I like.</td>
+                        <td class="txt-es">Ella es the girl that I like.</td>
+                        <td class="txt-zh">她是我喜欢的那个女孩。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">A dictionary is a book which gives definitions.</td>
+                        <td class="txt-es">Un diccionario es un libro que da definiciones.</td>
+                        <td class="txt-zh">字典是一本给出定义的书。 (定义)</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 4: Present Perfect I (现在完成时·第一部分)</summary>
+            <div class="details-inner">
+                <h3>1. Yet / Already / Just (配合完成时)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> Yet 用于否定/疑问句尾；Already 用于肯定句中；Just 表示“刚刚”。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">I haven't finished yet.</td>
+                        <td class="txt-es">No he terminado todavía.</td>
+                        <td class="txt-zh">我还没做完。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Have you done it yet?</td>
+                        <td class="txt-es">¿Ya lo has hecho?</td>
+                        <td class="txt-zh">你已经做完了吗？</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I have already seen this film.</td>
+                        <td class="txt-es">Ya he visto esta película.</td>
+                        <td class="txt-zh">我已经看过这部电影了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">He has just arrived.</td>
+                        <td class="txt-es">Él acaba de llegar.</td>
+                        <td class="txt-zh">他刚刚到。 <span class="txt-note">(注意西语用 acabar de)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Don't tell him, he already knows.</td>
+                        <td class="txt-es">No se lo digas, él ya lo sabe.</td>
+                        <td class="txt-zh">别告诉他，他已经知道了。</td>
+                    </tr>
+                </table>
+
+                <h3>2. Something / Anything / Nothing (不定代词)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> Some (肯定), Any (否定/疑问), No (动词肯定+No=否定含义)。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">I want something to eat.</td>
+                        <td class="txt-es">Quiero algo de comer.</td>
+                        <td class="txt-zh">我想吃点东西。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I didn't buy anything.</td>
+                        <td class="txt-es">No compré nada.</td>
+                        <td class="txt-zh">我什么都没买。 <span class="txt-note">(注意双重否定：didn't + any)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">There is nothing in the fridge.</td>
+                        <td class="txt-es">No hay nada en la nevera.</td>
+                        <td class="txt-zh">冰箱里什么都没有。 (There is + nothing)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Did you meet anybody?</td>
+                        <td class="txt-es">¿Conociste a alguien?</td>
+                        <td class="txt-zh">你见到什么人了吗？</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Nobody knows.</td>
+                        <td class="txt-es">Nadie lo sabe.</td>
+                        <td class="txt-zh">没人知道。 (作主语)</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 5: Comparison & Quantifiers (比较与数量)</summary>
+            <div class="details-inner">
+                <h3>1. Comparatives & Superlatives (比较与最高)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 越...越...；最...的（常搭配 Ever）。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">It's more dangerous than I thought.</td>
+                        <td class="txt-es">Es más peligroso de lo que pensaba.</td>
+                        <td class="txt-zh">这比我想象的危险。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">He is less tall than me.</td>
+                        <td class="txt-es">Él es menos alto que yo.</td>
+                        <td class="txt-zh">他没我高。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">It's the most beautiful city I have ever seen.</td>
+                        <td class="txt-es">Es la ciudad más bonita que jamás he visto.</td>
+                        <td class="txt-zh">这是我见过的最美的城市。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">She drives faster than you.</td>
+                        <td class="txt-es">Ella conduce más rápido que tú.</td>
+                        <td class="txt-zh">她开得比你快。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">It's the furthest point.</td>
+                        <td class="txt-es">Es el punto más lejano.</td>
+                        <td class="txt-zh">这是最远的点。 (Far -> Further/Farthest)</td>
+                    </tr>
+                </table>
+
+                <h3>2. Quantifiers: Too / Not enough (太/不够)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> Too + Adj; Not + Adj + Enough; Enough + Noun.
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">It is too cold.</td>
+                        <td class="txt-es">Hace demasiado frío.</td>
+                        <td class="txt-zh">太冷了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">He is not old enough.</td>
+                        <td class="txt-es">No es lo suficientemente mayor.</td>
+                        <td class="txt-zh">他不够大。 (Adj + enough)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I don't have enough money.</td>
+                        <td class="txt-es">No tengo suficiente dinero.</td>
+                        <td class="txt-zh">我没有足够的钱。 (Enough + Noun)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">You work too hard.</td>
+                        <td class="txt-es">Trabajas demasiado.</td>
+                        <td class="txt-zh">你工作太拼了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">There are too many cars.</td>
+                        <td class="txt-es">Hay demasiados coches.</td>
+                        <td class="txt-zh">车太多了。 (Too many + 可数)</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 6: Will & Review (Will 与复习)</summary>
+            <div class="details-inner">
+                <h3>Will / Won't (预测/承诺/决定)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 瞬间决定或对未来的主观猜测，不用 Going to。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">I think it will rain.</td>
+                        <td class="txt-es">Creo que lloverá.</td>
+                        <td class="txt-zh">我觉得会下雨。 (预测)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I will help you.</td>
+                        <td class="txt-es">Te ayudaré.</td>
+                        <td class="txt-zh">我来帮你。 (瞬间决定/承诺)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I won't tell anyone.</td>
+                        <td class="txt-es">No se lo diré a nadie.</td>
+                        <td class="txt-zh">我不会告诉任何人的。 (承诺)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Will you marry me?</td>
+                        <td class="txt-es">¿Te casarás conmigo?</td>
+                        <td class="txt-zh">你愿意嫁给我吗？ (提议)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">That 'll be fun.</td>
+                        <td class="txt-es">Eso será divertido.</td>
+                        <td class="txt-zh">那会很有趣的。</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 7: Modals & Verbs (情态动词与动词模式)</summary>
+            <div class="details-inner">
+                <h3>1. Infinitive (to do) vs Gerund (doing)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 某些动词后必须跟 to (want/need/promise)，某些跟 ing (like/enjoy/finish)。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">I need to buy bread.</td>
+                        <td class="txt-es">Necesito comprar pan.</td>
+                        <td class="txt-zh">我需要买面包。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">She promised to call.</td>
+                        <td class="txt-es">Ella prometió llamar.</td>
+                        <td class="txt-zh">她答应会打电话。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I enjoy reading.</td>
+                        <td class="txt-es">Disfruto leyendo.</td>
+                        <td class="txt-zh">我享受阅读。 (Enjoy + ing)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Have you finished cooking?</td>
+                        <td class="txt-es">¿Has terminado de cocinar?</td>
+                        <td class="txt-zh">你做完饭了吗？ (Finish + ing)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Smoking is bad for you.</td>
+                        <td class="txt-es">Fumar es malo para ti.</td>
+                        <td class="txt-zh">吸烟对你不好。 (动名词作主语)</td>
+                    </tr>
+                </table>
+
+                <h3>2. Must / Have to / Should (义务与建议)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> Must (主观必须/禁止), Have to (客观规定), Should (建议).
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">You must stop.</td>
+                        <td class="txt-es">Debes parar.</td>
+                        <td class="txt-zh">你必须停下。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">You don't have to pay.</td>
+                        <td class="txt-es">No tienes que pagar.</td>
+                        <td class="txt-zh">你不必付款。 (非必须)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">You mustn't smoke here.</td>
+                        <td class="txt-es">No debes fumar aquí.</td>
+                        <td class="txt-zh">这里禁止吸烟。 <span class="txt-note">(禁止，注意区别 don't have to)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">You should see a doctor.</td>
+                        <td class="txt-es">Deberías ir al médico.</td>
+                        <td class="txt-zh">你应该去看医生。 (建议)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Do I have to go?</td>
+                        <td class="txt-es">¿Tengo que ir?</td>
+                        <td class="txt-zh">我非去不可吗？</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 8: Conditionals (条件句)</summary>
+            <div class="details-inner">
+                <h3>1. First Conditional (真实条件句)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> If + Present, Will + Verb. 可能会发生。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">If it rains, we won't go.</td>
+                        <td class="txt-es">Si llueve, no iremos.</td>
+                        <td class="txt-zh">如果下雨，我们就不去了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">If you study, you will pass.</td>
+                        <td class="txt-es">Si estudias, aprobarás.</td>
+                        <td class="txt-zh">如果你学习，你就会及格。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I will tell him if I see him.</td>
+                        <td class="txt-es">Se lo diré si le veo.</td>
+                        <td class="txt-zh">如果我见到他，我会告诉他。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">What will you do if you miss the bus?</td>
+                        <td class="txt-es">¿Qué harás si pierdes el autobús?</td>
+                        <td class="txt-zh">如果错过了公交你怎么办？</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">If she doesn't come, I will leave.</td>
+                        <td class="txt-es">Si ella no viene, me iré.</td>
+                        <td class="txt-zh">如果她不来，我就走了。</td>
+                    </tr>
+                </table>
+
+                <h3>2. Second Conditional (虚拟语气)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> If + Past, Would + Verb. 假设现在不可能发生的事。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">If I had money, I would buy a Ferrari.</td>
+                        <td class="txt-es">Si tuviera dinero, compraría un Ferrari.</td>
+                        <td class="txt-zh">如果我有钱，我就买法拉利。 (但我没钱)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">If I were you, I wouldn't do it.</td>
+                        <td class="txt-es">Si fuera tú, no lo haría.</td>
+                        <td class="txt-zh">如果我是你，我不会这么做。 <span class="txt-note">(I 后面用 were 不用 was)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Where would you live if you could choose?</td>
+                        <td class="txt-es">¿Dónde vivirías si pudieras elegir?</td>
+                        <td class="txt-zh">如果能选，你会住哪？</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">It would be nice if he were here.</td>
+                        <td class="txt-es">Sería genial si él estuviera aquí.</td>
+                        <td class="txt-zh">如果他在这就好了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">She wouldn't be happy if she knew.</td>
+                        <td class="txt-es">Ella no estaría contenta si lo supiera.</td>
+                        <td class="txt-zh">如果她知道了不会开心的。</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 9: Passive & Present Perfect II (被动与完成时)</summary>
+            <div class="details-inner">
+                <h3>Present Perfect: For / Since (持续时间)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> For + 时间段 (Duration); Since + 时间点 (Start point).
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">I have lived here for 10 years.</td>
+                        <td class="txt-es">He vivido aquí durante 10 años.</td>
+                        <td class="txt-zh">我在这住了10年。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">She has known him since 2010.</td>
+                        <td class="txt-es">Ella le conoce desde 2010.</td>
+                        <td class="txt-zh">她2010年就认识他了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">We haven't eaten since breakfast.</td>
+                        <td class="txt-es">No hemos comido desde el desayuno.</td>
+                        <td class="txt-zh">我们早饭后就没吃东西。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">How long have you been married?</td>
+                        <td class="txt-es">¿Cuánto tiempo llevas casado?</td>
+                        <td class="txt-zh">你结婚多久了？</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I have worked here for a long time.</td>
+                        <td class="txt-es">He trabajado aquí mucho tiempo.</td>
+                        <td class="txt-zh">我在这工作很久了。</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 10: Passive Voice (被动语态)</summary>
+            <div class="details-inner">
+                <h3>1. Passive Voice (被动)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> Be + Past Participle (by...). 强调动作接受者。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">Use is made in China.</td>
+                        <td class="txt-es">Está hecho en China.</td>
+                        <td class="txt-zh">中国制造。 (Present)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">The phone was invented by Bell.</td>
+                        <td class="txt-es">El teléfono fue inventado por Bell.</td>
+                        <td class="txt-zh">电话是贝尔发明的。 (Past)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">This car has been sold.</td>
+                        <td class="txt-es">Este coche ha sido vendido.</td>
+                        <td class="txt-zh">这辆车已经卖了。 (Perfect)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Spanish is spoken here.</td>
+                        <td class="txt-es">Aquí se habla español.</td>
+                        <td class="txt-zh">这里讲西班牙语。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">The letters weren't sent.</td>
+                        <td class="txt-es">Las cartas no fueron enviadas.</td>
+                        <td class="txt-zh">信没寄出去。</td>
+                    </tr>
+                </table>
+
+                <h3>2. Used to (过去常常)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 过去做现在不做了。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">I used to smoke, but I stopped.</td>
+                        <td class="txt-es">Solía fumar, pero lo dejé.</td>
+                        <td class="txt-zh">我以前抽烟，但现在戒了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">She didn't use to like cheese.</td>
+                        <td class="txt-es">A ella no solía gustarle el queso.</td>
+                        <td class="txt-zh">她以前不喜欢奶酪。 <span class="txt-note">(注意 didn't 后用 use)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Did you use to wear glasses?</td>
+                        <td class="txt-es">¿Solías llevar gafas?</td>
+                        <td class="txt-zh">你以前戴眼镜吗？</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">We used to live in London.</td>
+                        <td class="txt-es">Vivíamos (solíamos vivir) en Londres.</td>
+                        <td class="txt-zh">我们以前住在伦敦。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">He used to have long hair.</td>
+                        <td class="txt-es">Él tenía el pelo largo.</td>
+                        <td class="txt-zh">他以前留长发。</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 11: Movement & Phrasal Verbs (运动与短语动词)</summary>
+            <div class="details-inner">
+                <h3>1. Phrasal Verbs (短语动词语序)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 代词（it/them）必须放在中间。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">Put on your coat.</td>
+                        <td class="txt-es">Ponte el abrigo.</td>
+                        <td class="txt-zh">穿上外套。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Put it on.</td>
+                        <td class="txt-es">Póntelo.</td>
+                        <td class="txt-zh">把它穿上。 <span class="txt-note">(不能说 Put on it)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Turn off the TV.</td>
+                        <td class="txt-es">Apaga la tele.</td>
+                        <td class="txt-zh">关电视。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Turn it off.</td>
+                        <td class="txt-es">Apágala.</td>
+                        <td class="txt-zh">把它关了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I look after my sister.</td>
+                        <td class="txt-es">Cuido de mi hermana.</td>
+                        <td class="txt-zh">我照顾我的妹妹。 <span class="txt-note">(Look after 是不可拆分的，但代词在后) -> I look after her.</span></td>
+                    </tr>
+                </table>
+
+                <h3>2. So / Neither (附和)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> 肯定用 So + 助动词 + I；否定用 Neither + 助动词 + I。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">"I like pop music." "So do I."</td>
+                        <td class="txt-es">"Me gusta el pop." "A mí también."</td>
+                        <td class="txt-zh">“我喜欢流行乐。” “我也是。”</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">"I am tired." "So am I."</td>
+                        <td class="txt-es">"Estoy cansado." "Yo también."</td>
+                        <td class="txt-zh">“我累了。” “我也是。” (Be动词)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">"I don't like meat." "Neither do I."</td>
+                        <td class="txt-es">"No me gusta la carne." "A mí tampoco."</td>
+                        <td class="txt-zh">“我不吃肉。” “我也不吃。”</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">"I can't swim." "Neither can I."</td>
+                        <td class="txt-es">"No sé nadar." "Yo tampoco."</td>
+                        <td class="txt-zh">“我不会游泳。” “我也不会。” (情态动词)</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">"I went to Paris." "So did I."</td>
+                        <td class="txt-es">"Fui a París." "Yo también."</td>
+                        <td class="txt-zh">“我去过巴黎。” “我也是。” (过去时用 Did)</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 12: Past Perfect (过去完成时)</summary>
+            <div class="details-inner">
+                <h3>Past Perfect (过去的过去)</h3>
+                <div class="point-box">
+                    <strong>核心点：</strong> Had + Past Participle. 两个过去动作，先发生的那个用过去完成时。
+                </div>
+                <table class="grammar-table">
+                    <tr>
+                        <td class="txt-en">When I arrived, the train had left.</td>
+                        <td class="txt-es">Cuando llegué, el tren se había ido.</td>
+                        <td class="txt-zh">我到的时候，火车已经开了。 <span class="txt-note">(火车先开，我后到)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">She was tired because she hadn't slept.</td>
+                        <td class="txt-es">Estaba cansada porque no había dormido.</td>
+                        <td class="txt-zh">她很累因为没睡觉。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">I realized I had lost my keys.</td>
+                        <td class="txt-es">Me di cuenta de que había perdido mis llaves.</td>
+                        <td class="txt-zh">我意识到我把钥匙丢了。</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">Had you seen it before?</td>
+                        <td class="txt-es">¿Lo habías visto antes?</td>
+                        <td class="txt-zh">你之前见过吗？</td>
+                    </tr>
+                    <tr>
+                        <td class="txt-en">He failed because he hadn't studied.</td>
+                        <td class="txt-es">Suspendió porque no había estudiado.</td>
+                        <td class="txt-zh">他挂科了因为之前没学。</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>

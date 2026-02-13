@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比较级最高级知识点总结 - EMSI</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 1000px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 25px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        /* --- 内容区域 --- */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        /* --- 知识点排版样式 --- */
+        details {
+            margin-bottom: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        summary {
+            padding: 15px 20px;
+            background-color: #f8fafc;
+            color: #1a4a8e;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        summary:hover {
+            background-color: #eff6ff;
+        }
+
+        summary::before {
+            content: "▶";
+            display: inline-block;
+            margin-right: 12px;
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .details-content {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            line-height: 1.6;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 15px;
+        }
+
+        table th, table td {
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f1f5f9;
+            color: #1a4a8e;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .highlight-box {
+            background-color: #fff9e6;
+            border-left: 5px solid #f1c40f;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .lang-en { font-weight: bold; color: #1e40af; }
+        .lang-es { font-style: italic; color: #b91c1c; }
+        .lang-zh { color: #374151; }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 14px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 24px; }
+            .card { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">比较级最高级知识点总结 (Gramática: Comparativos y Superlativos)</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回主页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <details>
+                <summary>1) 基本概念：原级 / 比较级 / 最高级</summary>
+                <div class="details-content">
+                    <p>La mayoría de los adjetivos y algunos adverbios tienen tres grados: grado positivo (原级), comparativo (比较级) y superlativo (最高级), para expresar diferencias de nivel o grado.</p>
+                    <p>大多数形容词（以及一部分副词）有三个等级：原级、比较级、最高级，用来表示程度差异或等级差别。</p>
+                    <p>El comparativo y el superlativo pueden formarse de manera regular o irregular.</p>
+                    <p>比较级和最高级既有规则变化，也有不规则变化。</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>2) 规则变化 (Formación regular)</summary>
+                <div class="details-content">
+                    
+                    <p><strong>(1) 单音节词：直接加 -er / -est</strong><br>
+                    Para adjetivos (y algunos adverbios) de una sílaba, se añade -er (comparativo) y -est (superlativo).<br>
+                    单音节形容词（及部分副词）一般直接加 -er / -est。</p>
+                    <table>
+                        <tr><th>原级 (Positivo)</th><th>比较级 (-er)</th><th>最高级 (-est)</th></tr>
+                        <tr><td>tall (高的)</td><td>taller (更高)</td><td>tallest (最高)</td></tr>
+                        <tr><td>great (巨大的/很棒的)</td><td>greater (更大)</td><td>greatest (最大)</td></tr>
+                    </table>
+
+                    <p><strong>(2) 以不发音 e 结尾：只加 -r / -st</strong><br>
+                    Si termina en -e muda, solo se añade -r y -st。<br>
+                    以不发音 e 结尾的单音节词，只加 -r / -st。</p>
+                    <table>
+                        <tr><td>nice (好的)</td><td>nicer (更好)</td><td>nicest (最好)</td></tr>
+                        <tr><td>large (大的)</td><td>larger (更大)</td><td>largest (最大)</td></tr>
+                        <tr><td>able (有能力的)</td><td>abler (更有能力)</td><td>ablest (最有能力)</td></tr>
+                    </table>
+
+                    <p><strong>(3) 闭音节单音节：双写末辅音 + -er / -est</strong><br>
+                    En palabras de una sílaba con patrón tipo CVC (consonante–vocal–consonante), se duplica la consonante final y se añade -er / -est.<br>
+                    闭音节单音节词（常见结构 CVC），要双写末尾辅音字母再加 -er / -est。</p>
+                    <table>
+                        <tr><td>big (大的)</td><td>bigger (更大)</td><td>biggest (最大)</td></tr>
+                        <tr><td>hot (热的)</td><td>hotter (更热)</td><td>hottest (最热)</td></tr>
+                        <tr><td>red (红色的)</td><td>redder (更红)</td><td>reddest (最红)</td></tr>
+                    </table>
+
+                    <p><strong>(4) 辅音字母 + y 结尾：y → i + -er / -est</strong><br>
+                    En palabras que terminan en consonante + y, se cambia y → i y se añade -er / -est。<br>
+                    以“辅音字母 + y”结尾的词，y 变 i，再加 -er / -est。</p>
+                    <table>
+                        <tr><td>easy (容易的)</td><td>easier (更容易)</td><td>easiest (最容易)</td></tr>
+                        <tr><td>busy (忙的)</td><td>busier (更忙)</td><td>busiest (最忙)</td></tr>
+                    </table>
+
+                    <p><strong>(5) 以 -ly 结尾的副词：一般用 more / most（early 例外）</strong><br>
+                    Los adverbios terminados en -ly normalmente forman comparativo y superlativo con more / most; la excepción típica es early.<br>
+                    以 -ly 结尾的副词通常用 more / most；常见例外是 early。</p>
+                    <table>
+                        <tr><td>slowly (慢慢地)</td><td>more slowly</td><td>most slowly</td></tr>
+                        <tr><td>bravely (勇敢地)</td><td>more bravely</td><td>most bravely</td></tr>
+                        <tr><td>quickly (快速地)</td><td>more quickly</td><td>most quickly</td></tr>
+                        <tr><td>early (早地)</td><td>earlier</td><td>earliest</td></tr>
+                    </table>
+
+                    <p><strong>(6) 少数双音节词（-er / -ow 结尾等）：可直接 + -er / -est</strong><br>
+                    Algunos adjetivos de dos sílabas, especialmente los que terminan en -er o -ow, pueden añadir -er / -est.<br>
+                    少数双音节形容词（尤其以 -er / -ow 结尾），可直接加 -er / -est。</p>
+                    <table>
+                        <tr><td>clever (聪明的)</td><td>cleverer</td><td>cleverest</td></tr>
+                        <tr><td>narrow (窄的)</td><td>narrower</td><td>narrowest</td></tr>
+                    </table>
+
+                    <p><strong>(7) 其他双音节和多音节：用 more / most</strong><br>
+                    Los adjetivos de dos sílabas (la mayoría) y los polisílabos suelen usar more / most.<br>
+                    大多数双音节词和所有多音节词，通常用 more / most。</p>
+                    <table>
+                        <tr><td>important (重要的)</td><td>more important</td><td>most important</td></tr>
+                        <tr><td>easily (容易地)</td><td>more easily</td><td>most easily</td></tr>
+                    </table>
+
+                    <p><strong>(8) 两种形式都可以：-er/-est 或 more/most</strong><br>
+                    Algunas palabras aceptan ambas formas, según estilo y uso (p. ej., clever, polite).<br>
+                    有些词两种形式都可以，用 -er/-est 或 more/most 都行（如 clever, polite）。</p>
+                    <div class="highlight-box">
+                        polite (有礼貌的) → politer / more polite → politest / most polite
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>3) 不规则变化 (Formación irregular)</summary>
+                <div class="details-content">
+                    <p>Hay adjetivos/adverbios muy frecuentes con formas irregulares; se memorizan.<br>
+                    一些高频词的比较级、最高级是不规则的，需要直接记忆。</p>
+                    <table>
+                        <tr><th>原级</th><th>比较级</th><th>最高级</th></tr>
+                        <tr><td>good / well (好的/好地)</td><td>better</td><td>best</td></tr>
+                        <tr><td>bad / ill / badly (坏/病/糟)</td><td>worse</td><td>worst</td></tr>
+                        <tr><td>many / much (多)</td><td>more</td><td>most</td></tr>
+                        <tr><td>little (少的)</td><td>less</td><td>least</td></tr>
+                        <tr><td>far (远的)</td><td>farther (距离更远)<br>further (程度更深)</td><td>farthest (距离最远)<br>furthest (程度最深)</td></tr>
+                        <tr><td>old (老的)</td><td>older (更老)<br>elder (年长-家人)</td><td>oldest (最老)<br>eldest (家里最大)</td></tr>
+                    </table>
+                </div>
+            </details>
+
+            <details>
+                <summary>4) 形容词 vs 副词：最高级的 the</summary>
+                <div class="details-content">
+                    <p>En general, las reglas de formación del comparativo/superlativo en adverbios se parecen a las de los adjetivos.<br>
+                    副词的比较级/最高级构成规则总体和形容词类似。</p>
+                    <p>Pero: en adjetivos, el superlativo normalmente lleva <strong>the</strong>: <i>the tallest</i>.<br>
+                    但差别是：形容词最高级前通常必须用 the。</p>
+                    <p>En adverbios, <strong>the</strong> puede aparecer o no: <i>the most quickly / most quickly</i> (según estilo).<br>
+                    副词最高级前 the 可用可不用（看表达习惯）。</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>5) 没有比较级/最高级的词（不用于程度比较）</summary>
+                <div class="details-content">
+                    <p>Algunos adjetivos son “absolutos” o no suelen compararse: <strong>right, wrong, full, empty, round, complete, wooden, dead, daily</strong>, etc.<br>
+                    一些词本身不适合做程度比较，一般没有比较级/最高级形式。</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>6) 常见例词清单（含西语 + 中文释义）</summary>
+                <div class="details-content">
+                    <p><strong>A) -er / -est 类（多为短词）</strong></p>
+                    <ul>
+                        <li>long (largo / 长的) → longer → longest</li>
+                        <li>young (joven / 年轻的) → younger → youngest</li>
+                        <li>short (corto / 短的) → shorter → shortest</li>
+                        <li>high (alto / 高的) → higher → highest</li>
+                        <li>deep (profundo / 深的) → deeper → deepest</li>
+                        <li>small (pequeño / 小的) → smaller → smallest</li>
+                        <li>loud (ruidoso / 大声的) → louder → loudest</li>
+                        <li>low (bajo / 低的) → lower → lowest</li>
+                        <li>thin (delgado / 瘦的) → thinner → thinnest</li>
+                        <li>fat (gordo / 胖的) → fatter → fattest</li>
+                    </ul>
+                    <p><strong>B) y → i + -er / -est</strong></p>
+                    <ul>
+                        <li>happy (feliz / 开心的) → happier → happiest</li>
+                        <li>heavy (pesado / 重的) → heavier → heaviest</li>
+                        <li>angry (enfadado / 生气的) → angrier → angriest</li>
+                        <li>lazy (perezoso / 懒的) → lazier → laziest</li>
+                        <li>lucky (afortunado / 幸运的) → luckier → luckiest</li>
+                    </ul>
+                    <p><strong>C) 其他常见 -er / -est</strong></p>
+                    <ul>
+                        <li>cheap (barato / 便宜的) → cheaper → cheapest</li>
+                        <li>near (cercano / 近的) → nearer → nearest</li>
+                        <li>clean (limpio / 干净的) → cleaner → cleanest</li>
+                        <li>few (pocos / 少的) → fewer → fewest</li>
+                        <li>late (tarde / 迟的) → later → latest</li>
+                        <li>hot (caliente / 热的) → hotter → hottest</li>
+                        <li>glad (contento / 高兴的) → gladder → gladdest</li>
+                        <li>clear (claro / 清楚的) → clearer → clearest</li>
+                        <li>strong (fuerte / 强壮的) → stronger → strongest</li>
+                    </ul>
+                    <p><strong>D) more / most 类</strong></p>
+                    <ul>
+                        <li>interesting (interesante / 有趣的) → more interesting → most interesting</li>
+                        <li>difficult (difícil / 困难的) → more difficult → most difficult</li>
+                        <li>expensive (caro / 贵的) → more expensive → most expensive</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>7) 比较级的用法 (Uso del comparativo)</summary>
+                <div class="details-content">
+                    <div class="highlight-box">
+                        <strong>1. “…比较级 + than …”</strong><br>
+                        Se usa para comparar dos elementos: comparativo + than. (两者比较)<br>
+                        <i>Actions speak louder than words. (行动胜于雄辩)</i>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>2. 二选一：Which/Who is + 比较级, A or B?</strong><br>
+                        Para elegir entre dos.<br>
+                        <i>Which sweater is cheaper, the red one or the yellow one?</i>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>3. “the + 比较级”表示“两者中更……的那个”</strong><br>
+                        Para decir “el más … de los dos”.<br>
+                        <i>Lucy is the taller of the twins. (Lucy是双胞胎里更高的那个)</i>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>4. “the + 比较级, the + 比较级”表示“越……越……”</strong><br>
+                        Estructura: the + comparativo, the + comparativo.<br>
+                        <i>The more you eat, the fatter you will become. (你吃得越多，就会越胖)</i>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>5. “越来越……”：比较级 + and + 比较级 / more and more + 原级</strong><br>
+                        Para “cada vez más…”. 短词用 比较级 + and ；长词用 more and more。<br>
+                        <i>We should make our country more and more beautiful.</i>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>6. 比较级的程度修饰语（much, a little, far…）</strong><br>
+                        El comparativo puede intensificarse con: much, a little, far, a bit, a lot, even, still, rather, etc.<br>
+                        <i>It’s much colder today than yesterday. (今天比昨天冷得多)</i>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>8) 最高级的用法 (Uso del superlativo)</summary>
+                <div class="details-content">
+                    <div class="highlight-box">
+                        <strong>1. 三者及以上：the + 最高级 + in/of</strong><br>
+                        Para comparar tres o más, se usa el superlativo.<br>
+                        <i>He is the strongest of all the boys. (他是所有男孩中最强壮的)</i>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>2. “最……之一”：one of + the + 最高级</strong><br>
+                        Estructura: one of + the + superlativo.<br>
+                        <i>The light bulb is one of the most helpful inventions. (电灯泡是最有帮助的发明之一)</i>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>3. 最高级前有物主代词/指示代词/名词所有格时，一般不用 the</strong><br>
+                        Con posesivos/demostrativos/genitivo: a menudo no se usa the.<br>
+                        <i>Yesterday is her happiest day in her life. (昨天是她一生中最幸福的一天)</i>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>9) 修饰语 (Intensificadores)</summary>
+                <div class="details-content">
+                    <p><strong>1) 比较级修饰语</strong></p>
+                    <p>much (……得多), far (……得多), even (甚至更), still (更), a bit / a little (有点), a lot (很), a great deal (大大地), twice (两倍), five times (五倍) 等。</p>
+                    <p>这些词能修饰比较级表示程度，但 <strong>very 不能修饰比较级</strong>。</p>
+                    <p><i>Tom is a little taller than Mike.</i></p>
+
+                    <p><strong>2) 最高级修饰语 + 序数词位置</strong></p>
+                    <p>最高级强调：by far / far and away（最……，远远最……）、almost/nearly（几乎）。</p>
+                    <p>序数词（second/third/next 等）放在 <strong>the 后面</strong>：</p>
+                    <p><i>The Yellow River is the second longest river in China. (黄河是中国第二长河)</i></p>
+                    <p><i>This is (by) far the best book that I’ve ever read. (这是我读过的最好的书)</i></p>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>

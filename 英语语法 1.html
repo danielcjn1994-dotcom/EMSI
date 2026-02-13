@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 英语语法完整手册</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 32px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .toolbar {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 25px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+        }
+
+        /* --- 核心内容区域 --- */
+        .main-content {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- 折叠按钮样式 --- */
+        details {
+            background: white;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a4a8e;
+            cursor: pointer;
+            list-style: none;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        summary:hover {
+            background-color: #f8fafc;
+        }
+
+        /* 三角形箭头 */
+        summary::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 10px solid #f1c40f;
+            margin-right: 15px;
+            transition: transform 0.3s;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .details-body {
+            padding: 10px 20px 25px 20px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        /* --- 文本框与表格 --- */
+        .section-title {
+            color: #1e40af;
+            border-left: 4px solid #f1c40f;
+            padding-left: 10px;
+            margin: 20px 0 10px 0;
+            font-size: 17px;
+        }
+
+        .key-box {
+            background-color: #f0f7ff;
+            border: 1px dashed #1a4a8e;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .example-table th {
+            background-color: #f8fafc;
+            text-align: left;
+            padding: 10px;
+            color: #64748b;
+            border-bottom: 2px solid #edf2f7;
+        }
+
+        .example-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: top;
+        }
+
+        .txt-en { color: #1a4a8e; font-weight: 600; }
+        .txt-es { color: #6b7280; font-style: italic; font-size: 13px; }
+        .txt-zh { color: #334155; }
+        .txt-note { color: #e11d48; font-size: 12px; }
+
+        /* --- 页脚 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .example-table th:nth-child(2), .example-table td:nth-child(2) { display: none; } /* 移动端隐藏西语列以节省空间 */
+            .header h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 英语语法手册 1</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+
+        <details>
+            <summary>File 1: The Basics (基础入门)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Verb be: I / you (第一、二人称)</div>
+                <div class="key-box">核心点：英语的 am/are 对应西语的 soy/estoy 和 eres/estás。注意英语中经常使用缩写（Contractions）。</div>
+                <table class="example-table">
+                    <tr><th>英语</th><th>西语对比</th><th>中文解释</th></tr>
+                    <tr><td class="txt-en">I am a student.</td><td class="txt-es">Soy estudiante.</td><td class="txt-zh">我是一名学生。(常规)</td></tr>
+                    <tr><td class="txt-en">You are my friend.</td><td class="txt-es">Eres mi amigo.</td><td class="txt-zh">你是我的朋友。(常规)</td></tr>
+                    <tr><td class="txt-en">I’m not from Madrid.</td><td class="txt-es">No soy de Madrid.</td><td class="txt-zh">我不是来自马德里。(否定/缩写)</td></tr>
+                    <tr><td class="txt-en">Are you OK?</td><td class="txt-es">¿Estás bien?</td><td class="txt-zh">你还好吗？(疑问)</td></tr>
+                    <tr><td class="txt-en">I am at home.</td><td class="txt-es">Estoy en casa.</td><td class="txt-zh">我在家里。(表状态/位置，西语用 Estar)</td></tr>
+                </table>
+
+                <div class="section-title">2. Verb be: he / she / it (第三人称单数)</div>
+                <div class="key-box">核心点：单数一定要用 is。注意 It 在西语中常被省略，但在英语中必须出现。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">He is very tall.</td><td class="txt-es">Él es muy alto.</td><td class="txt-zh">他很高。(常规)</td></tr>
+                    <tr><td class="txt-en">She is a doctor.</td><td class="txt-es">Ella es médica.</td><td class="txt-zh">她是一名医生。(常规)</td></tr>
+                    <tr><td class="txt-en">It is a beautiful day.</td><td class="txt-es">Es un día hermoso.</td><td class="txt-zh">今天是个好天气。(It 指代天气)</td></tr>
+                    <tr><td class="txt-en">She isn’t Italian.</td><td class="txt-es">Ella no es italiana.</td><td class="txt-zh">她不是意大利人。(否定)</td></tr>
+                    <tr><td class="txt-en">It is 3 o'clock.</td><td class="txt-es">Son las 3 en punto.</td><td class="txt-zh">现在是三点钟。<br><span class="txt-note">注意：西语时间复数用Son，英语统一用It is</span></td></tr>
+                </table>
+
+                <div class="section-title">3. Verb be: we / you / they (复数人称)</div>
+                <div class="key-box">核心点：复数统一用 are。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">We are happy.</td><td class="txt-es">Estamos contentos.</td><td class="txt-zh">我们很开心。(常规)</td></tr>
+                    <tr><td class="txt-en">They are expensive.</td><td class="txt-es">Son caros.</td><td class="txt-zh">它们很贵。(常规)</td></tr>
+                    <tr><td class="txt-en">You are late (plural).</td><td class="txt-es">Vosotros llegáis tarde.</td><td class="txt-zh">你们迟到了。(You 可指你们)</td></tr>
+                    <tr><td class="txt-en">We aren’t ready.</td><td class="txt-es">No estamos listos.</td><td class="txt-zh">我们还没准备好。(否定)</td></tr>
+                    <tr><td class="txt-en">Are they your parents?</td><td class="txt-es">¿Son tus padres?</td><td class="txt-zh">他们是你的父母吗？(疑问)</td></tr>
+                </table>
+
+                <div class="section-title">4. Wh- and How questions with be (特殊疑问句)</div>
+                <div class="key-box">核心点：语序是“疑问词 + be + 主语”。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">What is your name?</td><td class="txt-es">¿Cómo te llamas?</td><td class="txt-zh">你叫什么名字？</td></tr>
+                    <tr><td class="txt-en">Where are you from?</td><td class="txt-es">¿De dónde eres?</td><td class="txt-zh">你是哪里人？</td></tr>
+                    <tr><td class="txt-en">Who is that man?</td><td class="txt-es">¿Quién es ese hombre?</td><td class="txt-zh">那个男人是谁？</td></tr>
+                    <tr><td class="txt-en">How old are you?</td><td class="txt-es">¿Cuántos años tienes?</td><td class="txt-zh">你几岁了？<br><span class="txt-note">注意：西语用“有”，英语用“是”</span></td></tr>
+                    <tr><td class="txt-en">Why is she sad?</td><td class="txt-es">¿Por qué está triste ella?</td><td class="txt-zh">她为什么难过？(原因)</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 2: Nouns & Possessives (名词与所有格)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Singular and plural nouns (单复数)</div>
+                <div class="key-box">核心点：大部分加-s，注意辅音+y结尾变ies，以及不规则变化。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I have two cats.</td><td class="txt-es">Tengo dos gatos.</td><td class="txt-zh">我有两只猫。(规则 +s)</td></tr>
+                    <tr><td class="txt-en">Look at the buses.</td><td class="txt-es">Mira los autobuses.</td><td class="txt-zh">看那些公交车。(以s结尾 +es)</td></tr>
+                    <tr><td class="txt-en">Three dictionaries.</td><td class="txt-es">Tres diccionarios.</td><td class="txt-zh">三本字典。(辅音+y 变 ies)</td></tr>
+                    <tr><td class="txt-en">The children are playing.</td><td class="txt-es">Los niños están jugando.</td><td class="txt-zh">孩子们在玩耍。(不规则：child -> children)</td></tr>
+                    <tr><td class="txt-en">Two men and two women.</td><td class="txt-es">Dos hombres y dos mujeres.</td><td class="txt-zh">两个男人和两个女人。(不规则：man/woman 变 men/women)</td></tr>
+                </table>
+
+                <div class="section-title">2. Adjectives (形容词与指示代词)</div>
+                <div class="key-box">核心点：英语形容词放在名词前（西语通常在后），且形容词无复数变化。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">A red car.</td><td class="txt-es">Un coche rojo.</td><td class="txt-zh">一辆红色的车。(位置对比)</td></tr>
+                    <tr><td class="txt-en">They are good students.</td><td class="txt-es">Son buenos estudiantes.</td><td class="txt-zh">他们是好学生。(注意：Good 不加 s)</td></tr>
+                    <tr><td class="txt-en">This is my book.</td><td class="txt-es">Este es mi libro.</td><td class="txt-zh">这是我的书。(近处单数)</td></tr>
+                    <tr><td class="txt-en">Those houses are old.</td><td class="txt-es">Aquellas casas son viejas.</td><td class="txt-zh">那些房子很旧。(远处复数)</td></tr>
+                    <tr><td class="txt-en">I like these photos.</td><td class="txt-es">Me gustan estas fotos.</td><td class="txt-zh">我喜欢这些照片。(近处复数)</td></tr>
+                </table>
+
+                <div class="section-title">3. Possessive adjectives (形容词性物主代词)</div>
+                <div class="key-box">核心点：与西语不同，英语根据拥有者的性别决定用 his 还是 her，而不是根据物品。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">My name is Leo.</td><td class="txt-es">Mi nombre es Leo.</td><td class="txt-zh">我的名字叫 Leo。(常规)</td></tr>
+                    <tr><td class="txt-en">Her husband is nice.</td><td class="txt-es">Su marido es agradable.</td><td class="txt-zh">她的丈夫很友善。(拥有者是女性)</td></tr>
+                    <tr><td class="txt-en">His mother is Chinese.</td><td class="txt-es">Su madre es china.</td><td class="txt-zh">他的妈妈是中国人。(拥有者是男性)</td></tr>
+                    <tr><td class="txt-en">Their house is big.</td><td class="txt-es">Su casa (de ellos) es grande.</td><td class="txt-zh">他们的房子很大。(复数拥有者)</td></tr>
+                    <tr><td class="txt-en">The dog likes its food.</td><td class="txt-es">Al perro le gusta su comida.</td><td class="txt-zh">这只狗喜欢它的食物。(动物/物体拥有)</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 3: Present Simple - Part 1 (一般现在时·上)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Present simple: I / you / we / they</div>
+                <div class="key-box">核心点：动词用原形。否定用 don't。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I live in Madrid.</td><td class="txt-es">Vivo en Madrid.</td><td class="txt-zh">我住在马德里。</td></tr>
+                    <tr><td class="txt-en">We speak Spanish.</td><td class="txt-es">Hablamos español.</td><td class="txt-zh">我们说西班牙语。</td></tr>
+                    <tr><td class="txt-en">They don't eat meat.</td><td class="txt-es">Ellos no comen carne.</td><td class="txt-zh">他们不吃肉。(否定)</td></tr>
+                    <tr><td class="txt-en">You have a nice car.</td><td class="txt-es">Tienes un buen coche.</td><td class="txt-zh">你有一辆好车。</td></tr>
+                    <tr><td class="txt-en">I don't know.</td><td class="txt-es">No sé.</td><td class="txt-zh">我不知道。(常用口语)</td></tr>
+                </table>
+
+                <div class="section-title">2. Questions & Word Order (疑问句与语序)</div>
+                <div class="key-box">核心点：必须使用助动词 Do，语序为 ASIO (Auxiliary + Subject + Infinitive + Object)。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">Do you like coffee?</td><td class="txt-es">¿Te gusta el café?</td><td class="txt-zh">你喜欢咖啡吗？(Yes/No 问句)</td></tr>
+                    <tr><td class="txt-en">Do they live here?</td><td class="txt-es">¿Viven ellos aquí?</td><td class="txt-zh">他们住这儿吗？</td></tr>
+                    <tr><td class="txt-en">Where do you work?</td><td class="txt-es">¿Dónde trabajas?</td><td class="txt-zh">你在哪里工作？</td></tr>
+                    <tr><td class="txt-en">What do you do?</td><td class="txt-es">¿A qué te dedicas?</td><td class="txt-zh">你是做什么工作的？(询问职业)</td></tr>
+                    <tr><td class="txt-en">When do we start?</td><td class="txt-es">¿Cuándo empezamos?</td><td class="txt-zh">我们什么时候开始？</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 4: Present Simple - Part 2 (一般现在时·下)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Present simple: he / she / it</div>
+                <div class="key-box">核心点：动词必须加 s 或 es。否定用 doesn't，后面动词还原。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">She works in a bank.</td><td class="txt-es">Ella trabaja en un banco.</td><td class="txt-zh">她在银行工作。(加 s)</td></tr>
+                    <tr><td class="txt-en">He watches TV at night.</td><td class="txt-es">Él ve la tele por la noche.</td><td class="txt-zh">他晚上看电视。(ch结尾加es)</td></tr>
+                    <tr><td class="txt-en">It rains a lot here.</td><td class="txt-es">Llueve mucho aquí.</td><td class="txt-zh">这里经常下雨。</td></tr>
+                    <tr><td class="txt-en">She goes to school.</td><td class="txt-es">Ella va al colegio.</td><td class="txt-zh">她去上学。(go -> goes)</td></tr>
+                    <tr><td class="txt-en">He doesn't like football.</td><td class="txt-es">A él no le gusta el fútbol.</td><td class="txt-zh">他不喜欢足球。(否定注意like不加s)</td></tr>
+                </table>
+
+                <div class="section-title">2. Adverbs of frequency (频率副词)</div>
+                <div class="key-box">核心点：位置在 be 动词后，实义动词前。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I always have breakfast.</td><td class="txt-es">Siempre desayuno.</td><td class="txt-zh">我总是吃早饭。(动词前)</td></tr>
+                    <tr><td class="txt-en">She is never late.</td><td class="txt-es">Ella nunca llega tarde.</td><td class="txt-zh">她从不迟到。(be后)</td></tr>
+                    <tr><td class="txt-en">We usually go out on Fridays.</td><td class="txt-es">Normalmente salimos los viernes.</td><td class="txt-zh">我们通常周五出去。</td></tr>
+                    <tr><td class="txt-en">He sometimes cooks.</td><td class="txt-es">Él a veces cocina.</td><td class="txt-zh">他有时做饭。</td></tr>
+                    <tr><td class="txt-en">Do you often travel?</td><td class="txt-es">¿Viajas a menudo?</td><td class="txt-zh">你经常旅行吗？</td></tr>
+                </table>
+
+                <div class="section-title">3. Prepositions of time (时间介词)</div>
+                <div class="key-box">核心点：at (具体时刻), on (天/日期), in (月/年/季节/时段)。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I get up at 8:00.</td><td class="txt-es">Me levanto a las 8:00.</td><td class="txt-zh">我八点起床。</td></tr>
+                    <tr><td class="txt-en">My birthday is in May.</td><td class="txt-es">Mi cumpleaños es en mayo.</td><td class="txt-zh">我的生日在五月。</td></tr>
+                    <tr><td class="txt-en">See you on Monday.</td><td class="txt-es">Nos vemos el lunes.</td><td class="txt-zh">周一见。</td></tr>
+                    <tr><td class="txt-en">We relax at the weekend.</td><td class="txt-es">Descansamos el fin de semana.</td><td class="txt-zh">我们在周末放松。</td></tr>
+                    <tr><td class="txt-en">In the morning / at night.</td><td class="txt-es">Por la mañana / Por la noche.</td><td class="txt-zh">在早上 / 在晚上。</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 5: Practical English & Can (实用英语)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Can / Can’t (情态动词)</div>
+                <div class="key-box">核心点：所有人称都不变，后面直接加动词原形。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I can swim.</td><td class="txt-es">Sé nadar.</td><td class="txt-zh">我会游泳。(能力)</td></tr>
+                    <tr><td class="txt-en">You can park here.</td><td class="txt-es">Puedes aparcar aquí.</td><td class="txt-zh">你可以在这停车。(许可)</td></tr>
+                    <tr><td class="txt-en">She can't speak Chinese.</td><td class="txt-es">Ella no sabe hablar chino.</td><td class="txt-zh">她不会说中文。(否定)</td></tr>
+                    <tr><td class="txt-en">Can you help me?</td><td class="txt-es">¿Puedes ayudarme?</td><td class="txt-zh">你能帮我吗？(请求)</td></tr>
+                    <tr><td class="txt-en">He can play the piano.</td><td class="txt-es">Él sabe tocar el piano.</td><td class="txt-zh">他会弹钢琴。(不用 to)</td></tr>
+                </table>
+
+                <div class="section-title">2. Present continuous (现在进行时)</div>
+                <div class="key-box">核心点：be + verb-ing。表示此时此刻正在发生。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I am studying now.</td><td class="txt-es">Estoy estudiando ahora.</td><td class="txt-zh">我现在正在学习。</td></tr>
+                    <tr><td class="txt-en">She is wearing a blue dress.</td><td class="txt-es">Ella lleva un vestido azul.</td><td class="txt-zh">她穿着一件蓝色的裙子。(状态)</td></tr>
+                    <tr><td class="txt-en">They are running.</td><td class="txt-es">Ellos están corriendo.</td><td class="txt-zh">他们正在跑步。(双写 n)</td></tr>
+                    <tr><td class="txt-en">We aren't watching TV.</td><td class="txt-es">No estamos viendo la tele.</td><td class="txt-zh">我们没在看电视。</td></tr>
+                    <tr><td class="txt-en">Are you having dinner?</td><td class="txt-es">¿Estáis cenando?</td><td class="txt-zh">你们在吃晚饭吗？(去e加ing)</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 6: The Past - Part 1 (过去时·上)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Object pronouns (宾格代词)</div>
+                <div class="key-box">核心点：放在动词或介词后面。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I love him.</td><td class="txt-es">Le quiero (a él).</td><td class="txt-zh">我爱他。</td></tr>
+                    <tr><td class="txt-en">She calls me every day.</td><td class="txt-es">Ella me llama todos los días.</td><td class="txt-zh">她每天给我打电话。</td></tr>
+                    <tr><td class="txt-en">Listen to us.</td><td class="txt-es">Escúchanos.</td><td class="txt-zh">听我们说。</td></tr>
+                    <tr><td class="txt-en">Don't look at them.</td><td class="txt-es">No les mires.</td><td class="txt-zh">别看他们。</td></tr>
+                    <tr><td class="txt-en">Wait for it.</td><td class="txt-es">Espéralo.</td><td class="txt-zh">等一下（它）。</td></tr>
+                </table>
+
+                <div class="section-title">2. Past simple: be (Be 动词过去式)</div>
+                <div class="key-box">核心点：I/He/She/It 用 was，We/You/They 用 were。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I was tired yesterday.</td><td class="txt-es">Ayer estaba cansado.</td><td class="txt-zh">我昨天很累。</td></tr>
+                    <tr><td class="txt-en">They were in Paris last year.</td><td class="txt-es">Ellos estuvieron en París.</td><td class="txt-zh">他们去年在巴黎。</td></tr>
+                    <tr><td class="txt-en">He wasn't at school.</td><td class="txt-es">Él no estaba en el colegio.</td><td class="txt-zh">他没在学校。</td></tr>
+                    <tr><td class="txt-en">Were you famous?</td><td class="txt-es">¿Eras famoso?</td><td class="txt-zh">你以前很出名吗？</td></tr>
+                    <tr><td class="txt-en">Where was she born?</td><td class="txt-es">¿Dónde nació ella?</td><td class="txt-zh">她是在哪出生的？</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 7: The Past - Part 2 (过去时·下)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Regular verbs (规则动词)</div>
+                <div class="key-box">核心点：词尾加 -ed，注意读音 /t/, /d/, /id/。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I worked hard.</td><td class="txt-es">Trabajé duro.</td><td class="txt-zh">我努力工作了。</td></tr>
+                    <tr><td class="txt-en">We lived in London.</td><td class="txt-es">Vivimos en Londres.</td><td class="txt-zh">我们曾在伦敦住过。</td></tr>
+                    <tr><td class="txt-en">She studied yesterday.</td><td class="txt-es">Ella estudió ayer.</td><td class="txt-zh">她昨天学习了。(y变ied)</td></tr>
+                    <tr><td class="txt-en">The train stopped.</td><td class="txt-es">El tren paró.</td><td class="txt-zh">火车停了。(双写p)</td></tr>
+                </table>
+
+                <div class="section-title">2. Irregular verbs (不规则动词)</div>
+                <div class="key-box">核心点：必须背诵！</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">We went to the cinema.</td><td class="txt-es">Fuimos al cine. (Go->Went)</td><td class="txt-zh">我们去了电影院。</td></tr>
+                    <tr><td class="txt-en">He had a car.</td><td class="txt-es">Él tenía un coche. (Have->Had)</td><td class="txt-zh">他以前有一辆车。</td></tr>
+                    <tr><td class="txt-en">I bought a newspaper.</td><td class="txt-es">Compré un periódico.</td><td class="txt-zh">我买了份报纸。</td></tr>
+                    <tr><td class="txt-en">She read the book.</td><td class="txt-es">Ella leyó el libro.</td><td class="txt-zh">她看了那本书。(发音变/red/)</td></tr>
+                </table>
+
+                <div class="section-title">3. Questions and negatives (Did)</div>
+                <div class="key-box">核心点：疑问和否定要用 did/didn't，动词恢复原形。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">Did you go out?</td><td class="txt-es">¿Saliste?</td><td class="txt-zh">你出去了吗？</td></tr>
+                    <tr><td class="txt-en">I didn't see him.</td><td class="txt-es">No le vi.</td><td class="txt-zh">我没看见他。(不用saw)</td></tr>
+                    <tr><td class="txt-en">What did she say?</td><td class="txt-es">¿Qué dijo ella?</td><td class="txt-zh">她说什么了？</td></tr>
+                    <tr><td class="txt-en">Did they have a good time?</td><td class="txt-es">¿Se lo pasaron bien?</td><td class="txt-zh">他们玩得开心吗？</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 8: Structure & Location (结构与方位)</summary>
+            <div class="details-body">
+                <div class="section-title">1. There is / There are (某处有...)</div>
+                <div class="key-box">核心点：西语只有一个 Hay，英语分单复数。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">There is a sofa.</td><td class="txt-es">Hay un sofá.</td><td class="txt-zh">有一张沙发。</td></tr>
+                    <tr><td class="txt-en">There are two lamps.</td><td class="txt-es">Hay dos lámparas.</td><td class="txt-zh">有两盏灯。</td></tr>
+                    <tr><td class="txt-en">Is there a garage?</td><td class="txt-es">¿Hay garaje?</td><td class="txt-zh">有车库吗？</td></tr>
+                    <tr><td class="txt-en">There isn't any bread.</td><td class="txt-es">No hay nada de pan.</td><td class="txt-zh">没有面包了。</td></tr>
+                </table>
+
+                <div class="section-title">2. There was / There were (过去的“有”)</div>
+                <div class="key-box">核心点：西语对应 Hubo/Había。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">There was a party.</td><td class="txt-es">Hubo una fiesta.</td><td class="txt-zh">昨晚有个派对。</td></tr>
+                    <tr><td class="txt-en">There were many people.</td><td class="txt-es">Había mucha gente.</td><td class="txt-zh">有很多人。</td></tr>
+                </table>
+
+                <div class="section-title">3. Prepositions of place (方位介词)</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">Under the table.</td><td class="txt-es">Debajo de la mesa.</td><td class="txt-zh">在桌子下面。</td></tr>
+                    <tr><td class="txt-en">Next to the bank.</td><td class="txt-es">Al lado del banco.</td><td class="txt-zh">在银行旁边。</td></tr>
+                    <tr><td class="txt-en">In front of the hotel.</td><td class="txt-es">Delante del hotel.</td><td class="txt-zh">在酒店前面。</td></tr>
+                    <tr><td class="txt-en">Between the park and shop.</td><td class="txt-es">Entre el parque y la tienda.</td><td class="txt-zh">在公园和商店之间。</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 9: Countable & Future (名词与将来)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Quantifiers: a / an / some / any</div>
+                <div class="key-box">核心点：Some 用于肯定，Any 用于否定和疑问。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I have some apples.</td><td class="txt-es">Tengo algunas manzanas.</td><td class="txt-zh">我有一些苹果。</td></tr>
+                    <tr><td class="txt-en">There isn't any bread.</td><td class="txt-es">No hay nada de pan.</td><td class="txt-zh">没有面包了。</td></tr>
+                    <tr><td class="txt-en">Would you like some coffee?</td><td class="txt-es">¿Quieres café?</td><td class="txt-zh">想喝点咖啡吗？(邀请用some)</td></tr>
+                </table>
+
+                <div class="section-title">2. Future: be going to (将来时)</div>
+                <div class="key-box">核心点：计划或明显的迹象。 be 动词要变位。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I am going to travel.</td><td class="txt-es">Voy a viajar.</td><td class="txt-zh">我打算去旅行。</td></tr>
+                    <tr><td class="txt-en">It is going to rain.</td><td class="txt-es">Va a llover.</td><td class="txt-zh">要下雨了。(看天色预测)</td></tr>
+                    <tr><td class="txt-en">Are you going to study?</td><td class="txt-es">¿Vas a estudiar?</td><td class="txt-zh">你打算学习吗？</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 10: Comparison (比较级与最高级)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Comparative (比较级)</div>
+                <div class="key-box">核心点：短词 + er (+ than)，长词 more ... (+ than)。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I am older than you.</td><td class="txt-es">Soy mayor que tú.</td><td class="txt-zh">我比你大。</td></tr>
+                    <tr><td class="txt-en">Ferrari is more expensive.</td><td class="txt-es">Ferrari es más caro.</td><td class="txt-zh">法拉利比菲亚特贵。</td></tr>
+                    <tr><td class="txt-en">Better / Worse.</td><td class="txt-es">Mejor / Peor.</td><td class="txt-zh">更好 / 更坏 (不规则)。</td></tr>
+                </table>
+
+                <div class="section-title">2. Superlative (最高级)</div>
+                <div class="key-box">核心点：必须加 the。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">The highest mountain.</td><td class="txt-es">La montaña más alta.</td><td class="txt-zh">最高的山。</td></tr>
+                    <tr><td class="txt-en">She is the best student.</td><td class="txt-es">Es la mejor estudiante.</td><td class="txt-zh">她是最好的学生。</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 11: Advanced Basics (进阶基础)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Adverbs of manner (方式副词)</div>
+                <div class="key-box">核心点：形容“怎么做某事”，通常形容词 + ly。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">She speaks quietly.</td><td class="txt-es">Habla bajito.</td><td class="txt-zh">她说话很小声。</td></tr>
+                    <tr><td class="txt-en">He walks fast.</td><td class="txt-es">Camina rápido.</td><td class="txt-zh">他走得快。(特殊不加ly)</td></tr>
+                    <tr><td class="txt-en">They worked hard.</td><td class="txt-es">Trabajaron duro.</td><td class="txt-zh">他们工作很努力。</td></tr>
+                </table>
+
+                <div class="section-title">2. Verbs + to + infinitive (动词不定式)</div>
+                <div class="key-box">核心点：两个动词连用，中间通常加 to。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I want to go home.</td><td class="txt-es">Quiero ir a casa.</td><td class="txt-zh">我想回家。</td></tr>
+                    <tr><td class="txt-en">She needs to sleep.</td><td class="txt-es">Necesita dormir.</td><td class="txt-zh">她需要睡觉。</td></tr>
+                    <tr><td class="txt-en">He promised to help.</td><td class="txt-es">Prometió ayudar.</td><td class="txt-zh">他承诺会帮忙。</td></tr>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>File 12: Present Perfect (现在完成时·入门)</summary>
+            <div class="details-body">
+                <div class="section-title">1. Present Perfect (现在完成时)</div>
+                <div class="key-box">核心点：Have/Has + 过去分词。表示过去的动作对现在有影响，或经验。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I have finished my homework.</td><td class="txt-es">He terminado mis deberes.</td><td class="txt-zh">我做完作业了。(现在没事了)</td></tr>
+                    <tr><td class="txt-en">She has been to London.</td><td class="txt-es">Ha estado en Londres.</td><td class="txt-zh">她去过伦敦。(经历)</td></tr>
+                    <tr><td class="txt-en">Have you ever eaten sushi?</td><td class="txt-es">¿Has comido sushi?</td><td class="txt-zh">你吃过寿司吗？</td></tr>
+                </table>
+
+                <div class="section-title">2. vs Past Simple (区别)</div>
+                <div class="key-box">核心点：有明确过去时间必用过去时；强调“结果/经历”用完成时。</div>
+                <table class="example-table">
+                    <tr><td class="txt-en">I lost my keys yesterday.</td><td class="txt-es">Ayer perdí las llaves.</td><td class="txt-zh">强调过去动作。</td></tr>
+                    <tr><td class="txt-en">I have lost my keys.</td><td class="txt-es">He perdido las llaves.</td><td class="txt-zh">强调结果：现在进不去门。</td></tr>
+                    <tr><td class="txt-en">She has lived there for 10 years.</td><td class="txt-es">Ha vivido allí 10 años.</td><td class="txt-zh">她在那住了10年了(现在还住)。</td></tr>
+                </table>
+            </div>
+        </details>
+
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
