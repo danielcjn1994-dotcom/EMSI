@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 风格演示 - 词汇表</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容占位区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 40px 40px 40px;
+        }
+
+        /* 针对词汇表调整了 card 样式 */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            min-height: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column; /* 改为垂直排列 */
+            justify-content: flex-start; /* 顶部对齐 */
+            align-items: stretch; /* 占满宽度 */
+            padding: 30px;
+            box-sizing: border-box;
+            color: #333; /* 字体颜色加深 */
+        }
+
+        /* --- 折叠标签及表格样式 --- */
+        details {
+            margin-bottom: 15px;
+            background-color: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        
+        details summary {
+            padding: 15px 20px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a4a8e;
+            cursor: pointer;
+            list-style: none; /* 隐藏默认箭头以自定义 */
+            position: relative;
+            background-color: #f1f5f9;
+            transition: background-color 0.2s;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details summary::before {
+            content: '▶';
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        details summary:hover {
+            background-color: #e2e8f0;
+        }
+
+        .sub-details {
+            margin: 10px 20px 20px 20px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #edf2f7;
+        }
+
+        .sub-details summary {
+            font-size: 18px;
+            color: #2d3748;
+            background-color: white;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .sub-details summary::before {
+            color: #a0aec0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #fbfbfc;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <details>
+                <summary>家庭与人物称呼、职业职务</summary>
+                
+                <details class="sub-details">
+                    <summary>1 家庭人员</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>aunt</td><td>姨母；姨母 姑母；伯母；婶母</td><td>tía</td></tr>
+                        <tr><td>brother</td><td>兄；弟</td><td>hermano</td></tr>
+                        <tr><td>cousin</td><td>堂（表）兄弟；堂（表）姐妹</td><td>primo/prima</td></tr>
+                        <tr><td>couple</td><td>夫妇</td><td>pareja</td></tr>
+                        <tr><td>dad（daddy）</td><td>爸爸</td><td>papá</td></tr>
+                        <tr><td>daughter</td><td>女儿</td><td>hija</td></tr>
+                        <tr><td>family</td><td>家；家庭；家人；亲属；家族</td><td>familia</td></tr>
+                        <tr><td>father</td><td>爸爸；父亲</td><td>padre</td></tr>
+                        <tr><td>grandchild</td><td>孙子/女，外孙子/孙女</td><td>nieto/nieta</td></tr>
+                        <tr><td>granddaughger</td><td>孙女，外孙女</td><td>nieta</td></tr>
+                        <tr><td>grandfather</td><td>祖父；外祖父</td><td>abuelo</td></tr>
+                        <tr><td>grandma</td><td>（口）奶奶；外婆</td><td>abuelita</td></tr>
+                        <tr><td>grandmother</td><td>祖母；外祖母</td><td>abuela</td></tr>
+                        <tr><td>grandpa</td><td>（口）爷爷；外公</td><td>abuelito</td></tr>
+                        <tr><td>grandparent</td><td>祖父母；外祖父母</td><td>abuelos</td></tr>
+                        <tr><td>grandson</td><td>孙子，外孙子</td><td>nieto</td></tr>
+                        <tr><td>granny</td><td>老奶奶</td><td>abuelita</td></tr>
+                        <tr><td>husband</td><td>丈夫</td><td>esposo / marido</td></tr>
+                        <tr><td>Mom(美Mum)</td><td>妈妈</td><td>mamá</td></tr>
+                        <tr><td>mother</td><td>母亲；妈妈</td><td>madre</td></tr>
+                        <tr><td>parent</td><td>父母亲</td><td>padres</td></tr>
+                        <tr><td>relation</td><td>关系；亲属关系</td><td>relación / pariente</td></tr>
+                        <tr><td>sister</td><td>姐；妹</td><td>hermana</td></tr>
+                        <tr><td>son</td><td>儿子</td><td>hijo</td></tr>
+                        <tr><td>uncle</td><td>叔；伯；舅；姨夫；姑夫</td><td>tío</td></tr>
+                        <tr><td>wife</td><td>（pl. wives）妻子</td><td>esposa / mujer</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>2 人物称呼</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>adult</td><td>成年人</td><td>adulto</td></tr>
+                        <tr><td>Asian</td><td>亚洲人；亚洲的adj.</td><td>asiático</td></tr>
+                        <tr><td>baby</td><td>婴儿；小孩</td><td>bebé</td></tr>
+                        <tr><td>boy</td><td>男孩</td><td>niño</td></tr>
+                        <tr><td>child （复数children）</td><td>孩子</td><td>niño/niña</td></tr>
+                        <tr><td>classmate</td><td>同班同学</td><td>compañero/a de clase</td></tr>
+                        <tr><td>elder</td><td>长者；前辈</td><td>anciano / mayor</td></tr>
+                        <tr><td>enemy</td><td>敌人</td><td>enemigo</td></tr>
+                        <tr><td>European</td><td>欧洲人；欧洲的adj.</td><td>europeo</td></tr>
+                        <tr><td>fan</td><td>迷（热情崇拜者）；扇</td><td>aficionado / ventilador</td></tr>
+                        <tr><td>foreigner</td><td>外国人</td><td>extranjero</td></tr>
+                        <tr><td>gentleman</td><td>绅士</td><td>caballero</td></tr>
+                        <tr><td>girl</td><td>女孩</td><td>niña</td></tr>
+                        <tr><td>friend</td><td>朋友</td><td>amigo/a</td></tr>
+                        <tr><td>god</td><td>神；（God）上帝</td><td>dios / Dios</td></tr>
+                        <tr><td>guest</td><td>客人，来宾</td><td>invitado / huésped</td></tr>
+                        <tr><td>hero</td><td>英雄</td><td>héroe</td></tr>
+                        <tr><td>human</td><td>人类</td><td>humano</td></tr>
+                        <tr><td>kid</td><td>小孩</td><td>niño / chico</td></tr>
+                        <tr><td>lady</td><td>女士,夫人</td><td>dama / señora</td></tr>
+                        <tr><td>madam=madame</td><td>夫人，女士</td><td>señora</td></tr>
+                        <tr><td>man (pl.men)</td><td>成年男人；人，人类</td><td>hombre</td></tr>
+                        <tr><td>member</td><td>成员,会员</td><td>miembro</td></tr>
+                        <tr><td>Miss</td><td>小姐,女士</td><td>señorita</td></tr>
+                        <tr><td>Mr. ( mister)</td><td>先生</td><td>señor</td></tr>
+                        <tr><td>Mrs. (mistress)</td><td>夫人,太太（称呼已婚妇女）</td><td>señora</td></tr>
+                        <tr><td>Ms.</td><td>女士（用于婚姻状况不明的女子姓名前）</td><td>señora/señorita</td></tr>
+                        <tr><td>neighbor（美neighbor)</td><td>邻居</td><td>vecino</td></tr>
+                        <tr><td>nobody</td><td>渺小人物</td><td>don nadie</td></tr>
+                        <tr><td>officer</td><td>军官，警官；官员，高级职员</td><td>oficial</td></tr>
+                        <tr><td>owner</td><td>所有者；业主</td><td>propietario / dueño</td></tr>
+                        <tr><td>patient</td><td>病人，患者</td><td>paciente</td></tr>
+                        <tr><td>person</td><td>人</td><td>persona</td></tr>
+                        <tr><td>pioneer</td><td>先锋，开拓者</td><td>pionero</td></tr>
+                        <tr><td>passenger</td><td>乘客，旅客</td><td>pasajero</td></tr>
+                        <tr><td>people</td><td>人；人们</td><td>gente / personas</td></tr>
+                        <tr><td>prisoner</td><td>囚犯</td><td>prisionero</td></tr>
+                        <tr><td>public</td><td>公众</td><td>público</td></tr>
+                        <tr><td>sir</td><td>先生</td><td>señor</td></tr>
+                        <tr><td>stranger</td><td>陌生人，异乡人</td><td>extraño / forastero</td></tr>
+                        <tr><td>teenager</td><td>（13-19岁的）青少年</td><td>adolescente</td></tr>
+                        <tr><td>tourist</td><td>游客</td><td>turista</td></tr>
+                        <tr><td>visitor</td><td>访问者；参观者；游客</td><td>visitante</td></tr>
+                        <tr><td>volunteer</td><td>志愿者，自愿兵</td><td>voluntario</td></tr>
+                        <tr><td>winner</td><td>获胜者</td><td>ganador</td></tr>
+                        <tr><td>woman(复women)</td><td>妇女，女人</td><td>mujer</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>3 职业职务</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>boss</td><td>老板</td><td>jefe</td></tr>
+                        <tr><td>captain</td><td>船长，队长</td><td>capitán</td></tr>
+                        <tr><td>chairman/woman</td><td>主席</td><td>presidente/a</td></tr>
+                        <tr><td>coach</td><td>教练；</td><td>entrenador</td></tr>
+                        <tr><td>cook</td><td>厨师</td><td>cocinero</td></tr>
+                        <tr><td>dentist</td><td>牙医</td><td>dentista</td></tr>
+                        <tr><td>director</td><td>主管，负责人</td><td>director</td></tr>
+                        <tr><td>doctor</td><td>医生</td><td>médico / doctor</td></tr>
+                        <tr><td>driver</td><td>驾驶员；司机</td><td>conductor / chófer</td></tr>
+                        <tr><td>engineer</td><td>工程师</td><td>ingeniero</td></tr>
+                        <tr><td>farmer</td><td>农民</td><td>agricultor / granjero</td></tr>
+                        <tr><td>fisherman</td><td>渔民；渔夫（pl. fishermen）</td><td>pescador</td></tr>
+                        <tr><td>guard</td><td>看守，卫兵</td><td>guardia</td></tr>
+                        <tr><td>king</td><td>国王</td><td>rey</td></tr>
+                        <tr><td>leader</td><td>领导者；指挥者</td><td>líder</td></tr>
+                        <tr><td>manager</td><td>经理，管理人</td><td>gerente / mánager</td></tr>
+                        <tr><td>monitor</td><td>（班级内的）班长，纠察生；</td><td>delegado / monitor</td></tr>
+                        <tr><td>nurse</td><td>护士，保育员</td><td>enfermera/o</td></tr>
+                        <tr><td>officer</td><td>军官；公务员，官员；警察，警官</td><td>oficial / funcionario</td></tr>
+                        <tr><td>pilot</td><td>飞行员</td><td>piloto</td></tr>
+                        <tr><td>police</td><td>巡警；警察</td><td>policía</td></tr>
+                        <tr><td>policeman(policewoman)</td><td>警察</td><td>policía</td></tr>
+                        <tr><td>postman</td><td>邮递员</td><td>cartero</td></tr>
+                        <tr><td>president</td><td>总统</td><td>presidente</td></tr>
+                        <tr><td>pupil</td><td>(小）学生</td><td>alumno/a</td></tr>
+                        <tr><td>queen</td><td>女王；王后</td><td>reina</td></tr>
+                        <tr><td>scientist</td><td>科学家</td><td>científico</td></tr>
+                        <tr><td>servant</td><td>佣人，仆人</td><td>sirviente / criado</td></tr>
+                        <tr><td>secretary</td><td>秘书</td><td>secretario/a</td></tr>
+                        <tr><td>soldier</td><td>士兵，战士</td><td>soldado</td></tr>
+                        <tr><td>speaker</td><td>演讲人；演说家</td><td>orador / ponente</td></tr>
+                        <tr><td>student</td><td>学生</td><td>estudiante</td></tr>
+                        <tr><td>teacher</td><td>教师，教员</td><td>profesor/a / maestro/a</td></tr>
+                        <tr><td>worker</td><td>工人；工作者</td><td>trabajador / obrero</td></tr>
+                    </table>
+                </details>
+            </details>
+
+            <details>
+                <summary>家庭用具、电器及文具、玩具</summary>
+                
+                <details class="sub-details">
+                    <summary>1 家庭物品</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>basket</td><td>篮子</td><td>cesta</td></tr>
+                        <tr><td>bed</td><td>床</td><td>cama</td></tr>
+                        <tr><td>box</td><td>盒子，箱子</td><td>caja</td></tr>
+                        <tr><td>bottle</td><td>瓶子</td><td>botella</td></tr>
+                        <tr><td>brush</td><td>刷子</td><td>cepillo</td></tr>
+                        <tr><td>chair</td><td>椅子</td><td>silla</td></tr>
+                        <tr><td>can</td><td>(美）罐头，罐子</td><td>lata</td></tr>
+                        <tr><td>candle</td><td>蜡烛</td><td>vela</td></tr>
+                        <tr><td>clock</td><td>钟</td><td>reloj</td></tr>
+                        <tr><td>cover</td><td>盖子，罩</td><td>cubierta / tapa</td></tr>
+                        <tr><td>desk</td><td>书桌；办公桌</td><td>escritorio</td></tr>
+                        <tr><td>drawer</td><td>抽屉</td><td>cajón</td></tr>
+                        <tr><td>furniture</td><td>家具</td><td>muebles</td></tr>
+                        <tr><td>handbag</td><td>手提包</td><td>bolso</td></tr>
+                        <tr><td>iron</td><td>熨斗</td><td>plancha</td></tr>
+                        <tr><td>key</td><td>钥匙，键</td><td>llave / tecla</td></tr>
+                        <tr><td>lamp</td><td>灯</td><td>lámpara</td></tr>
+                        <tr><td>lock</td><td>锁</td><td>cerradura / candado</td></tr>
+                        <tr><td>mirror</td><td>镜子</td><td>espejo</td></tr>
+                        <tr><td>photo=photograph</td><td>照片</td><td>foto / fotografía</td></tr>
+                        <tr><td>picture</td><td>图片,画片，照片</td><td>imagen / cuadro</td></tr>
+                        <tr><td>rope</td><td>粗绳；绳索</td><td>cuerda</td></tr>
+                        <tr><td>rubbish</td><td>垃圾；废物</td><td>basura</td></tr>
+                        <tr><td>safe</td><td>保险箱</td><td>caja fuerte</td></tr>
+                        <tr><td>shelf</td><td>架子(复shelves)</td><td>estante</td></tr>
+                        <tr><td>shower</td><td>淋浴</td><td>ducha</td></tr>
+                        <tr><td>soap</td><td>肥皂</td><td>jabón</td></tr>
+                        <tr><td>sofa</td><td>沙发</td><td>sofá</td></tr>
+                        <tr><td>stick</td><td>木棍；手杖；枝条</td><td>palo / bastón</td></tr>
+                        <tr><td>table</td><td>桌子</td><td>mesa</td></tr>
+                        <tr><td>thing</td><td>事；东西，物（复数）局面；</td><td>cosa</td></tr>
+                        <tr><td>thread</td><td>线</td><td>hilo</td></tr>
+                        <tr><td>toothbrush</td><td>牙刷</td><td>cepillo de dientes</td></tr>
+                        <tr><td>toothpaste</td><td>牙膏</td><td>pasta de dientes</td></tr>
+                        <tr><td>towel</td><td>浴巾，毛巾</td><td>toalla</td></tr>
+                        <tr><td>umbrella</td><td>雨伞；伞</td><td>paraguas</td></tr>
+                        <tr><td>watch</td><td>手表</td><td>reloj de pulsera</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>2 电器</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>camera</td><td>照相机</td><td>cámara</td></tr>
+                        <tr><td>CD</td><td>光盘</td><td>CD / disco compacto</td></tr>
+                        <tr><td>CD-ROM</td><td>信息储存光盘</td><td>CD-ROM</td></tr>
+                        <tr><td>computer</td><td>电脑；电子计算机</td><td>ordenador / computadora</td></tr>
+                        <tr><td>DVD</td><td>数码影碟</td><td>DVD</td></tr>
+                        <tr><td>fan</td><td>电扇</td><td>ventilador</td></tr>
+                        <tr><td>fridge</td><td>电冰箱</td><td>nevera / frigorífico</td></tr>
+                        <tr><td>keyboard</td><td>键盘</td><td>teclado</td></tr>
+                        <tr><td>lamp</td><td>灯，油灯；光源</td><td>lámpara</td></tr>
+                        <tr><td>light</td><td>灯，灯光</td><td>luz</td></tr>
+                        <tr><td>machine</td><td>机器</td><td>máquina</td></tr>
+                        <tr><td>phone=telephone</td><td>电话</td><td>teléfono</td></tr>
+                        <tr><td>radio</td><td>无线电,收音机</td><td>radio</td></tr>
+                        <tr><td>record</td><td>唱片</td><td>disco / vinilo</td></tr>
+                        <tr><td>recorder</td><td>录音机</td><td>grabadora</td></tr>
+                        <tr><td>screen</td><td>屏幕；银幕</td><td>pantalla</td></tr>
+                        <tr><td>tape</td><td>磁带；录音带</td><td>cinta</td></tr>
+                        <tr><td>TV=television</td><td>电视；电视机</td><td>televisión / televisor</td></tr>
+                        <tr><td>VCD</td><td>影碟光盘</td><td>VCD</td></tr>
+                        <tr><td>video</td><td>录象；录像带</td><td>vídeo</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>3 文具与玩具</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>bag</td><td>书包；提包；口袋</td><td>bolsa / mochila</td></tr>
+                        <tr><td>ball</td><td>球</td><td>pelota / balón</td></tr>
+                        <tr><td>balloon</td><td>气球</td><td>globo</td></tr>
+                        <tr><td>card</td><td>纸牌</td><td>tarjeta / carta</td></tr>
+                        <tr><td>chess</td><td>棋</td><td>ajedrez</td></tr>
+                        <tr><td>crayon</td><td>蜡笔</td><td>crayón / cera</td></tr>
+                        <tr><td>diary</td><td>日记；日记簿</td><td>diario</td></tr>
+                        <tr><td>dictionary</td><td>字典，词典</td><td>diccionario</td></tr>
+                        <tr><td>doll</td><td>玩偶，玩具娃娃</td><td>muñeca</td></tr>
+                        <tr><td>eraser</td><td>橡皮</td><td>goma de borrar</td></tr>
+                        <tr><td>gift</td><td>礼物；赠品</td><td>regalo</td></tr>
+                        <tr><td>gun</td><td>枪</td><td>pistola / arma</td></tr>
+                        <tr><td>ink</td><td>墨水</td><td>tinta</td></tr>
+                        <tr><td>kite</td><td>风筝</td><td>cometa</td></tr>
+                        <tr><td>notebook</td><td>笔记簿</td><td>cuaderno</td></tr>
+                        <tr><td>paper</td><td>纸</td><td>papel</td></tr>
+                        <tr><td>pen</td><td>钢笔</td><td>bolígrafo / pluma</td></tr>
+                        <tr><td>pencil</td><td>铅笔</td><td>lápiz</td></tr>
+                        <tr><td>postcard</td><td>明信片</td><td>postal</td></tr>
+                        <tr><td>ruler</td><td>尺；直尺</td><td>regla</td></tr>
+                        <tr><td>schoolbag</td><td>书包</td><td>mochila escolar</td></tr>
+                        <tr><td>stamp</td><td>邮票</td><td>sello / estampilla</td></tr>
+                        <tr><td>tape</td><td>录音带；带子</td><td>cinta</td></tr>
+                        <tr><td>toy</td><td>玩具</td><td>juguete</td></tr>
+                        <tr><td>tool</td><td>工具</td><td>herramientienta</td></tr>
+                    </table>
+                </details>
+            </details>
+
+            <details>
+                <summary>学校及文化科技教育</summary>
+                
+                <details class="sub-details">
+                    <summary>1 学校设施</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>bell</td><td>钟；铃;钟（铃）声；钟形物</td><td>campana / timbre</td></tr>
+                        <tr><td>blackboard</td><td>黑板</td><td>pizarra</td></tr>
+                        <tr><td>chalk</td><td>粉笔</td><td>tiza</td></tr>
+                        <tr><td>class</td><td>班级</td><td>clase</td></tr>
+                        <tr><td>classroom</td><td>教室</td><td>aula</td></tr>
+                        <tr><td>desk</td><td>书桌，写字台</td><td>pupitre / escritorio</td></tr>
+                        <tr><td>group</td><td>小组</td><td>grupo</td></tr>
+                        <tr><td>lab =laboratory</td><td>实验室</td><td>laboratorio</td></tr>
+                        <tr><td>lesson</td><td>课，教训</td><td>lección / clase</td></tr>
+                        <tr><td>office</td><td>办公室；办公楼</td><td>oficina</td></tr>
+                        <tr><td>playground</td><td>运动场；操场</td><td>patio de recreo</td></tr>
+                        <tr><td>row</td><td>一排；一行；一列</td><td>fila</td></tr>
+                        <tr><td>school</td><td>学校</td><td>escuela / colegio</td></tr>
+                        <tr><td>seat</td><td>座位</td><td>asiento</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>2 课程</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>activity</td><td>活动</td><td>actividad</td></tr>
+                        <tr><td>art</td><td>艺术；美术；艺术品</td><td>arte</td></tr>
+                        <tr><td>chemistry</td><td>化学</td><td>química</td></tr>
+                        <tr><td>course</td><td>课程</td><td>curso</td></tr>
+                        <tr><td>geography</td><td>地理学；地理</td><td>geografía</td></tr>
+                        <tr><td>history</td><td>历史</td><td>historia</td></tr>
+                        <tr><td>math(s)=mathematics</td><td>数学</td><td>matemáticas</td></tr>
+                        <tr><td>music</td><td>音乐，乐曲</td><td>música</td></tr>
+                        <tr><td>P.E.(=physical education)</td><td>体育</td><td>educación física</td></tr>
+                        <tr><td>physics</td><td>物理学</td><td>física</td></tr>
+                        <tr><td>science</td><td>科学</td><td>ciencia</td></tr>
+                        <tr><td>subject</td><td>学科</td><td>asignatura</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>3 教学术语</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>accent</td><td>口音，重音</td><td>acento</td></tr>
+                        <tr><td>answer</td><td>回答；答复</td><td>respuesta / contestar</td></tr>
+                        <tr><td>composition</td><td>作文，作曲</td><td>composición / redacción</td></tr>
+                        <tr><td>conversation</td><td>对话</td><td>conversación</td></tr>
+                        <tr><td>dialogue</td><td>对话</td><td>diálogo</td></tr>
+                        <tr><td>difficulty</td><td>困难，难处</td><td>dificultad</td></tr>
+                        <tr><td>discussion</td><td>讨论</td><td>discusión</td></tr>
+                        <tr><td>exam = examination</td><td>考试</td><td>examen</td></tr>
+                        <tr><td>example</td><td>例子</td><td>ejemplo</td></tr>
+                        <tr><td>fact</td><td>事实, 事件</td><td>hecho</td></tr>
+                        <tr><td>form</td><td>表，表格；</td><td>formulario / forma</td></tr>
+                        <tr><td>grade</td><td>分数；成绩；</td><td>nota / calificación</td></tr>
+                        <tr><td>grammar</td><td>语法</td><td>gramática</td></tr>
+                        <tr><td>handwriting</td><td>字迹</td><td>caligrafía / letra</td></tr>
+                        <tr><td>homework</td><td>家庭作业</td><td>deberes / tarea</td></tr>
+                        <tr><td>knowledge</td><td>知识，学问</td><td>conocimiento</td></tr>
+                        <tr><td>language</td><td>语言</td><td>idioma / lenguaje</td></tr>
+                        <tr><td>letter</td><td>字母</td><td>letra / carta</td></tr>
+                        <tr><td>meaning</td><td>意思；含义；意图</td><td>significado</td></tr>
+                        <tr><td>method</td><td>方法，办法</td><td>método</td></tr>
+                        <tr><td>mistake</td><td>错误</td><td>error / equivocación</td></tr>
+                        <tr><td>note</td><td>笔记；便笺</td><td>nota / apunte</td></tr>
+                        <tr><td>practice</td><td>实践；练习</td><td>práctica</td></tr>
+                        <tr><td>progress</td><td>进步；进展；发展；前进</td><td>progreso</td></tr>
+                        <tr><td>pronunciation</td><td>（单词或语言的）发音</td><td>pronunciación</td></tr>
+                        <tr><td>point</td><td>要点</td><td>punto / clave</td></tr>
+                        <tr><td>question</td><td>问题</td><td>pregunta</td></tr>
+                        <tr><td>reply</td><td>回复；答复</td><td>respuesta / replicar</td></tr>
+                        <tr><td>research</td><td>研究；探讨</td><td>investigación</td></tr>
+                        <tr><td>review</td><td>回顾；温习；复习</td><td>repaso / revisión</td></tr>
+                        <tr><td>rule</td><td>规则</td><td>regla / norma</td></tr>
+                        <tr><td>score</td><td>得分</td><td>puntuación / tanteo</td></tr>
+                        <tr><td>search</td><td>搜寻；搜查；探索</td><td>búsqueda</td></tr>
+                        <tr><td>sentence</td><td>句子</td><td>oración / frase</td></tr>
+                        <tr><td>speech</td><td>演讲</td><td>discurso</td></tr>
+                        <tr><td>summary</td><td>摘要，概要</td><td>resumen</td></tr>
+                        <tr><td>term</td><td>学期</td><td>trimestre / término</td></tr>
+                        <tr><td>test</td><td>测验</td><td>prueba / test</td></tr>
+                        <tr><td>title</td><td>标题，题目</td><td>título</td></tr>
+                        <tr><td>topic</td><td>题目，话题</td><td>tema</td></tr>
+                        <tr><td>underline</td><td>下划线</td><td>subrayar</td></tr>
+                        <tr><td>unit</td><td>单元</td><td>unidad</td></tr>
+                        <tr><td>word</td><td>词，单词；话</td><td>palabra</td></tr>
+                    </table>
+                </details>
+                
+                <details class="sub-details">
+                    <summary>4 图书报刊</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>article</td><td>文章</td><td>artículo</td></tr>
+                        <tr><td>book</td><td>书</td><td>libro</td></tr>
+                        <tr><td>card</td><td>卡片，名片，纸牌</td><td>tarjeta</td></tr>
+                        <tr><td>daily</td><td>日报</td><td>diario</td></tr>
+                        <tr><td>diary</td><td>日记</td><td>diario (personal)</td></tr>
+                        <tr><td>magazine</td><td>杂志；期刊</td><td>revista</td></tr>
+                        <tr><td>mail</td><td>邮政,邮件</td><td>correo</td></tr>
+                        <tr><td>newspaper</td><td>报纸</td><td>periódico</td></tr>
+                        <tr><td>page</td><td>页;页码</td><td>página</td></tr>
+                        <tr><td>paragraph</td><td>(文章的)段落</td><td>párrafo</td></tr>
+                        <tr><td>passage</td><td>一段（文章）</td><td>pasaje / fragmento</td></tr>
+                        <tr><td>picture</td><td>图片,画片</td><td>imagen / dibujo</td></tr>
+                        <tr><td>poem</td><td>诗；韵文</td><td>poema</td></tr>
+                        <tr><td>report</td><td>报告；报道</td><td>informe / reportaje</td></tr>
+                        <tr><td>tale</td><td>故事，传说</td><td>cuento / leyenda</td></tr>
+                        <tr><td>text</td><td>文本，课文</td><td>texto</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>5 科技教育</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>clone</td><td>克隆</td><td>clonar / clon</td></tr>
+                        <tr><td>development</td><td>发展</td><td>desarrollo</td></tr>
+                        <tr><td>download</td><td>下载（计算机用语）</td><td>descargar</td></tr>
+                        <tr><td>education</td><td>教育</td><td>educación</td></tr>
+                        <tr><td>experiment</td><td>实验</td><td>experimento</td></tr>
+                        <tr><td>invention</td><td>发明物</td><td>invento / invención</td></tr>
+                        <tr><td>influence</td><td>影响</td><td>influencia</td></tr>
+                        <tr><td>information</td><td>信息，通知，消息</td><td>información</td></tr>
+                        <tr><td>machine</td><td>机器</td><td>máquina</td></tr>
+                        <tr><td>message</td><td>消息；信息</td><td>mensaje</td></tr>
+                        <tr><td>robot</td><td>机器人</td><td>robot</td></tr>
+                        <tr><td>technology</td><td>科学技术</td><td>tecnología</td></tr>
+                    </table>
+                </details>
+            </details>
+            <details>
+                <summary>服装与颜色</summary>
+                
+                <details class="sub-details">
+                    <summary>1 服装与饰物</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>clothes</td><td>衣服</td><td>ropa</td></tr>
+                        <tr><td>coat</td><td>外套；大衣</td><td>abrigo</td></tr>
+                        <tr><td>dress</td><td>女服；连衣裙</td><td>vestido</td></tr>
+                        <tr><td>glove</td><td>手套</td><td>guante</td></tr>
+                        <tr><td>hat</td><td>帽子</td><td>sombrero</td></tr>
+                        <tr><td>jacket</td><td>夹克衫；短上衣</td><td>chaqueta</td></tr>
+                        <tr><td>jeans</td><td>牛仔裤</td><td>vaqueros / pantalones de mezclilla</td></tr>
+                        <tr><td>pocket</td><td>口袋</td><td>bolsillo</td></tr>
+                        <tr><td>scarf</td><td>围巾</td><td>bufanda</td></tr>
+                        <tr><td>shirt</td><td>衬衫</td><td>camisa</td></tr>
+                        <tr><td>shoe</td><td>鞋</td><td>zapato</td></tr>
+                        <tr><td>skirt</td><td>裙子</td><td>falda</td></tr>
+                        <tr><td>sock</td><td>短袜</td><td>calcetín</td></tr>
+                        <tr><td>suit</td><td>套装；西装</td><td>traje</td></tr>
+                        <tr><td>sweater</td><td>毛衣</td><td>suéter / jersey</td></tr>
+                        <tr><td>tie</td><td>领带</td><td>corbata</td></tr>
+                        <tr><td>trousers</td><td>裤子</td><td>pantalones</td></tr>
+                        <tr><td>uniform</td><td>制服</td><td>uniforme</td></tr>
+                        <tr><td>umbrella</td><td>雨伞</td><td>paraguas</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>2 颜色</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>color (colour)</td><td>颜色</td><td>color</td></tr>
+                        <tr><td>black</td><td>黑色；黑色的</td><td>negro</td></tr>
+                        <tr><td>blue</td><td>蓝色；蓝色的</td><td>azul</td></tr>
+                        <tr><td>brown</td><td>褐色；褐色的</td><td>marrón / café</td></tr>
+                        <tr><td>green</td><td>绿色；绿色的</td><td>verde</td></tr>
+                        <tr><td>orange</td><td>橙色；橙色的</td><td>naranja</td></tr>
+                        <tr><td>pink</td><td>粉红色；粉红色的</td><td>rosa</td></tr>
+                        <tr><td>purple</td><td>紫色；紫色的</td><td>morado / púrpura</td></tr>
+                        <tr><td>red</td><td>红色；红色的</td><td>rojo</td></tr>
+                        <tr><td>white</td><td>白色；白色的</td><td>blanco</td></tr>
+                        <tr><td>yellow</td><td>黄色；黄色的</td><td>amarillo</td></tr>
+                    </table>
+                </details>
+            </details>
+
+            <details>
+                <summary>食品与饮料</summary>
+                
+                <details class="sub-details">
+                    <summary>1 三餐与食品</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>breakfast</td><td>早餐</td><td>desayuno</td></tr>
+                        <tr><td>lunch</td><td>午餐</td><td>almuerzo / comida</td></tr>
+                        <tr><td>dinner</td><td>晚餐；正餐</td><td>cena</td></tr>
+                        <tr><td>meal</td><td>一餐；饭</td><td>comida</td></tr>
+                        <tr><td>food</td><td>食物</td><td>comida / alimento</td></tr>
+                        <tr><td>beef</td><td>牛肉</td><td>carne de res / ternera</td></tr>
+                        <tr><td>bread</td><td>面包</td><td>pan</td></tr>
+                        <tr><td>cake</td><td>蛋糕</td><td>pastel / tarta</td></tr>
+                        <tr><td>candy</td><td>糖果</td><td>caramelo / dulce</td></tr>
+                        <tr><td>cheese</td><td>奶酪</td><td>queso</td></tr>
+                        <tr><td>chicken</td><td>鸡肉；鸡</td><td>pollo</td></tr>
+                        <tr><td>chocolate</td><td>巧克力</td><td>chocolate</td></tr>
+                        <tr><td>egg</td><td>鸡蛋</td><td>huevo</td></tr>
+                        <tr><td>fish</td><td>鱼肉；鱼</td><td>pescado / pez</td></tr>
+                        <tr><td>hamburger</td><td>汉堡包</td><td>hamburguesa</td></tr>
+                        <tr><td>meat</td><td>肉</td><td>carne</td></tr>
+                        <tr><td>noodle</td><td>面条</td><td>fideo / tallarín</td></tr>
+                        <tr><td>pork</td><td>猪肉</td><td>cerdo / carne de cerdo</td></tr>
+                        <tr><td>rice</td><td>米饭；稻米</td><td>arroz</td></tr>
+                        <tr><td>salad</td><td>沙拉</td><td>ensalada</td></tr>
+                        <tr><td>sandwich</td><td>三明治</td><td>sándwich / bocadillo</td></tr>
+                        <tr><td>sausage</td><td>香肠</td><td>salchicha</td></tr>
+                        <tr><td>soup</td><td>汤</td><td>sopa</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>2 水果与蔬菜</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>fruit</td><td>水果</td><td>fruta</td></tr>
+                        <tr><td>apple</td><td>苹果</td><td>manzana</td></tr>
+                        <tr><td>banana</td><td>香蕉</td><td>plátano / banana</td></tr>
+                        <tr><td>grape</td><td>葡萄</td><td>uva</td></tr>
+                        <tr><td>orange</td><td>橙子；橘子</td><td>naranja</td></tr>
+                        <tr><td>pear</td><td>梨</td><td>pera</td></tr>
+                        <tr><td>strawberry</td><td>草莓</td><td>fresa / frutilla</td></tr>
+                        <tr><td>watermelon</td><td>西瓜</td><td>sandía</td></tr>
+                        <tr><td>vegetable</td><td>蔬菜</td><td>verdura / vegetal</td></tr>
+                        <tr><td>cabbage</td><td>卷心菜</td><td>col / repollo</td></tr>
+                        <tr><td>carrot</td><td>胡萝卜</td><td>zanahoria</td></tr>
+                        <tr><td>onion</td><td>洋葱</td><td>cebolla</td></tr>
+                        <tr><td>potato</td><td>土豆；马铃薯</td><td>patata / papa</td></tr>
+                        <tr><td>tomato</td><td>西红柿；番茄</td><td>tomate</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>3 饮料与调料</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>drink</td><td>饮料；喝</td><td>bebida / beber</td></tr>
+                        <tr><td>coffee</td><td>咖啡</td><td>café</td></tr>
+                        <tr><td>juice</td><td>果汁</td><td>zumo / jugo</td></tr>
+                        <tr><td>milk</td><td>牛奶</td><td>leche</td></tr>
+                        <tr><td>tea</td><td>茶</td><td>té</td></tr>
+                        <tr><td>water</td><td>水</td><td>agua</td></tr>
+                        <tr><td>wine</td><td>葡萄酒；酒</td><td>vino</td></tr>
+                        <tr><td>butter</td><td>黄油</td><td>mantequilla</td></tr>
+                        <tr><td>oil</td><td>油</td><td>aceite</td></tr>
+                        <tr><td>salt</td><td>盐</td><td>sal</td></tr>
+                        <tr><td>sugar</td><td>糖</td><td>azúcar</td></tr>
+                    </table>
+                </details>
+            </details>
+
+            <details>
+                <summary>人体与健康</summary>
+                
+                <details class="sub-details">
+                    <summary>1 人体部位</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>body</td><td>身体</td><td>cuerpo</td></tr>
+                        <tr><td>arm</td><td>手臂</td><td>brazo</td></tr>
+                        <tr><td>back</td><td>背部</td><td>espalda</td></tr>
+                        <tr><td>blood</td><td>血液</td><td>sangre</td></tr>
+                        <tr><td>bone</td><td>骨头</td><td>hueso</td></tr>
+                        <tr><td>ear</td><td>耳朵</td><td>oreja</td></tr>
+                        <tr><td>eye</td><td>眼睛</td><td>ojo</td></tr>
+                        <tr><td>face</td><td>脸</td><td>cara</td></tr>
+                        <tr><td>finger</td><td>手指</td><td>dedo</td></tr>
+                        <tr><td>foot (复数feet)</td><td>脚</td><td>pie</td></tr>
+                        <tr><td>hair</td><td>头发</td><td>pelo / cabello</td></tr>
+                        <tr><td>hand</td><td>手</td><td>mano</td></tr>
+                        <tr><td>head</td><td>头</td><td>cabeza</td></tr>
+                        <tr><td>heart</td><td>心脏</td><td>corazón</td></tr>
+                        <tr><td>knee</td><td>膝盖</td><td>rodilla</td></tr>
+                        <tr><td>leg</td><td>腿</td><td>pierna</td></tr>
+                        <tr><td>mouth</td><td>嘴</td><td>boca</td></tr>
+                        <tr><td>neck</td><td>脖子</td><td>cuello</td></tr>
+                        <tr><td>nose</td><td>鼻子</td><td>nariz</td></tr>
+                        <tr><td>shoulder</td><td>肩膀</td><td>hombro</td></tr>
+                        <tr><td>stomach</td><td>胃；肚子</td><td>estómago</td></tr>
+                        <tr><td>tooth (复数teeth)</td><td>牙齿</td><td>diente</td></tr>
+                    </table>
+                </details>
+
+                <details class="sub-details">
+                    <summary>2 疾病与健康</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>health</td><td>健康</td><td>salud</td></tr>
+                        <tr><td>accident</td><td>事故；意外</td><td>accidente</td></tr>
+                        <tr><td>ache</td><td>疼痛</td><td>dolor</td></tr>
+                        <tr><td>blind</td><td>盲的</td><td>ciego</td></tr>
+                        <tr><td>cancer</td><td>癌症</td><td>cáncer</td></tr>
+                        <tr><td>cold</td><td>感冒；寒冷</td><td>resfriado / frío</td></tr>
+                        <tr><td>cough</td><td>咳嗽</td><td>tos / toser</td></tr>
+                        <tr><td>cut</td><td>切；割伤</td><td>corte</td></tr>
+                        <tr><td>disease</td><td>疾病</td><td>enfermedad</td></tr>
+                        <tr><td>fever</td><td>发烧</td><td>fiebre</td></tr>
+                        <tr><td>headache</td><td>头痛</td><td>dolor de cabeza</td></tr>
+                        <tr><td>hospital</td><td>医院</td><td>hospital</td></tr>
+                        <tr><td>illness</td><td>疾病；生病</td><td>enfermedad</td></tr>
+                        <tr><td>medicine</td><td>药</td><td>medicina / medicamento</td></tr>
+                        <tr><td>pain</td><td>痛苦；疼痛</td><td>dolor</td></tr>
+                        <tr><td>pill</td><td>药丸</td><td>pastilla / píldora</td></tr>
+                        <tr><td>toothache</td><td>牙痛</td><td>dolor de muelas</td></tr>
+                        <tr><td>wound</td><td>创伤；伤口</td><td>herida</td></tr>
+                    </table>
+                </details>
+            </details>
+            <details>
+                <summary>医疗与情感</summary>
+                <details class="sub-details">
+                    <summary>药品、治疗与健康</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>drug</td><td>药物</td><td>droga / medicamento</td></tr>
+                        <tr><td>health</td><td>健康；卫生</td><td>salud</td></tr>
+                        <tr><td>medicine</td><td>药</td><td>medicina</td></tr>
+                        <tr><td>breath</td><td>呼吸</td><td>respiración</td></tr>
+                        <tr><td>operation</td><td>手术/操作，运转，运行</td><td>operación</td></tr>
+                        <tr><td>sleep</td><td>睡眠</td><td>sueño</td></tr>
+                        <tr><td>treatment</td><td>治疗，待遇</td><td>tratamiento</td></tr>
+                        <tr><td>voice</td><td>说话声；声音</td><td>voz</td></tr>
+                        <tr><td>X-ray</td><td>X光，X射线</td><td>rayos X</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>感觉与情感</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>ache</td><td>疼痛</td><td>dolor</td></tr>
+                        <tr><td>attention</td><td>注意，关心</td><td>atención</td></tr>
+                        <tr><td>care</td><td>照料，保护，小心</td><td>cuidado</td></tr>
+                        <tr><td>cheer</td><td>欢呼;喝彩</td><td>animar</td></tr>
+                        <tr><td>cheat</td><td>骗取，哄骗，作弊</td><td>engañar</td></tr>
+                        <tr><td>cry</td><td>喊叫;哭</td><td>llorar / grito</td></tr>
+                        <tr><td>doubt</td><td>怀疑；疑惑</td><td>duda</td></tr>
+                        <tr><td>emotion</td><td>感情，情感</td><td>emoción</td></tr>
+                        <tr><td>excuse</td><td>原谅；宽恕</td><td>excusa / perdonar</td></tr>
+                        <tr><td>favorite</td><td>最受喜爱的(东西）</td><td>favorito</td></tr>
+                        <tr><td>fear</td><td>恐惧，害怕</td><td>miedo</td></tr>
+                        <tr><td>feeling</td><td>感觉，知觉，触觉</td><td>sentimiento</td></tr>
+                        <tr><td>fun</td><td>快乐；有趣的，令人愉快的</td><td>diversión</td></tr>
+                        <tr><td>greeting</td><td>祝贺</td><td>saludo</td></tr>
+                        <tr><td>hate</td><td>恨；讨厌</td><td>odio / odiar</td></tr>
+                        <tr><td>hobby</td><td>嗜好，兴趣</td><td>pasatiempo</td></tr>
+                        <tr><td>interest</td><td>兴趣，爱好</td><td>interés</td></tr>
+                        <tr><td>joy</td><td>欢乐，高兴，乐趣</td><td>alegría</td></tr>
+                        <tr><td>laugh</td><td>笑；大笑；嘲笑</td><td>reír / risa</td></tr>
+                        <tr><td>love</td><td>爱；热爱；很喜欢</td><td>amor / amar</td></tr>
+                        <tr><td>pardon</td><td>原谅，宽恕</td><td>perdón</td></tr>
+                        <tr><td>peace</td><td>和平；安宁；静寂</td><td>paz</td></tr>
+                        <tr><td>pity</td><td>怜悯；同情</td><td>piedad / lástima</td></tr>
+                        <tr><td>pleasure</td><td>愉快；快乐；高兴</td><td>placer</td></tr>
+                        <tr><td>praise</td><td>赞扬，表扬</td><td>elogio / alabar</td></tr>
+                        <tr><td>pride</td><td>自豪，骄傲</td><td>orgullo</td></tr>
+                        <tr><td>regard</td><td>关心，注意，致意，问候，尊敬</td><td>consideración / saludos</td></tr>
+                        <tr><td>respect</td><td>尊敬，尊重</td><td>respeto</td></tr>
+                        <tr><td>regret</td><td>可惜，遗憾；痛惜；哀悼</td><td>arrepentimiento</td></tr>
+                        <tr><td>shame</td><td>羞愧，惭愧</td><td>vergüenza</td></tr>
+                        <tr><td>silence</td><td>寂静；沉默</td><td>silencio</td></tr>
+                        <tr><td>sense</td><td>感觉，判断力</td><td>sentido</td></tr>
+                        <tr><td>smell</td><td>气味；嗅觉</td><td>olor</td></tr>
+                        <tr><td>smile</td><td>微笑</td><td>sonrisa</td></tr>
+                        <tr><td>surprise</td><td>使吃惊；令人意想不到的事情</td><td>sorpresa</td></tr>
+                        <tr><td>sweet</td><td>甜蜜</td><td>dulce</td></tr>
+                        <tr><td>taste</td><td>尝；品尝；品味</td><td>sabor / probar</td></tr>
+                        <tr><td>thank</td><td>感谢；谢意</td><td>agradecer</td></tr>
+                        <tr><td>touch</td><td>碰，触摸</td><td>toque / tocar</td></tr>
+                        <tr><td>wish</td><td>愿望;祝愿</td><td>deseo</td></tr>
+                        <tr><td>wonder</td><td>惊讶，惊叹；奇迹</td><td>maravilla</td></tr>
+                        <tr><td>worry</td><td>烦恼；担忧；发怒；困扰</td><td>preocupación</td></tr>
+                        <tr><td>victory</td><td>胜利</td><td>victoria</td></tr>
+                    </table>
+                </details>
+            </details>
+
+            <details>
+                <summary>文娱传媒与体育运动</summary>
+                <details class="sub-details">
+                    <summary>1 诗歌戏剧、传媒</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>act</td><td>行为,举动</td><td>acto</td></tr>
+                        <tr><td>advertisement</td><td>广告</td><td>anuncio</td></tr>
+                        <tr><td>art</td><td>艺术；美术；艺术品</td><td>arte</td></tr>
+                        <tr><td>cinema</td><td>电影院</td><td>cine</td></tr>
+                        <tr><td>e-mail</td><td>电子邮件</td><td>correo electrónico</td></tr>
+                        <tr><td>film</td><td>电影，胶卷</td><td>película</td></tr>
+                        <tr><td>Internet</td><td>互联网，因特网</td><td>Internet</td></tr>
+                        <tr><td>interview</td><td>采访</td><td>entrevista</td></tr>
+                        <tr><td>movie</td><td>电影</td><td>película</td></tr>
+                        <tr><td>news</td><td>消息；新闻</td><td>noticias</td></tr>
+                        <tr><td>notice</td><td>通知，布告</td><td>aviso / noticia</td></tr>
+                        <tr><td>party</td><td>晚会</td><td>fiesta</td></tr>
+                        <tr><td>programme(美program)</td><td>节目单；（电脑）程序</td><td>programa</td></tr>
+                        <tr><td>role</td><td>角色</td><td>papel / rol</td></tr>
+                        <tr><td>story</td><td>故事</td><td>historia / cuento</td></tr>
+                        <tr><td>tale</td><td>故事，传说；童话</td><td>cuento / leyenda</td></tr>
+                        <tr><td>window</td><td>窗户；计算机的窗口</td><td>ventana</td></tr>
+                        <tr><td>website</td><td>网站，网点</td><td>sitio web</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>2 音乐、乐器</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>beat</td><td>(音乐)节拍</td><td>ritmo / compás</td></tr>
+                        <tr><td>composition</td><td>作曲</td><td>composición</td></tr>
+                        <tr><td>concert</td><td>音乐会</td><td>concierto</td></tr>
+                        <tr><td>dance</td><td>舞蹈</td><td>baile / danza</td></tr>
+                        <tr><td>drum</td><td>鼓</td><td>tambor</td></tr>
+                        <tr><td>guitar</td><td>吉他</td><td>guitarra</td></tr>
+                        <tr><td>group</td><td>流行音乐的乐团</td><td>grupo (musical)</td></tr>
+                        <tr><td>music</td><td>音乐</td><td>música</td></tr>
+                        <tr><td>piano</td><td>钢琴</td><td>piano</td></tr>
+                        <tr><td>song</td><td>歌曲</td><td>canción</td></tr>
+                        <tr><td>violin</td><td>小提琴</td><td>violín</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>3 运动项目</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>ball</td><td>球</td><td>pelota / balón</td></tr>
+                        <tr><td>balloon</td><td>气球</td><td>globo</td></tr>
+                        <tr><td>baseball</td><td>棒球</td><td>béisbol</td></tr>
+                        <tr><td>basketball</td><td>篮球</td><td>baloncesto</td></tr>
+                        <tr><td>bike=bicycle</td><td>自行车</td><td>bicicleta</td></tr>
+                        <tr><td>chess</td><td>象棋</td><td>ajedrez</td></tr>
+                        <tr><td>club</td><td>俱乐部</td><td>club</td></tr>
+                        <tr><td>coach</td><td>教练</td><td>entrenador</td></tr>
+                        <tr><td>exercise</td><td>练习；锻炼</td><td>ejercicio</td></tr>
+                        <tr><td>football</td><td>足球</td><td>fútbol</td></tr>
+                        <tr><td>jump</td><td>跳；跃</td><td>salto / saltar</td></tr>
+                        <tr><td>kick</td><td>踢，反冲</td><td>patada / patear</td></tr>
+                        <tr><td>race</td><td>(速度)竞赛</td><td>carrera</td></tr>
+                        <tr><td>ride</td><td>骑脚踏车或乘交通工具旅行</td><td>montar / paseo</td></tr>
+                        <tr><td>sport</td><td>运动</td><td>deporte</td></tr>
+                        <tr><td>swim</td><td>游泳</td><td>nadar</td></tr>
+                        <tr><td>table tennis</td><td>乒乓球</td><td>tenis de mesa</td></tr>
+                        <tr><td>tennis</td><td>网球</td><td>tenis</td></tr>
+                        <tr><td>volleyball</td><td>排球</td><td>voleibol</td></tr>
+                        <tr><td>walk</td><td>行走；步行</td><td>caminar / paseo</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>4 竞赛及奖项</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>activity</td><td>活动</td><td>actividad</td></tr>
+                        <tr><td>competition</td><td>竞赛</td><td>competición</td></tr>
+                        <tr><td>conference</td><td>会议</td><td>conferencia</td></tr>
+                        <tr><td>courage</td><td>勇气，胆量</td><td>coraje</td></tr>
+                        <tr><td>energy</td><td>精力</td><td>energía</td></tr>
+                        <tr><td>game</td><td>游戏，运动</td><td>juego</td></tr>
+                        <tr><td>honour honor（美）</td><td>荣誉，光荣，尊重，勋章</td><td>honor</td></tr>
+                        <tr><td>match</td><td>比赛, 竞赛</td><td>partido</td></tr>
+                        <tr><td>meeting</td><td>会议；集会</td><td>reunión</td></tr>
+                        <tr><td>play</td><td>游戏；比赛</td><td>jugar / juego</td></tr>
+                        <tr><td>prize</td><td>奖品；奖项</td><td>premio</td></tr>
+                        <tr><td>record</td><td>记录；（尤指运动中）最高记录</td><td>récord</td></tr>
+                        <tr><td>rest</td><td>休息；其余部分</td><td>descanso / resto</td></tr>
+                        <tr><td>result</td><td>结果</td><td>resultado</td></tr>
+                        <tr><td>speed</td><td>速度</td><td>velocidad</td></tr>
+                        <tr><td>swimming</td><td>游泳</td><td>natación</td></tr>
+                        <tr><td>team</td><td>运动比赛的队</td><td>equipo</td></tr>
+                        <tr><td>ticket</td><td>票</td><td>billete / entrada</td></tr>
+                        <tr><td>training</td><td>训练</td><td>entrenamiento</td></tr>
+                        <tr><td>turn</td><td>（依次轮流的）一次机会</td><td>turno</td></tr>
+                    </table>
+                </details>
+            </details>
+
+            <details>
+                <summary>城市设施与交通旅游</summary>
+                <details class="sub-details">
+                    <summary>1 城市设施</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>bank</td><td>银行</td><td>banco</td></tr>
+                        <tr><td>capital</td><td>省会，首都</td><td>capital</td></tr>
+                        <tr><td>church</td><td>教堂</td><td>iglesia</td></tr>
+                        <tr><td>city</td><td>城市；都市；市</td><td>ciudad</td></tr>
+                        <tr><td>cinema</td><td>电影院，电影</td><td>cine</td></tr>
+                        <tr><td>college</td><td>专科学校；学院</td><td>colegio / universidad</td></tr>
+                        <tr><td>company</td><td>公司</td><td>empresa / compañía</td></tr>
+                        <tr><td>factory</td><td>工厂</td><td>fábrica</td></tr>
+                        <tr><td>fair</td><td>集市；庙会；展览会</td><td>feria</td></tr>
+                        <tr><td>farm</td><td>农场；农庄</td><td>granja</td></tr>
+                        <tr><td>flat</td><td>楼中一套房间；公寓（常用复数）</td><td>piso / apartamento</td></tr>
+                        <tr><td>garden</td><td>花园，果园，菜园</td><td>jardín</td></tr>
+                        <tr><td>government</td><td>政府</td><td>gobierno</td></tr>
+                        <tr><td>gym=(gymnasium)</td><td>体育馆</td><td>gimnasio</td></tr>
+                        <tr><td>hometown</td><td>家乡，故乡</td><td>pueblo natal</td></tr>
+                        <tr><td>hospital</td><td>医院</td><td>hospital</td></tr>
+                        <tr><td>hotel</td><td>旅馆</td><td>hotel</td></tr>
+                        <tr><td>library</td><td>图书馆</td><td>biblioteca</td></tr>
+                        <tr><td>market</td><td>市场，集市</td><td>mercado</td></tr>
+                        <tr><td>museum</td><td>博物馆</td><td>museo</td></tr>
+                        <tr><td>palace</td><td>皇宫，宫殿</td><td>palacio</td></tr>
+                        <tr><td>park</td><td>公园；停车</td><td>parque</td></tr>
+                        <tr><td>place</td><td>地方，处所</td><td>lugar</td></tr>
+                        <tr><td>pond</td><td>池塘</td><td>estanque</td></tr>
+                        <tr><td>pool</td><td>水塘</td><td>piscina / alberca</td></tr>
+                        <tr><td>prison</td><td>监狱</td><td>prisión / cárcel</td></tr>
+                        <tr><td>restaurant</td><td>餐馆；饭店</td><td>restaurante</td></tr>
+                        <tr><td>set</td><td>设备，设置</td><td>conjunto / equipo</td></tr>
+                        <tr><td>shop</td><td>商店</td><td>tienda</td></tr>
+                        <tr><td>square</td><td>广场</td><td>plaza</td></tr>
+                        <tr><td>stand</td><td>看台，台；坛；摊</td><td>puesto / grada</td></tr>
+                        <tr><td>state</td><td>（构成联邦共和国的）州；邦</td><td>estado</td></tr>
+                        <tr><td>store</td><td>商店</td><td>tienda</td></tr>
+                        <tr><td>supermarket</td><td>超级市场</td><td>supermercado</td></tr>
+                        <tr><td>theatre (美theater)</td><td>戏院，剧院；电影院 (= 英cinema)</td><td>teatro</td></tr>
+                        <tr><td>toilet</td><td>厕所</td><td>baño / aseo</td></tr>
+                        <tr><td>tower</td><td>塔，高楼</td><td>torre</td></tr>
+                        <tr><td>university</td><td>大学</td><td>universidad</td></tr>
+                        <tr><td>town</td><td>镇；城镇；市镇</td><td>pueblo / ciudad</td></tr>
+                        <tr><td>zoo</td><td>动物园</td><td>zoológico</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>2 居住设施</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>building</td><td>房屋；建筑物</td><td>edificio</td></tr>
+                        <tr><td>bathroom</td><td>浴室；洗澡间</td><td>cuarto de baño</td></tr>
+                        <tr><td>bedroom</td><td>寝室；卧室；卧房</td><td>dormitorio</td></tr>
+                        <tr><td>ceiling</td><td>天花板</td><td>techo</td></tr>
+                        <tr><td>door</td><td>门</td><td>puerta</td></tr>
+                        <tr><td>floor</td><td>地面，地板；(楼房的）层</td><td>suelo / piso</td></tr>
+                        <tr><td>gate</td><td>大门</td><td>puerta principal</td></tr>
+                        <tr><td>ground</td><td>地面</td><td>suelo / tierra</td></tr>
+                        <tr><td>hall</td><td>大厅，厅堂</td><td>pasillo / vestíbulo</td></tr>
+                        <tr><td>home</td><td>家</td><td>hogar</td></tr>
+                        <tr><td>house</td><td>房子；住宅</td><td>casa</td></tr>
+                        <tr><td>kitchen</td><td>厨房，橱具</td><td>cocina</td></tr>
+                        <tr><td>lift</td><td>（英）电梯</td><td>ascensor</td></tr>
+                        <tr><td>passage</td><td>过道，走廊</td><td>pasaje / pasillo</td></tr>
+                        <tr><td>room</td><td>房间；室；空间</td><td>habitación / cuarto</td></tr>
+                        <tr><td>stair</td><td>楼梯</td><td>escalera</td></tr>
+                        <tr><td>step</td><td>台阶，阶梯</td><td>paso / escalón</td></tr>
+                        <tr><td>study</td><td>书房</td><td>estudio</td></tr>
+                        <tr><td>wall</td><td>墙</td><td>pared</td></tr>
+                        <tr><td>well</td><td>井；水井</td><td>pozo</td></tr>
+                        <tr><td>yard</td><td>码；院子；场地</td><td>patio</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>3 交通设施</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>airline</td><td>航空公司</td><td>aerolínea</td></tr>
+                        <tr><td>airport</td><td>飞机场</td><td>aeropuerto</td></tr>
+                        <tr><td>bridge</td><td>桥</td><td>puente</td></tr>
+                        <tr><td>cross</td><td>交叉；十字形的东西</td><td>cruz / cruzar</td></tr>
+                        <tr><td>direction</td><td>方向</td><td>dirección</td></tr>
+                        <tr><td>flag</td><td>旗；标志</td><td>bandera</td></tr>
+                        <tr><td>mark</td><td>记号；痕迹</td><td>marca</td></tr>
+                        <tr><td>path</td><td>小路，小径</td><td>camino / sendero</td></tr>
+                        <tr><td>railway</td><td>铁路；铁轨</td><td>ferrocarril</td></tr>
+                        <tr><td>road</td><td>路</td><td>camino / carretera</td></tr>
+                        <tr><td>station</td><td>站；所；台</td><td>estación</td></tr>
+                        <tr><td>stop</td><td>车站</td><td>parada</td></tr>
+                        <tr><td>street</td><td>街；街道</td><td>calle</td></tr>
+                        <tr><td>traffic</td><td>交通；交通量</td><td>tráfico</td></tr>
+                        <tr><td>way</td><td>道路</td><td>vía / manera</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>4 交通工具</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>airplane / plane</td><td>飞机</td><td>avión</td></tr>
+                        <tr><td>board</td><td>甲板</td><td>bordo</td></tr>
+                        <tr><td>boat</td><td>小船</td><td>barca / bote</td></tr>
+                        <tr><td>bus</td><td>公共汽车</td><td>autobús</td></tr>
+                        <tr><td>car</td><td>小汽车</td><td>coche / auto</td></tr>
+                        <tr><td>coach</td><td>长途汽车</td><td>autocar</td></tr>
+                        <tr><td>express</td><td>快车；特快专递</td><td>exprés</td></tr>
+                        <tr><td>license</td><td>执照，许可证</td><td>licencia</td></tr>
+                        <tr><td>motorcycle</td><td>摩托车</td><td>motocicleta / moto</td></tr>
+                        <tr><td>ship</td><td>船,轮船</td><td>barco</td></tr>
+                        <tr><td>taxi</td><td>出租车</td><td>taxi</td></tr>
+                        <tr><td>train</td><td>火车</td><td>tren</td></tr>
+                        <tr><td>truck</td><td>卡车</td><td>camión</td></tr>
+                        <tr><td>underground</td><td>地下铁</td><td>metro / subterráneo</td></tr>
+                        <tr><td>wheel</td><td>车轮，小汽车</td><td>rueda</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>5 旅游</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>beach</td><td>海滩；湖滩</td><td>playa</td></tr>
+                        <tr><td>camp</td><td>营地</td><td>campamento</td></tr>
+                        <tr><td>country</td><td>国家</td><td>país</td></tr>
+                        <tr><td>map</td><td>地图</td><td>mapa</td></tr>
+                        <tr><td>package</td><td>包裹</td><td>paquete</td></tr>
+                        <tr><td>picnic</td><td>（自带食物的）郊游野餐，聚餐</td><td>picnic</td></tr>
+                        <tr><td>sail</td><td>帆；航行</td><td>vela / navegar</td></tr>
+                        <tr><td>passport</td><td>护照</td><td>pasaporte</td></tr>
+                        <tr><td>sight</td><td>视力，景物</td><td>vista</td></tr>
+                        <tr><td>tent</td><td>帐篷</td><td>tienda de campaña</td></tr>
+                        <tr><td>tour</td><td>旅行；旅游；参观；游览</td><td>gira / tour</td></tr>
+                        <tr><td>travel</td><td>旅行；游历</td><td>viajar</td></tr>
+                        <tr><td>trip</td><td>旅行</td><td>viaje</td></tr>
+                        <tr><td>visit</td><td>参观；游览;拜访；访问</td><td>visitar / visita</td></tr>
+                    </table>
+                </details>
+            </details>
+
+            <details>
+                <summary>时间、日期与节假日</summary>
+                <details class="sub-details">
+                    <summary>时期、季节、月份及星期</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>century</td><td>世纪</td><td>siglo</td></tr>
+                        <tr><td>future</td><td>未来，将来</td><td>futuro</td></tr>
+                        <tr><td>past</td><td>过去</td><td>pasado</td></tr>
+                        <tr><td>period</td><td>时期</td><td>período</td></tr>
+                        <tr><td>present</td><td>现在</td><td>presente</td></tr>
+                        <tr><td>time</td><td>时间；时期</td><td>tiempo</td></tr>
+                        <tr><td>year</td><td>年</td><td>año</td></tr>
+                        <tr><td>season</td><td>季节</td><td>estación</td></tr>
+                        <tr><td>spring</td><td>春天</td><td>primavera</td></tr>
+                        <tr><td>summer</td><td>夏天，夏季</td><td>verano</td></tr>
+                        <tr><td>autumn / fall</td><td>秋天</td><td>otoño</td></tr>
+                        <tr><td>winter</td><td>冬天,冬季</td><td>invierno</td></tr>
+                        <tr><td>month</td><td>月,月份</td><td>mes</td></tr>
+                        <tr><td>January</td><td>一月</td><td>enero</td></tr>
+                        <tr><td>February</td><td>二月</td><td>febrero</td></tr>
+                        <tr><td>March</td><td>三月</td><td>marzo</td></tr>
+                        <tr><td>April</td><td>四月</td><td>abril</td></tr>
+                        <tr><td>May</td><td>五月</td><td>mayo</td></tr>
+                        <tr><td>June</td><td>六月</td><td>junio</td></tr>
+                        <tr><td>July</td><td>七月</td><td>julio</td></tr>
+                        <tr><td>August</td><td>八月</td><td>agosto</td></tr>
+                        <tr><td>September</td><td>九月</td><td>septiembre</td></tr>
+                        <tr><td>October</td><td>十月</td><td>octubre</td></tr>
+                        <tr><td>November</td><td>十一月</td><td>noviembre</td></tr>
+                        <tr><td>December</td><td>十二月</td><td>diciembre</td></tr>
+                        <tr><td>week</td><td>星期；周</td><td>semana</td></tr>
+                        <tr><td>Monday</td><td>星期一</td><td>lunes</td></tr>
+                        <tr><td>Tuesday</td><td>星期二</td><td>martes</td></tr>
+                        <tr><td>Wednesday</td><td>星期三</td><td>miércoles</td></tr>
+                        <tr><td>Thursday</td><td>星期四</td><td>jueves</td></tr>
+                        <tr><td>Friday</td><td>星期五</td><td>viernes</td></tr>
+                        <tr><td>Saturday</td><td>星期六</td><td>sábado</td></tr>
+                        <tr><td>Sunday</td><td>星期天</td><td>domingo</td></tr>
+                        <tr><td>weekday</td><td>平日；工作日</td><td>día laborable</td></tr>
+                        <tr><td>weekend</td><td>周末</td><td>fin de semana</td></tr>
+                        <tr><td>today</td><td>今天；本日</td><td>hoy</td></tr>
+                        <tr><td>tomorrow</td><td>明天；明日</td><td>mañana</td></tr>
+                        <tr><td>tonight</td><td>今晚，今夜</td><td>esta noche</td></tr>
+                        <tr><td>yesterday</td><td>昨天</td><td>ayer</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>时分秒与节假日</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>morning</td><td>早晨；上午</td><td>mañana</td></tr>
+                        <tr><td>noon</td><td>中午</td><td>mediodía</td></tr>
+                        <tr><td>afternoon</td><td>下午；午后</td><td>tarde</td></tr>
+                        <tr><td>evening</td><td>傍晚；晚上</td><td>noche (temprano)</td></tr>
+                        <tr><td>night</td><td>夜；夜晚</td><td>noche</td></tr>
+                        <tr><td>hour</td><td>小时；点钟</td><td>hora</td></tr>
+                        <tr><td>minute</td><td>分钟</td><td>minuto</td></tr>
+                        <tr><td>second</td><td>秒</td><td>segundo</td></tr>
+                        <tr><td>moment</td><td>瞬间；片刻</td><td>momento</td></tr>
+                        <tr><td>while</td><td>一会儿</td><td>rato</td></tr>
+                        <tr><td>birthday</td><td>生日</td><td>cumpleaños</td></tr>
+                        <tr><td>Christmas</td><td>圣诞节（12月25日）</td><td>Navidad</td></tr>
+                        <tr><td>festival</td><td>节日，喜庆</td><td>festival</td></tr>
+                        <tr><td>holiday / vacation</td><td>假期，假日</td><td>vacaciones / festivo</td></tr>
+                    </table>
+                </details>
+            </details>
+
+            <details>
+                <summary>地理与动植物</summary>
+                <details class="sub-details">
+                    <summary>宇宙地貌与天气</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>earth</td><td>地球；陆地</td><td>tierra</td></tr>
+                        <tr><td>moon</td><td>月球；月亮</td><td>luna</td></tr>
+                        <tr><td>sky</td><td>天；天空</td><td>cielo</td></tr>
+                        <tr><td>space</td><td>太空；空间</td><td>espacio</td></tr>
+                        <tr><td>star</td><td>星，恒星</td><td>estrella</td></tr>
+                        <tr><td>sun</td><td>太阳，阳光</td><td>sol</td></tr>
+                        <tr><td>world</td><td>世界</td><td>mundo</td></tr>
+                        <tr><td>America</td><td>美洲</td><td>América</td></tr>
+                        <tr><td>Asia</td><td>亚洲</td><td>Asia</td></tr>
+                        <tr><td>Europe</td><td>欧洲</td><td>Europa</td></tr>
+                        <tr><td>coast</td><td>海岸</td><td>costa</td></tr>
+                        <tr><td>environment</td><td>环境</td><td>medio ambiente</td></tr>
+                        <tr><td>forest</td><td>森林；森林地带</td><td>bosque</td></tr>
+                        <tr><td>grass</td><td>草场；牧草</td><td>hierba / césped</td></tr>
+                        <tr><td>hill</td><td>小山；丘陵</td><td>colina</td></tr>
+                        <tr><td>island</td><td>岛；岛屿</td><td>isla</td></tr>
+                        <tr><td>lake</td><td>湖；湖泊</td><td>lago</td></tr>
+                        <tr><td>land</td><td>国土；陆地</td><td>tierra / terreno</td></tr>
+                        <tr><td>mountain</td><td>山；山脉</td><td>montaña</td></tr>
+                        <tr><td>ocean</td><td>海洋</td><td>océano</td></tr>
+                        <tr><td>river</td><td>河；江</td><td>río</td></tr>
+                        <tr><td>sea</td><td>海；海洋</td><td>mar</td></tr>
+                        <tr><td>address</td><td>住址；地址</td><td>dirección</td></tr>
+                        <tr><td>center / centre</td><td>中心；中央</td><td>centro</td></tr>
+                        <tr><td>east</td><td>东，东部</td><td>este</td></tr>
+                        <tr><td>west</td><td>西方</td><td>oeste</td></tr>
+                        <tr><td>south</td><td>南方</td><td>sur</td></tr>
+                        <tr><td>north</td><td>北方</td><td>norte</td></tr>
+                        <tr><td>left</td><td>左边；左面</td><td>izquierda</td></tr>
+                        <tr><td>air</td><td>空气</td><td>aire</td></tr>
+                        <tr><td>cloud</td><td>云</td><td>nube</td></tr>
+                        <tr><td>rain</td><td>雨；雨水</td><td>lluvia</td></tr>
+                        <tr><td>wind</td><td>风</td><td>viento</td></tr>
+                        <tr><td>snow</td><td>雪</td><td>nieve</td></tr>
+                        <tr><td>weather</td><td>天气</td><td>tiempo / clima</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>动物与植物</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>animal</td><td>动物</td><td>animal</td></tr>
+                        <tr><td>ant</td><td>蚂蚁</td><td>hormiga</td></tr>
+                        <tr><td>bear</td><td>熊</td><td>oso</td></tr>
+                        <tr><td>cat</td><td>猫</td><td>gato</td></tr>
+                        <tr><td>cow</td><td>母牛，奶牛</td><td>vaca</td></tr>
+                        <tr><td>dog</td><td>狗；犬</td><td>perro</td></tr>
+                        <tr><td>elephant</td><td>象</td><td>elefante</td></tr>
+                        <tr><td>horse</td><td>马</td><td>caballo</td></tr>
+                        <tr><td>lion</td><td>狮</td><td>león</td></tr>
+                        <tr><td>monkey</td><td>猴子</td><td>mono</td></tr>
+                        <tr><td>mouse / rat</td><td>老鼠</td><td>ratón / rata</td></tr>
+                        <tr><td>pig</td><td>猪</td><td>cerdo</td></tr>
+                        <tr><td>rabbit</td><td>兔子</td><td>conejo</td></tr>
+                        <tr><td>sheep</td><td>(绵)羊</td><td>oveja</td></tr>
+                        <tr><td>snake</td><td>蛇</td><td>serpiente</td></tr>
+                        <tr><td>tiger</td><td>老虎</td><td>tigre</td></tr>
+                        <tr><td>bird</td><td>鸟</td><td>pájaro</td></tr>
+                        <tr><td>fish</td><td>鱼</td><td>pez / pescado</td></tr>
+                        <tr><td>fly</td><td>苍蝇</td><td>mosca</td></tr>
+                        <tr><td>flower</td><td>花</td><td>flor</td></tr>
+                        <tr><td>leaf</td><td>叶子</td><td>hoja</td></tr>
+                        <tr><td>plant</td><td>植物</td><td>planta</td></tr>
+                        <tr><td>tree</td><td>树</td><td>árbol</td></tr>
+                    </table>
+                </details>
+            </details>
+
+            <details>
+                <summary>计量、商业及抽象名词</summary>
+                <details class="sub-details">
+                    <summary>计量货币与商业</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>double</td><td>双倍</td><td>doble</td></tr>
+                        <tr><td>dozen</td><td>一打</td><td>docena</td></tr>
+                        <tr><td>enough</td><td>足够</td><td>suficiente</td></tr>
+                        <tr><td>half</td><td>一半</td><td>mitad</td></tr>
+                        <tr><td>number</td><td>数字，号码</td><td>número</td></tr>
+                        <tr><td>percent</td><td>百分比</td><td>por ciento</td></tr>
+                        <tr><td>kilo = kilogram</td><td>公斤，千克</td><td>kilo / kilogramo</td></tr>
+                        <tr><td>kilometre</td><td>公里，千米</td><td>kilómetro</td></tr>
+                        <tr><td>meter / metre</td><td>米；公尺</td><td>metro</td></tr>
+                        <tr><td>pair</td><td>一双；一队</td><td>par</td></tr>
+                        <tr><td>weight</td><td>重量，体重</td><td>peso</td></tr>
+                        <tr><td>bill</td><td>帐单</td><td>factura / cuenta</td></tr>
+                        <tr><td>coin</td><td>硬币</td><td>moneda</td></tr>
+                        <tr><td>dollar</td><td>元（美元等）</td><td>dólar</td></tr>
+                        <tr><td>money</td><td>钱</td><td>dinero</td></tr>
+                        <tr><td>price</td><td>价格</td><td>precio</td></tr>
+                        <tr><td>business</td><td>商业，交易</td><td>negocio</td></tr>
+                        <tr><td>trade</td><td>交易，贸易</td><td>comercio</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>物质材料与形状</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>glass</td><td>玻璃</td><td>vidrio / cristal</td></tr>
+                        <tr><td>gold</td><td>金子，黄金</td><td>oro</td></tr>
+                        <tr><td>ice</td><td>冰</td><td>hielo</td></tr>
+                        <tr><td>metal</td><td>金属</td><td>metal</td></tr>
+                        <tr><td>object</td><td>物，物体</td><td>objeto</td></tr>
+                        <tr><td>oil</td><td>油类；油</td><td>aceite</td></tr>
+                        <tr><td>rock</td><td>岩石</td><td>roca</td></tr>
+                        <tr><td>silver</td><td>银</td><td>plata</td></tr>
+                        <tr><td>stone</td><td>石头；石块</td><td>piedra</td></tr>
+                        <tr><td>circle</td><td>圆形；圈</td><td>círculo</td></tr>
+                        <tr><td>shape</td><td>外形，形状</td><td>forma</td></tr>
+                        <tr><td>size</td><td>尺寸，大小</td><td>tamaño</td></tr>
+                    </table>
+                </details>
+                <details class="sub-details">
+                    <summary>行为及抽象名词</summary>
+                    <table>
+                        <tr><th>English</th><th>中文</th><th>Español</th></tr>
+                        <tr><td>advice</td><td>建议</td><td>consejo</td></tr>
+                        <tr><td>choice</td><td>选择</td><td>elección / opción</td></tr>
+                        <tr><td>decision</td><td>决定</td><td>decisión</td></tr>
+                        <tr><td>dream</td><td>梦想</td><td>sueño</td></tr>
+                        <tr><td>plan</td><td>计划</td><td>plan</td></tr>
+                        <tr><td>reason</td><td>理由，原因</td><td>razón</td></tr>
+                        <tr><td>success</td><td>成功</td><td>éxito</td></tr>
+                        <tr><td>call</td><td>喊,叫;通话</td><td>llamar / llamada</td></tr>
+                        <tr><td>help</td><td>帮助</td><td>ayuda / ayudar</td></tr>
+                        <tr><td>hit</td><td>打，击</td><td>golpear</td></tr>
+                        <tr><td>idea</td><td>主意；想法</td><td>idea</td></tr>
+                        <tr><td>talk</td><td>谈话</td><td>hablar / charla</td></tr>
+                        <tr><td>use</td><td>使用，利用</td><td>usar / uso</td></tr>
+                        <tr><td>ability</td><td>能力</td><td>habilidad / capacidad</td></tr>
+                        <tr><td>culture</td><td>文化</td><td>cultura</td></tr>
+                        <tr><td>experience</td><td>经验，经历</td><td>experiencia</td></tr>
+                        <tr><td>job / work</td><td>工作，职业</td><td>trabajo</td></tr>
+                        <tr><td>life</td><td>一生；生活</td><td>vida</td></tr>
+                        <tr><td>society</td><td>社会</td><td>sociedad</td></tr>
+                        <tr><td>truth</td><td>事实；真相</td><td>verdad</td></tr>
+                        <tr><td>danger</td><td>危险</td><td>peligro</td></tr>
+                        <tr><td>friendship</td><td>友谊</td><td>amistad</td></tr>
+                        <tr><td>hope</td><td>希望</td><td>esperanza</td></tr>
+                        <tr><td>luck</td><td>幸运</td><td>suerte</td></tr>
+                        <tr><td>name</td><td>名字</td><td>nombre</td></tr>
+                        <tr><td>secret</td><td>秘密</td><td>secreto</td></tr>
+                    </table>
+                </details>
+            </details>
+
+        </div>
+        
+
+                
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
