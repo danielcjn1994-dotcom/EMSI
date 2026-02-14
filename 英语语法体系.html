@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMSI 教学资源 - 英语语法体系</title>
+<style>
+    /* --- 基础布局：Flexbox 撑满全屏 --- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+        background-color: #f5f7fa;
+        display: flex;
+        flex-direction: column;
+        height: 100vh; /* 强制占用 100% 视口高度 */
+        overflow: hidden; /* 禁止页面整体滚动 */
+    }
+
+    /* --- 1. 页眉 --- */
+    .header {
+        background-color: white;
+        text-align: center;
+        padding: 10px 20px; 
+        border-bottom: 4px solid #f1c40f;
+        position: relative;
+        flex-shrink: 0; /* 防止页眉被压缩 */
+        z-index: 20;
+    }
+
+    .back-home {
+        position: absolute;
+        left: 20px;
+        top: 15px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #1a4a8e;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: #f0f4f8;
+        transition: 0.3s;
+    }
+
+    .back-home:hover { background: #e2e8f0; }
+
+    .header h1 {
+        color: #1a4a8e;
+        font-size: 24px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .header .subtitle {
+        color: #6b7280;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    /* --- 2. 主要内容区 --- */
+    .main-content {
+        flex: 1; /* 自动占据剩余的所有高度 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        background-color: #d1d5db;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* 全屏按钮 */
+    .fullscreen-btn {
+        margin-bottom: 8px;
+        padding: 6px 12px;
+        background-color: #1a4a8e;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: 0.3s;
+        flex-shrink: 0;
+    }
+
+    .fullscreen-btn:hover { background-color: #2c5282; }
+
+    /* --- 图片容器卡片 --- */
+    .card {
+        background: white;
+        width: 100%;
+        max-width: 1400px;
+        flex: 1; /* 让卡片撑满 main-content 的剩余高度 */
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 图片包装层 */
+    .image-wrapper {
+        flex: 1; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background-color: #f0f2f5;
+        position: relative;
+        width: 100%;
+        height: 100%; 
+    }
+
+    /* 图片本体适配 */
+    #currentImage {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; /* 保证图片完整显示不裁剪 */
+        display: block;
+    }
+
+    /* --- 导航按钮 --- */
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(26, 74, 142, 0.1); 
+        color: #1a4a8e;
+        border: none;
+        padding: 20px 15px;
+        font-size: 28px;
+        cursor: pointer;
+        transition: 0.3s;
+        border-radius: 8px;
+        user-select: none;
+        z-index: 5;
+    }
+
+    .nav-btn:hover {
+        background-color: rgba(26, 74, 142, 0.8);
+        color: white;
+    }
+
+    .prev-btn { left: 10px; }
+    .next-btn { right: 10px; }
+
+    /* --- 页码指示器 --- */
+    .page-indicator {
+        text-align: center;
+        padding: 8px;
+        background-color: white;
+        color: #1a4a8e;
+        font-weight: 600;
+        font-size: 14px;
+        border-top: 1px solid #e5e7eb;
+        flex-shrink: 0;
+    }
+
+    /* --- 3. 页脚 --- */
+    .footer {
+        background-color: #1a4a8e;
+        color: white;
+        text-align: center;
+        padding: 6px;
+        font-size: 11px;
+        flex-shrink: 0;
+    }
+
+    /* --- 移动端特别适配 --- */
+    @media (max-width: 768px) {
+        .header h1 { font-size: 18px; }
+        .back-home span { display: none; } 
+        .back-home { padding: 8px; }
+        .main-content { padding: 5px; } 
+        .nav-btn { padding: 15px 10px; font-size: 20px; }
+    }
+</style>
+</head>
+<body>
+
+<header class="header">
+    <a href="index.html" class="back-home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        <span>返回首页</span>
+    </a>
+    <h1><span>EMSI</span> 马德里国际中文学校</h1>
+    <div class="subtitle">英语语法体系(Inglés)</div>
+</header>
+
+<main class="main-content">
+    <button class="fullscreen-btn" onclick="toggleFullScreen()">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>
+        全屏模式
+    </button>
+
+    <div class="card" id="imageViewerContainer">
+        <div class="image-wrapper">
+            <img id="currentImage" src="" alt="正在加载英语练习...">
+            <button class="nav-btn prev-btn" onclick="changeImage(-1)">❮</button>
+            <button class="nav-btn next-btn" onclick="changeImage(1)">❯</button>
+        </div>
+        <div class="page-indicator" id="pageIndicator">第 1 / 15 页</div>
+    </div>
+</main>
+
+<footer class="footer">
+    <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+</footer>
+
+<script>
+    // --- 图片配置 ---
+    const totalImages = 15; // 修改为15页
+    const imageFolder = "各年级通用英语/"; // 修改为英语文件夹
+    let images = [];
+
+    // --- 路径生成逻辑 ---
+    // 目标格式: 英语教学资料 1_01.png, 英语教学资料 1_02.png ...
+    for (let i = 1; i <= totalImages; i++) {
+        // 使用 padStart(2, '0') 确保生成 01, 02... 20
+        let num = i.toString().padStart(2, '0');
+        // 修改文件名格式，注意中间的空格
+        let filename = `英语教学资料 1_${num}.png`;
+        
+        images.push(imageFolder + filename);
+    }
+
+    // --- 图片浏览器核心功能 ---
+    let currentIndex = 0; 
+    const imageElement = document.getElementById('currentImage');
+    const pageIndicator = document.getElementById('pageIndicator');
+
+    function showImage(index) {
+        // 循环翻页逻辑
+        if (index < 0) {
+            currentIndex = totalImages - 1;
+        } else if (index >= totalImages) {
+            currentIndex = 0;
+        } else {
+            currentIndex = index;
+        }
+
+        imageElement.src = images[currentIndex];
+        // 更新 alt 信息为英语
+        imageElement.alt = `各年级通用英语 - 第 ${currentIndex + 1} 页`;
+        pageIndicator.textContent = `第 ${currentIndex + 1} / ${totalImages} 页`;
+    }
+
+    function changeImage(direction) {
+        showImage(currentIndex + direction);
+    }
+
+    // 预加载图片以提升翻页体验
+    function preloadImages() {
+        images.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+    }
+
+    // 添加键盘支持 (左右方向键翻页)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            changeImage(-1);
+        } else if (e.key === 'ArrowRight') {
+            changeImage(1);
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        showImage(currentIndex);
+        // 延迟一点点预加载其他图片，避免抢占首屏资源
+        setTimeout(preloadImages, 1000);
+    });
+
+    // --- 全屏功能 ---
+    function toggleFullScreen() {
+        const elem = document.getElementById("imageViewerContainer");
+        if (!document.fullscreenElement) {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { 
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { 
+                elem.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
