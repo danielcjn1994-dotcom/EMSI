@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阅读训练 - 一二年级目录 | EMSI 马德里国际中文学校</title>
+    <style>
+        /* --- EMSI 核心视觉风格 --- */
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            background-color: #f5f7fa;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* 页眉设计 */
+        .header {
+            background-color: white; text-align: center;
+            padding: 40px 20px 0 20px; border-bottom: 5px solid #f1c40f;
+            position: relative;
+        }
+        .header h1 { color: #1a4a8e; font-size: 36px; margin: 0; }
+        .header .subtitle { color: #6b7280; font-size: 20px; margin: 10px 0 25px; font-weight: bold; }
+
+        /* 返回首页按钮 */
+        .back-home {
+            position: absolute; top: 35px; left: 40px;
+            text-decoration: none; display: inline-flex; align-items: center;
+            background: white; padding: 10px 25px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: #1a4a8e;
+            font-weight: bold; font-size: 16px; transition: 0.3s;
+        }
+        .back-home:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+
+        /* 内容区布局 - 垂直居中展示标签 */
+        .main-content {
+            flex: 1; 
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 垂直居中 */
+            align-items: center;    /* 水平居中 */
+            max-width: 1000px; 
+            margin: 0 auto; 
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* 标签容器样式 */
+        .tab-wrapper {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            text-align: center;
+        }
+
+        .tab-title {
+            color: #1a4a8e;
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        /* 标签按钮样式 */
+        .tab-container {
+            display: flex;
+            flex-direction: column; /* 垂直排列更有点击感 */
+            gap: 15px;
+            width: 300px;
+        }
+
+        .tab-button {
+            padding: 20px 30px;
+            border: 2px solid #e2e8f0;
+            background-color: #f8fafc;
+            color: #1a4a8e;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .tab-button:hover {
+            background-color: #1a4a8e;
+            color: white;
+            border-color: #1a4a8e;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(26, 74, 142, 0.2);
+        }
+
+        /* 页脚 */
+        .footer { background-color: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 15px; }
+
+        @media (max-width: 600px) {
+            .back-home { position: static; margin-bottom: 20px; }
+            .tab-container { width: 100%; }
+            .tab-wrapper { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="index.html" class="back-home">⬅ 返回主页</a>
+    <h1><span>EMSI</span> 马德里国际中文学校</h1>
+    <div class="subtitle">一二年级阅读训练 - 目录导航</div>
+</header>
+
+<main class="main-content">
+    <div class="tab-wrapper">
+        <div class="tab-title">请选择课程阶段</div>
+        <div class="tab-container">
+            <a href="阅读训练 1-2 年级.html" class="tab-button">1 - 5 课</a>
+            <a href="阅读训练 1-2 年级(6-10).html" class="tab-button" >6 - 10 课</a>
+            <a href="阅读训练 1-2 年级(11-15).html" class="tab-button" >11 - 15 课</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+</footer>
+
+</body>
+</html>

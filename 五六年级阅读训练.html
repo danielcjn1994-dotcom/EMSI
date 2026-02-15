@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五六年级阅读训练 | EMSI 马德里国际中文学校</title>
+    <style>
+        /* 核心样式 */
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            background-color: #f5f7fa;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* 页眉 */
+        .header {
+            background-color: white; text-align: center;
+            padding: 40px 20px 0 20px; border-bottom: 5px solid #f1c40f;
+            position: relative;
+        }
+        .header h1 { color: #1a4a8e; font-size: 36px; margin: 0; }
+        .header .subtitle { color: #6b7280; font-size: 20px; margin: 10px 0 25px; font-weight: bold; }
+
+        /* 返回首页按钮 */
+        .back-home {
+            position: absolute; top: 35px; left: 40px;
+            text-decoration: none; display: inline-flex; align-items: center;
+            background: white; padding: 10px 25px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: #1a4a8e;
+            font-weight: bold; font-size: 18px; transition: all 0.3s ease;
+        }
+        .back-home:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .back-home svg { margin-right: 10px; width: 24px; height: 24px; }
+
+        /* 内容区 */
+        .main-content { flex: 1; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+
+        /* 折叠组件 (课程级别) */
+        .lesson-container { width: 100%; max-width: 900px; background: white; margin-bottom: 20px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        summary { padding: 25px 40px; list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; border-left: 8px solid #1a4a8e; }
+        summary::-webkit-details-marker { display: none; }
+        summary h3 { margin: 0; color: #1a4a8e; font-size: 22px; }
+        summary::after { content: "展开内容 +"; color: #f1c40f; font-weight: bold; font-size: 14px; }
+        details[open] summary::after { content: "点击折叠 -"; }
+
+        .lesson-card { padding: 20px 50px 50px 50px; line-height: 1.8; border-top: 1px solid #eee; }
+
+        /* 内部排版 */
+        .lesson-title { border-left: 6px solid #f1c40f; padding-left: 15px; margin-bottom: 30px; margin-top: 20px; }
+        .lesson-title h2 { color: #1a4a8e; margin: 0; font-size: 28px; }
+        .lesson-title .es-title { color: #6b7280; font-size: 18px; font-weight: bold; }
+        .para-block { margin-bottom: 25px; }
+        .text-es { color: #2c3e50; font-size: 18px; display: block; }
+        .text-zh { color: #7f8c8d; font-size: 16px; display: block; margin-top: 5px; }
+
+        /* 词汇网格 */
+        .vocab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px; }
+        .vocab-item { display: flex; justify-content: space-between; padding: 8px 15px; border-bottom: 1px solid #eee; font-size: 15px; }
+        .vocab-item span:first-child { color: #1a4a8e; font-weight: bold; }
+        .vocab-item span:last-child { color: #666; }
+
+        /* 练习题样式 */
+        .quiz-section { margin-top: 40px; border-top: 2px dashed #eee; padding-top: 30px; }
+        .quiz-title { color: #1a4a8e; font-weight: bold; font-size: 24px; margin-bottom: 20px; text-align: center; }
+        .question-box { background: #f9f9f9; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #edf2f7; }
+        .question-text { color: #1a4a8e; font-weight: bold; font-size: 18px; display: block; margin-bottom: 5px; }
+        .question-zh { color: #6b7280; font-size: 15px; display: block; margin-bottom: 15px; }
+        
+        /* 答案折叠样式 */
+        .answer-details { margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+        .answer-details summary { 
+            padding: 5px 0; border: none; background: transparent; color: #e67e22; 
+            font-size: 16px; font-weight: bold; justify-content: flex-start;
+        }
+        .answer-details summary::after { content: " (点击查看答案)"; font-size: 12px; margin-left: 10px; color: #aaa; }
+        .answer-content { background: #fff3e0; padding: 10px 15px; border-radius: 8px; color: #d35400; margin-top: 5px; }
+
+        .footer { background-color: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
+
+        @media (max-width: 600px) {
+            .back-home { position: static; margin-bottom: 20px; }
+            .vocab-grid { grid-template-columns: 1fr; }
+            .lesson-card { padding: 20px; }
+        }
+
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="五六年级阅读训练目录.html" class="back-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        返回目录
+    </a>
+    <h1><span>EMSI</span> 马德里国际中文学校</h1>
+    <div class="subtitle">五六年级阅读训练</div>
+</header>
+
+<main class="main-content">
+    
+    <details class="lesson-container">
+    <summary>
+        <h3>第【1】课：树叶 (Las hojas de los árboles)</h3>
+    </summary>
+    
+    <article class="lesson-card">
+        <div class="lesson-title">
+            <div class="es-title">LECCIÓN 1</div>
+            <h2>树叶</h2>
+        </div>
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Antes de comenzar la lectura / 开始阅读之前</div>
+        <div class="question-box">
+            <span class="question-text">1. ¿Sabes por qué algunas hojas cambian de color en otoño?</span>
+            <span class="question-zh">你知道为什么有些树叶在秋天会变色吗？</span>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Lectura / 课文阅读</div>
+        <section class="story-body">
+            <div class="para-block">
+                <span class="text-es">Cada clase de árbol tiene una hoja de forma diferente. Podemos reconocer la mayoría de los árboles por la hoja que tienen. Las hojas son casi siempre verdes, pero a veces otro color, por ejemplo el rojo, cubre el verde. La sustancia verde que encontramos en las hojas se denomina clorofila.</span>
+                <span class="text-zh">每种树都有形状不同的叶子。我们可以通过叶子来认出大多数的树。叶子几乎总是绿色的，但有时其他颜色，比如红色，会覆盖绿色。我们在叶子中发现的绿色物质叫做叶绿素。</span>
+            </div>
+            
+            <div class="para-block">
+                <span class="text-es">Las hojas fabrican alimentos para el árbol. Para poder fabricarlos necesitan el agua y las sales minerales que las raíces han sacado de la tierra y que son transportadas por medio de tubitos hacia las venas de las hojas. Las hojas necesitan también sol y un gas del aire que se llama dióxido de carbono. La clorofila verde que se encuentra en las hojas utiliza los rayos del sol para transformar el agua, el dióxido de carbono y las sales minerales en alimento.</span>
+                <span class="text-zh">叶子为树木制造养料。为了制造养料，它们需要根部从泥土中吸收的水和矿物盐，这些物质通过小管子被输送到叶脉中。叶子还需要阳光和空气中一种叫做二氧化碳的气体。叶子里的绿色叶绿素利用阳光将水、二氧化碳和矿物盐转化为养料。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">La mayoría de los árboles no crecen bien a la sombra porque no hay bastante sol para que las plantas fabriquen el alimento que necesitan.</span>
+                <span class="text-zh">大多数树木在阴凉处长不好，因为没有足够的阳光让植物制造它们所需的养料。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Muchos árboles pierden las hojas en invierno. Estos árboles se llaman deciduos o de hoja caduca. Unos cuantos ejemplos son: el roble, el fresno, el haya, el manzano... En primavera a los árboles deciduos les salen nuevas hojas.</span>
+                <span class="text-zh">许多树在冬天会落叶。这些树被称为落叶树。几个例子是：橡树、白蜡树、山毛榉、苹果树…… 春天，落叶树会长出新叶子。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Algunos árboles no pierden las hojas en invierno. Se llaman árboles de hoja perenne. Entre ellos está el pino, la encina, el laurel... No todas las hojas de un árbol de hoja perenne duran siempre, van cayendo a lo largo del año para renovarse. Si os fijáis en el suelo de debajo de uno de estos árboles veréis las hojas que han caído.</span>
+                <span class="text-zh">有些树在冬天不落叶。它们被称为常绿树。其中包括松树、圣栎树、月桂树…… 常绿树的叶子并不是全都不掉落，它们会在一年中不断掉落以进行更新。如果你注意看这些树下面的地面，你会看到掉落的叶子。</span>
+            </div>
+            
+            <div class="para-block" style="background: #fff9db; padding: 15px; border-radius: 8px; border-left: 5px solid #f1c40f;">
+                <span class="text-es">Los árboles y sus hojas son fundamentales para mantener el equilibrio de la vida en nuestro planeta.</span>
+                <span class="text-zh">树木及其叶子对维持我们星球的生命平衡至关重要。</span>
+            </div>
+        </section>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Vocabulario / 20个重点词汇</div>
+            <div class="vocab-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="vocab-item"><span>1. hoja</span> <span>叶子</span></div>
+                <div class="vocab-item"><span>2. árbol</span> <span>树</span></div>
+                <div class="vocab-item"><span>3. diferente</span> <span>不同的</span></div>
+                <div class="vocab-item"><span>4. reconocer</span> <span>认出，识别</span></div>
+                <div class="vocab-item"><span>5. verde</span> <span>绿色的</span></div>
+                <div class="vocab-item"><span>6. sustancia</span> <span>物质</span></div>
+                <div class="vocab-item"><span>7. clorofila</span> <span>叶绿素</span></div>
+                <div class="vocab-item"><span>8. fabricar</span> <span>制造</span></div>
+                <div class="vocab-item"><span>9. alimento</span> <span>食物，养料</span></div>
+                <div class="vocab-item"><span>10. raíz</span> <span>根</span></div>
+                <div class="vocab-item"><span>11. tierra</span> <span>土地，泥土</span></div>
+                <div class="vocab-item"><span>12. sol</span> <span>太阳，阳光</span></div>
+                <div class="vocab-item"><span>13. dióxido de carbono</span> <span>二氧化碳</span></div>
+                <div class="vocab-item"><span>14. rayo</span> <span>光线</span></div>
+                <div class="vocab-item"><span>15. sombra</span> <span>阴凉处，阴影</span></div>
+                <div class="vocab-item"><span>16. invierno</span> <span>冬天</span></div>
+                <div class="vocab-item"><span>17. caduco</span> <span>落叶的</span></div>
+                <div class="vocab-item"><span>18. primavera</span> <span>春天</span></div>
+                <div class="vocab-item"><span>19. perenne</span> <span>常绿的，长期的</span></div>
+                <div class="vocab-item"><span>20. suelo</span> <span>地面</span></div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Comprensión / 检查你是否理解了</div>
+
+            <div class="question-box">
+                <span class="question-text">1. Relaciona cada idea con el párrafo en que aparece:</span>
+                <span class="question-zh">将每个观点与它出现的段落联系起来：</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        a) El sol es necesario para la vida del árbol. -> <b>Párrafo 3.</b> (太阳对树木的生命是必要的。第3段。)<br>
+                        b) Las hojas de los árboles son diferentes. -> <b>Párrafo 1.</b> (树叶是不同的。第1段。)<br>
+                        c) Las hojas fabrican alimentos. -> <b>Párrafo 2.</b> (叶子制造养料。第2段。)<br>
+                        d) Los árboles de hoja caduca pierden sus hojas en invierno. -> <b>Párrafo 4.</b> (落叶树在冬天落叶。第4段。)<br>
+                        e) La clorofila es verde y está en las hojas. -> <b>Párrafo 1.</b> (叶绿素是绿色的，存在于叶子中。第1段。)<br>
+                        f) Los árboles de hoja perenne conservan sus hojas. -> <b>Párrafo 5.</b> (常绿树保留它们的叶子。第5段。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">2. Completa el siguiente resumen con las informaciones del texto:</span>
+                <span class="question-zh">用文本中的信息完成以下摘要：</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        • Las hojas de los árboles tienen forma <b>diferente</b>. (树木的叶子有不同的形状。)<br>
+                        • La <b>clorofila</b> es la sustancia verde que encontramos en las hojas. (叶绿素是我们在叶子中发现的绿色物质。)<br>
+                        • La clorofila utiliza el <b>sol</b> para transformar el agua, el dióxido de carbono y las sales minerales en alimento. (叶绿素利用阳光将水、二氧化碳和矿物盐转化为养料。)<br>
+                        • Los árboles de hoja caduca pierden las hojas en <b>invierno</b>. (落叶树在冬天落叶。)<br>
+                        • Los de hoja perenne se renuevan a lo largo del <b>año</b>. (常绿树的叶子在一年中不断更新。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">3. Responde con tus palabras a las siguientes preguntas:</span>
+                <span class="question-zh">用你自己的话回答以下问题：</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        a) ¿Cuál es la función de las hojas de los árboles? <b>Fabricar alimentos para el árbol.</b> (树叶的功能是什么？为树木制造养料。)<br>
+                        b) ¿Y la de las raíces? <b>Sacar de la tierra el agua y las sales minerales.</b> (那根部的功能呢？从泥土中吸收水和矿物盐。)<br>
+                        c) ¿Qué le ocurre al árbol si no hay bastante sol? <b>No crecen bien porque no pueden fabricar el alimento que necesitan.</b> (如果没有足够的阳光，树木会发生什么？它们长不好，因为无法制造所需的养料。)<br>
+                        d) ¿Cómo llegan los nutrientes de la tierra a las hojas? <b>Son transportadas por medio de tubitos hacia las venas de las hojas.</b> (泥土中的营养物质如何到达叶子？通过小管子输送到叶脉中。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">4. Clasifica los siguientes árboles según el tipo de hoja que tienen: roble, pino, encina, fresno, haya, laurel, manzano.</span>
+                <span class="question-zh">根据叶子类型对以下树木进行分类：橡树、松树、圣栎树、白蜡树、山毛榉、月桂树、苹果树。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        <b>Hoja caduca (落叶树):</b> roble (橡树), fresno (白蜡树), haya (山毛榉), manzano (苹果树).<br>
+                        <b>Hoja perenne (常绿树):</b> pino (松树), encina (圣栎树), laurel (月桂树).
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">5. Explica cómo se alimentan los árboles.</span>
+                <span class="question-zh">解释树木是如何进食的。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        Las raíces sacan agua y sales minerales de la tierra. Las hojas usan la clorofila, el sol, el dióxido de carbono y esos nutrientes para fabricar alimento.<br>
+                        (根部从泥土中吸收水分和矿物质。叶子利用叶绿素、阳光、二氧化碳和这些营养物质来制造养料。)
+                    </div>
+                </details>
+            </div>
+        </div>
+    </article>
+</details>
+<details class="lesson-container">
+    <summary>
+        <h3>第【2】课：旅行与地理发现 (Viajes y descubrimientos geográficos)</h3>
+    </summary>
+    
+    <article class="lesson-card">
+        <div class="lesson-title">
+            <div class="es-title">LECCIÓN 2</div>
+            <h2>旅行与地理发现</h2>
+        </div>
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Antes de comenzar la lectura / 开始阅读之前</div>
+        <div class="question-box">
+            <span class="question-text">1. ¿Qué te motiva a viajar y conocer lugares nuevos?</span>
+            <span class="question-zh">什么驱使你去旅行和认识新地方？</span>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Lectura / 课文阅读</div>
+        <section class="story-body">
+            <div class="para-block">
+                <span class="text-es">A mediados del siglo XIV, los europeos salieron de sus marcos geográficos tradicionales y se lanzaron a la exploración y conquista de toda la tierra habitada. Este fenómeno histórico tuvo un valor decisivo para el futuro de Europa. A finales del siglo XIV no se conocía mucho más de un cuarto de la superficie del globo terrestre.</span>
+                <span class="text-zh">14世纪中叶，欧洲人走出了他们传统的地理框架，开始对所有有人居住的土地进行探索和征服。这一历史现象对欧洲的未来具有决定性的价值。在14世纪末，人们对地球表面的了解还不到四分之一。</span>
+            </div>
+            
+            <div class="para-block">
+                <span class="text-es">Esas lagunas en los conocimientos geográficos se llenaron progresivamente a lo largo de los siglos XV y XVI, y los principales protagonistas en este desarrollo fueron los pueblos ibéricos.</span>
+                <span class="text-zh">这些地理知识上的空白在15和16世纪被逐渐填补，而这一发展的主要主角是伊比利亚半岛的民族。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Entre los muchos y complejos motivos que empujaron a los europeos a aventurarse en el mar durante estos siglos están la búsqueda de riquezas y el deseo de convertir a la fe católica a los pueblos conquistados. Así lo escribió un conquistador español, Bernal Díaz: "Por servir a Dios y a su majestad, y dar a luz a los que estaban en tinieblas, y también por haber riquezas".</span>
+                <span class="text-zh">在这些世纪里，促使欧洲人冒险出海的众多复杂动机中，包括寻找财富以及希望让被征服的民族皈依天主教。正如西班牙征服者伯纳尔·迪亚斯所写：“为了侍奉上帝和陛下，为了给处于黑暗中的人带来光明，也是为了获得财富。”</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Otro factor a tener en cuenta es la curiosidad, el afán de saber, de descubrir nuevas tierras, nuevas especies botánicas y zoológicas, nuevos minerales, etc.</span>
+                <span class="text-zh">另一个需要考虑的因素是好奇心，对知识的渴望，以及对发现新土地、新动植物物种、新矿物等的渴望。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">La expansión de los horizontes tradicionales del conocimiento de la naturaleza y del hombre, condujo a una imagen cada vez más exacta de la realidad física del planeta. Por primera vez tuvo lugar la observación y acumulación de los datos más diversos: vientos, corrientes marinas, cuencas hidrográficas, plantas, minerales, animales, etc.</span>
+                <span class="text-zh">对自然和人类知识传统视野的扩展，使得人们对地球物理现实的认识越来越准确。这是第一次对最广泛的数据进行观察和积累：风、洋流、水文盆地、植物、矿物、动物等。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Por primera vez también se crearon instituciones y organismos que utilizaron esa información. Todo esto impulsó el desarrollo científico y técnico en dominios tales como la cartografía, la arquitectura naval, la botánica, la antropología y la etnografía.</span>
+                <span class="text-zh">这也是第一次建立利用这些信息的机构和组织。所有这一切都推动了地图学、造船学、植物学、人类学和人种学等领域的科学和技术发展。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">En lo sucesivo los conocimientos heredados de la época medieval deberían aceptarse o rechazarse con criterios basados únicamente en la observación, la comparación y la razón y no en la autoridad de los sabios de la antigüedad.</span>
+                <span class="text-zh">从此以后，从中世纪继承下来的知识必须仅根据观察、比较和理性标准来接受或拒绝，而不是基于古代智者的权威。</span>
+            </div>
+            
+            <div class="para-block" style="background: #fff9db; padding: 15px; border-radius: 8px; border-left: 5px solid #f1c40f;">
+                <span class="text-es">La curiosidad y el deseo de conocimiento cambiaron para siempre la visión del mundo.</span>
+                <span class="text-zh">好奇心和对知识的渴望永远改变了人们的世界观。</span>
+            </div>
+        </section>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Vocabulario / 20个重点词汇</div>
+            <div class="vocab-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="vocab-item"><span>1. viaje</span> <span>旅行</span></div>
+                <div class="vocab-item"><span>2. descubrimiento</span> <span>发现</span></div>
+                <div class="vocab-item"><span>3. geográfico</span> <span>地理的</span></div>
+                <div class="vocab-item"><span>4. europeo</span> <span>欧洲的，欧洲人</span></div>
+                <div class="vocab-item"><span>5. exploración</span> <span>探索</span></div>
+                <div class="vocab-item"><span>6. conquista</span> <span>征服</span></div>
+                <div class="vocab-item"><span>7. fenómeno</span> <span>现象</span></div>
+                <div class="vocab-item"><span>8. histórico</span> <span>历史的</span></div>
+                <div class="vocab-item"><span>9. superficie</span> <span>表面</span></div>
+                <div class="vocab-item"><span>10. conocimiento</span> <span>知识</span></div>
+                <div class="vocab-item"><span>11. protagonista</span> <span>主角</span></div>
+                <div class="vocab-item"><span>12. motivo</span> <span>动机</span></div>
+                <div class="vocab-item"><span>13. riqueza</span> <span>财富</span></div>
+                <div class="vocab-item"><span>14. curiosidad</span> <span>好奇心</span></div>
+                <div class="vocab-item"><span>15. especie</span> <span>物种</span></div>
+                <div class="vocab-item"><span>16. naturaleza</span> <span>自然</span></div>
+                <div class="vocab-item"><span>17. observación</span> <span>观察</span></div>
+                <div class="vocab-item"><span>18. desarrollo</span> <span>发展</span></div>
+                <div class="vocab-item"><span>19. científico</span> <span>科学的</span></div>
+                <div class="vocab-item"><span>20. medieval</span> <span>中世纪的</span></div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Comprensión / 检查你是否理解了</div>
+
+            <div class="question-box">
+                <span class="question-text">1. En la información que nos da este texto se pueden distinguir tres partes diferentes. ¿En qué párrafos se encuentran?</span>
+                <span class="question-zh">在这篇文章提供的信息中，可以区分出三个不同的部分。它们在哪些段落中？</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        a) El desconocimiento geográfico que tenían los europeos del globo terrestre antes del siglo XV. -> <b>Párrafo 1 y 2.</b> (15世纪前欧洲人对地球的地理无知。第1和第2段。)<br>
+                        b) Los motivos que les condujeron a explorar el mundo. -> <b>Párrafo 3 y 4.</b> (导致他们探索世界的动机。第3和第4段。)<br>
+                        c) Las consecuencias de dicha exploración. -> <b>Párrafo 5, 6 y 7.</b> (上述探索的后果。第5、6和7段。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">2. Di qué tres motivos llevaron a los europeos a conocer otras tierras.</span>
+                <span class="question-zh">说出促使欧洲人去了解其他土地的三个动机。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        La búsqueda de riquezas, el deseo de convertir a la fe católica a los pueblos conquistados, y la curiosidad o afán de saber.<br>
+                        (寻找财富，希望让被征服的民族皈依天主教，以及好奇心或求知欲。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">3. Explica con tus palabras lo que se dice en el párrafo 4.</span>
+                <span class="question-zh">用你自己的话解释第4段说了什么。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        Los exploradores también viajaban por curiosidad y por el deseo de descubrir cosas nuevas como tierras, animales, plantas y minerales.<br>
+                        (探险家们旅行也是出于好奇心和发现新事物（如土地、动物、植物和矿物）的渴望。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">4. ¿Quiénes son los pueblos ibéricos?</span>
+                <span class="question-zh">谁是伊比利亚民族？</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        Los habitantes de la Península Ibérica, principalmente españoles y portugueses.<br>
+                        (伊比利亚半岛的居民，主要是西班牙人和葡萄牙人。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">5. Busca información y di qué estudian las siguientes disciplinas:</span>
+                <span class="question-zh">寻找信息并说明以下学科研究什么：</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        • <b>Cartografía:</b> Estudia la elaboración y trazado de mapas. (地图学：研究地图的制作和绘制。)<br>
+                        • <b>Arquitectura naval:</b> Estudia el diseño y la construcción de barcos. (造船学：研究船只的设计和建造。)<br>
+                        • <b>Botánica:</b> Estudia las plantas. (植物学：研究植物。)<br>
+                        • <b>Antropología:</b> Estudia al ser humano de forma integral. (人类学：全面研究人类的学科。)<br>
+                        • <b>Etnografía:</b> Estudia las costumbres y tradiciones de los pueblos. (人种学：研究各民族的风俗和传统。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">6. Completa las siguientes frases:</span>
+                <span class="question-zh">完成以下句子：</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        • En la época medieval los conocimientos se basaban en la <b>autoridad de los sabios de la antigüedad</b>. (在中世纪，知识是基于古代智者的权威。)<br>
+                        • A partir de los siglos XV y XVI los conocimientos se aceptarían o rechazarían siguiendo unos criterios basados únicamente en <b>la observación, la comparación y la razón</b>. (从15和16世纪开始，知识的接受或拒绝将遵循仅基于观察、比较和理性的标准。)
+                    </div>
+                </details>
+            </div>
+        </div>
+    </article>
+</details>
+<details class="lesson-container">
+    <summary>
+        <h3>第【3】课：大教堂的建造者 (Los constructores de catedrales)</h3>
+    </summary>
+    
+    <article class="lesson-card">
+        <div class="lesson-title">
+            <div class="es-title">LECCIÓN 3</div>
+            <h2>大教堂的建造者</h2>
+        </div>
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Antes de comenzar la lectura / 开始阅读之前</div>
+        <div class="question-box">
+            <span class="question-text">1. ¿Alguna vez has visitado una catedral antigua?</span>
+            <span class="question-zh">你曾经参观过古老的大教堂吗？</span>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Lectura / 课文阅读</div>
+        <section class="story-body">
+            <div class="para-block">
+                <span class="text-es">Durante mucho tiempo se creyó que los constructores de catedrales habían sido los propios religiosos. Hoy, esta hipótesis está totalmente descartada. La enorme complejidad de estas construcciones no puede superarse únicamente con amor a Dios. Es preciso tener conocimientos de arquitectura, saber geometría, dominar las distintas técnicas de construcción.</span>
+                <span class="text-zh">很长一段时间以来，人们认为大教堂的建造者是神职人员自己。今天，这个假设已被完全排除。这些建筑的巨大复杂性是不能仅靠对上帝的爱来克服的。必须具备建筑学知识、懂几何学、掌握不同的建筑技术。</span>
+            </div>
+            
+            <div class="para-block">
+                <span class="text-es">En la edificación de cada catedral participaron innumerables personas. Es necesario recordar que cien años es un periodo muy corto en comparación con lo que se tardó en completar alguna de ellas. En numerosas ocasiones, las obras eran interrumpidas por falta de dinero, por la muerte del arquitecto o del obispo que había encargado el proyecto, o por alguna epidemia que causaba estragos entre la mano de obra. Tras un largo paréntesis volvían a ser retomadas, muchas veces por los hijos y los nietos de los primeros constructores. Se dieron verdaderas dinastías de arquitectos.</span>
+                <span class="text-zh">无数人参与了每座大教堂的建造。必须要记住，与完成其中一些大教堂所花费的时间相比，一百年是一个非常短的时期。很多时候，工程会因为缺乏资金、负责该项目的建筑师或主教去世，或者因为在劳动力中造成严重破坏的流行病而中断。在漫长的停顿之后，它们又被重新恢复，通常是由第一批建造者的子孙们继续。甚至出现了真正的建筑师世家。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Los arquitectos gozaban de una elevada posición social. El gremio de los albañiles era uno de los mejor organizados y, por consiguiente, más considerados. Ostentar el cargo de maestro albañil conllevaba el reconocimiento público. A finales de la Edad Media, los maestros con categoría de arquitectos recibían una paga tres o cuatro veces superior a la de los artesanos más especializados del mismo ramo.</span>
+                <span class="text-zh">建筑师享有很高的社会地位。泥瓦匠工会是组织得最好的工会之一，因此也最受尊重。担任泥瓦匠大师的职位意味着获得了公众的认可。在中世纪末期，具有建筑师级别的工匠大师获得的报酬是同行业中最专业的工匠的三到四倍。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Los arquitectos viajaban continuamente para asesorar sobre el diseño más adecuado a cada catedral. En 1416 se reunieron en Gerona doce arquitectos para decidir los planos de la catedral de la ciudad. Los planos solían utilizarse como modelos para varias obras. Entonces no existían los derechos de autor.</span>
+                <span class="text-zh">建筑师们不断旅行，为每座大教堂最合适的设计提供建议。1416年，十二名建筑师聚集在赫罗纳，决定该市大教堂的图纸。图纸通常被用作多个工程的模型。那时候不存在版权。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Así, por ejemplo, los campanarios de piedra calada de la catedral de Burgos estaban basados en las agujas de la fachada occidental de la catedral de Colonia. No en vano el arquitecto había sido el mismo. Por su parte, los albañiles grababan su marca en las piedras para demostrar que se hacían responsables del trabajo realizado. Estas marcas pasaban de padres a hijos.</span>
+                <span class="text-zh">因此，例如，布尔戈斯大教堂的镂空石头钟楼是基于科隆大教堂西立面的尖顶建造的。这位建筑师是同一个人，这不是没有原因的。另一方面，泥瓦匠会在石头上刻上他们的标记，以表明他们对所做的工作负责。这些标记代代相传。</span>
+            </div>
+            
+            <div class="para-block" style="background: #fff9db; padding: 15px; border-radius: 8px; border-left: 5px solid #f1c40f;">
+                <span class="text-es">La construcción de una catedral era una obra monumental que unía el talento y el esfuerzo de muchas generaciones.</span>
+                <span class="text-zh">大教堂的建造是一项不朽的工程，凝聚了许多世代的才华与努力。</span>
+            </div>
+        </section>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Vocabulario / 20个重点词汇</div>
+            <div class="vocab-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="vocab-item"><span>1. constructor</span> <span>建造者</span></div>
+                <div class="vocab-item"><span>2. catedral</span> <span>大教堂</span></div>
+                <div class="vocab-item"><span>3. religioso</span> <span>神职人员</span></div>
+                <div class="vocab-item"><span>4. hipótesis</span> <span>假设</span></div>
+                <div class="vocab-item"><span>5. complejidad</span> <span>复杂性</span></div>
+                <div class="vocab-item"><span>6. arquitectura</span> <span>建筑学</span></div>
+                <div class="vocab-item"><span>7. geometría</span> <span>几何学</span></div>
+                <div class="vocab-item"><span>8. técnica</span> <span>技术</span></div>
+                <div class="vocab-item"><span>9. construcción</span> <span>建筑，建造</span></div>
+                <div class="vocab-item"><span>10. dinero</span> <span>钱，资金</span></div>
+                <div class="vocab-item"><span>11. arquitecto</span> <span>建筑师</span></div>
+                <div class="vocab-item"><span>12. epidemia</span> <span>流行病</span></div>
+                <div class="vocab-item"><span>13. hijo</span> <span>儿子</span></div>
+                <div class="vocab-item"><span>14. nieto</span> <span>孙子</span></div>
+                <div class="vocab-item"><span>15. albañil</span> <span>泥瓦匠</span></div>
+                <div class="vocab-item"><span>16. maestro</span> <span>大师，师傅</span></div>
+                <div class="vocab-item"><span>17. diseño</span> <span>设计</span></div>
+                <div class="vocab-item"><span>18. plano</span> <span>图纸，平面图</span></div>
+                <div class="vocab-item"><span>19. piedra</span> <span>石头</span></div>
+                <div class="vocab-item"><span>20. marca</span> <span>标记</span></div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Comprensión / 检查你是否理解了</div>
+
+            <div class="question-box">
+                <span class="question-text">1. Cita las tres razones o motivos por las cuales podían ser interrumpidas las obras de una catedral.</span>
+                <span class="question-zh">说出大教堂工程可能被中断的三个原因或动机。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        Por falta de dinero, por la muerte del arquitecto o del obispo, o por alguna epidemia.<br>
+                        (由于缺乏资金、建筑师或主教去世，或由于某种流行病。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">2. ¿En qué siglo se decidieron los planos de la catedral de Gerona? ¿Cuántos arquitectos se reunieron para hacerlo?</span>
+                <span class="question-zh">赫罗纳大教堂的图纸是在哪个世纪决定的？有多少建筑师聚集在一起做这件事？</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        En el siglo XV (1416). Se reunieron doce arquitectos.<br>
+                        (在15世纪（1416年）。聚集了十二名建筑师。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">3. Cada una de las siguientes preguntas tiene respuesta en uno de los párrafos. Escribe su número al lado de la pregunta correspondiente.</span>
+                <span class="question-zh">以下每个问题都在其中一个段落中找到了答案。在相应的问题旁边写下它的数字。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        a) ¿Qué conocimientos precisan los constructores de catedrales? -> <b>Párrafo 1.</b> (大教堂的建造者需要什么知识？第1段。)<br>
+                        b) ¿Los planos servían para un solo edificio? -> <b>Párrafo 4/5.</b> (图纸只用于一栋建筑吗？第4/5段。)<br>
+                        c) ¿Cuál era el gremio mejor organizado? -> <b>Párrafo 3.</b> (哪个工会组织得最好？第3段。)<br>
+                        d) ¿Cómo firmaban los albañiles su trabajo? -> <b>Párrafo 5.</b> (泥瓦匠如何在他们的工作上签名？第5段。)<br>
+                        e) ¿Quién retomaba las obras cuando se interrumpían? -> <b>Párrafo 2.</b> (工程中断时谁来接手？第2段。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">4. Ordena las preguntas anteriores según la información dada por el texto y contéstalas.</span>
+                <span class="question-zh">根据文本提供的信息对上述问题进行排序并回答。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        <b>Orden:</b> a (Párrafo 1), e (Párrafo 2), c (Párrafo 3), b (Párrafo 4/5), d (Párrafo 5).<br>
+                        <b>Respuestas (回答):</b><br>
+                        a) Arquitectura, geometría y técnicas de construcción. (建筑学、几何学和建筑技术。)<br>
+                        e) Muchas veces por los hijos y los nietos de los primeros constructores. (通常是第一批建造者的子孙。)<br>
+                        c) El gremio de los albañiles. (泥瓦匠工会。)<br>
+                        b) No, solían utilizarse como modelos para varias obras. (不，它们通常被用作多个工程的模型。)<br>
+                        d) Grababan su marca en las piedras. (他们把标记刻在石头上。)
+                    </div>
+                </details>
+            </div>
+        </div>
+    </article>
+</details>
+<details class="lesson-container">
+    <summary>
+        <h3>第【4】课：海洋居民 (Habitantes del océano)</h3>
+    </summary>
+    
+    <article class="lesson-card">
+        <div class="lesson-title">
+            <div class="es-title">LECCIÓN 4</div>
+            <h2>海洋居民</h2>
+        </div>
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Antes de comenzar la lectura / 开始阅读之前</div>
+        <div class="question-box">
+            <span class="question-text">1. ¿Qué animales marinos conoces?</span>
+            <span class="question-zh">你认识哪些海洋动物？</span>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Lectura / 课文阅读</div>
+        <section class="story-body">
+            <div class="para-block">
+                <span class="text-es">La luz solar penetra unos cien metros bajo la superficie del mar. Las plantas marinas solo pueden vivir en esta capa superficial, pues necesitan la energía solar para producir su alimento. Muchos animales también viven y se alimentan allí.</span>
+                <span class="text-zh">阳光能穿透海面以下约一百米的深度。海洋植物只能生活在这个表层，因为它们需要太阳能来制造养料。许多动物也生活在那里并在那里觅食。</span>
+            </div>
+            
+            <div class="para-block">
+                <span class="text-es">Las plantas y animales diminutos que flotan en la superficie de los océanos forman el plancton. Las plantas son el fitoplancton y los animales el zooplancton. El fitoplancton es la base de la vida en los océanos, alimento de pequeños animales, ingeridos a su vez por otros mayores. El fitoplancton a menudo tiene formas sorprendentes. Como cualquier otra planta, produce su alimento por fotosíntesis. Toma sustancias como el anhídrido carbónico y los minerales del mar.</span>
+                <span class="text-zh">漂浮在海洋表面的微小动植物构成了浮游生物。植物被称为浮游植物，动物被称为浮游动物。浮游植物是海洋生命的基础，是小动物的食物，而小动物又被更大的动物吞食。浮游植物通常具有令人惊奇的形状。像任何其他植物一样，它通过光合作用制造养料。它吸收二氧化碳和海洋中的矿物质等物质。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Muchos animales, como la estrella de mar, ponen miles de huevos. Al salir del huevo, las larvas se alimentan de plancton. Muchas mueren antes de poder poner huevos. Muchas criaturas marinas criban el plancton del agua mediante partes especiales de su cuerpo. Esto se llama alimentación por filtrado.</span>
+                <span class="text-zh">许多动物，如海星，会产下数千个卵。孵化后，幼虫以浮游生物为食。许多幼虫在能够产卵之前就死了。许多海洋生物通过身体的特殊部位从水中筛出浮游生物。这被称为滤食。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Es el caso de las ballenas barbadas, que engullen tragos de agua rica en plancton. Cuando la expulsan, unas láminas córneas llamadas barbas la filtran y retienen pequeños animales que forman parte del plancton. Peces de distintos tamaños, desde el tiburón ballena hasta el boquerón, tienen pequeños huesos llamados rastrillos branquiales adheridos a sus branquias. Estos filtran el alimento del agua mientras el pez respira.</span>
+                <span class="text-zh">须鲸就是这种情况，它们大口吞下富含浮游生物的水。当它们将水排出时，被称为鲸须的角质片会过滤水分，并留下属于浮游生物的小动物。不同大小的鱼类，从鲸鲨到凤尾鱼，它们的鳃上都附着着被称为鳃耙的小骨头。当鱼呼吸时，这些鳃耙会从水中过滤出食物。</span>
+            </div>
+            
+            <div class="para-block" style="background: #fff9db; padding: 15px; border-radius: 8px; border-left: 5px solid #f1c40f;">
+                <span class="text-es">El plancton, aunque invisible a simple vista, es el motor que sostiene la vida en los océanos.</span>
+                <span class="text-zh">浮游生物虽然肉眼看不见，却是维持海洋生命的动力。</span>
+            </div>
+        </section>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Vocabulario / 20个重点词汇</div>
+            <div class="vocab-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="vocab-item"><span>1. océano</span> <span>海洋</span></div>
+                <div class="vocab-item"><span>2. luz solar</span> <span>阳光</span></div>
+                <div class="vocab-item"><span>3. penetrar</span> <span>穿透</span></div>
+                <div class="vocab-item"><span>4. superficie</span> <span>表面</span></div>
+                <div class="vocab-item"><span>5. planta</span> <span>植物</span></div>
+                <div class="vocab-item"><span>6. superficial</span> <span>表层的</span></div>
+                <div class="vocab-item"><span>7. energía</span> <span>能量</span></div>
+                <div class="vocab-item"><span>8. diminuto</span> <span>微小的</span></div>
+                <div class="vocab-item"><span>9. flotar</span> <span>漂浮</span></div>
+                <div class="vocab-item"><span>10. plancton</span> <span>浮游生物</span></div>
+                <div class="vocab-item"><span>11. base</span> <span>基础</span></div>
+                <div class="vocab-item"><span>12. sorprendente</span> <span>令人惊奇的</span></div>
+                <div class="vocab-item"><span>13. fotosíntesis</span> <span>光合作用</span></div>
+                <div class="vocab-item"><span>14. huevo</span> <span>卵，蛋</span></div>
+                <div class="vocab-item"><span>15. larva</span> <span>幼虫</span></div>
+                <div class="vocab-item"><span>16. criba (cribar)</span> <span>筛</span></div>
+                <div class="vocab-item"><span>17. filtrado</span> <span>过滤</span></div>
+                <div class="vocab-item"><span>18. ballena</span> <span>鲸鱼</span></div>
+                <div class="vocab-item"><span>19. barba</span> <span>须 (此处指鲸须)</span></div>
+                <div class="vocab-item"><span>20. respirar</span> <span>呼吸</span></div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Comprensión / 检查你是否理解了</div>
+
+            <div class="question-box">
+                <span class="question-text">1. Escribe la idea más importante que aparece en cada párrafo.</span>
+                <span class="question-zh">写出每段中最重要的大意。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        <b>Párrafo 1:</b> Las plantas marinas viven en la capa superficial porque necesitan luz solar. (第1段：海洋植物生活在表层，因为它们需要阳光。)<br>
+                        <b>Párrafo 2:</b> El plancton (fitoplancton y zooplancton) es la base de la vida en el océano. (第2段：浮游生物（浮游植物和浮游动物）是海洋生命的基础。)<br>
+                        <b>Párrafo 3 y 4:</b> Muchos animales marinos se alimentan filtrando el plancton del agua. (第3、4段：许多海洋动物通过从水中过滤浮游生物来进食。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">2. Explica por qué las plantas marinas no pueden vivir a más de cien metros de profundidad.</span>
+                <span class="question-zh">解释为什么海洋植物不能生活在一百多米深的地方。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        Porque la luz solar solo penetra unos cien metros, y necesitan la energía solar para producir su alimento.<br>
+                        (因为阳光只能穿透大约一百米深，而它们需要太阳能来制造养料。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">3. Completa las siguientes frases con la información del texto:</span>
+                <span class="question-zh">用文章中的信息完成以下句子：</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        • La base de la vida en los océanos es el <b>fitoplancton</b> que consiste en plantas diminutas. (海洋生命的基础是浮游植物，它由微小的植物组成。)<br>
+                        • A los animales diminutos del plancton se les llama <b>zooplancton</b>. (浮游生物中的微小动物被称为浮游动物。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">4. ¿En qué consiste la alimentación por filtrado? ¿Qué partes del cuerpo utilizan las ballenas barbadas para el filtrado? ¿Y los boquerones?</span>
+                <span class="question-zh">滤食是怎么回事？须鲸用身体的什么部位进行过滤？凤尾鱼呢？</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        Consiste en cribar el plancton del agua mediante partes especiales del cuerpo. Las ballenas barbadas utilizan láminas córneas llamadas barbas. Los boquerones usan pequeños huesos llamados rastrillos branquiales.<br>
+                        (它指的是通过身体的特殊部位从水中筛出浮游生物。须鲸使用被称为鲸须的角质片。凤尾鱼使用被称为鳃耙的小骨头。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">5. Explica la diferencia entre el zooplancton y el fitoplancton.</span>
+                <span class="question-zh">解释浮游动物和浮游植物之间的区别。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        El fitoplancton está formado por plantas diminutas que hacen la fotosíntesis, mientras que el zooplancton está formado por animales diminutos.<br>
+                        (浮游植物由进行光合作用的微小植物组成，而浮游动物由微小的动物组成。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">6. ¿Cuál crees que es el tema general que se trata en el texto?</span>
+                <span class="question-zh">你认为这篇文章讨论的总体主题是什么？</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        La vida en los océanos y cómo los organismos marinos, especialmente el plancton, se alimentan y sobreviven.<br>
+                        (海洋中的生命，以及海洋生物（尤其是浮游生物）如何进食和生存。)
+                    </div>
+                </details>
+            </div>
+        </div>
+    </article>
+</details>
+<details class="lesson-container">
+    <summary>
+        <h3>第【5】课：彗星、小行星和陨石 (Cometas, asteroides y meteoritos)</h3>
+    </summary>
+    
+    <article class="lesson-card">
+        <div class="lesson-title">
+            <div class="es-title">LECCIÓN 5</div>
+            <h2>彗星、小行星和陨石</h2>
+        </div>
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Antes de comenzar la lectura / 开始阅读之前</div>
+        <div class="question-box">
+            <span class="question-text">1. ¿Has visto alguna vez una estrella fugaz?</span>
+            <span class="question-zh">你曾经见过流星吗？</span>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+        <div class="quiz-title" style="text-align:left; font-size:20px;">Lectura / 课文阅读</div>
+        <section class="story-body">
+            <div class="para-block">
+                <span class="text-es">Tal vez haya miles de millones de cometas diminutos en los bordes del Sistema Solar. Giran en torno al Sol mucho más allá del más lejano de los planetas. A veces uno de ellos sufre alguna alteración y se desplaza hacia el Sol. Algunos cometas se acercan al Sol con regularidad, como el Halley, que vuelve cada 76 años.</span>
+                <span class="text-zh">在太阳系的边缘，可能有数十亿颗微小的彗星。它们在比最远的行星还要远得多的地方绕着太阳旋转。有时其中一颗会受到某种扰动，并向太阳移动。有些彗星会有规律地靠近太阳，比如哈雷彗星，它每76年回归一次。</span>
+            </div>
+            
+            <div class="para-block">
+                <span class="text-es">En ocasiones se dice que los cometas son como bolas de nieve sucias, porque se componen de una mezcla de polvo y hielo. El calor del Sol funde parte del hielo. Esto hace que se cree una estela de polvo y gas que se aleja del cometa, formando una gigantesca cola que brilla a la luz del Sol. Cuando se vuelven a alejar, se enfrían, los gases se hielan y la cola desaparece. La cola de los cometas siempre apunta en dirección contraria al Sol.</span>
+                <span class="text-zh">有时人们说彗星就像脏雪球，因为它们由灰尘和冰的混合物组成。太阳的热量融化了一部分冰。这产生了一条远离彗星的尘埃和气体尾迹，形成了一条在阳光下闪闪发光的巨大尾巴。当它们再次远离时，它们会变冷，气体结冰，尾巴就消失了。彗星的尾巴总是指向背离太阳的方向。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Los asteroides son bloques de roca que no llegaron a unirse para formar un planeta. La mayor parte gira en torno al Sol formando un anillo llamado cinturón de asteroides que se encuentra entre Marte y Júpiter. Algunos asteroides han chocado contra nuestro planeta. Cuando entran en la atmósfera, se encienden y se transforman en meteoritos.</span>
+                <span class="text-zh">小行星是没有成功结合形成行星的岩石块。大部分小行星绕太阳旋转，形成一个环，称为小行星带，位于火星和木星之间。有些小行星曾撞击过我们的星球。当它们进入大气层时，它们会燃烧并变成陨石。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Los meteoritos, o estrellas fugaces, no son estrellas. Son líneas de luz que cruzan el cielo de la noche. Se forman cuando las piedras que recorren el espacio velozmente chocan contra la atmósfera de la Tierra. Se calientan tanto que se queman. Vemos el destello que deja el rastro en el cielo durante unos segundos.</span>
+                <span class="text-zh">陨石，或者叫流星，并不是恒星。它们是划过夜空的光线。当在太空中快速运行的石头撞击地球大气层时，它们就形成了。它们变得非常热以至于燃烧起来。我们能看到它在天空中留下几秒钟的闪光轨迹。</span>
+            </div>
+
+            <div class="para-block">
+                <span class="text-es">Algunos de los meteoritos que se han estudiado parece que venían de la Luna y otros de Marte. La mayoría, sin embargo, son fragmentos de asteroides o de cometas. Algunas catástrofes del pasado pueden haber sido causadas por meteoritos, como la extinción de los dinosaurios.</span>
+                <span class="text-zh">一些被研究过的陨石似乎来自月球，另一些来自火星。然而，大多数是小行星或彗星的碎片。过去的一些灾难可能是由陨石引起的，比如恐龙的灭绝。</span>
+            </div>
+            
+            <div class="para-block" style="background: #fff9db; padding: 15px; border-radius: 8px; border-left: 5px solid #f1c40f;">
+                <span class="text-es">El universo está lleno de misteriosos viajeros de roca y hielo.</span>
+                <span class="text-zh">宇宙中充满了神秘的岩石和冰之旅行者。</span>
+            </div>
+        </section>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Vocabulario / 20个重点词汇</div>
+            <div class="vocab-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="vocab-item"><span>1. cometa</span> <span>彗星</span></div>
+                <div class="vocab-item"><span>2. asteroide</span> <span>小行星</span></div>
+                <div class="vocab-item"><span>3. meteorito</span> <span>陨石</span></div>
+                <div class="vocab-item"><span>4. Sistema Solar</span> <span>太阳系</span></div>
+                <div class="vocab-item"><span>5. planeta</span> <span>行星</span></div>
+                <div class="vocab-item"><span>6. regularidad</span> <span>规律性</span></div>
+                <div class="vocab-item"><span>7. hielo</span> <span>冰</span></div>
+                <div class="vocab-item"><span>8. polvo</span> <span>灰尘</span></div>
+                <div class="vocab-item"><span>9. fundir</span> <span>融化</span></div>
+                <div class="vocab-item"><span>10. estela</span> <span>尾迹，轨迹</span></div>
+                <div class="vocab-item"><span>11. cola</span> <span>尾巴</span></div>
+                <div class="vocab-item"><span>12. brillar</span> <span>闪耀</span></div>
+                <div class="vocab-item"><span>13. roca</span> <span>岩石</span></div>
+                <div class="vocab-item"><span>14. anillo</span> <span>环</span></div>
+                <div class="vocab-item"><span>15. cinturón</span> <span>带 (这里指小行星带)</span></div>
+                <div class="vocab-item"><span>16. chocar</span> <span>撞击</span></div>
+                <div class="vocab-item"><span>17. atmósfera</span> <span>大气层</span></div>
+                <div class="vocab-item"><span>18. estrella fugaz</span> <span>流星</span></div>
+                <div class="vocab-item"><span>19. destello</span> <span>闪光</span></div>
+                <div class="vocab-item"><span>20. extinción</span> <span>灭绝</span></div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <div class="quiz-title">Comprensión / 检查你是否理解了</div>
+
+            <div class="question-box">
+                <span class="question-text">1. Fíjate en la organización del texto, o sea en su estructura, y di cómo están distribuidos los párrafos:</span>
+                <span class="question-zh">注意文本的组织结构，说说段落是如何分布的：</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        <b>Cometas (彗星):</b> Párrafos 1 y 2 (第1、2段。原文无明显段落标记，但前半部分全在讲彗星).<br>
+                        <b>Asteroides (小行星):</b> Párrafo 3 (第3段，主要讲述小行星带和岩石块).<br>
+                        <b>Meteoritos (陨石):</b> Párrafo 4 y 5 (最后部分，讲述流星和陨石撞击).
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">2. ¿Qué cometa se acerca al Sol con regularidad? ¿Cada cuánto tiempo?</span>
+                <span class="question-zh">哪颗彗星有规律地靠近太阳？每隔多长时间？</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        El cometa Halley. Vuelve cada 76 años.<br>
+                        (哈雷彗星。每76年回归一次。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">3. Responde a las siguientes preguntas sobre los cometas.</span>
+                <span class="question-zh">回答关于彗星的以下问题。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        a) ¿Dónde se encuentran? <b>En los bordes del Sistema Solar.</b> (它们在哪里？在太阳系的边缘。)<br>
+                        b) ¿De qué están compuestos? <b>De una mezcla de polvo y hielo.</b> (它们由什么组成？由灰尘和冰的混合物组成。)<br>
+                        c) ¿Hacia dónde apunta su cola? <b>En dirección contraria al Sol.</b> (它们的尾巴指向哪里？背离太阳的方向。)<br>
+                        d) ¿Cómo se forma la cola de los cometas? <b>El calor del Sol funde parte del hielo, creando una estela de polvo y gas que brilla a la luz del Sol.</b> (彗星的尾巴是如何形成的？太阳的热量融化了部分冰，产生了在阳光下闪耀的尘埃和气体尾迹。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">4. Ahora contesta a estas preguntas sobre los asteroides.</span>
+                <span class="question-zh">现在回答这些关于小行星的问题。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        a) ¿Qué son? <b>Bloques de roca que no llegaron a unirse para formar un planeta.</b> (它们是什么？没有成功结合形成行星的岩石块。)<br>
+                        b) ¿Qué ocurre cuando entran en la atmósfera de la Tierra? <b>Se encienden y se transforman en meteoritos.</b> (当它们进入地球大气层时会发生什么？它们会燃烧并变成陨石。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">5. Explica con tus palabras qué son los meteoritos y cómo se forman.</span>
+                <span class="question-zh">用你自己的话解释什么是陨石以及它们是如何形成的。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        Son fragmentos de roca espacial que entran a gran velocidad en la atmósfera terrestre, se calientan y se queman, dejando un rastro de luz en el cielo.<br>
+                        (它们是进入地球大气层的高速太空岩石碎片，受热燃烧并在天空中留下光迹。)
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-box">
+                <span class="question-text">6. Pon otro título más imaginativo a este texto.</span>
+                <span class="question-zh">给这篇文章起另一个更有想象力的标题。</span>
+                <details class="answer-details">
+                    <summary>👉 Respuesta</summary>
+                    <div class="answer-content">
+                        "Viajeros del Espacio: Rocas, Hielo y Fuego" o "Los misterios del cielo nocturno".<br>
+                        (“太空旅行者：岩石、冰与火”或“夜空的奥秘”。)
+                    </div>
+                </details>
+            </div>
+        </div>
+    </article>
+</details>
+    
+</main>
+
+<footer class="footer">
+    © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+</footer>
+<style>
+    /* 默写按钮样式 */
+    .dictation-btn {
+        background-color: #f1c40f;
+        color: #1a4a8e;
+        border: none;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 15px; /* 距离标题的间距 */
+        vertical-align: middle;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        display: inline-block; /* 确保按钮显示 */
+    }
+
+    .dictation-btn:hover {
+        background-color: #f39c12;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .dictation-btn.active {
+        background-color: #e74c3c; /* 红色背景 */
+        color: white;
+    }
+
+    /* 默写模式下的单词遮挡 */
+    .vocab-grid.dictation-mode .vocab-item span:first-child {
+        background-color: #e2e8f0;
+        color: transparent !important; /* 强制文字透明 */
+        border-radius: 4px;
+        user-select: none;
+        cursor: pointer;
+        position: relative;
+        min-width: 80px; /* 保证最小宽度 */
+    }
+
+    /* 遮挡时的提示文字 */
+    .vocab-grid.dictation-mode .vocab-item span:first-child::after {
+        content: "点击查看";
+        position: absolute;
+        left: 0; top: 0; width: 100%; height: 100%;
+        color: #999;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center; /* 文字居中 */
+    }
+
+    /* 偷看模式 */
+    .vocab-grid.dictation-mode .vocab-item span:first-child.peek {
+        background-color: #fff3cd !important; /* 偷看时淡黄色背景 */
+        color: #1a4a8e !important;
+    }
+    .vocab-grid.dictation-mode .vocab-item span:first-child.peek::after {
+        content: ""; /* 移除提示文字 */
+    }
+</style>
+
+<script>
+    (function() {
+        console.log("默写功能脚本已启动..."); // 方便调试
+
+        // 1. 直接找到所有的词汇网格
+        var grids = document.querySelectorAll('.vocab-grid');
+        
+        if (grids.length === 0) {
+            console.error("未找到 .vocab-grid 元素，请检查 HTML 结构");
+            return;
+        }
+
+        grids.forEach(function(grid, index) {
+            // 找到网格前面的标题
+            var title = grid.previousElementSibling;
+            
+            // 如果前面不是标题，或者已经加过按钮了，就跳过
+            if (!title || !title.classList.contains('quiz-title') || title.querySelector('.dictation-btn')) {
+                return;
+            }
+
+            // 创建按钮
+            var btn = document.createElement('button');
+            btn.className = 'dictation-btn';
+            btn.innerHTML = '🙈 默写模式';
+            btn.type = 'button'; // 防止意外提交表单
+
+            // 绑定点击事件
+            btn.onclick = function(e) {
+                e.stopPropagation(); // 防止冒泡
+                
+                // 切换网格的模式
+                grid.classList.toggle('dictation-mode');
+                
+                // 切换按钮状态
+                if (grid.classList.contains('dictation-mode')) {
+                    this.innerHTML = '👁️ 显示答案';
+                    this.classList.add('active');
+                } else {
+                    this.innerHTML = '🙈 默写模式';
+                    this.classList.remove('active');
+                    // 关闭时清除所有偷看状态
+                    var peeks = grid.querySelectorAll('.peek');
+                    peeks.forEach(function(p) { p.classList.remove('peek'); });
+                }
+            };
+
+            // 把按钮加到标题里面去
+            title.appendChild(btn);
+        });
+
+        // 2. 绑定点击偷看功能 (使用事件委托，更稳定)
+        document.body.addEventListener('click', function(e) {
+            // 检查点击的是不是在默写模式下的第一个 span (西语单词)
+            var target = e.target;
+            
+            // 如果点到了伪元素(::after)，target可能是span本身
+            if (target.matches('.vocab-grid.dictation-mode .vocab-item span:first-child')) {
+                target.classList.toggle('peek');
+            }
+        });
+
+    })();
+</script>
+</body>
+</html>
