@@ -256,6 +256,23 @@
             font-weight: bold;
             display: inline-block;
         }
+        /* --- 顶部页眉的 Logo --- */
+        .header-logo {
+            position: absolute;
+            left: 90px;
+            height: 70px;
+            width: auto;
+            transition: 0.3s;
+            mix-blend-mode: multiply; /* ✨ 新增这一行：去除白色背景 */
+        }
+
+        /* --- 欢迎界面的大 Logo --- */
+        .welcome-logo { 
+            width: 220px; 
+            height: auto; 
+            margin-bottom: 30px; 
+            mix-blend-mode: multiply; /* ✨ 新增这一行：去除白色背景 */
+        }
 
         .category-content { display: none; animation: slideInUp 0.4s ease-out; }
         .category-content.active { display: block; }
