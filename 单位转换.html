@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI - 单位转换</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容占位区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 40px 40px 40px;
+        }
+
+        /* 修改了 card 样式使其适应长列表内容 */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid #eee;
+        }
+
+        /* --- 折叠面板样式 (单元设计) --- */
+        details {
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background-color: #ffffff;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        summary {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a4a8e;
+            background-color: #f8fafc;
+            padding: 18px 20px;
+            cursor: pointer;
+            list-style: none; /* 隐藏默认小三角以自定义，或保持默认 */
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid transparent;
+            transition: background-color 0.2s;
+        }
+
+        /* 自定义折叠三角箭头 */
+        summary::before {
+            content: "▶";
+            font-size: 16px;
+            color: #f1c40f;
+            margin-right: 15px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #eff6ff;
+        }
+
+        /* 单元内部内容区 */
+        .unit-content {
+            padding: 25px 20px;
+            line-height: 1.6;
+        }
+
+        .theory-text {
+            font-size: 16px;
+            color: #4b5563;
+            margin-bottom: 20px;
+        }
+
+        .image-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+        }
+
+        .image-gallery img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 12px 10px;
+        }
+
+        th {
+            background-color: #1a4a8e;
+            color: white;
+            font-weight: 500;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 实例框样式 */
+        .example-box {
+            background-color: #fffbeb;
+            border-left: 5px solid #f1c40f;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            color: #4b5563;
+        }
+
+        .example-box strong {
+            color: #b45309;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <details>
+                <summary>Unidades de Longitud (长度单位)</summary>
+                <div class="unit-content">
+                    <div class="theory-text">
+                        La unidad principal de longitud es el metro (m). Para medir distancias grandes usamos kilómetros, hectómetros y decámetros. Para medidas pequeñas usamos decímetros, centímetros y milímetros.
+                        <br><br>
+                        长度的基本单位是米 (m)。测量长距离时，我们使用千米、百米和十米。测量短距离时，我们使用分米、厘米和毫米。相邻单位之间通常是10的倍数关系。
+                    </div>
+                    
+                    <div class="image-gallery">
+                        <img src="单位转换/Unidades mayores que el metro.png" alt="Unidades mayores">
+                        <img src="单位转换/Metro,decímetro,centímetro y milímetro.png" alt="Unidades menores">
+                        <img src="单位转换/Medidas de longitud.png" alt="Equivalencias de longitud">
+                    </div>
+
+                    <table>
+                        <tr>
+                            <th>Unidad (单位)</th>
+                            <th>Símbolo (符号)</th>
+                            <th>Equivalencia en metros (换算成米)</th>
+                        </tr>
+                        <tr><td>Kilómetro (千米/公里)</td><td>km</td><td>1000 m</td></tr>
+                        <tr><td>Hectómetro (百米)</td><td>hm</td><td>100 m</td></tr>
+                        <tr><td>Decámetro (十米)</td><td>dam</td><td>10 m</td></tr>
+                        <tr><td><strong>Metro (米)</strong></td><td><strong>m</strong></td><td><strong>1 m</strong></td></tr>
+                        <tr><td>Decímetro (分米)</td><td>dm</td><td>0.1 m</td></tr>
+                        <tr><td>Centímetro (厘米)</td><td>cm</td><td>0.01 m</td></tr>
+                        <tr><td>Milímetro (毫米)</td><td>mm</td><td>0.001 m</td></tr>
+                    </table>
+
+                    <div class="example-box">
+                        <strong>Ejemplos / 实例：</strong>
+                        • 5 km = 5 × 1000 = 5000 m<br>
+                        • 2 m = 2 × 100 = 200 cm<br>
+                        • 3000 mm = 3 m
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Unidades de Masa (质量/重量单位)</summary>
+                <div class="unit-content">
+                    <div class="theory-text">
+                        La unidad principal de masa es el gramo (g), aunque el kilogramo (kg) es la más utilizada en el día a día. Para medir masas muy grandes se utiliza la tonelada (t). 
+                        <br><br>
+                        质量（即日常所说的重量）的主要基础单位是克 (g)，尽管千克 (kg/公斤) 是生活中最常用的单位。对于非常重的大型物体，我们使用吨 (t)。
+                    </div>
+                    
+                    <div class="image-gallery">
+                        <img src="单位转换/Kilogramo y tonelada.png" alt="Kilogramo y tonelada">
+                        <img src="单位转换/Kilogramo y gramo.png" alt="Kilogramo y gramo">
+                        <img src="单位转换/Medidas de masa.png" alt="Equivalencias de masa">
+                    </div>
+
+                    <table>
+                        <tr>
+                            <th>Unidad (单位)</th>
+                            <th>Símbolo (符号)</th>
+                            <th>Equivalencia (换算)</th>
+                        </tr>
+                        <tr><td>Tonelada (吨)</td><td>t</td><td>1000 kg</td></tr>
+                        <tr><td><strong>Kilogramo (千克)</strong></td><td><strong>kg</strong></td><td><strong>1000 g</strong></td></tr>
+                        <tr><td>Hectogramo (百克)</td><td>hg</td><td>100 g</td></tr>
+                        <tr><td>Decagramo (十克)</td><td>dag</td><td>10 g</td></tr>
+                        <tr><td>Gramo (克)</td><td>g</td><td>1 g</td></tr>
+                        <tr><td>Decigramo (分克)</td><td>dg</td><td>0.1 g</td></tr>
+                        <tr><td>Centigramo (厘克)</td><td>cg</td><td>0.01 g</td></tr>
+                    </table>
+
+                    <div class="example-box">
+                        <strong>Ejemplos / 实例：</strong>
+                        • 2.5 t = 2500 kg<br>
+                        • 4 kg = 4000 g<br>
+                        • 500 g = 0.5 kg
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Unidades de Capacidad (容量/体积单位)</summary>
+                <div class="unit-content">
+                    <div class="theory-text">
+                        La unidad principal de capacidad es el litro (l). Nos indica la cantidad de líquido que cabe en un recipiente. Las botellas de agua o leche se miden en litros o centilitros.
+                        <br><br>
+                        容量的基础单位是升 (l或L)。它用来表示一个容器能装下多少液体。日常生活中的水瓶或牛奶瓶通常用升或厘升来计量。
+                    </div>
+                    
+                    <div class="image-gallery">
+                        <img src="单位转换/Litro, decilitro y centilitro.png" alt="Litro, decilitro y centilitro">
+                        <img src="单位转换/Medidas de capacidad.png" alt="Equivalencias de capacidad">
+                    </div>
+
+                    <table>
+                        <tr>
+                            <th>Unidad (单位)</th>
+                            <th>Símbolo (符号)</th>
+                            <th>Equivalencia en litros (换算成升)</th>
+                        </tr>
+                        <tr><td>Kilolitro (千升)</td><td>kl</td><td>1000 l</td></tr>
+                        <tr><td>Hectolitro (百升)</td><td>hl</td><td>100 l</td></tr>
+                        <tr><td>Decalitro (十升)</td><td>dal</td><td>10 l</td></tr>
+                        <tr><td><strong>Litro (升)</strong></td><td><strong>l / L</strong></td><td><strong>1 l</strong></td></tr>
+                        <tr><td>Decilitro (分升)</td><td>dl</td><td>0.1 l</td></tr>
+                        <tr><td>Centilitro (厘升)</td><td>cl</td><td>0.01 l</td></tr>
+                        <tr><td>Mililitro (毫升)</td><td>ml</td><td>0.001 l</td></tr>
+                    </table>
+
+                    <div class="example-box">
+                        <strong>Ejemplos / 实例：</strong>
+                        • 1.5 l = 150 cl<br>
+                        • 2000 ml = 2 l<br>
+                        • 1 kl = 1000 l
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Situaciones de Compra (货币与购物)</summary>
+                <div class="unit-content">
+                    <div class="theory-text">
+                        En España y gran parte de Europa, la moneda oficial es el euro (€). Un euro se divide en unidades más pequeñas llamadas céntimos.
+                        <br><br>
+                        在西班牙及欧洲大部分地区，官方货币是欧元 (€)。1欧元可以分割成更小的单位，称为欧分 (céntimo)。
+                    </div>
+                    
+                    <div class="image-gallery">
+                        <img src="单位转换/Situaciones de compra.png" alt="Situaciones de compra">
+                    </div>
+
+                    <table>
+                        <tr>
+                            <th>Moneda (货币)</th>
+                            <th>Símbolo (符号)</th>
+                            <th>Equivalencia (换算)</th>
+                        </tr>
+                        <tr><td><strong>Euro (欧元)</strong></td><td><strong>€</strong></td><td><strong>100 céntimos</strong></td></tr>
+                        <tr><td>Céntimo (欧分)</td><td>cts</td><td>0.01 €</td></tr>
+                    </table>
+
+                    <div class="example-box">
+                        <strong>Ejemplos / 实例：</strong>
+                        • 3 € = 300 céntimos<br>
+                        • 150 céntimos = 1,50 € (1 euro y 50 céntimos)<br>
+                        • 4,05 € = 4 euros y 5 céntimos = 405 céntimos
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>

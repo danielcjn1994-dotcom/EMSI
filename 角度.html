@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI - Ángulos</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        /* --- 内容占位区 --- */
+        .main-content {
+            flex: 1;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- 折叠面板样式 (核心定制) --- */
+        details {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+            overflow: hidden;
+            border: 1px solid #eaeaea;
+            transition: all 0.3s ease;
+        }
+
+        details:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        summary {
+            padding: 20px 25px;
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a4a8e;
+            cursor: pointer;
+            list-style: none; /* 隐藏默认箭头 */
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none; /* 隐藏 Safari 默认箭头 */
+        }
+
+        /* 自定义三角箭头 */
+        summary::before {
+            content: "▶";
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 18px;
+            color: #f1c40f; /* EMSI 黄色 */
+            transition: transform 0.3s ease;
+        }
+
+        /* 展开时的箭头动画和背景变化 */
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+        
+        details[open] summary {
+            border-bottom: 1px solid #eaeaea;
+            background-color: #f8fafc;
+        }
+
+        .details-content {
+            padding: 25px;
+            color: #4a5568;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .details-content p {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .example-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid #1a4a8e;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 17px;
+        }
+
+        .img-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            margin-top: auto;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        
+        <details>
+            <summary>1. Conceptos Básicos de Ángulos / 角度的基础</summary>
+            <div class="details-content">
+                <p>Dos rectas secantes al cortarse forman cuatro ángulos. Un ángulo tiene dos lados y un vértice. Los ángulos pueden ser rectos, agudos y obtusos. 两条相交的直线会形成四个角。一个角由两条边和一个顶点组成。角度可以分为直角、锐角和钝角。</p>
+                <p>Un ángulo recto mide 90º. Un ángulo agudo mide menos de 90º. Un ángulo obtuso mide más de 90º. 直角等于90度，锐角小于90度，钝角大于90度。</p>
+                <div class="example-box">
+                    <strong>Ejemplo / 实例：</strong><br>
+                    La esquina de un libro forma un <strong>ángulo recto</strong> (一本书的角落形成一个直角)。<br>
+                    La punta de una porción de pizza es un <strong>ángulo agudo</strong> (一块比萨饼的尖端是一个锐角)。
+                </div>
+                <div class="img-container">
+                    <img src="角度/Tipos de ángulos.png" alt="Tipos de ángulos">
+                    <img src="角度/Clasificación de ángulos.png" alt="Clasificación de ángulos">
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>2. Medida y Relación de Ángulos / 角度的测量与关系</summary>
+            <div class="details-content">
+                <p>Para medir un ángulo con el transportador, colocamos el centro en el vértice y miramos la medida. 为了用量角器测量角度，我们将中心点对准顶点并读取度数。</p>
+                <p>Los ángulos consecutivos tienen en común el vértice y un lado. Los ángulos adyacentes son consecutivos que forman una recta. 连续角有一个共同的顶点和一条边。相邻角是在同一条直线上的连续角。</p>
+                <div class="example-box">
+                    <strong>Ejemplo / 实例：</strong><br>
+                    Al abrir unas tijeras, los ángulos que se forman a los lados del tornillo son <strong>adyacentes</strong> (打开剪刀时，螺丝两侧形成的角是相邻角)。
+                </div>
+                <div class="img-container">
+                    <img src="角度/Medida de ángulos .png" alt="Medida de ángulos">
+                    <img src="角度/Ángulos .png" alt="Ángulos consecutivos y adyacentes">
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>3. Clasificación de Triángulos / 三角形的分类</summary>
+            <div class="details-content">
+                <p>Según sus lados, los triángulos pueden ser <strong>equiláteros</strong> (3 lados iguales), <strong>isósceles</strong> (2 lados iguales) o <strong>escalenos</strong> (3 lados desiguales). 根据边长，三角形可分为等边三角形（3条边相等）、等腰三角形（2条边相等）或不等边三角形（3条边均不相等）。</p>
+                <p>Según sus ángulos, pueden ser <strong>rectángulos</strong> (un ángulo recto), <strong>acutángulos</strong> (3 ángulos agudos) u <strong>obtusángulos</strong> (un ángulo obtuso). 根据角度，可分为直角三角形、锐角三角形或钝角三角形。</p>
+                <div class="example-box">
+                    <strong>Ejemplo / 实例：</strong><br>
+                    Una señal de tráfico de ceda el paso es un triángulo <strong>equilátero</strong> (让行的交通标志是一个等边三角形)。
+                </div>
+                <div class="img-container">
+                    <img src="角度/Clasificación de triángulos.png" alt="Clasificación de triángulos">
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>4. Cuadriláteros y Paralelogramos / 四边形与平行四边形</summary>
+            <div class="details-content">
+                <p>Los cuadriláteros pueden ser <strong>paralelogramos</strong> (lados paralelos dos a dos), <strong>trapecios</strong> (solo dos lados paralelos) o <strong>trapezoides</strong> (ningún lado paralelo). 四边形可以是平行四边形（两组对边平行）、梯形（只有一组对边平行）或不规则四边形（没有平行的边）。</p>
+                <p>Dentro de los paralelogramos tenemos: Cuadrados, Rectángulos, Rombos y Romboides. 在平行四边形中，我们有：正方形、长方形、菱形和平行四边形（狭义）。</p>
+                <div class="example-box">
+                    <strong>Ejemplo / 实例：</strong><br>
+                    La pantalla de un televisor es un <strong>rectángulo</strong> (电视屏幕是一个长方形)。<br>
+                    Una cometa tradicional suele tener forma de <strong>rombo</strong> (传统的风筝通常是菱形的)。
+                </div>
+                <div class="img-container">
+                    <img src="角度/Clasificación de cuadriláteros.png" alt="Clasificación de cuadriláteros">
+                    <img src="角度/Clasificación de paralelogramos.png" alt="Clasificación de paralelogramos">
+                </div>
+            </div>
+        </details>
+
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>

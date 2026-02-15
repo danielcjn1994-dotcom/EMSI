@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI - 认识时间</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容占位区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 40px 40px 40px;
+        }
+
+        /* 卡片样式修改为适应长篇幅内容 */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid #eee;
+            display: block; /* 取消原有的flex居中，允许内部元素自然排列 */
+        }
+
+        /* --- 折叠面板样式 (单元设计) --- */
+        details {
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background-color: #ffffff;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        summary {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a4a8e;
+            background-color: #f8fafc;
+            padding: 18px 20px;
+            cursor: pointer;
+            list-style: none; /* 隐藏默认小三角 */
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid transparent;
+            transition: background-color 0.2s;
+        }
+
+        summary::-webkit-details-marker {
+            display: none; /* 隐藏Safari默认小三角 */
+        }
+
+        /* 自定义折叠三角箭头 */
+        summary::before {
+            content: "▶";
+            font-size: 16px;
+            color: #f1c40f;
+            margin-right: 15px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #eff6ff;
+        }
+
+        /* 单元内部内容区 */
+        .unit-content {
+            padding: 25px 20px;
+            line-height: 1.6;
+        }
+
+        .theory-text {
+            font-size: 16px;
+            color: #4b5563;
+            margin-bottom: 20px;
+        }
+
+        .image-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+        }
+
+        .image-gallery img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 12px 10px;
+        }
+
+        th {
+            background-color: #1a4a8e;
+            color: white;
+            font-weight: 500;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 实例框样式 */
+        .example-box {
+            background-color: #fffbeb;
+            border-left: 5px solid #f1c40f;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            color: #4b5563;
+        }
+
+        .example-box strong {
+            color: #b45309;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <details>
+                <summary>1. Leer el reloj (认识钟表)</summary>
+                <div class="unit-content">
+                    <div class="theory-text">
+                        El reloj nos ayuda a medir el tiempo a lo largo del día. Un reloj analógico tiene agujas: la aguja corta marca las horas y la aguja larga marca los minutos. Algunos relojes también tienen una aguja muy delgada y rápida para los segundos.
+                        <br><br>
+                        钟表帮助我们测量一天中的时间。常见的模拟钟表（指针表）有指针：短针用来指示小时（时针），长针用来指示分钟（分针）。有些钟表还有一根走得最快的细针，用来指示秒（秒针）。
+                    </div>
+                    
+                    <div class="image-gallery">
+                        <img src="时间/El reloj.png" alt="认识钟表1">
+                        <img src="时间/El reloj digital.png" alt="认识钟表2">
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplos / 实例：</strong>
+                        • Si la aguja corta está en el 3 y la larga en el 12, son las 3 en punto. (如果短针指着3，长针指着12，就是3点整。)<br>
+                        • Si la aguja corta está pasada el 4 y la larga en el 6, son las 4 y media. (如果短针过了4，长针指着6，就是4点半。)
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>2. Unidades de tiempo y conversión (时间单位与转换)</summary>
+                <div class="unit-content">
+                    <div class="theory-text">
+                        Para medir el tiempo usamos horas (h), minutos (min) y segundos (s). A diferencia de otras medidas, el tiempo funciona con un sistema sexagesimal, es decir, salta de 60 en 60. También usamos días, semanas, meses y años para periodos más largos.
+                        <br><br>
+                        我们使用小时 (h)、分钟 (min) 和秒 (s) 来精确测量时间。与长度或重量不同，时间使用的是六十进制，即满60进1。对于更长的时间段，我们还会使用天、星期、月和年来计算。
+                    </div>
+                    
+                    <div class="image-gallery">
+                        <img src="时间/Unidades de tiempo.png" alt="时间单位">
+                        <img src="时间/Hora, minuto y segundo.png" alt="时间转换">
+                    </div>
+
+                    <table>
+                        <tr>
+                            <th>Unidad Mayor (大单位)</th>
+                            <th>Equivalencia (换算关系)</th>
+                            <th>Unidad Menor (小单位)</th>
+                        </tr>
+                        <tr><td>1 año (年)</td><td>=</td><td>12 meses (个月)</td></tr>
+                        <tr><td>1 semana (星期)</td><td>=</td><td>7 días (天)</td></tr>
+                        <tr><td>1 día (天)</td><td>=</td><td>24 horas (小时)</td></tr>
+                        <tr><td><strong>1 hora (小时 - h)</strong></td><td><strong>=</strong></td><td><strong>60 minutos (分钟 - min)</strong></td></tr>
+                        <tr><td><strong>1 minuto (分钟 - min)</strong></td><td><strong>=</strong></td><td><strong>60 segundos (秒 - s)</strong></td></tr>
+                        <tr><td>1 media hora (半小时)</td><td>=</td><td>30 minutos (分钟)</td></tr>
+                        <tr><td>1 cuarto de hora (一刻钟)</td><td>=</td><td>15 minutos (分钟)</td></tr>
+                    </table>
+
+                    <div class="example-box">
+                        <strong>Ejemplos de conversión / 转换实例：</strong>
+                        • 2 horas = 2 × 60 = 120 minutos (2小时 = 120分钟)<br>
+                        • 1 hora y 15 minutos = 60 + 15 = 75 minutos (1小时15分 = 75分钟)<br>
+                        • 120 segundos = 2 minutos (120秒 = 2分钟)
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
