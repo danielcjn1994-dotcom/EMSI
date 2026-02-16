@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI - 几何与时间知识点</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e; 
+            text-decoration: none;
+            border-radius: 50px; 
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent; 
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px); 
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15); 
+            color: #153a70; 
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容占位区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+            padding: 20px 40px 40px 40px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 900px;
+            display: block; 
+        }
+
+        /* --- 折叠面板 (Accordion) 样式 --- */
+        details {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            box-shadow: 0 10px 25px rgba(26, 74, 142, 0.1);
+            border-color: #cbd5e1;
+        }
+
+        summary {
+            padding: 18px 25px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a4a8e;
+            cursor: pointer;
+            list-style: none; 
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            transition: background-color 0.3s;
+        }
+
+        summary::-webkit-details-marker {
+            display: none; 
+        }
+
+        summary:hover {
+            background-color: #f8fafc;
+        }
+
+        /* 自定义三角箭头 */
+        summary::before {
+            content: "▶";
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 16px;
+            color: #f1c40f;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .content-body {
+            padding: 0 25px 25px 25px;
+            border-top: 1px solid #f1f5f9;
+            margin-top: 5px;
+            padding-top: 20px;
+        }
+
+        .content-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: block;
+        }
+
+        .theory-text {
+            font-size: 17px;
+            color: #334155;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .legend-text {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            background-color: #f8fafc;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .example-box {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            color: #166534;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        /* --- 表格样式 --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #1a4a8e;
+            font-weight: 600;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <details>
+                <summary>Unidad 1: Líneas y Segmentos / 单元 1：线段与直线类型</summary>
+                <div class="content-body">
+                    <img src="几何/rectas.png" alt="Segmento y rectas">
+                    <div class="theory-text">
+                        Un segmento es la parte de recta comprendida entre dos puntos.<br>
+                        线段是包含在两个端点之间的直线部分。<br><br>
+                        Las rectas paralelas no se cortan. Las rectas secantes se cortan en un punto.<br>
+                        平行线永远不会相交。相交线会在一个点上相交。
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo / 实例：</strong><br>
+                        Las vías del tren son como rectas paralelas, nunca se cruzan. Las calles que forman una cruz son rectas secantes.<br>
+                        火车的轨道就像平行线，永远不会交叉。形成十字路口的街道就是相交线。
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Unidad 2: Polígonos y Triángulos / 单元 2：多边形与三角形</summary>
+                <div class="content-body">
+                    <img src="几何/polígonos.png" alt="Clasificación de polígonos">
+                    <div class="theory-text">
+                        Según su número de lados, los polígonos se clasifican en: Triángulo (3 lados), Cuadrilátero (4 lados), Pentágono (5 lados) y Hexágono (6 lados).<br>
+                        根据边数，多边形可分类为：三角形（3条边）、四边形（4条边）、五边形（5条边）和六边形（6条边）。
+                    </div>
+                    
+                    <img src="几何/triángulos.png" alt="Clasificación de triángulos">
+                    <div class="theory-text">
+                        El triángulo equilátero tiene los tres lados iguales. El triángulo isósceles tiene dos lados iguales. El triángulo escaleno tiene los tres lados desiguales.<br>
+                        等边三角形的三条边都相等。等腰三角形有两条边相等。不等边三角形的三条边都不相等。
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo / 实例：</strong><br>
+                        Una señal de tráfico de "Ceda el paso" es un triángulo equilátero. Una pantalla de televisión o un libro son cuadriláteros (rectángulos).<br>
+                        “让行”交通标志是一个等边三角形。电视屏幕或书本是四边形（矩形）。
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Unidad 3: Circunferencia y Círculo / 单元 3：圆周与圆</summary>
+                <div class="content-body">
+                    <img src="几何/círculo.png" alt="Circunferencia y círculo">
+                    <div class="theory-text">
+                        La circunferencia es una línea curva cerrada. El círculo está formado por la circunferencia y su interior. Sus elementos principales son el centro, el radio y el diámetro.<br>
+                        圆周是一条闭合的曲线。圆是由圆周及其内部区域组成的。它们的主要元素包括：圆心、半径和直径。
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo / 实例：</strong><br>
+                        Un anillo o un aro de baloncesto es una circunferencia (solo el borde). Una moneda o una pizza es un círculo (incluye el relleno).<br>
+                        一枚戒指或篮球框是圆周（只有边缘）。一枚硬币或一个披萨是圆（包含了内部的实体）。
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Unidad 4: Prismas y Pirámides / 单元 4：棱柱与棱锥</summary>
+                <div class="content-body">
+                    <img src="几何/prismas.png" alt="Prismas">
+                    <div class="theory-text">
+                        Los elementos de los prismas son: bases, caras laterales, vértices y aristas. Los prismas se clasifican según el polígono de sus bases.<br>
+                        棱柱的几何元素包括：底面、侧面、顶点和棱。棱柱是根据其底面的多边形形状来分类的。
+                    </div>
+
+                    <img src="几何/pirámides.png" alt="Pirámides">
+                    <div class="theory-text">
+                        Los elementos de las pirámides son: base, caras laterales, vértices y aristas. Las pirámides se clasifican según el polígono de sus bases.<br>
+                        棱锥的几何元素包括：底面、侧面、顶点和棱。棱锥同样根据其底面的多边形形状来分类。
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo / 实例：</strong><br>
+                        Una caja de zapatos es un prisma rectangular. Las famosas construcciones de Egipto son pirámides cuadrangulares (tienen un cuadrado de base).<br>
+                        一个鞋盒是一个长方体（矩形棱柱）。埃及著名的建筑是四角锥（它们的底面是正方形）。
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Unidad 5: Cuerpos Redondos / 单元 5：旋转体</summary>
+                <div class="content-body">
+                    <img src="几何/Cuerpos redondos.png" alt="Cuerpos redondos">
+                    <div class="theory-text">
+                        Los cuerpos geométricos con superficies curvas se llaman cuerpos redondos. El cilindro, el cono y la esfera son cuerpos redondos.<br>
+                        带有曲面的几何体被称为旋转体（圆体）。圆柱体、圆锥体和球体都属于旋转体。
+                    </div>
+                    <div class="example-box">
+                        <strong>Ejemplo / 实例：</strong><br>
+                        Una lata de refresco es un cilindro. Un gorro de fiesta es un cono. Un balón de fútbol es una esfera.<br>
+                        一罐汽水是圆柱体。派对帽子是圆锥体。一个足球是球体。
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Unidad 6: Perímetro y Área / 单元 6：周长与面积</summary>
+                <div class="content-body">
+                    <div class="theory-text">
+                        El <strong>perímetro (P)</strong> es la suma de las longitudes de los lados de una figura geométrica (el contorno).<br>
+                        <strong>周长 (P)</strong> 是一个几何图形所有边长的总和（也就是外轮廓的长度）。<br><br>
+                        El <strong>área (A)</strong> es la medida de la superficie interior que ocupa una figura plana.<br>
+                        <strong>面积 (A)</strong> 是一个平面图形内部所占表面的大小。
+                    </div>
+                    
+                    <div class="legend-text">
+                        <strong>Símbolos / 符号说明:</strong><br>
+                        l = lado (边长) | b = base (底边) | h = altura (高) | B = base mayor (下底) | r = radio (半径) | &pi; &asymp; 3.14
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Figura / 图形</th>
+                                <th>Perímetro / 周长 (P)</th>
+                                <th>Área / 面积 (A)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Triángulo</strong> (三角形)</td>
+                                <td>Suma de los 3 lados (三边之和)</td>
+                                <td>(b &times; h) / 2</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cuadrado</strong> (正方形)</td>
+                                <td>l &times; 4</td>
+                                <td>l &times; l (或 l<sup>2</sup>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rectángulo</strong> (长方形)</td>
+                                <td>(b + h) &times; 2</td>
+                                <td>b &times; h</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Trapecio</strong> (梯形)</td>
+                                <td>Suma de los 4 lados (四边之和)</td>
+                                <td>((B + b) &times; h) / 2</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Paralelogramo</strong> (平行四边形)</td>
+                                <td>Suma de los 4 lados (四边之和)</td>
+                                <td>b &times; h</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Círculo</strong> (圆形)</td>
+                                <td>2 &times; &pi; &times; r</td>
+                                <td>&pi; &times; r<sup>2</sup></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="example-box">
+                        <strong>Ejemplo / 实例：</strong><br>
+                        Si tienes un jardín <strong>rectangular</strong> que mide 5 metros de largo (base) y 3 metros de ancho (altura):<br>
+                        如果你有一个<strong>长方形</strong>花园，长（底）5米，宽（高）3米：<br><br>
+                        - Para rodearlo con una valla, calculas el <strong>Perímetro</strong>: (5 + 3) &times; 2 = 16 metros de valla.<br>
+                        - 要用栅栏把它围起来，你需要计算<strong>周长</strong>：(5 + 3) &times; 2 = 16米的栅栏。<br><br>
+                        - Para plantar césped dentro, calculas el <strong>Área</strong>: 5 &times; 3 = 15 metros cuadrados (m<sup>2</sup>) de césped.<br>
+                        - 要在里面种草坪，你需要计算<strong>面积</strong>：5 &times; 3 = 15平方米 (m<sup>2</sup>) 的草坪。
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
