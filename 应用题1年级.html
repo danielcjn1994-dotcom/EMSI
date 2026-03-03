@@ -13,18 +13,18 @@
         background-color: #f5f7fa;
         display: flex;
         flex-direction: column;
-        height: 100vh; /* 强制占用 100% 视口高度 */
-        overflow: hidden; /* 禁止页面整体滚动 */
+        height: 100vh;
+        overflow: hidden; /* 保持页面整体不滚动，只在图片区域滚动 */
     }
 
     /* --- 1. 页眉 --- */
     .header {
         background-color: white;
         text-align: center;
-        padding: 10px 20px; /* 稍微减小内边距，给图片留更多空间 */
+        padding: 10px 20px;
         border-bottom: 4px solid #f1c40f;
         position: relative;
-        flex-shrink: 0; /* 防止页眉被压缩 */
+        flex-shrink: 0;
         z-index: 20;
     }
 
@@ -48,7 +48,7 @@
 
     .header h1 {
         color: #1a4a8e;
-        font-size: 24px; /* 稍微调小字号适配 iPad */
+        font-size: 24px;
         font-weight: 800;
         margin: 0;
     }
@@ -59,9 +59,9 @@
         margin-top: 4px;
     }
 
-    /* --- 2. 主要内容区 (关键适配部分) --- */
+    /* --- 2. 主要内容区 --- */
     .main-content {
-        flex: 1; /* 自动占据剩余的所有高度 */
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -71,9 +71,17 @@
         overflow: hidden;
     }
 
-    /* 全屏按钮 */
-    .fullscreen-btn {
+    /* --- 工具栏 (新增放大缩小功能) --- */
+    .toolbar {
+        display: flex;
+        gap: 8px;
         margin-bottom: 8px;
+        flex-shrink: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .tool-btn {
         padding: 6px 12px;
         background-color: #1a4a8e;
         color: white;
@@ -85,52 +93,54 @@
         align-items: center;
         gap: 5px;
         transition: 0.3s;
-        flex-shrink: 0;
     }
 
-    .fullscreen-btn:hover { background-color: #2c5282; }
+    .tool-btn:hover { background-color: #2c5282; }
+    
+    .tool-btn:active { transform: scale(0.95); }
 
     /* --- 图片容器卡片 --- */
     .card {
         background: white;
         width: 100%;
         max-width: 1400px;
-        flex: 1; /* 关键：让卡片撑满 main-content 的剩余高度 */
+        flex: 1;
         border-radius: 8px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        overflow: hidden;
+        overflow: hidden; /* 卡片本身不溢出 */
         position: relative;
         display: flex;
         flex-direction: column;
     }
 
-    /* 图片包装层 */
+    /* 图片包装层：允许滚动 */
     .image-wrapper {
-        flex: 1; /* 撑满卡片剩余空间 */
+        flex: 1;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
+        overflow: auto; /* 关键修改：允许内容变大后出现滚动条 */
         background-color: #f0f2f5;
         position: relative;
         width: 100%;
-        height: 100%; /* 确保高度传递 */
+        height: 100%;
+        align-items: center;
     }
 
     /* 图片本体适配 */
     #currentImage {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain; /* 保证图片完整显示不裁剪 */
+        margin: auto; /* 保证缩小时居中 */
+        width: 100%;
+        height: 100%;
+        object-fit: contain; 
+        transition: width 0.2s ease, height 0.2s ease; /* 缩放动画 */
         display: block;
     }
 
-    /* --- 导航按钮 --- */
+    /* --- 导航按钮 (移到了滚动区外部，保证位置固定) --- */
     .nav-btn {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background-color: rgba(26, 74, 142, 0.1); /* 默认半透明，不遮挡题目 */
+        background-color: rgba(26, 74, 142, 0.15);
         color: #1a4a8e;
         border: none;
         padding: 20px 15px;
@@ -139,7 +149,7 @@
         transition: 0.3s;
         border-radius: 8px;
         user-select: none;
-        z-index: 5;
+        z-index: 10;
     }
 
     .nav-btn:hover {
@@ -160,6 +170,7 @@
         font-size: 14px;
         border-top: 1px solid #e5e7eb;
         flex-shrink: 0;
+        z-index: 10;
     }
 
     /* --- 3. 页脚 --- */
@@ -175,10 +186,11 @@
     /* --- 移动端特别适配 --- */
     @media (max-width: 768px) {
         .header h1 { font-size: 18px; }
-        .back-home span { display: none; } /* 手机上只显示箭头 */
+        .back-home span { display: none; }
         .back-home { padding: 8px; }
-        .main-content { padding: 5px; } /* 减少边距 */
+        .main-content { padding: 5px; }
         .nav-btn { padding: 15px 10px; font-size: 20px; }
+        .tool-btn { padding: 6px 10px; font-size: 12px; }
     }
 </style>
 </head>
@@ -194,17 +206,24 @@
 </header>
 
 <main class="main-content">
-    <button class="fullscreen-btn" onclick="toggleFullScreen()">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>
-        全屏模式
-    </button>
+    <div class="toolbar">
+        <button class="tool-btn" onclick="zoomImage(1)">➕ 放大</button>
+        <button class="tool-btn" onclick="zoomImage(-1)">➖ 缩小</button>
+        <button class="tool-btn" onclick="resetZoom()">🔄 还原</button>
+        <button class="tool-btn" onclick="toggleFullScreen()">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>
+            全屏
+        </button>
+    </div>
 
     <div class="card" id="imageViewerContainer">
-        <div class="image-wrapper">
+        <button class="nav-btn prev-btn" onclick="changeImage(-1)">❮</button>
+        <button class="nav-btn next-btn" onclick="changeImage(1)">❯</button>
+
+        <div class="image-wrapper" id="scrollWrapper">
             <img id="currentImage" src="" alt="正在加载练习题...">
-            <button class="nav-btn prev-btn" onclick="changeImage(-1)">❮</button>
-            <button class="nav-btn next-btn" onclick="changeImage(1)">❯</button>
         </div>
+        
         <div class="page-indicator" id="pageIndicator">第 1 / 24 页</div>
     </div>
 </main>
@@ -220,23 +239,19 @@
     let images = [];
 
     // --- 路径生成逻辑 ---
-    // 目标格式: Problemas 1º_01.png, Problemas 1º_02.png ...
     for (let i = 1; i <= totalImages; i++) {
-        // 使用 padStart(2, '0') 确保生成 01, 02... 24
         let num = i.toString().padStart(2, '0');
-        // 注意：这里严格匹配了您提供的文件名格式（包含 º 符号）
         let filename = `Problemas 1º_${num}.png`;
-        
         images.push(imageFolder + filename);
     }
 
     // --- 图片浏览器核心功能 ---
     let currentIndex = 0; 
+    let currentScale = 100; // 当前缩放比例 (100%)
     const imageElement = document.getElementById('currentImage');
     const pageIndicator = document.getElementById('pageIndicator');
 
     function showImage(index) {
-        // 循环翻页逻辑
         if (index < 0) {
             currentIndex = totalImages - 1;
         } else if (index >= totalImages) {
@@ -248,10 +263,42 @@
         imageElement.src = images[currentIndex];
         imageElement.alt = `一年级数学练习题 - 第 ${currentIndex + 1} 页`;
         pageIndicator.textContent = `第 ${currentIndex + 1} / ${totalImages} 页`;
+        
+        resetZoom(); // 每次切换题目时，自动还原大小
     }
 
     function changeImage(direction) {
         showImage(currentIndex + direction);
+    }
+
+    // --- 新增：缩放功能 ---
+    function zoomImage(direction) {
+        // 每次放大/缩小 30%
+        currentScale += direction * 30;
+        
+        // 限制缩放范围：最小 50%，最大 300%
+        if (currentScale < 50) currentScale = 50;
+        if (currentScale > 300) currentScale = 300;
+
+        applyZoom();
+    }
+
+    function resetZoom() {
+        currentScale = 100;
+        applyZoom();
+    }
+
+    function applyZoom() {
+        if (currentScale === 100) {
+            imageElement.style.width = '100%';
+            imageElement.style.height = '100%';
+            imageElement.style.objectFit = 'contain';
+        } else {
+            // 放大时解除宽高限制，允许内容溢出从而产生滚动条
+            imageElement.style.width = currentScale + '%';
+            imageElement.style.height = 'auto'; 
+            imageElement.style.objectFit = 'initial';
+        }
     }
 
     // 预加载图片以提升翻页体验
@@ -264,7 +311,6 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         showImage(currentIndex);
-        // 延迟一点点预加载其他图片，避免抢占首屏资源
         setTimeout(preloadImages, 1000);
     });
 
