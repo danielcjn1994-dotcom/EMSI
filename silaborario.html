@@ -604,6 +604,61 @@ document.addEventListener('keydown', (e) => {
 
 // 初始化
 window.addEventListener('DOMContentLoaded', extractSyllables);
+
+// --- 键盘与翻页笔 (Presenter) 支持 ---
+document.addEventListener('keydown', (e) => {
+    // 识别翻页笔常用按键码
+    const isNextKey = ['PageDown', 'ArrowRight', 'ArrowDown'].includes(e.code);
+    const isPrevKey = ['PageUp', 'ArrowLeft', 'ArrowUp'].includes(e.code);
+    const isActionKey = ['Space', 'Enter'].includes(e.code);
+
+    // 判断当前的焦点/全屏状态，智能分配翻页笔信号
+    const isBookFullscreen = document.fullscreenElement === document.getElementById("bookContainer");
+    const isFlashcardFullscreen = document.fullscreenElement === document.getElementById("flashcard-game");
+
+    // 场景 1：如果正在全屏播放【认读挑战（闪卡）】
+    if (isFlashcardFullscreen) {
+        // 按下一页、空格或回车，都触发下一张闪卡
+        if (isNextKey || isActionKey) {
+            e.preventDefault(); 
+            nextCard();
+        }
+        // 按上一页直接屏蔽，防止页面乱滚
+        if (isPrevKey) {
+            e.preventDefault(); 
+        }
+        return; // 结束逻辑，防止同时触发书籍翻页
+    }
+
+    // 场景 2：如果正在全屏播放【课件图片】
+    if (isBookFullscreen) {
+        if (isNextKey) {
+            e.preventDefault();
+            changePage(1);
+        }
+        if (isPrevKey) {
+            e.preventDefault();
+            changePage(-1);
+        }
+        return; // 结束逻辑
+    }
+
+    // 场景 3：【非全屏】的普通网页状态
+    // 空格/回车：如果在闪卡游戏中，继续下一张
+    if (isActionKey && currentIndex !== -1) {
+        e.preventDefault(); 
+        nextCard();
+    }
+    // 翻页笔：触发课件翻页
+    if (isNextKey) {
+        // e.preventDefault(); // 非全屏下如果不想让网页跟着向下滚动，可以取消这行注释
+        changePage(1);
+    }
+    if (isPrevKey) {
+        // e.preventDefault(); // 同上
+        changePage(-1);
+    }
+});
 </script>
 
 </body>
