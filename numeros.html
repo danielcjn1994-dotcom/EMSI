@@ -61,11 +61,32 @@
             margin-bottom: 25px;
         }
 
+        /* --- 工具栏与按钮样式 (从词汇表引入) --- */
+        .tool-bar {
+            margin: 0 auto 20px auto; 
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+            width: 100%;
+        }
+        
+        .tool-buttons {
+            display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;
+        }
+
+        .btn-tool {
+            padding: 12px 30px; border-radius: 30px; border: 2px solid #1a4a8e;
+            background: white; color: #1a4a8e; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+        }
+        
+        .btn-tool:hover { background: #f0f4f8; transform: translateY(-2px); }
+
         /* --- 内容展示区 --- */
         .main-content {
             flex: 1;
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* 改为纵向排列以容纳顶部按钮 */
+            align-items: center;
             padding: 30px 20px;
         }
 
@@ -73,7 +94,7 @@
         .card {
             background: white;
             width: 100%;
-            max-width: 1300px; /* 1. 加宽：从1100px改为1300px */
+            max-width: 1300px; 
             min-height: 60vh; 
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
@@ -82,15 +103,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 15px; /* 2. 减少内边距：让图片有更多空间 */
+            padding: 30px 15px; 
             box-sizing: border-box;
         }
 
         /* 教学图片样式：确保撑满宽度 */
         .content-image {
-            width: 100%;      /* 强制撑满容器宽度 */
+            width: 100%;      
             max-width: 100%;
-            height: auto;     /* 高度自动按比例缩放 */
+            height: auto;     
             border-radius: 8px;
             margin-bottom: 40px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -99,7 +120,7 @@
         /* --- 游戏区域样式 --- */
         .game-section {
             width: 100%;
-            max-width: 700px; /* 稍微加宽游戏区域背景 */
+            max-width: 700px; 
             border-top: 2px dashed #eee;
             padding-top: 30px;
             text-align: center;
@@ -114,7 +135,7 @@
         .game-box {
             display: inline-block;
             transition: transform 0.3s ease;
-            margin: 10px; /* 增加间距，方便以后并排方多个游戏 */
+            margin: 10px; 
         }
 
         .game-box:hover {
@@ -125,14 +146,13 @@
             text-decoration: none;
             color: #475569;
             font-weight: 600;
-            display: block; /* 确保链接包含图片和文字 */
+            display: block; 
         }
 
         .game-box img {
             border-radius: 10px;
-            margin: 0 auto 10px auto; /* 图片居中 */
+            margin: 0 auto 10px auto; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            /* 确保Wordwall提供的图片也响应式缩放，但不超过其原大小 */
             max-width: 100%; 
             height: auto;
         }
@@ -149,8 +169,9 @@
         @media (max-width: 768px) {
             .header h1 { font-size: 26px; }
             .back-home { position: static; justify-content: center; margin-bottom: 15px; }
-            /* 手机端稍微减少内边距 */
             .card { padding: 20px 10px; }
+            .tool-buttons { flex-direction: column; width: 100%; align-items: stretch; }
+            .btn-tool { text-align: center; }
         }
     </style>
 </head>
@@ -166,6 +187,14 @@
     </header>
 
     <main class="main-content">
+        
+        <div class="tool-bar">
+            <div class="tool-buttons">
+                <a href="数字单词表.html" class="btn-tool">🎮 进入数字互动测试系统</a>
+            </div>
+            <span style="color: #666; font-size: 14px;">结合下方图表复习后，进入测试系统进行听写与拼写练习。</span>
+        </div>
+
         <div class="card">
             <img src="numeros.jpg" alt="西班牙语数字图表" class="content-image">
 
