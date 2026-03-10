@@ -45,12 +45,13 @@
         .header h1 { color: #1a4a8e; font-size: 38px; font-weight: 800; margin: 0; }
         .header .subtitle { color: #6b7280; font-size: 20px; margin-top: 10px; margin-bottom: 25px; }
 
-        /* --- 插件控制按钮 --- */
+        /* --- 插件控制按钮与链接 --- */
         .tool-bar {
             margin-bottom: 20px;
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
+            flex-wrap: wrap; /* 确保手机端能够自动换行 */
         }
 
         .btn-tool {
@@ -64,17 +65,24 @@
             transition: all 0.3s;
             font-size: 16px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-decoration: none; /* 去除链接下划线 */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         .btn-tool:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+            background: #f0f4f8;
         }
 
         .btn-tool.active {
             background: #1a4a8e;
             color: white;
             border-color: #f1c40f;
+            transform: translateY(0);
         }
 
         /* --- 内容展示区 --- */
@@ -107,7 +115,7 @@
             user-select: none; 
         }
 
-        /* --- 遮罩插件样式 (重点修改) --- */
+        /* --- 遮罩插件样式 --- */
         #mask {
             display: none;
             position: absolute;
@@ -116,13 +124,11 @@
             transform: translateX(-50%); /* 初始居中 */
             width: 300px;
             height: 500px;
-            /* 修改点：使用纯实色背景，不再透明 */
             background-color: #1a4a8e; 
             border: 4px solid #f1c40f; 
             border-radius: 12px;
             cursor: move;
             z-index: 100;
-            /* 修改点：加深阴影，增强覆盖感 */
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
             resize: both; 
             overflow: hidden;
@@ -130,9 +136,9 @@
 
         /* 遮罩上的提示文字样式优化 */
         #mask::after {
-            content: "🙈\A Modo Desafío\A挑战模式"; /* \A 是换行符 */
-            white-space: pre; /* 允许换行 */
-            color: #f1c40f; /* 字体改成金色，对比度更高 */
+            content: "🙈\A Modo Desafío\A挑战模式"; 
+            white-space: pre; 
+            color: #f1c40f; 
             font-weight: bold;
             font-size: 18px;
             display: flex;
@@ -150,6 +156,8 @@
             .header h1 { font-size: 26px; }
             .back-home { position: static; justify-content: center; margin-bottom: 15px; }
             .tool-bar p { font-size: 12px; }
+            .tool-bar { flex-direction: column; width: 100%; align-items: stretch; }
+            .btn-tool { width: 100%; box-sizing: border-box; }
         }
     </style>
 </head>
@@ -167,8 +175,9 @@
     <main class="main-content">
         <div class="tool-bar">
             <button class="btn-tool" id="toggleMask">🙈 开启/关闭单词遮罩</button>
+            <a href="颜色.html" class="btn-tool">🎮 进入颜色互动测试系统</a>
         </div>
-        <p style="text-align: center; color: #666; margin-bottom: 15px; font-size: 14px;">💡 提示：点击上方按钮开启遮罩。遮罩可以自由拖动，按住右下角可以调整大小。</p>
+        <p style="text-align: center; color: #666; margin-bottom: 15px; font-size: 14px;">💡 提示：点击上方按钮开启遮罩。遮罩可以自由拖动，按住右下角可以调整大小。或者进入测试系统进行拼写练习。</p>
 
         <div class="card" id="cardContainer">
             <img src="color.png" alt="西班牙语颜色图表" class="content-image">
@@ -220,10 +229,6 @@
             const containerRect = cardContainer.getBoundingClientRect();
             let x = e.clientX - containerRect.left - offsetX;
             let y = e.clientY - containerRect.top - offsetY;
-
-            // 简单的边界检查（可选，防止拖出太远）
-            // x = Math.max(0, Math.min(x, containerRect.width - mask.offsetWidth));
-            // y = Math.max(0, Math.min(y, containerRect.height - mask.offsetHeight));
 
             mask.style.left = x + 'px';
             mask.style.top = y + 'px';
