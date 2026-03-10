@@ -33,14 +33,21 @@
 
         /* --- 遮罩控制工具栏 --- */
         .tool-bar {
-            margin: 20px auto; display: flex; flex-direction: column; align-items: center; gap: 10px;
+            margin: 20px auto; display: flex; flex-direction: column; align-items: center; gap: 15px;
         }
+        
+        .tool-buttons {
+            display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;
+        }
+
         .btn-tool {
             padding: 12px 30px; border-radius: 30px; border: 2px solid #1a4a8e;
             background: white; color: #1a4a8e; font-weight: 700; cursor: pointer;
             transition: all 0.3s; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
         }
-        .btn-tool.active { background: #1a4a8e; color: white; border-color: #f1c40f; }
+        .btn-tool:hover { background: #f0f4f8; transform: translateY(-2px); }
+        .btn-tool.active { background: #1a4a8e; color: white; border-color: #f1c40f; transform: translateY(0); }
 
         /* --- 内容展示区 --- */
         .main-content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0 20px 40px 20px; }
@@ -105,6 +112,8 @@
             .vocab-grid { grid-template-columns: 1fr; }
             .header h1 { font-size: 26px; }
             .back-home { position: static; justify-content: center; margin-bottom: 15px; }
+            .tool-buttons { flex-direction: column; width: 100%; align-items: stretch; }
+            .btn-tool { text-align: center; }
         }
     </style>
 </head>
@@ -121,8 +130,11 @@
 
     <main class="main-content">
         <div class="tool-bar">
-            <button class="btn-tool" id="toggleMask">🙈 开启挑战模式 (单词遮罩)</button>
-            <span style="color: #666; font-size: 14px;">遮住左侧西语或右侧汉语进行练习。</span>
+            <div class="tool-buttons">
+                <button class="btn-tool" id="toggleMask">🙈 开启挑战模式 (单词遮罩)</button>
+                <a href="时间词汇表.html" class="btn-tool">🎮 进入互动测试系统</a>
+            </div>
+            <span style="color: #666; font-size: 14px;">遮住下方表格进行自测，或进入测试系统进行拼写/翻译练习。</span>
         </div>
 
         <div class="card" id="cardContainer">
