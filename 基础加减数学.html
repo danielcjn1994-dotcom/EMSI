@@ -289,16 +289,28 @@
     function generateQuestions() {
         const list = document.getElementById('quiz-list');
         list.innerHTML = '';
-        for (let i = 1; i <= 10; i++) {
+        
+        const usedQuestions = new Set(); // 用于存储已经生成的题目，防止重复
+        let count = 0;
+
+        // 使用 while 循环，直到生成满 10 道不重复的题目
+        while (count < 10) {
             let data = getQuestion(currentType, currentLimit);
-            const item = document.createElement('div');
-            item.className = 'quiz-item';
-            item.innerHTML = `
-                <div class="question">${i}. ${data.text} = ?</div>
-                <button class="ans-toggle" onclick="toggleAns(this)">Ver solución</button>
-                <div class="solution-box">${data.solve}</div>
-            `;
-            list.appendChild(item);
+            
+            // 如果这道题还没有出现过
+            if (!usedQuestions.has(data.text)) {
+                usedQuestions.add(data.text);
+                count++;
+                
+                const item = document.createElement('div');
+                item.className = 'quiz-item';
+                item.innerHTML = `
+                    <div class="question">${count}. ${data.text} = ?</div>
+                    <button class="ans-toggle" onclick="toggleAns(this)">Ver solución</button>
+                    <div class="solution-box">${data.solve}</div>
+                `;
+                list.appendChild(item);
+            }
         }
     }
 
@@ -308,7 +320,7 @@
     function get3Digit() { return Math.floor(Math.random() * 900) + 100; }
 
     function getQuestion(type, limit) {
-        // --- 基础运算 (原逻辑) ---
+        // --- 基础运算 ---
         if (type === 'add') {
             let a = getNum(Math.max(1, limit - 2)); 
             let b = Math.floor(Math.random() * (limit - a)) + 1;
@@ -316,7 +328,10 @@
         } 
         if (type === 'sub') {
             let a = getNum(limit);
-            let b = Math.floor(Math.random() * a) + 1;
+            // 确保 a 至少为 2，防止出现 1-1=0 的情况
+            if (a === 1) a = Math.floor(Math.random() * (limit - 1)) + 2; 
+            // 确保 b 严格小于 a，防止出现类似 2-2=0
+            let b = Math.floor(Math.random() * (a - 1)) + 1; 
             return { text: `${a} - ${b}`, solve: `${a - b}` };
         }
         if (type === 'mixed') {
@@ -324,13 +339,21 @@
                 let n1 = getNum(limit);
                 let op1 = Math.random() > 0.5 ? '+' : '-';
                 let n2 = Math.floor(Math.random() * (limit/2)) + 1;
+                
+                // 防止中间步骤出现相减为 0 或负数
+                if (op1 === '-' && n1 <= n2) continue; 
+                
                 let step1 = (op1 === '+') ? n1 + n2 : n1 - n2;
-                if (step1 < 0 || step1 > limit) continue; // 避免中间结果负数或过大
+                if (step1 <= 0 || step1 > limit) continue;
 
                 let op2 = Math.random() > 0.5 ? '+' : '-';
                 let n3 = Math.floor(Math.random() * (limit/2)) + 1;
+                
+                // 防止最后一步出现相减为 0 或负数
+                if (op2 === '-' && step1 <= n3) continue; 
+                
                 let step2 = (op2 === '+') ? step1 + n3 : step1 - n3;
-                if (step2 < 0 || step2 > limit) continue;
+                if (step2 <= 0 || step2 > limit) continue;
 
                 return {
                     text: `${n1} ${op1} ${n2} ${op2} ${n3}`,
@@ -348,13 +371,15 @@
             return { text: `${a} + ${b}`, solve: `${a + b}` };
         }
 
-        // 2. 两个三位数减法 (无负数)
+        // 2. 两个三位数减法
         if (type === 'sub3d') {
-            let a = get3Digit();
-            let b = get3Digit();
-            // 确保大减小
-            if (a < b) [a, b] = [b, a]; 
-            return { text: `${a} - ${b}`, solve: `${a - b}` };
+            while(true) {
+                let a = get3Digit();
+                let b = get3Digit();
+                if (a === b) continue; // 防止两个数相等 (如 200-200=0)
+                if (a < b) [a, b] = [b, a]; 
+                return { text: `${a} - ${b}`, solve: `${a - b}` };
+            }
         }
 
         // 3. 三个三位数加法
@@ -365,14 +390,14 @@
             return { text: `${a} + ${b} + ${c}`, solve: `${a + b + c}` };
         }
 
-        // 4. 三个三位数减法 (A - B - C, 无负数)
+        // 4. 三个三位数减法 (A - B - C)
         if (type === 'sub3d_3') {
             while (true) {
                 let a = get3Digit();
                 let b = get3Digit();
                 let c = get3Digit();
-                // 必须保证 a 足够大，能减去 b 和 c
-                if (a - b - c >= 0) {
+                // 确保每一步减法都大于 0
+                if (a > b && (a - b) > c) {
                     return { text: `${a} - ${b} - ${c}`, solve: `${a - b - c}` };
                 }
             }
@@ -387,15 +412,13 @@
                 let op1 = Math.random() > 0.5 ? '+' : '-';
                 let op2 = Math.random() > 0.5 ? '+' : '-';
 
+                // 确保中间结果严格大于 0
+                if (op1 === '-' && a <= b) continue; 
                 let step1 = (op1 === '+') ? a + b : a - b;
                 
-                // 检查第一步是否为负
-                if (step1 < 0) continue; 
-
+                // 确保最终结果严格大于 0
+                if (op2 === '-' && step1 <= c) continue; 
                 let result = (op2 === '+') ? step1 + c : step1 - c;
-                
-                // 检查最终结果是否为负
-                if (result < 0) continue;
 
                 return { 
                     text: `${a} ${op1} ${b} ${op2} ${c}`, 
