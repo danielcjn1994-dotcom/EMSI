@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 风格演示 - 西语发音与词汇练习</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容卡片区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 20px 40px 20px; /* 移动端防贴边适配 */
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        /* --- 下拉框 (Accordion) 样式 --- */
+        details {
+            margin-bottom: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        details[open] {
+            box-shadow: 0 4px 15px rgba(26, 74, 142, 0.08);
+            border-color: #1a4a8e;
+        }
+
+        summary {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a4a8e;
+            padding: 16px 20px;
+            cursor: pointer;
+            background-color: #f8fafc;
+            outline: none;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: '+';
+            font-size: 26px;
+            color: #f1c40f;
+            font-weight: 800;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            content: '-';
+            transform: rotate(180deg);
+        }
+
+        details[open] summary {
+            background-color: #eef2f9;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .details-content {
+            padding: 25px 20px;
+        }
+
+        /* --- 内部组件样式 --- */
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 15px 0;
+            border-left: 5px solid #f1c40f;
+            padding-left: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 音节框 */
+        .syllable-box {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .syllable-box span {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1a4a8e;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* 表格响应式容器 */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #1a4a8e;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        td {
+            font-size: 16px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .emoji-cell {
+            width: 40px;
+            text-align: center;
+            font-size: 22px;
+        }
+
+        .es-cell {
+            font-weight: 600;
+            color: #333;
+            width: 40%;
+        }
+
+        .zh-cell {
+            color: #64748b;
+        }
+
+        /* 句子区域 */
+        .sentences-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .sentence-box {
+            background: #fdfdfd;
+            border-left: 4px solid #1a4a8e;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            border-top: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .es-sent {
+            font-weight: 600;
+            color: #1a4a8e;
+            margin: 0 0 6px 0;
+            font-size: 17px;
+        }
+
+        .zh-sent {
+            margin: 0;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 32px; }
+            .card { padding: 20px 15px; }
+            .syllable-box span { font-size: 18px; padding: 6px 12px; }
+            summary { font-size: 18px; padding: 14px 15px; }
+            .details-content { padding: 20px 15px; }
+            .es-sent { font-size: 16px; }
+            th, td { font-size: 14px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <details>
+                <summary>📚 核心音节：字母 B</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>ba</span><span>be</span><span>bi</span><span>bo</span><span>bu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">🤤</td><td class="es-cell">Baba</td><td class="zh-cell">口水</td></tr>
+                            <tr><td class="emoji-cell">🍼</td><td class="es-cell">Bebe</td><td class="zh-cell">喝 / 婴儿</td></tr>
+                            <tr><td class="emoji-cell">🤡</td><td class="es-cell">Bobo</td><td class="zh-cell">笨笨的 / 傻瓜</td></tr>
+                            <tr><td class="emoji-cell">🫏</td><td class="es-cell">Burrito</td><td class="zh-cell">小驴子</td></tr>
+                            <tr><td class="emoji-cell">🥤</td><td class="es-cell">Bebida</td><td class="zh-cell">饮料</td></tr>
+                            <tr><td class="emoji-cell">🤪</td><td class="es-cell">Bobada</td><td class="zh-cell">傻事 / 胡闹</td></tr>
+                            <tr><td class="emoji-cell">💍</td><td class="es-cell">Boda</td><td class="zh-cell">婚礼</td></tr>
+                            <tr><td class="emoji-cell">🧪</td><td class="es-cell">Tubo</td><td class="zh-cell">管子</td></tr>
+                            <tr><td class="emoji-cell">☁️</td><td class="es-cell">Nube</td><td class="zh-cell">云</td></tr>
+                            <tr><td class="emoji-cell">🐕</td><td class="es-cell">Rabo</td><td class="zh-cell">尾巴</td></tr>
+                            <tr><td class="emoji-cell">🧗</td><td class="es-cell">Sube</td><td class="zh-cell">上去 / 爬上去</td></tr>
+                            <tr><td class="emoji-cell">🫙</td><td class="es-cell">Bote</td><td class="zh-cell">罐子</td></tr>
+                            <tr><td class="emoji-cell">💩</td><td class="es-cell">Barro</td><td class="zh-cell">泥巴</td></tr>
+                            <tr><td class="emoji-cell">🥱</td><td class="es-cell">Aburre</td><td class="zh-cell">令（人）无聊</td></tr>
+                            <tr><td class="emoji-cell">🥛</td><td class="es-cell">Bebido</td><td class="zh-cell">喝过了</td></tr>
+                            <tr><td class="emoji-cell">🥖</td><td class="es-cell">Barra</td><td class="zh-cell">棍 / 条</td></tr>
+                            <tr><td class="emoji-cell">💋</td><td class="es-cell">Beso</td><td class="zh-cell">亲吻</td></tr>
+                            <tr><td class="emoji-cell">👴</td><td class="es-cell">Abuelo</td><td class="zh-cell">爷爷 / 外公</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Mi burrito mueve el rabo si me ve subido en él.</p>
+                            <p class="zh-sent">我的小驴子如果看到我骑在它身上，就会摇尾巴。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Mi burrito es muy bonito.</p>
+                            <p class="zh-sent">我的小驴子非常漂亮。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Arre, burro, arre.</p>
+                            <p class="zh-sent">驾，小驴，快跑。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Mi abuelo es muy bueno.</p>
+                            <p class="zh-sent">我的爷爷人非常好。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Abuelo, dame un beso.</p>
+                            <p class="zh-sent">爷爷，给我一个亲亲。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Ese bote tiene barro.</p>
+                            <p class="zh-sent">那个罐子里有泥。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Me aburre la novela.</p>
+                            <p class="zh-sent">这本小说让我觉得很无聊。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">He bebido la bebida.</p>
+                            <p class="zh-sent">我已经喝了那份饮料。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Una barra de hierro.</p>
+                            <p class="zh-sent">一根铁棒。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>📚 核心音节：字母 LL</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>lla</span><span>lle</span><span>lli</span><span>llo</span><span>llu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">🔑</td><td class="es-cell">Llave</td><td class="zh-cell">钥匙</td></tr>
+                            <tr><td class="emoji-cell">🌧️</td><td class="es-cell">Lluvia</td><td class="zh-cell">雨</td></tr>
+                            <tr><td class="emoji-cell">🎒</td><td class="es-cell">Llevo / Llevaba</td><td class="zh-cell">携带 / 带着</td></tr>
+                            <tr><td class="emoji-cell">🚧</td><td class="es-cell">Valla</td><td class="zh-cell">栅栏 / 围栏</td></tr>
+                            <tr><td class="emoji-cell">🍾</td><td class="es-cell">Botella</td><td class="zh-cell">瓶子</td></tr>
+                            <tr><td class="emoji-cell">🥨</td><td class="es-cell">Hebilla</td><td class="zh-cell">皮带扣 / 扣环</td></tr>
+                            <tr><td class="emoji-cell">🫗</td><td class="es-cell">Lleno / Llena</td><td class="zh-cell">满的</td></tr>
+                            <tr><td class="emoji-cell">🪑</td><td class="es-cell">Silla</td><td class="zh-cell">椅子</td></tr>
+                            <tr><td class="emoji-cell">🥯</td><td class="es-cell">Bollo</td><td class="zh-cell">小圆面包</td></tr>
+                            <tr><td class="emoji-cell">✉️</td><td class="es-cell">Sello</td><td class="zh-cell">邮票 / 印章</td></tr>
+                            <tr><td class="emoji-cell">🌱</td><td class="es-cell">Tallo</td><td class="zh-cell">茎 / 杆</td></tr>
+                            <tr><td class="emoji-cell">⛰️</td><td class="es-cell">Valle</td><td class="zh-cell">山谷</td></tr>
+                            <tr><td class="emoji-cell">🍲</td><td class="es-cell">Olla</td><td class="zh-cell">锅</td></tr>
+                            <tr><td class="emoji-cell">⚓</td><td class="es-cell">Muelle</td><td class="zh-cell">弹簧 / 码头</td></tr>
+                            <tr><td class="emoji-cell">🏅</td><td class="es-cell">Medallita</td><td class="zh-cell">小奖牌 / 小勋章</td></tr>
+                            <tr><td class="emoji-cell">💵</td><td class="es-cell">Billete</td><td class="zh-cell">钞票 / 票据</td></tr>
+                            <tr><td class="emoji-cell">🐥</td><td class="es-cell">Pollo</td><td class="zh-cell">鸡 / 鸡肉</td></tr>
+                            <tr><td class="emoji-cell">😏</td><td class="es-cell">Pillo</td><td class="zh-cell">淘气鬼 / 狡猾的人</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Esa llave no vale.</p>
+                            <p class="zh-sent">那把钥匙没用（不合适）。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">La lluvia lo llenaba.</p>
+                            <p class="zh-sent">雨水把它装满了。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Llevaba una hebilla.</p>
+                            <p class="zh-sent">他（她）带着一个扣环。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Lleva llena la botella.</p>
+                            <p class="zh-sent">他（她）拿着装满的瓶子。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Llevaba la botella llena.</p>
+                            <p class="zh-sent">他（她）之前拿着装满的瓶子。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Toma esta medallita.</p>
+                            <p class="zh-sent">拿好这枚小奖牌。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Súbete a esa silla.</p>
+                            <p class="zh-sent">爬到那把椅子上去。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Te doy un billete.</p>
+                            <p class="zh-sent">我给你一张钞票。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Llevo la llave nueva.</p>
+                            <p class="zh-sent">我带着那把新钥匙。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Ese pollo es un pillo.</p>
+                            <p class="zh-sent">那只小鸡是个调皮鬼。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>📚 核心音节：字母 Y</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>ya</span><span>ye</span><span>yi</span><span>yo</span><span>yu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">🙋‍♂️</td><td class="es-cell">Yo</td><td class="zh-cell">我</td></tr>
+                            <tr><td class="emoji-cell">🏁</td><td class="es-cell">Ya</td><td class="zh-cell">已经 / 现在</td></tr>
+                            <tr><td class="emoji-cell">👂</td><td class="es-cell">Oye</td><td class="zh-cell">听 / 嘿</td></tr>
+                            <tr><td class="emoji-cell">🛥️</td><td class="es-cell">Yate</td><td class="zh-cell">游艇</td></tr>
+                            <tr><td class="emoji-cell">🥚</td><td class="es-cell">Yema</td><td class="zh-cell">蛋黄 / 指尖</td></tr>
+                            <tr><td class="emoji-cell">🤡</td><td class="es-cell">Payaso</td><td class="zh-cell">小丑</td></tr>
+                            <tr><td class="emoji-cell">🗓️</td><td class="es-cell">Mayo</td><td class="zh-cell">五月</td></tr>
+                            <tr><td class="emoji-cell">⚡</td><td class="es-cell">Rayo</td><td class="zh-cell">闪电 / 光线</td></tr>
+                            <tr><td class="emoji-cell">📏</td><td class="es-cell">Raya</td><td class="zh-cell">线条 / 划痕</td></tr>
+                            <tr><td class="emoji-cell">🕳️</td><td class="es-cell">Hoyo</td><td class="zh-cell">洞 / 坑</td></tr>
+                            <tr><td class="emoji-cell">🏃‍♂️</td><td class="es-cell">Huye</td><td class="zh-cell">逃跑 / 躲避</td></tr>
+                            <tr><td class="emoji-cell">🧼</td><td class="es-cell">Bayeta</td><td class="zh-cell">抹布</td></tr>
+                            <tr><td class="emoji-cell">🤝</td><td class="es-cell">Apoya</td><td class="zh-cell">支撑 / 依靠</td></tr>
+                            <tr><td class="emoji-cell">🍳</td><td class="es-cell">Desayunado</td><td class="zh-cell">吃过早餐</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Yo me llamo .......</p>
+                            <p class="zh-sent">我叫 .......</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Mi papá se llama .......</p>
+                            <p class="zh-sent">我的爸爸叫 .......</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Mi mamá se llama .......</p>
+                            <p class="zh-sent">我的妈妈叫 .......</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Yo ayudo a mi papá.</p>
+                            <p class="zh-sent">我帮助我的爸爸。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Ya se oye la radio.</p>
+                            <p class="zh-sent">现在能听到收音机的声音了。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Yo ya he desayunado.</p>
+                            <p class="zh-sent">我已经吃过早餐了。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Le ayuda ese payaso.</p>
+                            <p class="zh-sent">那个小丑在帮助他/她。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Oye, toma la yema.</p>
+                            <p class="zh-sent">嘿，把蛋黄拿去。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>📚 核心音节：组合 CH</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>cha</span><span>che</span><span>chi</span><span>cho</span><span>chu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">🍼</td><td class="es-cell">Chupete</td><td class="zh-cell">奶嘴</td></tr>
+                            <tr><td class="emoji-cell">🌳</td><td class="es-cell">Chopo</td><td class="zh-cell">杨树</td></tr>
+                            <tr><td class="emoji-cell">😫</td><td class="es-cell">Chilla</td><td class="zh-cell">尖叫 / 喊叫</td></tr>
+                            <tr><td class="emoji-cell">👦</td><td class="es-cell">Muchacho</td><td class="zh-cell">男孩 / 少年</td></tr>
+                            <tr><td class="emoji-cell">🚿</td><td class="es-cell">Ducha</td><td class="zh-cell">洗澡 / 淋浴</td></tr>
+                            <tr><td class="emoji-cell">8️⃣</td><td class="es-cell">Ocho</td><td class="zh-cell">八</td></tr>
+                            <tr><td class="emoji-cell">🇨🇳</td><td class="es-cell">China</td><td class="zh-cell">中国</td></tr>
+                            <tr><td class="emoji-cell">🥖</td><td class="es-cell">Churro</td><td class="zh-cell">西班牙油条</td></tr>
+                            <tr><td class="emoji-cell">🌃</td><td class="es-cell">Anoche</td><td class="zh-cell">昨晚</td></tr>
+                            <tr><td class="emoji-cell">🥛</td><td class="es-cell">Leche</td><td class="zh-cell">牛奶</td></tr>
+                            <tr><td class="emoji-cell">🐐</td><td class="es-cell">Chiva</td><td class="zh-cell">小母山羊</td></tr>
+                            <tr><td class="emoji-cell">👧</td><td class="es-cell">Muchacha</td><td class="zh-cell">女孩 / 少女</td></tr>
+                            <tr><td class="emoji-cell">🦉</td><td class="es-cell">Mochuelillo</td><td class="zh-cell">小猫头鹰</td></tr>
+                            <tr><td class="emoji-cell">👦</td><td class="es-cell">Chavalillo</td><td class="zh-cell">小伙子 / 小屁孩</td></tr>
+                            <tr><td class="emoji-cell">🍭</td><td class="es-cell">Chupa</td><td class="zh-cell">吸 / 吮</td></tr>
+                            <tr><td class="emoji-cell">🔥</td><td class="es-cell">Chimenea</td><td class="zh-cell">壁炉 / 烟囱</td></tr>
+                            <tr><td class="emoji-cell">🍾</td><td class="es-cell">Chapa</td><td class="zh-cell">瓶盖</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Yo tomo mucha leche.</p>
+                            <p class="zh-sent">我喝了很多牛奶。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Vimos un mochuelillo.</p>
+                            <p class="zh-sent">我们看到了一只小猫头鹰。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">El bebé chilla mucho.</p>
+                            <p class="zh-sent">宝宝一直在大声尖叫。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Anoche me duché.</p>
+                            <p class="zh-sent">昨晚我洗了澡。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">El chavalillo echó todo.</p>
+                            <p class="zh-sent">那个小男孩把所有东西都扔了（或倒了）。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Ha hecho el desayuno.</p>
+                            <p class="zh-sent">他/她已经做好了早餐。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">El bebé chupa el chupete.</p>
+                            <p class="zh-sent">宝宝在吮吸奶嘴。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Anoche llovió mucho.</p>
+                            <p class="zh-sent">昨晚下了很大的雨。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">La chiva toma leche.</p>
+                            <p class="zh-sent">小山羊在喝奶。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">La luna salió anoche.</p>
+                            <p class="zh-sent">月亮昨晚出来了。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">La muchacha chilla.</p>
+                            <p class="zh-sent">那个女孩在尖叫。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>📚 核心音节：字母 F</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>fa</span><span>fe</span><span>fi</span><span>fo</span><span>fu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">🦭</td><td class="es-cell">Foca</td><td class="zh-cell">海豹</td></tr>
+                            <tr><td class="emoji-cell">🥩</td><td class="es-cell">Filete</td><td class="zh-cell">肉排 / 鱼排</td></tr>
+                            <tr><td class="emoji-cell">🚨</td><td class="es-cell">Faro</td><td class="zh-cell">灯塔</td></tr>
+                            <tr><td class="emoji-cell">🚬</td><td class="es-cell">Fuma</td><td class="zh-cell">抽烟</td></tr>
+                            <tr><td class="emoji-cell">📸</td><td class="es-cell">Foto</td><td class="zh-cell">照片</td></tr>
+                            <tr><td class="emoji-cell">👗</td><td class="es-cell">Falda</td><td class="zh-cell">裙子</td></tr>
+                            <tr><td class="emoji-cell">⛲</td><td class="es-cell">Fuente</td><td class="zh-cell">喷泉 / 水源</td></tr>
+                            <tr><td class="emoji-cell">🚶‍♂️</td><td class="es-cell">Fila</td><td class="zh-cell">队伍 / 排</td></tr>
+                            <tr><td class="emoji-cell">👓</td><td class="es-cell">Gafas</td><td class="zh-cell">眼镜</td></tr>
+                            <tr><td class="emoji-cell">🛋️</td><td class="es-cell">Sofá</td><td class="zh-cell">沙发</td></tr>
+                            <tr><td class="emoji-cell">☎️</td><td class="es-cell">Teléfono</td><td class="zh-cell">电话</td></tr>
+                            <tr><td class="emoji-cell">🐘</td><td class="es-cell">Elefante</td><td class="zh-cell">大象</td></tr>
+                            <tr><td class="emoji-cell">💃</td><td class="es-cell">Fina</td><td class="zh-cell">苗条的 / 精致的</td></tr>
+                            <tr><td class="emoji-cell">👺</td><td class="es-cell">Feo</td><td class="zh-cell">丑的</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Felipe fuma su pipa.</p>
+                            <p class="zh-sent">菲利佩抽着他的烟斗。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">La foca es muy fina.</p>
+                            <p class="zh-sent">那只海豹非常优雅。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Ese faro ilumina mucho.</p>
+                            <p class="zh-sent">那座灯塔照得很亮。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Sofía tiene un teléfono.</p>
+                            <p class="zh-sent">索菲亚有一部电话。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Ese elefante es muy feo.</p>
+                            <p class="zh-sent">那头大象很丑。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">La foca me da un filete.</p>
+                            <p class="zh-sent">海豹给了我一块肉排。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Felipe tiene una foto.</p>
+                            <p class="zh-sent">菲利佩有一张照片。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Sofía se puso su falda.</p>
+                            <p class="zh-sent">索菲亚穿上了她的裙子。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>📚 核心音节：字母 G</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>ga</span><span>gue</span><span>gui</span><span>go</span><span>gu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">🐱</td><td class="es-cell">Gato / Gata</td><td class="zh-cell">猫（公/母）</td></tr>
+                            <tr><td class="emoji-cell">💧</td><td class="es-cell">Gota</td><td class="zh-cell">水滴</td></tr>
+                            <tr><td class="emoji-cell">🧙‍♂️</td><td class="es-cell">Mago</td><td class="zh-cell">魔术师</td></tr>
+                            <tr><td class="emoji-cell">🪢</td><td class="es-cell">Soga</td><td class="zh-cell">粗绳</td></tr>
+                            <tr><td class="emoji-cell">💰</td><td class="es-cell">Pago</td><td class="zh-cell">支付 / 报酬</td></tr>
+                            <tr><td class="emoji-cell">🔥</td><td class="es-cell">Fuego</td><td class="zh-cell">火</td></tr>
+                            <tr><td class="emoji-cell">🏞️</td><td class="es-cell">Lago</td><td class="zh-cell">湖泊</td></tr>
+                            <tr><td class="emoji-cell">🤜</td><td class="es-cell">Pega</td><td class="zh-cell">打 / 粘贴</td></tr>
+                            <tr><td class="emoji-cell">😴</td><td class="es-cell">Vago</td><td class="zh-cell">懒惰的</td></tr>
+                            <tr><td class="emoji-cell">🫐</td><td class="es-cell">Higo</td><td class="zh-cell">无花果</td></tr>
+                            <tr><td class="emoji-cell">🤺</td><td class="es-cell">Amago</td><td class="zh-cell">假动作 / 迹象</td></tr>
+                            <tr><td class="emoji-cell">🚰</td><td class="es-cell">Agua</td><td class="zh-cell">水</td></tr>
+                            <tr><td class="emoji-cell">🧼</td><td class="es-cell">Goma</td><td class="zh-cell">橡皮 / 胶水</td></tr>
+                            <tr><td class="emoji-cell">🐛</td><td class="es-cell">Gusano</td><td class="zh-cell">蠕虫</td></tr>
+                            <tr><td class="emoji-cell">⚔️</td><td class="es-cell">Guerrero</td><td class="zh-cell">战士</td></tr>
+                            <tr><td class="emoji-cell">🫛</td><td class="es-cell">Guisantes</td><td class="zh-cell">豌豆</td></tr>
+                            <tr><td class="emoji-cell">🚿</td><td class="es-cell">Manguera</td><td class="zh-cell">水管</td></tr>
+                            <tr><td class="emoji-cell">🎸</td><td class="es-cell">Guitarra</td><td class="zh-cell">吉他</td></tr>
+                            <tr><td class="emoji-cell">🦅</td><td class="es-cell">Águila</td><td class="zh-cell">老鹰</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Esa gata pega a mi perro.</p>
+                            <p class="zh-sent">那只母猫打我的狗。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Ese mago saca fuego.</p>
+                            <p class="zh-sent">那个魔术师变出了火。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">El lago tiene poca agua.</p>
+                            <p class="zh-sent">湖里的水很少。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Mi papá me paga mi paga.</p>
+                            <p class="zh-sent">我爸爸给我发零用钱。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Esa soga es muy larga.</p>
+                            <p class="zh-sent">那根绳子很长。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">El gato bebe leche.</p>
+                            <p class="zh-sent">那只猫在喝牛奶。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Esa gota de agua.</p>
+                            <p class="zh-sent">那滴水。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Dame un higo.</p>
+                            <p class="zh-sent">给我一个无花果。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>📚 核心音节：字母 J</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>ja</span><span>je</span><span>ji</span><span>jo</span><span>ju</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">🏺</td><td class="es-cell">Jarra</td><td class="zh-cell">大口罐 / 水壶</td></tr>
+                            <tr><td class="emoji-cell">🕸️</td><td class="es-cell">Jaula</td><td class="zh-cell">笼子</td></tr>
+                            <tr><td class="emoji-cell">🏇</td><td class="es-cell">Jinete</td><td class="zh-cell">骑手</td></tr>
+                            <tr><td class="emoji-cell">✂️</td><td class="es-cell">Tijeras</td><td class="zh-cell">剪刀</td></tr>
+                            <tr><td class="emoji-cell">🏺</td><td class="es-cell">Jarrón</td><td class="zh-cell">花瓶</td></tr>
+                            <tr><td class="emoji-cell">🐰</td><td class="es-cell">Conejo</td><td class="zh-cell">兔子</td></tr>
+                            <tr><td class="emoji-cell">🐦</td><td class="es-cell">Pájaro</td><td class="zh-cell">鸟</td></tr>
+                            <tr><td class="emoji-cell">🐑</td><td class="es-cell">Oveja</td><td class="zh-cell">绵羊</td></tr>
+                            <tr><td class="emoji-cell">🐝</td><td class="es-cell">Abeja</td><td class="zh-cell">蜜蜂</td></tr>
+                            <tr><td class="emoji-cell">🪞</td><td class="es-cell">Espejo</td><td class="zh-cell">镜子</td></tr>
+                            <tr><td class="emoji-cell">🌾</td><td class="es-cell">Paja</td><td class="zh-cell">稻草 / 麦秆</td></tr>
+                            <tr><td class="emoji-cell">👁️</td><td class="es-cell">Ojo</td><td class="zh-cell">眼睛</td></tr>
+                            <tr><td class="emoji-cell">🔴</td><td class="es-cell">Rojo</td><td class="zh-cell">红色</td></tr>
+                            <tr><td class="emoji-cell">🏠</td><td class="es-cell">Teja</td><td class="zh-cell">瓦片</td></tr>
+                            <tr><td class="emoji-cell">🛑</td><td class="es-cell">Deja</td><td class="zh-cell">留下 / 放下</td></tr>
+                            <tr><td class="emoji-cell">👧</td><td class="es-cell">Hija</td><td class="zh-cell">女儿</td></tr>
+                            <tr><td class="emoji-cell">🍃</td><td class="es-cell">Hoja</td><td class="zh-cell">叶子</td></tr>
+                            <tr><td class="emoji-cell">💎</td><td class="es-cell">Joya</td><td class="zh-cell">珠宝</td></tr>
+                            <tr><td class="emoji-cell">📦</td><td class="es-cell">Caja</td><td class="zh-cell">盒子 / 箱子</td></tr>
+                            <tr><td class="emoji-cell">👂</td><td class="es-cell">Oreja</td><td class="zh-cell">耳朵</td></tr>
+                            <tr><td class="emoji-cell">🤏</td><td class="es-cell">Cojo</td><td class="zh-cell">我拿 / 我取</td></tr>
+                            <tr><td class="emoji-cell">🎨</td><td class="es-cell">Dibujo</td><td class="zh-cell">图画</td></tr>
+                            <tr><td class="emoji-cell">🔪</td><td class="es-cell">Navaja</td><td class="zh-cell">折叠刀</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box"><p class="es-sent">Esa jarra tiene agua.</p><p class="zh-sent">那个水壶里有水。</p></div>
+                        <div class="sentence-box"><p class="es-sent">El pájaro está en la jaula.</p><p class="zh-sent">那只鸟在笼子里。</p></div>
+                        <div class="sentence-box"><p class="es-sent">El jinete monta su caballo.</p><p class="zh-sent">那个骑手骑着他的马。</p></div>
+                        <div class="sentence-box"><p class="es-sent">El conejo come paja.</p><p class="zh-sent">兔子在吃稻草。</p></div>
+                        <div class="sentence-box"><p class="es-sent">La oveja da lana.</p><p class="zh-sent">绵羊提供羊毛。</p></div>
+                        <div class="sentence-box"><p class="es-sent">La abeja hace miel.</p><p class="zh-sent">蜜蜂酿蜜。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Me miro en el espejo.</p><p class="zh-sent">我看着镜子里的自己。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Tengo un ojo rojo.</p><p class="zh-sent">我有一只眼睛红了。</p></div>
+                        <div class="sentence-box"><p class="es-sent">La teja es de barro.</p><p class="zh-sent">这片瓦是泥做的。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Deja esa caja ahí.</p><p class="zh-sent">把那个盒子留在那里。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Mi hija me da un beso.</p><p class="zh-sent">我的女儿给了我一个亲吻。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Esa joya es de oro.</p><p class="zh-sent">那件珠宝是金做的。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Mi oreja es pequeña.</p><p class="zh-sent">我的耳朵很小。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Cojo ese dibujo.</p><p class="zh-sent">我拿走了那幅画。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Pájaro, vuela bajo.</p><p class="zh-sent">小鸟，飞低一点。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Cuidado con la navaja.</p><p class="zh-sent">小心那把折叠刀。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Mi tía tiene un jarrón.</p><p class="zh-sent">我的阿姨有一个花瓶。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Corta con las tijeras.</p><p class="zh-sent">用剪刀剪。</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>📚 核心音节：字母 H (不发音)</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>ha</span><span>he</span><span>hi</span><span>ho</span><span>hu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">🧵</td><td class="es-cell">Hilo</td><td class="zh-cell">线</td></tr>
+                            <tr><td class="emoji-cell">💨</td><td class="es-cell">Humo</td><td class="zh-cell">烟</td></tr>
+                            <tr><td class="emoji-cell">⏰</td><td class="es-cell">Hora</td><td class="zh-cell">小时 / 时间</td></tr>
+                            <tr><td class="emoji-cell">🗣️</td><td class="es-cell">Habla</td><td class="zh-cell">说话</td></tr>
+                            <tr><td class="emoji-cell">🧊</td><td class="es-cell">Hielo</td><td class="zh-cell">冰</td></tr>
+                            <tr><td class="emoji-cell">🧚‍♀️</td><td class="es-cell">Hada</td><td class="zh-cell">仙女</td></tr>
+                            <tr><td class="emoji-cell">🍦</td><td class="es-cell">Helado</td><td class="zh-cell">冰激凌</td></tr>
+                            <tr><td class="emoji-cell">🩹</td><td class="es-cell">Herida</td><td class="zh-cell">伤口</td></tr>
+                            <tr><td class="emoji-cell">🐎</td><td class="es-cell">Herradura</td><td class="zh-cell">马蹄铁</td></tr>
+                            <tr><td class="emoji-cell">🌱</td><td class="es-cell">Hierba</td><td class="zh-cell">草</td></tr>
+                            <tr><td class="emoji-cell">🥚</td><td class="es-cell">Huevo</td><td class="zh-cell">鸡蛋</td></tr>
+                            <tr><td class="emoji-cell">🪓</td><td class="es-cell">Hacha</td><td class="zh-cell">斧头</td></tr>
+                            <tr><td class="emoji-cell">👦</td><td class="es-cell">Hijo / Hija</td><td class="zh-cell">儿子 / 女儿</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box"><p class="es-sent">Ese hilo es muy fino.</p><p class="zh-sent">那根线非常细。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Sale humo de la chimenea.</p><p class="zh-sent">烟囱里在冒烟。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Dime la hora que es.</p><p class="zh-sent">告诉我几点了。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Hala, burro, hala.</p><p class="zh-sent">嘿，小驴，走吧。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Mira el hada buena.</p><p class="zh-sent">看那个善良的仙女。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Esa herida me duele.</p><p class="zh-sent">那个伤口让我疼。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Toma un helado de fresa.</p><p class="zh-sent">吃个草莓冰激凌吧。</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>📚 核心音节：字母 Z</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>za</span><span>zo</span><span>zu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">👞</td><td class="es-cell">Zapato</td><td class="zh-cell">鞋子</td></tr>
+                            <tr><td class="emoji-cell">🍹</td><td class="es-cell">Zumo</td><td class="zh-cell">果汁</td></tr>
+                            <tr><td class="emoji-cell">☕</td><td class="es-cell">Taza</td><td class="zh-cell">杯子</td></tr>
+                            <tr><td class="emoji-cell">🕳️</td><td class="es-cell">Pozo</td><td class="zh-cell">井</td></tr>
+                            <tr><td class="emoji-cell">🏺</td><td class="es-cell">Loza</td><td class="zh-cell">陶器</td></tr>
+                            <tr><td class="emoji-cell">🎀</td><td class="es-cell">Lazo</td><td class="zh-cell">蝴蝶结 / 绳圈</td></tr>
+                            <tr><td class="emoji-cell">🍎</td><td class="es-cell">Manzana</td><td class="zh-cell">苹果</td></tr>
+                            <tr><td class="emoji-cell">👩‍🏫</td><td class="es-cell">Pizarra</td><td class="zh-cell">黑板</td></tr>
+                            <tr><td class="emoji-cell">🖍️</td><td class="es-cell">Tiza</td><td class="zh-cell">粉笔</td></tr>
+                            <tr><td class="emoji-cell">🙆‍♂️</td><td class="es-cell">Cabeza</td><td class="zh-cell">头部</td></tr>
+                            <tr><td class="emoji-cell">🎃</td><td class="es-cell">Calabaza</td><td class="zh-cell">南瓜</td></tr>
+                            <tr><td class="emoji-cell">👞</td><td class="es-cell">Zapatero</td><td class="zh-cell">鞋匠</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box"><p class="es-sent">Tengo un zapato roto.</p><p class="zh-sent">我有一只鞋坏了。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Toma el zumo de naranja.</p><p class="zh-sent">喝了这杯橙汁。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Esa taza es de loza.</p><p class="zh-sent">那个杯子是陶瓷做的。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Tira de ese lazo.</p><p class="zh-sent">拉一下那个蝴蝶结。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Escribe en la pizarra con tiza.</p><p class="zh-sent">用粉笔在黑板上写字。</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>📚 核心音节：组合 CE / CI</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>ce</span><span>ci</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
+                            <tr><td class="emoji-cell">🍽️</td><td class="es-cell">Cena</td><td class="zh-cell">晚餐</td></tr>
+                            <tr><td class="emoji-cell">🎬</td><td class="es-cell">Cine</td><td class="zh-cell">电影院</td></tr>
+                            <tr><td class="emoji-cell">1️⃣2️⃣</td><td class="es-cell">Doce</td><td class="zh-cell">十二</td></tr>
+                            <tr><td class="emoji-cell">1️⃣1️⃣</td><td class="es-cell">Once</td><td class="zh-cell">十一</td></tr>
+                            <tr><td class="emoji-cell">🍳</td><td class="es-cell">Cocina</td><td class="zh-cell">厨房</td></tr>
+                            <tr><td class="emoji-cell">🐟</td><td class="es-cell">Peces</td><td class="zh-cell">鱼（复数）</td></tr>
+                            <tr><td class="emoji-cell">💡</td><td class="es-cell">Luces</td><td class="zh-cell">灯光（复数）</td></tr>
+                            <tr><td class="emoji-cell">🪥</td><td class="es-cell">Cepillo</td><td class="zh-cell">刷子 / 牙刷</td></tr>
+                            <tr><td class="emoji-cell">🪴</td><td class="es-cell">Maceta</td><td class="zh-cell">花盆</td></tr>
+                            <tr><td class="emoji-cell">🌌</td><td class="es-cell">Cielo</td><td class="zh-cell">天空</td></tr>
+                            <tr><td class="emoji-cell">🦗</td><td class="es-cell">Cigarra</td><td class="zh-cell">蝉</td></tr>
+                            <tr><td class="emoji-cell">🦢</td><td class="es-cell">Cisne</td><td class="zh-cell">天鹅</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box"><p class="es-sent">La cena ya está.</p><p class="zh-sent">晚饭已经准备好了。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Ponte el cepillo.</p><p class="zh-sent">（拿上/使用）那个刷子。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Esa maceta tiene una rosa.</p><p class="zh-sent">那个花盆里有一朵玫瑰。</p></div>
+                        <div class="sentence-box"><p class="es-sent">Mira el cielo azul.</p><p class="zh-sent">看那片蓝天。</p></div>
+                        <div class="sentence-box"><p class="es-sent">La cigarra canta.</p><p class="zh-sent">蝉在鸣叫。</p></div>
+                        <div class="sentence-box"><p class="es-sent">El cisne nada.</p><p class="zh-sent">天鹅在游泳。</p></div>
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
