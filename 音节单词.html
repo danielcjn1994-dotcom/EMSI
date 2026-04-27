@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI 风格演示 - 西语发音与词汇练习</title>
+    <title>EMSI-西语发音与词汇练习</title>
     <style>
         /* 基础样式复刻 */
         body {
@@ -144,16 +144,15 @@
             display: none;
         }
 
+        /* 修改处：下拉框箭头及颜色 */
         summary::after {
-            content: '+';
-            font-size: 26px;
-            color: #f1c40f;
-            font-weight: 800;
+            content: '▼';
+            font-size: 16px;
+            color: #1a4a8e;
             transition: transform 0.3s ease;
         }
 
         details[open] summary::after {
-            content: '-';
             transform: rotate(180deg);
         }
 
@@ -213,13 +212,18 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 500px;
+            min-width: 650px; /* 适应双排布局的最小宽度 */
         }
 
         th, td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #e5e7eb;
+        }
+
+        /* 新增：两列布局中间的虚线分割 */
+        th:nth-child(3), td:nth-child(3) {
+            border-right: 2px dashed #e5e7eb;
         }
 
         th {
@@ -250,7 +254,7 @@
         .es-cell {
             font-weight: 600;
             color: #333;
-            width: 40%;
+            width: 25%; /* 适应双列布局 */
         }
 
         .zh-cell {
@@ -339,25 +343,46 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">🤤</td><td class="es-cell">Baba</td><td class="zh-cell">口水</td></tr>
-                            <tr><td class="emoji-cell">🍼</td><td class="es-cell">Bebe</td><td class="zh-cell">喝 / 婴儿</td></tr>
-                            <tr><td class="emoji-cell">🤡</td><td class="es-cell">Bobo</td><td class="zh-cell">笨笨的 / 傻瓜</td></tr>
-                            <tr><td class="emoji-cell">🫏</td><td class="es-cell">Burrito</td><td class="zh-cell">小驴子</td></tr>
-                            <tr><td class="emoji-cell">🥤</td><td class="es-cell">Bebida</td><td class="zh-cell">饮料</td></tr>
-                            <tr><td class="emoji-cell">🤪</td><td class="es-cell">Bobada</td><td class="zh-cell">傻事 / 胡闹</td></tr>
-                            <tr><td class="emoji-cell">💍</td><td class="es-cell">Boda</td><td class="zh-cell">婚礼</td></tr>
-                            <tr><td class="emoji-cell">🧪</td><td class="es-cell">Tubo</td><td class="zh-cell">管子</td></tr>
-                            <tr><td class="emoji-cell">☁️</td><td class="es-cell">Nube</td><td class="zh-cell">云</td></tr>
-                            <tr><td class="emoji-cell">🐕</td><td class="es-cell">Rabo</td><td class="zh-cell">尾巴</td></tr>
-                            <tr><td class="emoji-cell">🧗</td><td class="es-cell">Sube</td><td class="zh-cell">上去 / 爬上去</td></tr>
-                            <tr><td class="emoji-cell">🫙</td><td class="es-cell">Bote</td><td class="zh-cell">罐子</td></tr>
-                            <tr><td class="emoji-cell">💩</td><td class="es-cell">Barro</td><td class="zh-cell">泥巴</td></tr>
-                            <tr><td class="emoji-cell">🥱</td><td class="es-cell">Aburre</td><td class="zh-cell">令（人）无聊</td></tr>
-                            <tr><td class="emoji-cell">🥛</td><td class="es-cell">Bebido</td><td class="zh-cell">喝过了</td></tr>
-                            <tr><td class="emoji-cell">🥖</td><td class="es-cell">Barra</td><td class="zh-cell">棍 / 条</td></tr>
-                            <tr><td class="emoji-cell">💋</td><td class="es-cell">Beso</td><td class="zh-cell">亲吻</td></tr>
-                            <tr><td class="emoji-cell">👴</td><td class="es-cell">Abuelo</td><td class="zh-cell">爷爷 / 外公</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🤤</td><td class="es-cell">Baba</td><td class="zh-cell">口水</td>
+                                <td class="emoji-cell">🍼</td><td class="es-cell">Bebe</td><td class="zh-cell">喝 / 婴儿</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🤡</td><td class="es-cell">Bobo</td><td class="zh-cell">笨笨的 / 傻瓜</td>
+                                <td class="emoji-cell">🫏</td><td class="es-cell">Burrito</td><td class="zh-cell">小驴子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🥤</td><td class="es-cell">Bebida</td><td class="zh-cell">饮料</td>
+                                <td class="emoji-cell">🤪</td><td class="es-cell">Bobada</td><td class="zh-cell">傻事 / 胡闹</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">💍</td><td class="es-cell">Boda</td><td class="zh-cell">婚礼</td>
+                                <td class="emoji-cell">🧪</td><td class="es-cell">Tubo</td><td class="zh-cell">管子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">☁️</td><td class="es-cell">Nube</td><td class="zh-cell">云</td>
+                                <td class="emoji-cell">🐕</td><td class="es-cell">Rabo</td><td class="zh-cell">尾巴</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧗</td><td class="es-cell">Sube</td><td class="zh-cell">上去 / 爬上去</td>
+                                <td class="emoji-cell">🫙</td><td class="es-cell">Bote</td><td class="zh-cell">罐子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">💩</td><td class="es-cell">Barro</td><td class="zh-cell">泥巴</td>
+                                <td class="emoji-cell">🥱</td><td class="es-cell">Aburre</td><td class="zh-cell">令（人）无聊</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🥛</td><td class="es-cell">Bebido</td><td class="zh-cell">喝过了</td>
+                                <td class="emoji-cell">🥖</td><td class="es-cell">Barra</td><td class="zh-cell">棍 / 条</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">💋</td><td class="es-cell">Beso</td><td class="zh-cell">亲吻</td>
+                                <td class="emoji-cell">👴</td><td class="es-cell">Abuelo</td><td class="zh-cell">爷爷 / 外公</td>
+                            </tr>
                         </table>
                     </div>
 
@@ -414,25 +439,46 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">🔑</td><td class="es-cell">Llave</td><td class="zh-cell">钥匙</td></tr>
-                            <tr><td class="emoji-cell">🌧️</td><td class="es-cell">Lluvia</td><td class="zh-cell">雨</td></tr>
-                            <tr><td class="emoji-cell">🎒</td><td class="es-cell">Llevo / Llevaba</td><td class="zh-cell">携带 / 带着</td></tr>
-                            <tr><td class="emoji-cell">🚧</td><td class="es-cell">Valla</td><td class="zh-cell">栅栏 / 围栏</td></tr>
-                            <tr><td class="emoji-cell">🍾</td><td class="es-cell">Botella</td><td class="zh-cell">瓶子</td></tr>
-                            <tr><td class="emoji-cell">🥨</td><td class="es-cell">Hebilla</td><td class="zh-cell">皮带扣 / 扣环</td></tr>
-                            <tr><td class="emoji-cell">🫗</td><td class="es-cell">Lleno / Llena</td><td class="zh-cell">满的</td></tr>
-                            <tr><td class="emoji-cell">🪑</td><td class="es-cell">Silla</td><td class="zh-cell">椅子</td></tr>
-                            <tr><td class="emoji-cell">🥯</td><td class="es-cell">Bollo</td><td class="zh-cell">小圆面包</td></tr>
-                            <tr><td class="emoji-cell">✉️</td><td class="es-cell">Sello</td><td class="zh-cell">邮票 / 印章</td></tr>
-                            <tr><td class="emoji-cell">🌱</td><td class="es-cell">Tallo</td><td class="zh-cell">茎 / 杆</td></tr>
-                            <tr><td class="emoji-cell">⛰️</td><td class="es-cell">Valle</td><td class="zh-cell">山谷</td></tr>
-                            <tr><td class="emoji-cell">🍲</td><td class="es-cell">Olla</td><td class="zh-cell">锅</td></tr>
-                            <tr><td class="emoji-cell">⚓</td><td class="es-cell">Muelle</td><td class="zh-cell">弹簧 / 码头</td></tr>
-                            <tr><td class="emoji-cell">🏅</td><td class="es-cell">Medallita</td><td class="zh-cell">小奖牌 / 小勋章</td></tr>
-                            <tr><td class="emoji-cell">💵</td><td class="es-cell">Billete</td><td class="zh-cell">钞票 / 票据</td></tr>
-                            <tr><td class="emoji-cell">🐥</td><td class="es-cell">Pollo</td><td class="zh-cell">鸡 / 鸡肉</td></tr>
-                            <tr><td class="emoji-cell">😏</td><td class="es-cell">Pillo</td><td class="zh-cell">淘气鬼 / 狡猾的人</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🔑</td><td class="es-cell">Llave</td><td class="zh-cell">钥匙</td>
+                                <td class="emoji-cell">🌧️</td><td class="es-cell">Lluvia</td><td class="zh-cell">雨</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🎒</td><td class="es-cell">Llevo / Llevaba</td><td class="zh-cell">携带 / 带着</td>
+                                <td class="emoji-cell">🚧</td><td class="es-cell">Valla</td><td class="zh-cell">栅栏 / 围栏</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍾</td><td class="es-cell">Botella</td><td class="zh-cell">瓶子</td>
+                                <td class="emoji-cell">🥨</td><td class="es-cell">Hebilla</td><td class="zh-cell">皮带扣 / 扣环</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🫗</td><td class="es-cell">Lleno / Llena</td><td class="zh-cell">满的</td>
+                                <td class="emoji-cell">🪑</td><td class="es-cell">Silla</td><td class="zh-cell">椅子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🥯</td><td class="es-cell">Bollo</td><td class="zh-cell">小圆面包</td>
+                                <td class="emoji-cell">✉️</td><td class="es-cell">Sello</td><td class="zh-cell">邮票 / 印章</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🌱</td><td class="es-cell">Tallo</td><td class="zh-cell">茎 / 杆</td>
+                                <td class="emoji-cell">⛰️</td><td class="es-cell">Valle</td><td class="zh-cell">山谷</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍲</td><td class="es-cell">Olla</td><td class="zh-cell">锅</td>
+                                <td class="emoji-cell">⚓</td><td class="es-cell">Muelle</td><td class="zh-cell">弹簧 / 码头</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏅</td><td class="es-cell">Medallita</td><td class="zh-cell">小奖牌 / 小勋章</td>
+                                <td class="emoji-cell">💵</td><td class="es-cell">Billete</td><td class="zh-cell">钞票 / 票据</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐥</td><td class="es-cell">Pollo</td><td class="zh-cell">鸡 / 鸡肉</td>
+                                <td class="emoji-cell">😏</td><td class="es-cell">Pillo</td><td class="zh-cell">淘气鬼 / 狡猾的人</td>
+                            </tr>
                         </table>
                     </div>
 
@@ -493,21 +539,38 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">🙋‍♂️</td><td class="es-cell">Yo</td><td class="zh-cell">我</td></tr>
-                            <tr><td class="emoji-cell">🏁</td><td class="es-cell">Ya</td><td class="zh-cell">已经 / 现在</td></tr>
-                            <tr><td class="emoji-cell">👂</td><td class="es-cell">Oye</td><td class="zh-cell">听 / 嘿</td></tr>
-                            <tr><td class="emoji-cell">🛥️</td><td class="es-cell">Yate</td><td class="zh-cell">游艇</td></tr>
-                            <tr><td class="emoji-cell">🥚</td><td class="es-cell">Yema</td><td class="zh-cell">蛋黄 / 指尖</td></tr>
-                            <tr><td class="emoji-cell">🤡</td><td class="es-cell">Payaso</td><td class="zh-cell">小丑</td></tr>
-                            <tr><td class="emoji-cell">🗓️</td><td class="es-cell">Mayo</td><td class="zh-cell">五月</td></tr>
-                            <tr><td class="emoji-cell">⚡</td><td class="es-cell">Rayo</td><td class="zh-cell">闪电 / 光线</td></tr>
-                            <tr><td class="emoji-cell">📏</td><td class="es-cell">Raya</td><td class="zh-cell">线条 / 划痕</td></tr>
-                            <tr><td class="emoji-cell">🕳️</td><td class="es-cell">Hoyo</td><td class="zh-cell">洞 / 坑</td></tr>
-                            <tr><td class="emoji-cell">🏃‍♂️</td><td class="es-cell">Huye</td><td class="zh-cell">逃跑 / 躲避</td></tr>
-                            <tr><td class="emoji-cell">🧼</td><td class="es-cell">Bayeta</td><td class="zh-cell">抹布</td></tr>
-                            <tr><td class="emoji-cell">🤝</td><td class="es-cell">Apoya</td><td class="zh-cell">支撑 / 依靠</td></tr>
-                            <tr><td class="emoji-cell">🍳</td><td class="es-cell">Desayunado</td><td class="zh-cell">吃过早餐</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🙋‍♂️</td><td class="es-cell">Yo</td><td class="zh-cell">我</td>
+                                <td class="emoji-cell">🏁</td><td class="es-cell">Ya</td><td class="zh-cell">已经 / 现在</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">👂</td><td class="es-cell">Oye</td><td class="zh-cell">听 / 嘿</td>
+                                <td class="emoji-cell">🛥️</td><td class="es-cell">Yate</td><td class="zh-cell">游艇</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🥚</td><td class="es-cell">Yema</td><td class="zh-cell">蛋黄 / 指尖</td>
+                                <td class="emoji-cell">🤡</td><td class="es-cell">Payaso</td><td class="zh-cell">小丑</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🗓️</td><td class="es-cell">Mayo</td><td class="zh-cell">五月</td>
+                                <td class="emoji-cell">⚡</td><td class="es-cell">Rayo</td><td class="zh-cell">闪电 / 光线</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">📏</td><td class="es-cell">Raya</td><td class="zh-cell">线条 / 划痕</td>
+                                <td class="emoji-cell">🕳️</td><td class="es-cell">Hoyo</td><td class="zh-cell">洞 / 坑</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏃‍♂️</td><td class="es-cell">Huye</td><td class="zh-cell">逃跑 / 躲避</td>
+                                <td class="emoji-cell">🧼</td><td class="es-cell">Bayeta</td><td class="zh-cell">抹布</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🤝</td><td class="es-cell">Apoya</td><td class="zh-cell">支撑 / 依靠</td>
+                                <td class="emoji-cell">🍳</td><td class="es-cell">Desayunado</td><td class="zh-cell">吃过早餐</td>
+                            </tr>
                         </table>
                     </div>
 
@@ -560,24 +623,46 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">🍼</td><td class="es-cell">Chupete</td><td class="zh-cell">奶嘴</td></tr>
-                            <tr><td class="emoji-cell">🌳</td><td class="es-cell">Chopo</td><td class="zh-cell">杨树</td></tr>
-                            <tr><td class="emoji-cell">😫</td><td class="es-cell">Chilla</td><td class="zh-cell">尖叫 / 喊叫</td></tr>
-                            <tr><td class="emoji-cell">👦</td><td class="es-cell">Muchacho</td><td class="zh-cell">男孩 / 少年</td></tr>
-                            <tr><td class="emoji-cell">🚿</td><td class="es-cell">Ducha</td><td class="zh-cell">洗澡 / 淋浴</td></tr>
-                            <tr><td class="emoji-cell">8️⃣</td><td class="es-cell">Ocho</td><td class="zh-cell">八</td></tr>
-                            <tr><td class="emoji-cell">🇨🇳</td><td class="es-cell">China</td><td class="zh-cell">中国</td></tr>
-                            <tr><td class="emoji-cell">🥖</td><td class="es-cell">Churro</td><td class="zh-cell">西班牙油条</td></tr>
-                            <tr><td class="emoji-cell">🌃</td><td class="es-cell">Anoche</td><td class="zh-cell">昨晚</td></tr>
-                            <tr><td class="emoji-cell">🥛</td><td class="es-cell">Leche</td><td class="zh-cell">牛奶</td></tr>
-                            <tr><td class="emoji-cell">🐐</td><td class="es-cell">Chiva</td><td class="zh-cell">小母山羊</td></tr>
-                            <tr><td class="emoji-cell">👧</td><td class="es-cell">Muchacha</td><td class="zh-cell">女孩 / 少女</td></tr>
-                            <tr><td class="emoji-cell">🦉</td><td class="es-cell">Mochuelillo</td><td class="zh-cell">小猫头鹰</td></tr>
-                            <tr><td class="emoji-cell">👦</td><td class="es-cell">Chavalillo</td><td class="zh-cell">小伙子 / 小屁孩</td></tr>
-                            <tr><td class="emoji-cell">🍭</td><td class="es-cell">Chupa</td><td class="zh-cell">吸 / 吮</td></tr>
-                            <tr><td class="emoji-cell">🔥</td><td class="es-cell">Chimenea</td><td class="zh-cell">壁炉 / 烟囱</td></tr>
-                            <tr><td class="emoji-cell">🍾</td><td class="es-cell">Chapa</td><td class="zh-cell">瓶盖</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍼</td><td class="es-cell">Chupete</td><td class="zh-cell">奶嘴</td>
+                                <td class="emoji-cell">🌳</td><td class="es-cell">Chopo</td><td class="zh-cell">杨树</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">😫</td><td class="es-cell">Chilla</td><td class="zh-cell">尖叫 / 喊叫</td>
+                                <td class="emoji-cell">👦</td><td class="es-cell">Muchacho</td><td class="zh-cell">男孩 / 少年</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🚿</td><td class="es-cell">Ducha</td><td class="zh-cell">洗澡 / 淋浴</td>
+                                <td class="emoji-cell">8️⃣</td><td class="es-cell">Ocho</td><td class="zh-cell">八</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🇨🇳</td><td class="es-cell">China</td><td class="zh-cell">中国</td>
+                                <td class="emoji-cell">🥖</td><td class="es-cell">Churro</td><td class="zh-cell">西班牙油条</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🌃</td><td class="es-cell">Anoche</td><td class="zh-cell">昨晚</td>
+                                <td class="emoji-cell">🥛</td><td class="es-cell">Leche</td><td class="zh-cell">牛奶</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐐</td><td class="es-cell">Chiva</td><td class="zh-cell">小母山羊</td>
+                                <td class="emoji-cell">👧</td><td class="es-cell">Muchacha</td><td class="zh-cell">女孩 / 少女</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🦉</td><td class="es-cell">Mochuelillo</td><td class="zh-cell">小猫头鹰</td>
+                                <td class="emoji-cell">👦</td><td class="es-cell">Chavalillo</td><td class="zh-cell">小伙子 / 小屁孩</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍭</td><td class="es-cell">Chupa</td><td class="zh-cell">吸 / 吮</td>
+                                <td class="emoji-cell">🔥</td><td class="es-cell">Chimenea</td><td class="zh-cell">壁炉 / 烟囱</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍾</td><td class="es-cell">Chapa</td><td class="zh-cell">瓶盖</td>
+                                <td class="emoji-cell"></td><td class="es-cell"></td><td class="zh-cell"></td>
+                            </tr>
                         </table>
                     </div>
 
@@ -642,21 +727,38 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">🦭</td><td class="es-cell">Foca</td><td class="zh-cell">海豹</td></tr>
-                            <tr><td class="emoji-cell">🥩</td><td class="es-cell">Filete</td><td class="zh-cell">肉排 / 鱼排</td></tr>
-                            <tr><td class="emoji-cell">🚨</td><td class="es-cell">Faro</td><td class="zh-cell">灯塔</td></tr>
-                            <tr><td class="emoji-cell">🚬</td><td class="es-cell">Fuma</td><td class="zh-cell">抽烟</td></tr>
-                            <tr><td class="emoji-cell">📸</td><td class="es-cell">Foto</td><td class="zh-cell">照片</td></tr>
-                            <tr><td class="emoji-cell">👗</td><td class="es-cell">Falda</td><td class="zh-cell">裙子</td></tr>
-                            <tr><td class="emoji-cell">⛲</td><td class="es-cell">Fuente</td><td class="zh-cell">喷泉 / 水源</td></tr>
-                            <tr><td class="emoji-cell">🚶‍♂️</td><td class="es-cell">Fila</td><td class="zh-cell">队伍 / 排</td></tr>
-                            <tr><td class="emoji-cell">👓</td><td class="es-cell">Gafas</td><td class="zh-cell">眼镜</td></tr>
-                            <tr><td class="emoji-cell">🛋️</td><td class="es-cell">Sofá</td><td class="zh-cell">沙发</td></tr>
-                            <tr><td class="emoji-cell">☎️</td><td class="es-cell">Teléfono</td><td class="zh-cell">电话</td></tr>
-                            <tr><td class="emoji-cell">🐘</td><td class="es-cell">Elefante</td><td class="zh-cell">大象</td></tr>
-                            <tr><td class="emoji-cell">💃</td><td class="es-cell">Fina</td><td class="zh-cell">苗条的 / 精致的</td></tr>
-                            <tr><td class="emoji-cell">👺</td><td class="es-cell">Feo</td><td class="zh-cell">丑的</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🦭</td><td class="es-cell">Foca</td><td class="zh-cell">海豹</td>
+                                <td class="emoji-cell">🥩</td><td class="es-cell">Filete</td><td class="zh-cell">肉排 / 鱼排</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🚨</td><td class="es-cell">Faro</td><td class="zh-cell">灯塔</td>
+                                <td class="emoji-cell">🚬</td><td class="es-cell">Fuma</td><td class="zh-cell">抽烟</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">📸</td><td class="es-cell">Foto</td><td class="zh-cell">照片</td>
+                                <td class="emoji-cell">👗</td><td class="es-cell">Falda</td><td class="zh-cell">裙子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">⛲</td><td class="es-cell">Fuente</td><td class="zh-cell">喷泉 / 水源</td>
+                                <td class="emoji-cell">🚶‍♂️</td><td class="es-cell">Fila</td><td class="zh-cell">队伍 / 排</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">👓</td><td class="es-cell">Gafas</td><td class="zh-cell">眼镜</td>
+                                <td class="emoji-cell">🛋️</td><td class="es-cell">Sofá</td><td class="zh-cell">沙发</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">☎️</td><td class="es-cell">Teléfono</td><td class="zh-cell">电话</td>
+                                <td class="emoji-cell">🐘</td><td class="es-cell">Elefante</td><td class="zh-cell">大象</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">💃</td><td class="es-cell">Fina</td><td class="zh-cell">苗条的 / 精致的</td>
+                                <td class="emoji-cell">👺</td><td class="es-cell">Feo</td><td class="zh-cell">丑的</td>
+                            </tr>
                         </table>
                     </div>
 
@@ -709,26 +811,50 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">🐱</td><td class="es-cell">Gato / Gata</td><td class="zh-cell">猫（公/母）</td></tr>
-                            <tr><td class="emoji-cell">💧</td><td class="es-cell">Gota</td><td class="zh-cell">水滴</td></tr>
-                            <tr><td class="emoji-cell">🧙‍♂️</td><td class="es-cell">Mago</td><td class="zh-cell">魔术师</td></tr>
-                            <tr><td class="emoji-cell">🪢</td><td class="es-cell">Soga</td><td class="zh-cell">粗绳</td></tr>
-                            <tr><td class="emoji-cell">💰</td><td class="es-cell">Pago</td><td class="zh-cell">支付 / 报酬</td></tr>
-                            <tr><td class="emoji-cell">🔥</td><td class="es-cell">Fuego</td><td class="zh-cell">火</td></tr>
-                            <tr><td class="emoji-cell">🏞️</td><td class="es-cell">Lago</td><td class="zh-cell">湖泊</td></tr>
-                            <tr><td class="emoji-cell">🤜</td><td class="es-cell">Pega</td><td class="zh-cell">打 / 粘贴</td></tr>
-                            <tr><td class="emoji-cell">😴</td><td class="es-cell">Vago</td><td class="zh-cell">懒惰的</td></tr>
-                            <tr><td class="emoji-cell">🫐</td><td class="es-cell">Higo</td><td class="zh-cell">无花果</td></tr>
-                            <tr><td class="emoji-cell">🤺</td><td class="es-cell">Amago</td><td class="zh-cell">假动作 / 迹象</td></tr>
-                            <tr><td class="emoji-cell">🚰</td><td class="es-cell">Agua</td><td class="zh-cell">水</td></tr>
-                            <tr><td class="emoji-cell">🧼</td><td class="es-cell">Goma</td><td class="zh-cell">橡皮 / 胶水</td></tr>
-                            <tr><td class="emoji-cell">🐛</td><td class="es-cell">Gusano</td><td class="zh-cell">蠕虫</td></tr>
-                            <tr><td class="emoji-cell">⚔️</td><td class="es-cell">Guerrero</td><td class="zh-cell">战士</td></tr>
-                            <tr><td class="emoji-cell">🫛</td><td class="es-cell">Guisantes</td><td class="zh-cell">豌豆</td></tr>
-                            <tr><td class="emoji-cell">🚿</td><td class="es-cell">Manguera</td><td class="zh-cell">水管</td></tr>
-                            <tr><td class="emoji-cell">🎸</td><td class="es-cell">Guitarra</td><td class="zh-cell">吉他</td></tr>
-                            <tr><td class="emoji-cell">🦅</td><td class="es-cell">Águila</td><td class="zh-cell">老鹰</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐱</td><td class="es-cell">Gato / Gata</td><td class="zh-cell">猫（公/母）</td>
+                                <td class="emoji-cell">💧</td><td class="es-cell">Gota</td><td class="zh-cell">水滴</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧙‍♂️</td><td class="es-cell">Mago</td><td class="zh-cell">魔术师</td>
+                                <td class="emoji-cell">🪢</td><td class="es-cell">Soga</td><td class="zh-cell">粗绳</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">💰</td><td class="es-cell">Pago</td><td class="zh-cell">支付 / 报酬</td>
+                                <td class="emoji-cell">🔥</td><td class="es-cell">Fuego</td><td class="zh-cell">火</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏞️</td><td class="es-cell">Lago</td><td class="zh-cell">湖泊</td>
+                                <td class="emoji-cell">🤜</td><td class="es-cell">Pega</td><td class="zh-cell">打 / 粘贴</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">😴</td><td class="es-cell">Vago</td><td class="zh-cell">懒惰的</td>
+                                <td class="emoji-cell">🫐</td><td class="es-cell">Higo</td><td class="zh-cell">无花果</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🤺</td><td class="es-cell">Amago</td><td class="zh-cell">假动作 / 迹象</td>
+                                <td class="emoji-cell">🚰</td><td class="es-cell">Agua</td><td class="zh-cell">水</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧼</td><td class="es-cell">Goma</td><td class="zh-cell">橡皮 / 胶水</td>
+                                <td class="emoji-cell">🐛</td><td class="es-cell">Gusano</td><td class="zh-cell">蠕虫</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">⚔️</td><td class="es-cell">Guerrero</td><td class="zh-cell">战士</td>
+                                <td class="emoji-cell">🫛</td><td class="es-cell">Guisantes</td><td class="zh-cell">豌豆</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🚿</td><td class="es-cell">Manguera</td><td class="zh-cell">水管</td>
+                                <td class="emoji-cell">🎸</td><td class="es-cell">Guitarra</td><td class="zh-cell">吉他</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🦅</td><td class="es-cell">Águila</td><td class="zh-cell">老鹰</td>
+                                <td class="emoji-cell"></td><td class="es-cell"></td><td class="zh-cell"></td>
+                            </tr>
                         </table>
                     </div>
 
@@ -781,30 +907,58 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">🏺</td><td class="es-cell">Jarra</td><td class="zh-cell">大口罐 / 水壶</td></tr>
-                            <tr><td class="emoji-cell">🕸️</td><td class="es-cell">Jaula</td><td class="zh-cell">笼子</td></tr>
-                            <tr><td class="emoji-cell">🏇</td><td class="es-cell">Jinete</td><td class="zh-cell">骑手</td></tr>
-                            <tr><td class="emoji-cell">✂️</td><td class="es-cell">Tijeras</td><td class="zh-cell">剪刀</td></tr>
-                            <tr><td class="emoji-cell">🏺</td><td class="es-cell">Jarrón</td><td class="zh-cell">花瓶</td></tr>
-                            <tr><td class="emoji-cell">🐰</td><td class="es-cell">Conejo</td><td class="zh-cell">兔子</td></tr>
-                            <tr><td class="emoji-cell">🐦</td><td class="es-cell">Pájaro</td><td class="zh-cell">鸟</td></tr>
-                            <tr><td class="emoji-cell">🐑</td><td class="es-cell">Oveja</td><td class="zh-cell">绵羊</td></tr>
-                            <tr><td class="emoji-cell">🐝</td><td class="es-cell">Abeja</td><td class="zh-cell">蜜蜂</td></tr>
-                            <tr><td class="emoji-cell">🪞</td><td class="es-cell">Espejo</td><td class="zh-cell">镜子</td></tr>
-                            <tr><td class="emoji-cell">🌾</td><td class="es-cell">Paja</td><td class="zh-cell">稻草 / 麦秆</td></tr>
-                            <tr><td class="emoji-cell">👁️</td><td class="es-cell">Ojo</td><td class="zh-cell">眼睛</td></tr>
-                            <tr><td class="emoji-cell">🔴</td><td class="es-cell">Rojo</td><td class="zh-cell">红色</td></tr>
-                            <tr><td class="emoji-cell">🏠</td><td class="es-cell">Teja</td><td class="zh-cell">瓦片</td></tr>
-                            <tr><td class="emoji-cell">🛑</td><td class="es-cell">Deja</td><td class="zh-cell">留下 / 放下</td></tr>
-                            <tr><td class="emoji-cell">👧</td><td class="es-cell">Hija</td><td class="zh-cell">女儿</td></tr>
-                            <tr><td class="emoji-cell">🍃</td><td class="es-cell">Hoja</td><td class="zh-cell">叶子</td></tr>
-                            <tr><td class="emoji-cell">💎</td><td class="es-cell">Joya</td><td class="zh-cell">珠宝</td></tr>
-                            <tr><td class="emoji-cell">📦</td><td class="es-cell">Caja</td><td class="zh-cell">盒子 / 箱子</td></tr>
-                            <tr><td class="emoji-cell">👂</td><td class="es-cell">Oreja</td><td class="zh-cell">耳朵</td></tr>
-                            <tr><td class="emoji-cell">🤏</td><td class="es-cell">Cojo</td><td class="zh-cell">我拿 / 我取</td></tr>
-                            <tr><td class="emoji-cell">🎨</td><td class="es-cell">Dibujo</td><td class="zh-cell">图画</td></tr>
-                            <tr><td class="emoji-cell">🔪</td><td class="es-cell">Navaja</td><td class="zh-cell">折叠刀</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏺</td><td class="es-cell">Jarra</td><td class="zh-cell">大口罐 / 水壶</td>
+                                <td class="emoji-cell">🕸️</td><td class="es-cell">Jaula</td><td class="zh-cell">笼子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏇</td><td class="es-cell">Jinete</td><td class="zh-cell">骑手</td>
+                                <td class="emoji-cell">✂️</td><td class="es-cell">Tijeras</td><td class="zh-cell">剪刀</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏺</td><td class="es-cell">Jarrón</td><td class="zh-cell">花瓶</td>
+                                <td class="emoji-cell">🐰</td><td class="es-cell">Conejo</td><td class="zh-cell">兔子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐦</td><td class="es-cell">Pájaro</td><td class="zh-cell">鸟</td>
+                                <td class="emoji-cell">🐑</td><td class="es-cell">Oveja</td><td class="zh-cell">绵羊</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐝</td><td class="es-cell">Abeja</td><td class="zh-cell">蜜蜂</td>
+                                <td class="emoji-cell">🪞</td><td class="es-cell">Espejo</td><td class="zh-cell">镜子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🌾</td><td class="es-cell">Paja</td><td class="zh-cell">稻草 / 麦秆</td>
+                                <td class="emoji-cell">👁️</td><td class="es-cell">Ojo</td><td class="zh-cell">眼睛</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🔴</td><td class="es-cell">Rojo</td><td class="zh-cell">红色</td>
+                                <td class="emoji-cell">🏠</td><td class="es-cell">Teja</td><td class="zh-cell">瓦片</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🛑</td><td class="es-cell">Deja</td><td class="zh-cell">留下 / 放下</td>
+                                <td class="emoji-cell">👧</td><td class="es-cell">Hija</td><td class="zh-cell">女儿</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍃</td><td class="es-cell">Hoja</td><td class="zh-cell">叶子</td>
+                                <td class="emoji-cell">💎</td><td class="es-cell">Joya</td><td class="zh-cell">珠宝</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">📦</td><td class="es-cell">Caja</td><td class="zh-cell">盒子 / 箱子</td>
+                                <td class="emoji-cell">👂</td><td class="es-cell">Oreja</td><td class="zh-cell">耳朵</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🤏</td><td class="es-cell">Cojo</td><td class="zh-cell">我拿 / 我取</td>
+                                <td class="emoji-cell">🎨</td><td class="es-cell">Dibujo</td><td class="zh-cell">图画</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🔪</td><td class="es-cell">Navaja</td><td class="zh-cell">折叠刀</td>
+                                <td class="emoji-cell"></td><td class="es-cell"></td><td class="zh-cell"></td>
+                            </tr>
                         </table>
                     </div>
 
@@ -843,20 +997,38 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">🧵</td><td class="es-cell">Hilo</td><td class="zh-cell">线</td></tr>
-                            <tr><td class="emoji-cell">💨</td><td class="es-cell">Humo</td><td class="zh-cell">烟</td></tr>
-                            <tr><td class="emoji-cell">⏰</td><td class="es-cell">Hora</td><td class="zh-cell">小时 / 时间</td></tr>
-                            <tr><td class="emoji-cell">🗣️</td><td class="es-cell">Habla</td><td class="zh-cell">说话</td></tr>
-                            <tr><td class="emoji-cell">🧊</td><td class="es-cell">Hielo</td><td class="zh-cell">冰</td></tr>
-                            <tr><td class="emoji-cell">🧚‍♀️</td><td class="es-cell">Hada</td><td class="zh-cell">仙女</td></tr>
-                            <tr><td class="emoji-cell">🍦</td><td class="es-cell">Helado</td><td class="zh-cell">冰激凌</td></tr>
-                            <tr><td class="emoji-cell">🩹</td><td class="es-cell">Herida</td><td class="zh-cell">伤口</td></tr>
-                            <tr><td class="emoji-cell">🐎</td><td class="es-cell">Herradura</td><td class="zh-cell">马蹄铁</td></tr>
-                            <tr><td class="emoji-cell">🌱</td><td class="es-cell">Hierba</td><td class="zh-cell">草</td></tr>
-                            <tr><td class="emoji-cell">🥚</td><td class="es-cell">Huevo</td><td class="zh-cell">鸡蛋</td></tr>
-                            <tr><td class="emoji-cell">🪓</td><td class="es-cell">Hacha</td><td class="zh-cell">斧头</td></tr>
-                            <tr><td class="emoji-cell">👦</td><td class="es-cell">Hijo / Hija</td><td class="zh-cell">儿子 / 女儿</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧵</td><td class="es-cell">Hilo</td><td class="zh-cell">线</td>
+                                <td class="emoji-cell">💨</td><td class="es-cell">Humo</td><td class="zh-cell">烟</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">⏰</td><td class="es-cell">Hora</td><td class="zh-cell">小时 / 时间</td>
+                                <td class="emoji-cell">🗣️</td><td class="es-cell">Habla</td><td class="zh-cell">说话</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧊</td><td class="es-cell">Hielo</td><td class="zh-cell">冰</td>
+                                <td class="emoji-cell">🧚‍♀️</td><td class="es-cell">Hada</td><td class="zh-cell">仙女</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍦</td><td class="es-cell">Helado</td><td class="zh-cell">冰激凌</td>
+                                <td class="emoji-cell">🩹</td><td class="es-cell">Herida</td><td class="zh-cell">伤口</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐎</td><td class="es-cell">Herradura</td><td class="zh-cell">马蹄铁</td>
+                                <td class="emoji-cell">🌱</td><td class="es-cell">Hierba</td><td class="zh-cell">草</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🥚</td><td class="es-cell">Huevo</td><td class="zh-cell">鸡蛋</td>
+                                <td class="emoji-cell">🪓</td><td class="es-cell">Hacha</td><td class="zh-cell">斧头</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">👦</td><td class="es-cell">Hijo / Hija</td><td class="zh-cell">儿子 / 女儿</td>
+                                <td class="emoji-cell"></td><td class="es-cell"></td><td class="zh-cell"></td>
+                            </tr>
                         </table>
                     </div>
 
@@ -884,19 +1056,34 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">👞</td><td class="es-cell">Zapato</td><td class="zh-cell">鞋子</td></tr>
-                            <tr><td class="emoji-cell">🍹</td><td class="es-cell">Zumo</td><td class="zh-cell">果汁</td></tr>
-                            <tr><td class="emoji-cell">☕</td><td class="es-cell">Taza</td><td class="zh-cell">杯子</td></tr>
-                            <tr><td class="emoji-cell">🕳️</td><td class="es-cell">Pozo</td><td class="zh-cell">井</td></tr>
-                            <tr><td class="emoji-cell">🏺</td><td class="es-cell">Loza</td><td class="zh-cell">陶器</td></tr>
-                            <tr><td class="emoji-cell">🎀</td><td class="es-cell">Lazo</td><td class="zh-cell">蝴蝶结 / 绳圈</td></tr>
-                            <tr><td class="emoji-cell">🍎</td><td class="es-cell">Manzana</td><td class="zh-cell">苹果</td></tr>
-                            <tr><td class="emoji-cell">👩‍🏫</td><td class="es-cell">Pizarra</td><td class="zh-cell">黑板</td></tr>
-                            <tr><td class="emoji-cell">🖍️</td><td class="es-cell">Tiza</td><td class="zh-cell">粉笔</td></tr>
-                            <tr><td class="emoji-cell">🙆‍♂️</td><td class="es-cell">Cabeza</td><td class="zh-cell">头部</td></tr>
-                            <tr><td class="emoji-cell">🎃</td><td class="es-cell">Calabaza</td><td class="zh-cell">南瓜</td></tr>
-                            <tr><td class="emoji-cell">👞</td><td class="es-cell">Zapatero</td><td class="zh-cell">鞋匠</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">👞</td><td class="es-cell">Zapato</td><td class="zh-cell">鞋子</td>
+                                <td class="emoji-cell">🍹</td><td class="es-cell">Zumo</td><td class="zh-cell">果汁</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">☕</td><td class="es-cell">Taza</td><td class="zh-cell">杯子</td>
+                                <td class="emoji-cell">🕳️</td><td class="es-cell">Pozo</td><td class="zh-cell">井</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏺</td><td class="es-cell">Loza</td><td class="zh-cell">陶器</td>
+                                <td class="emoji-cell">🎀</td><td class="es-cell">Lazo</td><td class="zh-cell">蝴蝶结 / 绳圈</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍎</td><td class="es-cell">Manzana</td><td class="zh-cell">苹果</td>
+                                <td class="emoji-cell">👩‍🏫</td><td class="es-cell">Pizarra</td><td class="zh-cell">黑板</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🖍️</td><td class="es-cell">Tiza</td><td class="zh-cell">粉笔</td>
+                                <td class="emoji-cell">🙆‍♂️</td><td class="es-cell">Cabeza</td><td class="zh-cell">头部</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🎃</td><td class="es-cell">Calabaza</td><td class="zh-cell">南瓜</td>
+                                <td class="emoji-cell">👞</td><td class="es-cell">Zapatero</td><td class="zh-cell">鞋匠</td>
+                            </tr>
                         </table>
                     </div>
 
@@ -922,19 +1109,34 @@
                     <div class="section-title">📝 词汇表 (Vocabulario)</div>
                     <div class="table-responsive">
                         <table>
-                            <tr><th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th></tr>
-                            <tr><td class="emoji-cell">🍽️</td><td class="es-cell">Cena</td><td class="zh-cell">晚餐</td></tr>
-                            <tr><td class="emoji-cell">🎬</td><td class="es-cell">Cine</td><td class="zh-cell">电影院</td></tr>
-                            <tr><td class="emoji-cell">1️⃣2️⃣</td><td class="es-cell">Doce</td><td class="zh-cell">十二</td></tr>
-                            <tr><td class="emoji-cell">1️⃣1️⃣</td><td class="es-cell">Once</td><td class="zh-cell">十一</td></tr>
-                            <tr><td class="emoji-cell">🍳</td><td class="es-cell">Cocina</td><td class="zh-cell">厨房</td></tr>
-                            <tr><td class="emoji-cell">🐟</td><td class="es-cell">Peces</td><td class="zh-cell">鱼（复数）</td></tr>
-                            <tr><td class="emoji-cell">💡</td><td class="es-cell">Luces</td><td class="zh-cell">灯光（复数）</td></tr>
-                            <tr><td class="emoji-cell">🪥</td><td class="es-cell">Cepillo</td><td class="zh-cell">刷子 / 牙刷</td></tr>
-                            <tr><td class="emoji-cell">🪴</td><td class="es-cell">Maceta</td><td class="zh-cell">花盆</td></tr>
-                            <tr><td class="emoji-cell">🌌</td><td class="es-cell">Cielo</td><td class="zh-cell">天空</td></tr>
-                            <tr><td class="emoji-cell">🦗</td><td class="es-cell">Cigarra</td><td class="zh-cell">蝉</td></tr>
-                            <tr><td class="emoji-cell">🦢</td><td class="es-cell">Cisne</td><td class="zh-cell">天鹅</td></tr>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍽️</td><td class="es-cell">Cena</td><td class="zh-cell">晚餐</td>
+                                <td class="emoji-cell">🎬</td><td class="es-cell">Cine</td><td class="zh-cell">电影院</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">1️⃣2️⃣</td><td class="es-cell">Doce</td><td class="zh-cell">十二</td>
+                                <td class="emoji-cell">1️⃣1️⃣</td><td class="es-cell">Once</td><td class="zh-cell">十一</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍳</td><td class="es-cell">Cocina</td><td class="zh-cell">厨房</td>
+                                <td class="emoji-cell">🐟</td><td class="es-cell">Peces</td><td class="zh-cell">鱼（复数）</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">💡</td><td class="es-cell">Luces</td><td class="zh-cell">灯光（复数）</td>
+                                <td class="emoji-cell">🪥</td><td class="es-cell">Cepillo</td><td class="zh-cell">刷子 / 牙刷</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🪴</td><td class="es-cell">Maceta</td><td class="zh-cell">花盆</td>
+                                <td class="emoji-cell">🌌</td><td class="es-cell">Cielo</td><td class="zh-cell">天空</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🦗</td><td class="es-cell">Cigarra</td><td class="zh-cell">蝉</td>
+                                <td class="emoji-cell">🦢</td><td class="es-cell">Cisne</td><td class="zh-cell">天鹅</td>
+                            </tr>
                         </table>
                     </div>
 
