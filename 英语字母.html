@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语字母表 - EMSI 教学资源</title>
+    <style>
+        /* 复用您提供的 EMSI 基础样式 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 30px 20px 10px 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: clamp(24px, 5vw, 42px);
+            margin: 0;
+        }
+
+        /* 顶部工具栏 - 返回按钮 */
+        .toolbar {
+            width: 100%;
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 25px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        /* 字母表网格系统 */
+        .alphabet-container {
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            /* 响应式网格：在电视上显示更多列，在手机上显示更少 */
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* 单个字母卡片样式 - 复刻图片样式 */
+        .letter-card {
+            background: white;
+            border: 6px solid #333; /* 图片中的粗黑边框 */
+            border-radius: 15px;
+            aspect-ratio: 1 / 1.1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* 鼠标悬停动态效果 */
+        .letter-card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        /* 字母主体 */
+        .letter-main {
+            font-size: clamp(60px, 10vw, 100px); /* 针对电视机进行特大号处理 */
+            font-weight: 800;
+            color: #333;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
+        }
+
+        /* 注音样式 */
+        .letter-phonetic {
+            font-size: clamp(18px, 3vw, 24px);
+            color: #444;
+            font-weight: 500;
+            background: rgba(255,255,255,0.7);
+            padding: 2px 12px;
+            border-radius: 20px;
+        }
+
+        /* 页脚 */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+        }
+
+        /* 手机端微调 */
+        @media (max-width: 600px) {
+            .alphabet-container {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 15px;
+            }
+            .letter-card {
+                border-width: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 英语字母发音表</h1>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">← 返回主页</a>
+    </div>
+
+    <main class="alphabet-container" id="alphabetGrid">
+        </main>
+
+    <footer class="footer">
+        © 2026 EMSI 马德里国际中文学校
+    </footer>
+
+    <script>
+        // 定义字母、注音和对应颜色
+        const alphabetData = [
+            { l: 'A', p: 'ei' }, { l: 'B', p: 'bi' }, { l: 'C', p: 'ci' }, { l: 'D', p: 'di' },
+            { l: 'E', p: 'i' }, { l: 'F', p: 'ef' }, { l: 'G', p: 'yi' }, { l: 'H', p: 'eich' },
+            { l: 'I', p: 'ai' }, { l: 'J', p: 'yei' }, { l: 'K', p: 'kei' }, { l: 'L', p: 'el' },
+            { l: 'M', p: 'em' }, { l: 'N', p: 'en' }, { l: 'O', p: 'ou' }, { l: 'P', p: 'pi' },
+            { l: 'Q', p: 'kiu' }, { l: 'R', p: 'ar' }, { l: 'S', p: 'es' }, { l: 'T', p: 'ti' },
+            { l: 'U', p: 'iu' }, { l: 'V', p: 'vi' }, { l: 'W', p: 'dabeliu' }, { l: 'X', p: 'eks' },
+            { l: 'Y', p: 'uai' }, { l: 'Z', p: 'zed/zi' }
+        ];
+
+        // 颜色池：确保色彩丰富且亮丽
+        const colors = [
+            '#FFADAD', '#FFD6A5', '#FDFFB6', '#CAFFBF', '#9BF6FF', 
+            '#A0C4FF', '#BDB2FF', '#FFC6FF', '#FF9AA2', '#C7CEEA',
+            '#F9ED69', '#F08A5D', '#B83B5E', '#6A2C70', '#E3F6F5',
+            '#BAE8E8', '#FFD4B2', '#D1E8E2', '#EFE7BC', '#FFAAA5',
+            '#D4A5A5', '#97C1A9', '#A1E3D8', '#B7D3DF', '#DBC7BE', '#E2F0CB'
+        ];
+
+        const grid = document.getElementById('alphabetGrid');
+
+        alphabetData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'letter-card';
+            // 设置不同的背景颜色
+            card.style.backgroundColor = colors[index % colors.length];
+            
+            card.innerHTML = `
+                <div class="letter-main">${item.l}</div>
+                <div class="letter-phonetic">(${item.p})</div>
+            `;
+            
+            // 点击交互（可以以后添加发音功能）
+            card.onclick = () => {
+                console.log(`点击了字母: ${item.l}`);
+            };
+
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
