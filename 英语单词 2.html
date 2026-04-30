@@ -32,34 +32,17 @@
         /* --- 导航按钮 --- */
         .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         
-        /* 复刻图片中的胶囊返回按钮 */
         .btn-back {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 20px;
-            background-color: white;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 50px;
-            color: var(--emsi-blue);
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.2s;
+            display: inline-flex; align-items: center; padding: 8px 20px;
+            background-color: white; border: 1.5px solid #e2e8f0; border-radius: 50px;
+            color: var(--emsi-blue); text-decoration: none; font-size: 15px; font-weight: 600; transition: all 0.2s;
         }
-        .btn-back:hover {
-            border-color: var(--emsi-blue);
-            background-color: #f8fafc;
-            transform: translateX(-3px);
-        }
-        .btn-back::before {
-            content: '〈'; /* 箭头符号 */
-            margin-right: 5px;
-            font-weight: bold;
-        }
+        .btn-back:hover { border-color: var(--emsi-blue); background-color: #f8fafc; transform: translateX(-3px); }
+        .btn-back::before { content: '〈'; margin-right: 5px; font-weight: bold; }
 
         .btn {
             padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px;
-            cursor: pointer; transition: 0.2s; border: none; display: flex; align-items: center; gap: 8px;
+            cursor: pointer; transition: 0.2s; border: none; display: flex; align-items: center; gap: 8px; justify-content: center;
         }
         .btn-home { border: 2px solid var(--emsi-blue); color: var(--emsi-blue); background: white; }
         .btn-home:hover { background: var(--emsi-blue); color: white; }
@@ -69,14 +52,40 @@
         .screen { display: none; }
         .active { display: block; }
 
+        /* --- 单元折叠面板 (Accordion) --- */
+        .unit-card { 
+            margin-bottom: 15px; border: 2px solid #e2e8f0; border-radius: 12px; 
+            background: white; overflow: hidden; transition: 0.3s;
+        }
+        .unit-header {
+            padding: 18px 20px; background: #f8fafc; display: flex; justify-content: space-between;
+            align-items: center; cursor: pointer; font-weight: bold; font-size: 1.2rem; color: var(--emsi-blue);
+            transition: 0.2s;
+        }
+        .unit-header:hover { background: #f0f4f8; }
+        .unit-header::after { content: '▼'; font-size: 0.9rem; transition: transform 0.3s; color: #94a3b8; }
+        .unit-card.active .unit-header { border-bottom: 2px solid #e2e8f0; }
+        .unit-card.active .unit-header::after { transform: rotate(180deg); color: var(--emsi-blue); }
+        
+        .unit-body { display: none; padding: 20px; }
+        .unit-card.active .unit-body { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .unit-actions { 
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;
+            padding-bottom: 20px; border-bottom: 1px dashed #cbd5e1;
+        }
+
         /* --- 单词展示表样式 --- */
-        .word-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+        .word-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .word-item { 
-            display: flex; align-items: center; padding: 10px; background: #fff; 
+            display: flex; align-items: center; padding: 10px; background: #fff; flex-wrap: wrap;
             border-radius: 8px; border: 1px solid #eef2f7; transition: 0.2s;
         }
+        .word-item:hover { border-color: var(--emsi-blue); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .word-num { color: #94a3b8; font-weight: bold; margin-right: 10px; min-width: 25px; }
         .word-en { font-weight: 700; color: var(--emsi-blue); margin-right: 10px; border-radius: 4px; padding: 0 4px; }
+        .word-es { color: #0284c7; font-size: 14px; font-style: italic; margin-right: 10px; }
         .word-cn { color: #475569; font-size: 14px; }
 
         .dictation-mode .word-en { color: transparent; background: #dbeafe; cursor: pointer; user-select: none; }
@@ -85,7 +94,7 @@
         /* --- 练习系统样式 --- */
         .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; overflow: hidden; margin: 20px 0; }
         #progress-fill { height: 100%; background: var(--emsi-blue); width: 0%; transition: 0.3s; }
-        .word-display { text-align: center; font-size: 2.5rem; font-weight: 800; color: var(--emsi-blue); margin: 30px 0; }
+        .word-display { text-align: center; font-size: 2rem; font-weight: 800; color: var(--emsi-blue); margin: 30px 0; }
         .options-grid { display: grid; gap: 12px; }
         .option-btn {
             padding: 18px; border: 2px solid #f1f5f9; border-radius: 12px;
@@ -98,15 +107,24 @@
         .spell-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
         .letter-box {
             width: 40px; height: 50px; border: 2px solid #e2e8f0; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; text-transform: lowercase;
         }
         .letter-box.blank { border-color: var(--emsi-blue); background: #f0f4ff; cursor: pointer; }
         .letter-box.active-blank { border-color: var(--emsi-gold); box-shadow: 0 0 8px rgba(241, 196, 15, 0.5); }
-        .keyboard { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-        .key-btn { padding: 12px 0; border: none; background: #e2e8f0; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .keyboard { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; max-width: 500px; margin: 0 auto; }
+        .key-btn { padding: 12px 0; border: none; background: #e2e8f0; border-radius: 6px; font-weight: 600; cursor: pointer; text-transform: lowercase;}
+        .key-btn:hover { background: #cbd5e1; }
 
-        @media (max-width: 900px) { .word-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 600px) { .word-grid { grid-template-columns: 1fr; } .keyboard { grid-template-columns: repeat(6, 1fr); } }
+        /* 响应式调整 */
+        @media (max-width: 900px) { 
+            .word-grid { grid-template-columns: 1fr; } 
+            .unit-actions { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) { 
+            .unit-actions { grid-template-columns: 1fr; }
+            .keyboard { grid-template-columns: repeat(6, 1fr); } 
+            .word-display { font-size: 1.5rem; }
+        }
 
         .footer { background: var(--emsi-blue); color: white; text-align: center; padding: 15px; font-size: 14px; margin-top: auto; }
     </style>
@@ -123,36 +141,33 @@
             
             <div id="menu-screen" class="screen active">
                 <div class="nav-bar">
-                    <a href="Vocabrarioingles.html" class="btn-back">返回</a>
-                    
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-home" onclick="toggleDictation()" id="dictBtn">✍️ 听写模式</button>
-                        <button class="btn btn-gold" onclick="downloadCSV()">📥 下载表</button>
+                    <a href="Vocabrarioingles.html" class="btn-back">返回总览</a>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn btn-home" onclick="toggleDictation()" id="dictBtn">✍️ 全局听写模式</button>
+                        <button class="btn btn-gold" onclick="downloadAllCSV()">📥 下载全部单词表</button>
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 10px; margin-bottom: 30px;">
-                    <button class="btn btn-blue" style="flex:1; justify-content:center;" onclick="startQuiz('en-cn')">英译汉练习</button>
-                    <button class="btn btn-blue" style="flex:1; justify-content:center;" onclick="startQuiz('cn-en')">汉译英练习</button>
-                    <button class="btn btn-gold" style="flex:1; justify-content:center;" onclick="startQuiz('fill')">拼写挑战</button>
-                </div>
-
-                <h3 style="border-left: 5px solid var(--emsi-gold); padding-left: 10px;">📖 本单元单词表 (1-31)</h3>
-                <div class="word-grid" id="mainWordTable"></div>
+                <div id="units-container"></div>
             </div>
 
             <div id="quiz-screen" class="screen">
                 <div class="nav-bar">
-                    <button class="btn btn-home" onclick="location.reload()">⬅ 退出</button>
-                    <span id="quiz-counter" style="font-weight:bold;">1 / 31</span>
+                    <button class="btn btn-home" onclick="showScreen('menu-screen')">⬅ 退出练习</button>
+                    <span id="quiz-title" style="font-weight:bold; color: var(--emsi-blue);"></span>
                     <button class="btn btn-gold" onclick="showResults()">交卷</button>
                 </div>
                 <div class="progress-bar"><div id="progress-fill"></div></div>
-                <div id="quiz-prompt" style="text-align: center; color: #64748b;"></div>
+                <div style="display:flex; justify-content:space-between; color:#64748b; font-weight:bold;">
+                    <span id="quiz-prompt"></span>
+                    <span id="quiz-counter"></span>
+                </div>
+                
                 <div id="quiz-display" class="word-display"></div>
                 <div id="spell-area" class="spell-container"></div>
                 <div id="mcq-area" class="options-grid"></div>
                 <div id="keyboard-area" class="keyboard"></div>
+                
                 <div style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
                     <button class="btn btn-home" id="prev-btn" onclick="changeStep(-1)">上一题</button>
                     <button class="btn btn-blue" id="next-btn" onclick="changeStep(1)">下一题</button>
@@ -162,9 +177,9 @@
             <div id="result-screen" class="screen">
                 <h2 style="text-align: center; color: var(--emsi-blue);">练习结果报告</h2>
                 <div id="final-score" style="text-align: center; font-size: 4rem; font-weight: 800; color: var(--emsi-gold);">0%</div>
-                <div id="result-summary" style="text-align: center; line-height: 2; margin-bottom: 20px;"></div>
-                <button class="btn btn-blue" style="width:100%; justify-content:center; margin-bottom:10px;" onclick="location.reload()">回到单词表</button>
-                <a href="Vocabrarioingles.html" class="btn btn-home" style="justify-content:center;">返回 Vocabulario</a>
+                <div id="result-summary" style="text-align: center; line-height: 2; margin-bottom: 20px; font-size: 1.2rem;"></div>
+                <button class="btn btn-blue" style="width:100%; margin-bottom:10px;" onclick="showScreen('menu-screen')">回到单词列表</button>
+                <a href="Vocabrarioingles.html" class="btn btn-home">返回 Vocabulario 总览</a>
             </div>
 
         </div>
@@ -175,63 +190,278 @@
     </footer>
 
     <script>
-        // 脚本部分保持原样，确保功能正常
-        const dictionary = [
-            {en: "Member", cn: "成员"}, {en: "Allow", cn: "允许"}, {en: "Consider", cn: "考虑"},
-            {en: "Attention", cn: "注意"}, {en: "Business", cn: "商业/生意"}, {en: "Captain", cn: "船长/队长"},
-            {en: "Celebrate", cn: "庆祝"}, {en: "Circle", cn: "圆/圈"}, {en: "Column", cn: "专栏/圆柱"},
-            {en: "Consonant", cn: "辅音"}, {en: "Country", cn: "国家"}, {en: "Curtain", cn: "窗帘"},
-            {en: "Decimal", cn: "小数"}, {en: "Details", cn: "详情/细节"}, {en: "Different", cn: "不同的"},
-            {en: "Division", cn: "除法/部门"}, {en: "Energy", cn: "能量"}, {en: "Factory", cn: "工厂"},
-            {en: "Explain", cn: "解释"}, {en: "Fault", cn: "故障/错误"}, {en: "Forward", cn: "向前"},
-            {en: "Future", cn: "未来"}, {en: "Mammal", cn: "哺乳动物"}, {en: "Guest", cn: "客人"},
-            {en: "Finish", cn: "完成"}, {en: "Human", cn: "人类"}, {en: "Indicate", cn: "表明/指示"},
-            {en: "Interesting", cn: "有趣的"}, {en: "Jungle", cn: "丛林"}, {en: "Mollusc", cn: "软体动物"},
-            {en: "Introduction", cn: "介绍"}
+        // --- 核心词汇数据 (全 8 单元 三语版) ---
+        const vocabularyData = [
+            {
+                unit: "Unit 1: Musical tastes (音乐品味)",
+                words: [
+                    {en: "Instruments", es: "Instrumentos", cn: "乐器"},
+                    {en: "Tambourine", es: "pandereta", cn: "铃鼓"},
+                    {en: "Trumpet", es: "Trompeta", cn: "小号"},
+                    {en: "Violin", es: "Violín", cn: "小提琴"},
+                    {en: "Classical music", es: "música clásica", cn: "古典音乐"},
+                    {en: "Drums", es: "batería", cn: "鼓"},
+                    {en: "Flute", es: "flauta", cn: "长笛"},
+                    {en: "Guitar", es: "guitarra", cn: "吉他"},
+                    {en: "Jazz music", es: "musica jazz", cn: "爵士乐"},
+                    {en: "Keyboard", es: "teclado", cn: "键盘"},
+                    {en: "Pop music", es: "musica Pop", cn: "流行音乐"},
+                    {en: "Rock music", es: "musica Rock", cn: "摇滚乐"},
+                    {en: "Saxophone", es: "saxofón", cn: "萨克斯风"},
+                    {en: "Like", es: "gustar", cn: "喜欢"},
+                    {en: "Play", es: "jugar", cn: "演奏/玩"},
+                    {en: "See", es: "ver", cn: "看见"},
+                    {en: "Think", es: "pensar", cn: "思考"},
+                    {en: "Wonder", es: "preguntarse", cn: "想知道"},
+                    {en: "Drummer", es: "tamborilero", cn: "鼓手"},
+                    {en: "Guitarist", es: "guitarrista", cn: "吉他手"},
+                    {en: "Singer", es: "cantante", cn: "歌手"}
+                ]
+            },
+            {
+                unit: "Unit 2: My free time (我的业余时间)",
+                words: [
+                    {en: "Playing the piano", es: "tocar el piano", cn: "弹钢琴"},
+                    {en: "Drawing", es: "dibujar", cn: "绘画"},
+                    {en: "Taking photos", es: "hacer fotos", cn: "拍照"},
+                    {en: "Dancing", es: "bailar", cn: "跳舞"},
+                    {en: "Singing", es: "cantar", cn: "唱歌"},
+                    {en: "Listening to music", es: "escuchar música", cn: "听音乐"},
+                    {en: "Playing basketball", es: "jugar al baloncesto", cn: "打篮球"},
+                    {en: "Playing football", es: "jugar al fútbol", cn: "踢足球"},
+                    {en: "Reading", es: "leer", cn: "阅读"},
+                    {en: "Watching TV", es: "ver la tele", cn: "看电视"},
+                    {en: "Painting", es: "pintar", cn: "绘画/油画"},
+                    {en: "Writing", es: "escribir", cn: "写作"},
+                    {en: "Love", es: "encantar", cn: "热爱"},
+                    {en: "Like", es: "gustar", cn: "喜欢"},
+                    {en: "Hate", es: "odiar", cn: "讨厌"}
+                ]
+            },
+            {
+                unit: "Unit 3: Bug world (昆虫世界)",
+                words: [
+                    {en: "Insect", es: "insecto", cn: "昆虫"},
+                    {en: "Bug", es: "bicho", cn: "小虫"},
+                    {en: "Butterfly", es: "mariposa", cn: "蝴蝶"},
+                    {en: "Bee", es: "abeja", cn: "蜜蜂"},
+                    {en: "Grasshopper", es: "saltamontes", cn: "蚱蜢"},
+                    {en: "Ladybird", es: "mariquita", cn: "瓢虫"},
+                    {en: "Fly", es: "mosca", cn: "苍蝇 (名词)"},
+                    {en: "Beetle", es: "escarabajo", cn: "甲虫"},
+                    {en: "Ant", es: "hormiga", cn: "蚂蚁"},
+                    {en: "Dragonfly", es: "libélula", cn: "蜻蜓"},
+                    {en: "Firefly", es: "luciérnaga", cn: "萤火虫"},
+                    {en: "Spider", es: "araña", cn: "蜘蛛"},
+                    {en: "Praying mantis", es: "mantis religiosa", cn: "螳螂"},
+                    {en: "Fly", es: "volar", cn: "飞 (动词)"},
+                    {en: "Jump", es: "saltar", cn: "跳"},
+                    {en: "Run", es: "correr", cn: "跑"},
+                    {en: "Produce light", es: "producir luz", cn: "发光"},
+                    {en: "Swim", es: "nadar", cn: "游泳"}
+                ]
+            },
+            {
+                unit: "Unit 4: Let's eat (我们吃吧)",
+                words: [
+                    {en: "Food", es: "comida", cn: "食物"},
+                    {en: "Ingredients", es: "ingredientes", cn: "原料"},
+                    {en: "Lemons", es: "limones", cn: "柠檬"},
+                    {en: "Bread", es: "pan", cn: "面包"},
+                    {en: "Onions", es: "cebolla", cn: "洋葱"},
+                    {en: "Jam", es: "mermelada", cn: "果酱"},
+                    {en: "Rice", es: "arroz", cn: "米饭"},
+                    {en: "Sugar", es: "azúcar", cn: "糖"},
+                    {en: "Lemonade", es: "limonada", cn: "柠檬水"},
+                    {en: "Apples", es: "manzanas", cn: "苹果"},
+                    {en: "Bananas", es: "plátanos", cn: "香蕉"},
+                    {en: "Oranges", es: "naranjas", cn: "橙子"},
+                    {en: "Eggs", es: "huevos", cn: "鸡蛋"},
+                    {en: "Biscuits", es: "galletas", cn: "饼干"},
+                    {en: "Strawberries", es: "fresas", cn: "草莓"},
+                    {en: "Pineapples", es: "piñas", cn: "菠萝"},
+                    {en: "Ham", es: "jamón", cn: "火腿"},
+                    {en: "Soup", es: "sopa", cn: "汤"},
+                    {en: "Water", es: "agua", cn: "水"},
+                    {en: "Milk", es: "leche", cn: "牛奶"},
+                    {en: "Tea", es: "té", cn: "茶"},
+                    {en: "Juice", es: "zumo", cn: "果汁"},
+                    {en: "Try", es: "probar", cn: "尝试"},
+                    {en: "Hungry", es: "hambriento", cn: "饥饿的"}
+                ]
+            },
+            {
+                unit: "Unit 5: Jobs and work (工作与职业)",
+                words: [
+                    {en: "Job", es: "trabajo", cn: "工作"},
+                    {en: "Hospital", es: "Hospital", cn: "医院"},
+                    {en: "Doctor", es: "doctor", cn: "医生"},
+                    {en: "Clinic", es: "clínica", cn: "诊所"},
+                    {en: "Dentist", es: "dentista", cn: "牙医"},
+                    {en: "Shop", es: "tienda", cn: "商店"},
+                    {en: "Shop assistant", es: "dependiente", cn: "店员"},
+                    {en: "Mechanic", es: "mecánico", cn: "机械师"},
+                    {en: "Firefighter", es: "bombero", cn: "消防员"},
+                    {en: "Hairdresser", es: "peluquero", cn: "理发师"},
+                    {en: "Uniform", es: "uniforme", cn: "制服"},
+                    {en: "Astronaut", es: "astronauta", cn: "宇航员"},
+                    {en: "Chef", es: "cocinero", cn: "厨师"},
+                    {en: "Taxi driver", es: "taxista", cn: "出租车司机"},
+                    {en: "Farmer", es: "granjero", cn: "农民"},
+                    {en: "Police officer", es: "oficial de policía", cn: "警察"},
+                    {en: "Football player", es: "futbolista", cn: "足球运动员"},
+                    {en: "Office", es: "oficina", cn: "办公室"},
+                    {en: "Factory worker", es: "trabajador de fabrica", cn: "工厂工人"}
+                ]
+            },
+            {
+                unit: "Unit 6: City tour (城市之旅)",
+                words: [
+                    {en: "City", es: "ciudad", cn: "城市"},
+                    {en: "Theatre", es: "teatro", cn: "剧院"},
+                    {en: "Cinema", es: "cine", cn: "电影院"},
+                    {en: "Bus station", es: "estación de autobús", cn: "公交车站"},
+                    {en: "Post office", es: "correos", cn: "邮局"},
+                    {en: "Stadium", es: "estadio", cn: "体育场"},
+                    {en: "Museum", es: "museo", cn: "博物馆"},
+                    {en: "Library", es: "biblioteca", cn: "图书馆"},
+                    {en: "Book shop", es: "librería", cn: "书店"},
+                    {en: "Shopping centre", es: "centro comercial", cn: "购物中心"},
+                    {en: "Train station", es: "estación de tren", cn: "火车站"},
+                    {en: "Hotel", es: "hotel", cn: "旅馆"},
+                    {en: "Turn left", es: "gira a la izquierda", cn: "左转"},
+                    {en: "Turn right", es: "gira a la derecha", cn: "右转"},
+                    {en: "Go straight", es: "sigue recto", cn: "直走"}
+                ]
+            },
+            {
+                unit: "Unit 7: On the move (在运动中)",
+                words: [
+                    {en: "Sport", es: "deporte", cn: "运动"},
+                    {en: "Skateboarding", es: "patinar", cn: "滑板运动"},
+                    {en: "Table tennis", es: "ping pong", cn: "乒乓球"},
+                    {en: "Volleyball", es: "voleibol", cn: "排球"},
+                    {en: "Basketball", es: "baloncesto", cn: "篮球"},
+                    {en: "Cycling", es: "ciclismo", cn: "自行车运动"},
+                    {en: "Gymnastics", es: "gimnasia", cn: "体操"},
+                    {en: "Tennis", es: "tenis", cn: "网球"},
+                    {en: "Match", es: "partido", cn: "比赛"},
+                    {en: "Team", es: "equipo", cn: "团队"},
+                    {en: "Win", es: "ganar", cn: "赢"},
+                    {en: "Bounce", es: "botar", cn: "弹跳"},
+                    {en: "Catch", es: "atrapar", cn: "抓"},
+                    {en: "Kick", es: "patear", cn: "踢"},
+                    {en: "Lose", es: "perder", cn: "输"},
+                    {en: "Score", es: "marcar", cn: "得分"}
+                ]
+            },
+            {
+                unit: "Unit 8: Fantasy World (幻想世界)",
+                words: [
+                    {en: "Fantasy", es: "fantasía", cn: "幻想"},
+                    {en: "Creature", es: "criatura", cn: "生物"},
+                    {en: "Dragon", es: "dragón", cn: "龙"},
+                    {en: "Fairy", es: "hada", cn: "仙女"},
+                    {en: "Giant", es: "gigante", cn: "巨人"},
+                    {en: "King", es: "rey", cn: "国王"},
+                    {en: "Knight", es: "caballero", cn: "骑士"},
+                    {en: "Queen", es: "reina", cn: "女王"},
+                    {en: "Troll", es: "trol", cn: "巨魔"},
+                    {en: "Unicorn", es: "unicornio", cn: "独角兽"},
+                    {en: "Witch", es: "bruja", cn: "女巫"},
+                    {en: "Wizard", es: "mago", cn: "男巫"},
+                    {en: "Crown", es: "corona", cn: "皇冠"},
+                    {en: "Ring", es: "anillo", cn: "戒指"},
+                    {en: "Sword", es: "espada", cn: "剑"},
+                    {en: "Castle", es: "castillo", cn: "城堡"},
+                    {en: "Magic", es: "magia", cn: "魔法"},
+                    {en: "Mermaid", es: "sirena", cn: "美人鱼"},
+                    {en: "Elf", es: "elfo", cn: "精灵"}
+                ]
+            }
         ];
 
-        let currentMode = '', quizList = [], currentIndex = 0, userAnswers = {};
+        let currentMode = '', currentUnitIndex = 0, quizList = [], currentIndex = 0, userAnswers = {};
 
-        function initMainTable() {
-            const container = document.getElementById('mainWordTable');
-            container.innerHTML = dictionary.map((item, i) => `
-                <div class="word-item">
-                    <span class="word-num">${i + 1}.</span>
-                    <span class="word-en" onclick="this.classList.toggle('show')">${item.en}</span>
-                    <span class="word-cn">${item.cn}</span>
+        // --- 渲染全部单元折叠面板 ---
+        function initUnits() {
+            const container = document.getElementById('units-container');
+            container.innerHTML = vocabularyData.map((unitObj, unitIndex) => `
+                <div class="unit-card" id="unit-${unitIndex}">
+                    <div class="unit-header" onclick="toggleUnit(${unitIndex})">
+                        <span>📖 ${unitObj.unit}</span>
+                        <span style="font-size: 0.9rem; font-weight: normal; color: #64748b;">(${unitObj.words.length} 词)</span>
+                    </div>
+                    <div class="unit-body">
+                        <div class="unit-actions">
+                            <button class="btn btn-blue" onclick="startQuiz('en-cn', ${unitIndex})">英译汉练习</button>
+                            <button class="btn btn-blue" onclick="startQuiz('cn-en', ${unitIndex})">汉译英练习</button>
+                            <button class="btn btn-gold" onclick="startQuiz('fill', ${unitIndex})">拼写挑战</button>
+                            <button class="btn btn-home" onclick="downloadUnitCSV(${unitIndex})">📥 下载本单元</button>
+                        </div>
+                        
+                        <div class="word-grid">
+                            ${unitObj.words.map((w, i) => `
+                                <div class="word-item">
+                                    <span class="word-num">${i + 1}.</span>
+                                    <span class="word-en" onclick="this.classList.toggle('show')">${w.en}</span>
+                                    <span class="word-es">${w.es}</span>
+                                    <span class="word-cn">${w.cn}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
                 </div>
             `).join('');
         }
 
-        function toggleDictation() {
-            const grid = document.getElementById('mainWordTable');
-            const btn = document.getElementById('dictBtn');
-            grid.classList.toggle('dictation-mode');
-            btn.innerText = grid.classList.contains('dictation-mode') ? "👀 显示英文" : "✍️ 听写模式";
+        // 展开/收起单个单元
+        function toggleUnit(index) {
+            const card = document.getElementById(`unit-${index}`);
+            card.classList.toggle('active');
         }
 
-        function startQuiz(mode) {
+        // 切换全网页的听写模式
+        function toggleDictation() {
+            const wrapper = document.getElementById('units-container');
+            const btn = document.getElementById('dictBtn');
+            wrapper.classList.toggle('dictation-mode');
+            btn.innerText = wrapper.classList.contains('dictation-mode') ? "👀 取消听写" : "✍️ 全局听写模式";
+        }
+
+        // --- 启动单元专项练习 ---
+        function startQuiz(mode, unitIndex) {
             currentMode = mode;
-            quizList = [...dictionary].sort(() => Math.random() - 0.5).map(item => ({
-                ...item, gaps: makeGaps(item.en)
+            currentUnitIndex = unitIndex;
+            const unitData = vocabularyData[unitIndex];
+            
+            // 打乱本单元单词并生成挖空位置（仅针对拼写模式使用）
+            quizList = [...unitData.words].sort(() => Math.random() - 0.5).map(item => ({
+                ...item, 
+                gaps: makeGaps(item.en.replace(/ /g, '')) 
             }));
+            
             currentIndex = 0;
             userAnswers = {};
+            
+            document.getElementById('quiz-title').innerText = `${unitData.unit.split(' ')[0]} 专项练习`;
+            
             if(mode === 'fill') initKeyboard();
             showScreen('quiz-screen');
             renderQuestion();
         }
 
-        function makeGaps(word) {
+        function makeGaps(wordStr) {
             let indices = [];
-            let gapCount = Math.max(1, Math.floor(word.length * 0.4));
+            let gapCount = Math.max(1, Math.floor(wordStr.length * 0.4));
             while(indices.length < gapCount) {
-                let r = Math.floor(Math.random() * word.length);
+                let r = Math.floor(Math.random() * wordStr.length);
                 if(!indices.includes(r)) indices.push(r);
             }
             return indices;
         }
 
+        // --- 渲染单个题目 ---
         function renderQuestion() {
             const item = quizList[currentIndex];
             const display = document.getElementById('quiz-display');
@@ -249,25 +479,36 @@
             if (currentMode === 'fill') {
                 display.style.display = 'none';
                 spellArea.style.display = 'flex'; kbArea.style.display = 'grid';
-                document.getElementById('quiz-prompt').innerText = `根据中文补全单词：${item.cn}`;
+                // 拼写模式：提示加上了西语辅助
+                document.getElementById('quiz-prompt').innerText = `📝 根据提示补全英文：${item.cn} | 西语：${item.es}`;
                 renderSpellBoxes(item);
             } else {
                 mcqArea.style.display = 'grid';
-                document.getElementById('quiz-prompt').innerText = currentMode === 'en-cn' ? '选择中文翻译' : '选择英文单词';
-                display.innerText = currentMode === 'en-cn' ? item.en : item.cn;
+                if (currentMode === 'en-cn') {
+                    document.getElementById('quiz-prompt').innerText = '🎯 请选择正确的中文：';
+                    display.innerText = item.en;
+                } else {
+                    document.getElementById('quiz-prompt').innerText = '🎯 请选择正确的英文：';
+                    // 汉译英模式：把中文和西语一并展示，增强联想
+                    display.innerHTML = `${item.cn} <br><span style="font-size:1.2rem; color:#64748b;">(${item.es})</span>`;
+                }
                 renderMCQ(item);
             }
         }
 
+        // 渲染选择题（从本单元词库中抽取干扰项）
         function renderMCQ(item) {
             const mcqArea = document.getElementById('mcq-area');
             mcqArea.innerHTML = '';
             const correct = currentMode === 'en-cn' ? item.cn : item.en;
+            const currentUnitWords = vocabularyData[currentUnitIndex].words;
+
             if (!item.options) {
-                let distractors = dictionary.map(d => currentMode === 'en-cn' ? d.cn : d.en)
+                let distractors = currentUnitWords.map(d => currentMode === 'en-cn' ? d.cn : d.en)
                     .filter(v => v !== correct).sort(() => Math.random() - 0.5).slice(0, 3);
                 item.options = [correct, ...distractors].sort(() => Math.random() - 0.5);
             }
+            
             item.options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
@@ -282,17 +523,36 @@
             });
         }
 
+        // 渲染拼写框
         function renderSpellBoxes(item) {
             const spellArea = document.getElementById('spell-area');
             spellArea.innerHTML = '';
+            
             if (!userAnswers[currentIndex]) {
-                userAnswers[currentIndex] = item.en.split('').map((char, i) => item.gaps.includes(i) ? '' : char);
+                let charIndex = 0;
+                userAnswers[currentIndex] = item.en.split('').map(char => {
+                    if(char === ' ') return ' ';
+                    let isGap = item.gaps.includes(charIndex);
+                    charIndex++;
+                    return isGap ? '' : char;
+                });
             }
+
+            let charIndexTracker = 0;
             userAnswers[currentIndex].forEach((char, i) => {
+                if(char === ' ') {
+                    const space = document.createElement('div');
+                    space.style.width = '20px';
+                    spellArea.appendChild(space);
+                    return;
+                }
+
+                const isGap = item.gaps.includes(charIndexTracker);
                 const box = document.createElement('div');
-                box.className = 'letter-box' + (item.gaps.includes(i) ? ' blank' : '');
+                box.className = 'letter-box' + (isGap ? ' blank' : '');
                 box.innerText = char;
-                if (item.gaps.includes(i)) {
+                
+                if (isGap) {
                     box.onclick = () => {
                         document.querySelectorAll('.letter-box').forEach(b => b.classList.remove('active-blank'));
                         box.classList.add('active-blank');
@@ -300,23 +560,37 @@
                     };
                 }
                 spellArea.appendChild(box);
+                charIndexTracker++;
             });
-            const firstBlank = spellArea.querySelector('.blank');
+
+            const firstBlank = spellArea.querySelector('.blank:empty');
             if (firstBlank) firstBlank.click();
+            else {
+                const anyBlank = spellArea.querySelector('.blank');
+                if(anyBlank) anyBlank.click();
+            }
         }
 
+        // 拼写键盘
         function initKeyboard() {
             const kb = document.getElementById('keyboard-area');
             kb.innerHTML = '';
             "abcdefghijklmnopqrstuvwxyz".split('').forEach(key => {
                 const btn = document.createElement('button');
-                btn.className = 'key-btn'; btn.innerText = key.toUpperCase();
+                btn.className = 'key-btn'; btn.innerText = key;
                 btn.onclick = () => {
                     const active = document.querySelector('.active-blank');
                     if(!active) return;
                     const idx = active.dataset.index;
                     userAnswers[currentIndex][idx] = key;
                     renderSpellBoxes(quizList[currentIndex]);
+                    
+                    const currentWordLength = userAnswers[currentIndex].filter(c => c !== ' ').length;
+                    const filledLength = userAnswers[currentIndex].filter(c => c && c !== ' ').length;
+                    if(currentWordLength === filledLength) {
+                        const isCorrect = userAnswers[currentIndex].join('').toLowerCase() === quizList[currentIndex].en.toLowerCase();
+                        if(isCorrect) setTimeout(() => changeStep(1), 500);
+                    }
                 };
                 kb.appendChild(btn);
             });
@@ -329,6 +603,7 @@
             renderQuestion();
         }
 
+        // --- 成绩统计页面 ---
         function showResults() {
             showScreen('result-screen');
             let correct = 0;
@@ -343,17 +618,40 @@
             });
             const score = Math.round((correct / quizList.length) * 100);
             document.getElementById('final-score').innerText = score + "%";
-            document.getElementById('result-summary').innerHTML = `答对: ${correct} / ${quizList.length}`;
+            document.getElementById('result-summary').innerHTML = `
+                <div>所属板块: <strong>${vocabularyData[currentUnitIndex].unit}</strong></div>
+                <div>答对题数: <strong>${correct} / ${quizList.length}</strong></div>
+            `;
         }
 
-        function downloadCSV() {
-            let csv = "\uFEFF序号,英文,中文\n";
-            dictionary.forEach((item, i) => csv += `${i+1},${item.en},${item.cn}\n`);
-            const blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+        // --- CSV 下载系统 (增加了西语列) ---
+        function generateCSV(dataArr) {
+            let csv = "\uFEFF所属单元,序号,英文,西班牙文,中文\n";
+            dataArr.forEach(unitData => {
+                unitData.words.forEach((item, i) => {
+                    csv += `${unitData.unit.split(' ')[0]},${i+1},${item.en},${item.es},${item.cn}\n`;
+                });
+            });
+            return csv;
+        }
+
+        function downloadFile(content, filename) {
+            const blob = new Blob([content], {type: 'text/csv;charset=utf-8'});
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = "EMSI单词表.csv";
+            link.download = filename;
             link.click();
+        }
+
+        function downloadAllCSV() {
+            const csv = generateCSV(vocabularyData);
+            downloadFile(csv, "EMSI_全量单词表(三语).csv");
+        }
+
+        function downloadUnitCSV(unitIndex) {
+            const csv = generateCSV([vocabularyData[unitIndex]]);
+            const safeName = vocabularyData[unitIndex].unit.split(' ')[0].replace(':', ''); 
+            downloadFile(csv, `EMSI_${safeName}_单词表(三语).csv`);
         }
 
         function showScreen(id) {
@@ -361,7 +659,7 @@
             document.getElementById(id).classList.add('active');
         }
 
-        initMainTable();
+        initUnits();
     </script>
 </body>
 </html>
