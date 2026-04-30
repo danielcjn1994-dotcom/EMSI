@@ -137,14 +137,14 @@
                     <button class="btn btn-gold" style="flex:1; justify-content:center;" onclick="startQuiz('fill')">拼写挑战</button>
                 </div>
 
-                <h3 style="border-left: 5px solid var(--emsi-gold); padding-left: 10px;">📖 本单元单词表 (1-33)</h3>
+                <h3 style="border-left: 5px solid var(--emsi-gold); padding-left: 10px;">📖 本单元单词表 (1-100)</h3>
                 <div class="word-grid" id="mainWordTable"></div>
             </div>
 
             <div id="quiz-screen" class="screen">
                 <div class="nav-bar">
                     <button class="btn btn-home" onclick="location.reload()">⬅ 退出</button>
-                    <span id="quiz-counter" style="font-weight:bold;">1 / 33</span>
+                    <span id="quiz-counter" style="font-weight:bold;">1 / 100</span>
                     <button class="btn btn-gold" onclick="showResults()">交卷</button>
                 </div>
                 <div class="progress-bar"><div id="progress-fill"></div></div>
@@ -175,41 +175,28 @@
     </footer>
 
     <script>
-        // 按照你指定的新顺序重新排列的单词库
+        // 英语数字 1-100 词汇表（带独立组合 Emoji）
         const dictionary = [
-            {en: "Move", cn: "移动；搬家 | Mover"},
-            {en: "Sport", cn: "运动 | Deporte"},
-            {en: "Sport centre", cn: "体育中心 | Centro deportivo"},
-            {en: "Skateboarding", cn: "滑板运动 | Skateboarding"},
-            {en: "Table tennis", cn: "乒乓球 | Tenis de mesa"},
-            {en: "Volleyball", cn: "排球 | Voleibol"},
-            {en: "Basketball", cn: "篮球 | Baloncesto"},
-            {en: "Cycling", cn: "骑自行车 | Ciclismo"},
-            {en: "Hockey", cn: "曲棍球 | Hockey"},
-            {en: "Gymnastics", cn: "体操 | Gimnasia"},
-            {en: "Rugby", cn: "橄榄球 | Rugby"},
-            {en: "Badminton", cn: "羽毛球 | Bádminton"},
-            {en: "Tennis", cn: "网球 | Tenis"},
-            {en: "Play", cn: "玩；打（球）；演奏 | Jugar"},
-            {en: "Do", cn: "做 | Hacer"},
-            {en: "Drink", cn: "喝；饮料 | Beber"},
-            {en: "Match", cn: "比赛；火柴 | Partido"},
-            {en: "Team", cn: "团队；队伍 | Equipo"},
-            {en: "Mascot", cn: "吉祥物 | Mascota"},
-            {en: "Win", cn: "赢；获胜 | Ganar"},
-            {en: "Jump", cn: "跳跃 | Saltar"},
-            {en: "Dance", cn: "跳舞 | Bailar"},
-            {en: "Bounce", cn: "（球）反弹；弹跳 | Rebotar"},
-            {en: "Catch", cn: "接住；捉住 | Atrapar"},
-            {en: "Cheer", cn: "欢呼；加油 | Animar"},
-            {en: "Hit", cn: "打；击 | Golpear"},
-            {en: "Kick", cn: "踢 | Patear"},
-            {en: "Lose", cn: "输；丢失 | Perder"},
-            {en: "Score", cn: "得分 | Marcar"},
-            {en: "Throw", cn: "扔；投掷 | Lanzar"},
-            {en: "Congratulations", cn: "恭喜；祝贺 | Felicidades"},
-            {en: "Walk", cn: "走路；步行 | Caminar"},
-            {en: "Hawk", cn: "鹰 | Halcón"}
+            {en: "One", cn: "一 1️⃣"}, {en: "Two", cn: "二 2️⃣"}, {en: "Three", cn: "三 3️⃣"}, {en: "Four", cn: "四 4️⃣"}, {en: "Five", cn: "五 5️⃣"},
+            {en: "Six", cn: "六 6️⃣"}, {en: "Seven", cn: "七 7️⃣"}, {en: "Eight", cn: "八 8️⃣"}, {en: "Nine", cn: "九 9️⃣"}, {en: "Ten", cn: "十 🔟"},
+            {en: "Eleven", cn: "十一 1️⃣1️⃣"}, {en: "Twelve", cn: "十二 1️⃣2️⃣"}, {en: "Thirteen", cn: "十三 1️⃣3️⃣"}, {en: "Fourteen", cn: "十四 1️⃣4️⃣"}, {en: "Fifteen", cn: "十五 1️⃣5️⃣"},
+            {en: "Sixteen", cn: "十六 1️⃣6️⃣"}, {en: "Seventeen", cn: "十七 1️⃣7️⃣"}, {en: "Eighteen", cn: "十八 1️⃣8️⃣"}, {en: "Nineteen", cn: "十九 1️⃣9️⃣"}, {en: "Twenty", cn: "二十 2️⃣0️⃣"},
+            {en: "Twenty-one", cn: "二十一 2️⃣1️⃣"}, {en: "Twenty-two", cn: "二十二 2️⃣2️⃣"}, {en: "Twenty-three", cn: "二十三 2️⃣3️⃣"}, {en: "Twenty-four", cn: "二十四 2️⃣4️⃣"}, {en: "Twenty-five", cn: "二十五 2️⃣5️⃣"},
+            {en: "Twenty-six", cn: "二十六 2️⃣6️⃣"}, {en: "Twenty-seven", cn: "二十七 2️⃣7️⃣"}, {en: "Twenty-eight", cn: "二十八 2️⃣8️⃣"}, {en: "Twenty-nine", cn: "二十九 2️⃣9️⃣"}, {en: "Thirty", cn: "三十 3️⃣0️⃣"},
+            {en: "Thirty-one", cn: "三十一 3️⃣1️⃣"}, {en: "Thirty-two", cn: "三十二 3️⃣2️⃣"}, {en: "Thirty-three", cn: "三十三 3️⃣3️⃣"}, {en: "Thirty-four", cn: "三十四 3️⃣4️⃣"}, {en: "Thirty-five", cn: "三十五 3️⃣5️⃣"},
+            {en: "Thirty-six", cn: "三十六 3️⃣6️⃣"}, {en: "Thirty-seven", cn: "三十七 3️⃣7️⃣"}, {en: "Thirty-eight", cn: "三十八 3️⃣8️⃣"}, {en: "Thirty-nine", cn: "三十九 3️⃣9️⃣"}, {en: "Forty", cn: "四十 4️⃣0️⃣"},
+            {en: "Forty-one", cn: "四十一 4️⃣1️⃣"}, {en: "Forty-two", cn: "四十二 4️⃣2️⃣"}, {en: "Forty-three", cn: "四十三 4️⃣3️⃣"}, {en: "Forty-four", cn: "四十四 4️⃣4️⃣"}, {en: "Forty-five", cn: "四十五 4️⃣5️⃣"},
+            {en: "Forty-six", cn: "四十六 4️⃣6️⃣"}, {en: "Forty-seven", cn: "四十七 4️⃣7️⃣"}, {en: "Forty-eight", cn: "四十八 4️⃣8️⃣"}, {en: "Forty-nine", cn: "四十九 4️⃣9️⃣"}, {en: "Fifty", cn: "五十 5️⃣0️⃣"},
+            {en: "Fifty-one", cn: "五十一 5️⃣1️⃣"}, {en: "Fifty-two", cn: "五十二 5️⃣2️⃣"}, {en: "Fifty-three", cn: "五十三 5️⃣3️⃣"}, {en: "Fifty-four", cn: "五十四 5️⃣4️⃣"}, {en: "Fifty-five", cn: "五十五 5️⃣5️⃣"},
+            {en: "Fifty-six", cn: "五十六 5️⃣6️⃣"}, {en: "Fifty-seven", cn: "五十七 5️⃣7️⃣"}, {en: "Fifty-eight", cn: "五十八 5️⃣8️⃣"}, {en: "Fifty-nine", cn: "五十九 5️⃣9️⃣"}, {en: "Sixty", cn: "六十 6️⃣0️⃣"},
+            {en: "Sixty-one", cn: "六十一 6️⃣1️⃣"}, {en: "Sixty-two", cn: "六十二 6️⃣2️⃣"}, {en: "Sixty-three", cn: "六十三 6️⃣3️⃣"}, {en: "Sixty-four", cn: "六十四 6️⃣4️⃣"}, {en: "Sixty-five", cn: "六十五 6️⃣5️⃣"},
+            {en: "Sixty-six", cn: "六十六 6️⃣6️⃣"}, {en: "Sixty-seven", cn: "六十七 6️⃣7️⃣"}, {en: "Sixty-eight", cn: "六十八 6️⃣8️⃣"}, {en: "Sixty-nine", cn: "六十九 6️⃣9️⃣"}, {en: "Seventy", cn: "七十 7️⃣0️⃣"},
+            {en: "Seventy-one", cn: "七十一 7️⃣1️⃣"}, {en: "Seventy-two", cn: "七十二 7️⃣2️⃣"}, {en: "Seventy-three", cn: "七十三 7️⃣3️⃣"}, {en: "Seventy-four", cn: "七十四 7️⃣4️⃣"}, {en: "Seventy-five", cn: "七十五 7️⃣5️⃣"},
+            {en: "Seventy-six", cn: "七十六 7️⃣6️⃣"}, {en: "Seventy-seven", cn: "七十七 7️⃣7️⃣"}, {en: "Seventy-eight", cn: "七十八 7️⃣8️⃣"}, {en: "Seventy-nine", cn: "七十九 7️⃣9️⃣"}, {en: "Eighty", cn: "八十 8️⃣0️⃣"},
+            {en: "Eighty-one", cn: "八十一 8️⃣1️⃣"}, {en: "Eighty-two", cn: "八十二 8️⃣2️⃣"}, {en: "Eighty-three", cn: "八十三 8️⃣3️⃣"}, {en: "Eighty-four", cn: "八十四 8️⃣4️⃣"}, {en: "Eighty-five", cn: "八十五 8️⃣5️⃣"},
+            {en: "Eighty-six", cn: "八十六 8️⃣6️⃣"}, {en: "Eighty-seven", cn: "八十七 8️⃣7️⃣"}, {en: "Eighty-eight", cn: "八十八 8️⃣8️⃣"}, {en: "Eighty-nine", cn: "八十九 8️⃣9️⃣"}, {en: "Ninety", cn: "九十 9️⃣0️⃣"},
+            {en: "Ninety-one", cn: "九十一 9️⃣1️⃣"}, {en: "Ninety-two", cn: "九十二 9️⃣2️⃣"}, {en: "Ninety-three", cn: "九十三 9️⃣3️⃣"}, {en: "Ninety-four", cn: "九十四 9️⃣4️⃣"}, {en: "Ninety-five", cn: "九十五 9️⃣5️⃣"},
+            {en: "Ninety-six", cn: "九十六 9️⃣6️⃣"}, {en: "Ninety-seven", cn: "九十七 9️⃣7️⃣"}, {en: "Ninety-eight", cn: "九十八 9️⃣8️⃣"}, {en: "Ninety-nine", cn: "九十九 9️⃣9️⃣"}, {en: "One hundred", cn: "一百 💯"}
         ];
 
         let currentMode = '', quizList = [], currentIndex = 0, userAnswers = {};
@@ -317,9 +304,9 @@
                 const box = document.createElement('div');
                 box.className = 'letter-box' + (item.gaps.includes(i) ? ' blank' : '');
                 
-                // 如果是空格，直接渲染且不可点击
-                if (char === ' ' || item.en[i] === ' ') {
-                    box.innerText = '';
+                // 如果是空格或横杠，直接渲染且不可点击
+                if (char === ' ' || item.en[i] === ' ' || char === '-' || item.en[i] === '-') {
+                    box.innerText = item.en[i];
                     box.style.border = 'none';
                     box.style.background = 'transparent';
                     box.classList.remove('blank');
