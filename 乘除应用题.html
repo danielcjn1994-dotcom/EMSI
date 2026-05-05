@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 风格演示 - 综合应用题</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px; 
+            margin: 30px auto 0 auto; 
+            padding: 0 20px; 
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e; 
+            text-decoration: none;
+            border-radius: 50px; 
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent; 
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px); 
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15); 
+            color: #153a70; 
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+            padding: 20px 40px 60px 40px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            min-height: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 40px;
+            box-sizing: border-box;
+            border: 1px solid #eee;
+        }
+
+        /* --- 新增：题目与折叠样式 --- */
+        .unit-title {
+            color: #1a4a8e;
+            font-size: 24px;
+            font-weight: 800;
+            border-bottom: 3px solid #f1c40f;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .unit-title:first-child {
+            margin-top: 0;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f4f8;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+        }
+
+        .q-text {
+            font-size: 18px;
+            color: #2d3748;
+            line-height: 1.6;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .q-text strong {
+            color: #1a4a8e;
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        /* 折叠面板核心样式 */
+        .answer-details {
+            margin-top: 10px;
+        }
+
+        .answer-details summary {
+            cursor: pointer;
+            color: #1a4a8e;
+            font-weight: 700;
+            font-size: 16px;
+            list-style: none; /* 隐藏默认箭头 */
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px 5px 0;
+            border-radius: 4px;
+            transition: color 0.2s;
+        }
+
+        .answer-details summary::-webkit-details-marker {
+            display: none; /* 隐藏 Safari 的默认箭头 */
+        }
+
+        /* 自定义黄色三角形箭头 */
+        .answer-details summary::before {
+            content: '▶';
+            color: #f1c40f;
+            font-size: 14px;
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .answer-details summary:hover {
+            color: #2563eb;
+        }
+
+        /* 展开时的箭头动画 */
+        .answer-details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        /* 答案内容框 */
+        .answer-content {
+            background: #f8fafc;
+            padding: 15px 20px;
+            margin-top: 12px;
+            border-left: 4px solid #f1c40f;
+            border-radius: 0 8px 8px 0;
+            font-size: 16px;
+            color: #4a5568;
+            line-height: 1.7;
+        }
+
+        .answer-content p {
+            margin: 5px 0;
+        }
+
+        .answer-content strong {
+            color: #1a4a8e;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content { padding: 20px; }
+            .card { padding: 25px; }
+            .q-text { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <!-- 单元 1 -->
+            <h2 class="unit-title">Unidad 1: Problemas 1 - 10</h2>
+            
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>1.</strong> En una panadería han preparado 120 cruasanes y 150 napolitanas. Quieren guardarlos en cajas de 9 unidades cada una. ¿Cuántas cajas necesitan?<br>
+                    一家面包店准备了120个牛角包和150个巧克力面包。他们想把这些面包分别装在每盒9个的盒子里。请问一共需要多少个盒子？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 120 cruasanes, 150 napolitanas, cajas de 9. (120个牛角包，150个巧克力面包，每盒9个。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 120 + 150 = 270; 270 ÷ 9 = 30.</p>
+                        <p><strong>Solución / 答案:</strong> Necesitan 30 cajas. 他们需要30个盒子。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>2.</strong> Para la biblioteca escolar, han comprado 15 libros de aventuras a 12 € cada uno y 20 libros de ciencias a 14 € cada uno. ¿Cuánto dinero han gastado en total?<br>
+                    为了充实学校图书馆，他们以每本12欧元的价格买了15本冒险书，又以每本14欧元的价格买了20本科学书。他们总共花了多少钱？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 15 libros a 12 €, 20 libros a 14 €. (15本书每本12欧，20本书每本14欧。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 15 × 12 = 180; 20 × 14 = 280; 180 + 280 = 460.</p>
+                        <p><strong>Solución / 答案:</strong> Han gastado 460 € en total. 他们总共花了460欧元。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>3.</strong> Un granjero ha recogido 500 huevos. Al revisarlos, descubre que 20 están rotos y los tira. El resto los coloca en hueveras de 6 huevos. ¿Cuántas hueveras llenará?<br>
+                    一位农夫收集了500个鸡蛋。检查时，他发现有20个坏了并扔掉了它们。剩下的鸡蛋他用6个装的鸡蛋盒来装。他能装满多少个鸡蛋盒？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 500 huevos, 20 rotos, hueveras de 6. (500个鸡蛋，坏了20个，每盒6个。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 500 - 20 = 480; 480 ÷ 6 = 80.</p>
+                        <p><strong>Solución / 答案:</strong> Llenará 80 hueveras. 他能装满80个鸡蛋盒。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>4.</strong> Una tienda tiene 12 estanterías y en cada una hay 45 juguetes. Hoy han vendido 140 juguetes. ¿Cuántos juguetes quedan en la tienda?<br>
+                    一家商店有12个货架，每个货架上有45个玩具。今天他们卖出了140个玩具。商店里还剩多少个玩具？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 12 estanterías, 45 juguetes cada una, se venden 140. (12个货架，每个45个玩具，卖出140个。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 12 × 45 = 540; 540 - 140 = 400.</p>
+                        <p><strong>Solución / 答案:</strong> Quedan 400 juguetes. 还剩400个玩具。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>5.</strong> En un colegio hay 124 alumnos de quinto y 116 alumnos de sexto. Quieren ir de excursión en autobuses de 40 plazas. ¿Cuántos autobuses necesitan alquilar?<br>
+                    一个学校有124名五年级学生和116名六年级学生。他们想租用40座的巴士去郊游。他们需要租多少辆巴士？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 124 alumnos, 116 alumnos, autobuses de 40 plazas. (124名学生，116名学生，40座巴士。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 124 + 116 = 240; 240 ÷ 40 = 6.</p>
+                        <p><strong>Solución / 答案:</strong> Necesitan alquilar 6 autobuses. 他们需要租6辆巴士。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>6.</strong> Una floristería ha recibido 350 rosas. Han apartado 50 rosas que estaban marchitas. Con las demás, han hecho ramos de 15 rosas. ¿Cuántos ramos han hecho?<br>
+                    一家花店收到了350朵玫瑰花。他们挑出了50朵枯萎的玫瑰。用剩下的玫瑰，他们包扎成每束15朵的花束。他们一共包扎了多少束？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 350 rosas, 50 marchitas, ramos de 15. (350朵玫瑰，枯萎50朵，每束15朵。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 350 - 50 = 300; 300 ÷ 15 = 20.</p>
+                        <p><strong>Solución / 答案:</strong> Han hecho 20 ramos. 他们包扎了20束花。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>7.</strong> Pablo ahorra 45 € al mes durante 6 meses. Después, usa ese dinero para comprar una bicicleta que cuesta 120 €. ¿Cuánto dinero le sobra?<br>
+                    帕布罗连续6个月每月存45欧元。之后，他用这笔钱买了一辆价值120欧元的自行车。他还能剩下多少钱？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> Ahorra 45 € durante 6 meses, gasta 120 €. (每月存45欧存6个月，花费120欧。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 45 × 6 = 270; 270 - 120 = 150.</p>
+                        <p><strong>Solución / 答案:</strong> Le sobran 150 €. 他还剩150欧元。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>8.</strong> En el cine hay 8 filas con 25 asientos cada una en la zona principal y 6 filas con 30 asientos en la zona superior. ¿Cuántos asientos hay en total?<br>
+                    电影院的主区有8排座位，每排25座；楼上区有6排座位，每排30座。请问总共有多少个座位？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 8 filas de 25 asientos, 6 filas de 30 asientos. (8排每排25座，6排每排30座。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 8 × 25 = 200; 6 × 30 = 180; 200 + 180 = 380.</p>
+                        <p><strong>Solución / 答案:</strong> Hay 380 asientos en total. 总共有380个座位。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>9.</strong> Un equipo deportivo compra 420 camisetas azules y 210 blancas. Quieren empaquetarlas en cajas de 7 camisetas. ¿Cuántas cajas utilizarán?<br>
+                    一支运动队购买了420件蓝色T恤和210件白色T恤。他们想把T恤装进每盒7件的盒子里。他们一共会用到多少个盒子？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 420 camisetas azules, 210 blancas, cajas de 7. (420件蓝T恤，210件白T恤，每盒7件。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 420 + 210 = 630; 630 ÷ 7 = 90.</p>
+                        <p><strong>Solución / 答案:</strong> Utilizarán 90 cajas. 他们会用到90个盒子。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>10.</strong> En un huerto han recolectado 800 kg de manzanas. Han separado 80 kg que estaban picados. El resto lo meten en mallas de 8 kg. ¿Cuántas mallas preparan?<br>
+                    果园里收获了800公斤苹果。他们把80公斤被虫咬坏的苹果挑了出来。剩下的装进每袋8公斤的网袋里。他们一共准备了多少袋？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 800 kg de manzanas, 80 kg picados, mallas de 8 kg. (800公斤苹果，坏了80公斤，每袋8公斤。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 800 - 80 = 720; 720 ÷ 8 = 90.</p>
+                        <p><strong>Solución / 答案:</strong> Preparan 90 mallas. 他们准备了90袋。</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 单元 2 -->
+            <h2 class="unit-title">Unidad 2: Problemas 11 - 20</h2>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>11.</strong> Un restaurante sirve 15 mesas de 4 personas en el interior y 12 mesas de 6 personas en la terraza. ¿A cuántos clientes pueden servir al mismo tiempo?<br>
+                    一家餐厅室内有15张4人桌，露台有12张6人桌。他们同时最多能接待多少位顾客？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 15 mesas de 4, 12 mesas de 6. (15张4人桌，12张6人桌。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 15 × 4 = 60; 12 × 6 = 72; 60 + 72 = 132.</p>
+                        <p><strong>Solución / 答案:</strong> Pueden servir a 132 clientes. 他们可以接待132位顾客。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>12.</strong> En una fábrica de dulces producen 950 caramelos. Los trabajadores se comen 50 para probarlos. El resto se envasa en bolsas de 10 caramelos. ¿Cuántas bolsas se llenan?<br>
+                    一家糖果厂生产了950颗糖果。工人们吃掉了50颗来试吃味道。剩下的被装进每袋10颗的包装袋里。一共装满了多少袋？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 950 caramelos, 50 comidos, bolsas de 10. (950颗糖果，吃了50颗，每袋10颗。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 950 - 50 = 900; 900 ÷ 10 = 90.</p>
+                        <p><strong>Solución / 答案:</strong> Se llenan 90 bolsas. 一共装满了90袋。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>13.</strong> Una tienda de electrónica tiene 180 cables negros y 144 blancos. Deciden repartirlos a partes iguales entre sus 12 sucursales. ¿Cuántos cables recibirá cada sucursal?<br>
+                    一家电子商店有180根黑线和144根白线。他们决定将这些线平均分给12家分店。每家分店会收到多少根线？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 180 cables negros, 144 blancos, 12 sucursales. (180根黑线，144根白线，12家分店。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 180 + 144 = 324; 324 ÷ 12 = 27.</p>
+                        <p><strong>Solución / 答案:</strong> Cada sucursal recibirá 27 cables. 每家分店将收到27根线。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>14.</strong> Marcos compra 35 pares de botas de lluvia a 15 € el par y 20 pares de zapatillas a 18 € el par. ¿Cuál es el gasto total?<br>
+                    马科斯以每双15欧元的价格买了35双雨靴，又以每双18欧元的价格买了20双运动鞋。总花费是多少？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 35 pares a 15 €, 20 pares a 18 €. (35双每双15欧，20双每双18欧。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 35 × 15 = 525; 20 × 18 = 360; 525 + 360 = 885.</p>
+                        <p><strong>Solución / 答案:</strong> El gasto total es de 885 €. 总花费是885欧元。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>15.</strong> Un club de tenis tiene 400 pelotas. Se dan cuenta de que 16 están deshinchadas y las tiran. Guardan las buenas en botes de 3 pelotas. ¿Cuántos botes necesitan?<br>
+                    一家网球俱乐部有400个网球。他们发现其中有16个漏气了并把它们扔掉。完好的网球被装进每筒3个的球筒里。他们需要多少个球筒？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 400 pelotas, 16 deshinchadas, botes de 3. (400个球，漏气16个，每筒3个。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 400 - 16 = 384; 384 ÷ 3 = 128.</p>
+                        <p><strong>Solución / 答案:</strong> Necesitan 128 botes. 他们需要128个球筒。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>16.</strong> En un zoológico hay 14 recintos con 12 monos cada uno y 8 recintos con 15 pájaros cada uno. ¿Cuántos animales hay en total sumando monos y pájaros?<br>
+                    一个动物园里有14个猴子围栏，每个围栏里有12只猴子；还有8个鸟舍，每个鸟舍里有15只鸟。把猴子和鸟加起来一共多少只动物？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 14 recintos de 12 monos, 8 recintos de 15 pájaros. (14个围栏每栏12只猴，8个鸟舍每舍15只鸟。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 14 × 12 = 168; 8 × 15 = 120; 168 + 120 = 288.</p>
+                        <p><strong>Solución / 答案:</strong> Hay 288 animales en total. 总共有288只动物。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>17.</strong> En un supermercado tienen 230 latas de sopa de tomate y 170 latas de sopa de pollo. Las colocan a partes iguales en 8 estantes. ¿Cuántas latas ponen en cada estante?<br>
+                    一家超市有230罐番茄汤和170罐鸡汤。他们将这些罐头平均摆放在8个货架上。每个货架上摆放了多少罐？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 230 latas de tomate, 170 latas de pollo, 8 estantes. (230罐番茄，170罐鸡肉，8个货架。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 230 + 170 = 400; 400 ÷ 8 = 50.</p>
+                        <p><strong>Solución / 答案:</strong> Ponen 50 latas en cada estante. 每个货架上摆放50罐。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>18.</strong> Un vivero tiene 600 plantas de tomates. Pierden 40 por una helada. El agricultor planta las demás en 8 filas iguales. ¿Cuántas plantas hay en cada fila?<br>
+                    一个苗圃有600株番茄苗。由于霜冻，他们损失了40株。农夫把剩下的苗均匀地种在8排里。每一排有多少株苗？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 600 plantas, 40 perdidas, 8 filas. (600株苗，损失40株，种8排。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 600 - 40 = 560; 560 ÷ 8 = 70.</p>
+                        <p><strong>Solución / 答案:</strong> Hay 70 plantas en cada fila. 每一排有70株。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>19.</strong> Una imprenta fabrica 24 cajas de 15 libretas cada una. Por la tarde envían 60 libretas a una tienda. ¿Cuántas libretas les quedan?<br>
+                    一家印刷厂生产了24箱笔记本，每箱15本。下午他们向一家商店发送了60本笔记本。他们还剩下多少本？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 24 cajas de 15 libretas, se envían 60. (24箱每箱15本，发走60本。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 24 × 15 = 360; 360 - 60 = 300.</p>
+                        <p><strong>Solución / 答案:</strong> Les quedan 300 libretas. 他们还剩300本。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>20.</strong> En un acuario hay 140 peces dorados y 180 peces payaso. Los reparten a partes iguales en 8 peceras grandes. ¿Cuántas peces nadan en cada pecera?<br>
+                    一个水族馆里有140条金鱼和180条小丑鱼。他们把鱼平均分装在8个大鱼缸里。每个鱼缸里游着多少条鱼？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 140 peces dorados, 180 peces payaso, 8 peceras. (140条金鱼，180条小丑鱼，8个鱼缸。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 140 + 180 = 320; 320 ÷ 8 = 40.</p>
+                        <p><strong>Solución / 答案:</strong> Nadan 40 peces en cada pecera. 每个鱼缸里有40条鱼。</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 单元 3 -->
+            <h2 class="unit-title">Unidad 3: Problemas 21 - 30</h2>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>21.</strong> Laura tiene 500 piezas de un rompecabezas. Se le pierden 14 piezas debajo del sofá. Si separa las piezas restantes en 9 bolsas iguales, ¿cuántas piezas habrá en cada bolsa?<br>
+                    劳拉有一个500块的拼图。有14块掉在沙发底下找不到了。如果她把剩下的拼图均匀分装在9个袋子里，每个袋子里有多少块？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 500 piezas, 14 perdidas, 9 bolsas. (500块拼图，丢了14块，9个袋子。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 500 - 14 = 486; 486 ÷ 9 = 54.</p>
+                        <p><strong>Solución / 答案:</strong> Habrá 54 piezas en cada bolsa. 每个袋子里有54块。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>22.</strong> Una granja tiene 12 vacas (4 patas cada una) y 35 gallinas (2 patas cada una). Si cuentas todas las patas de estos animales, ¿cuántas hay en total?<br>
+                    一个农场有12头牛（每头4条腿）和35只鸡（每只2条腿）。如果你数一数这些动物所有的腿，总共有多少条？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 12 vacas (4 patas), 35 gallinas (2 patas). (12头牛(4条腿)，35只鸡(2条腿)。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 12 × 4 = 48; 35 × 2 = 70; 48 + 70 = 118.</p>
+                        <p><strong>Solución / 答案:</strong> Hay 118 patas en total. 总共有118条腿。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>23.</strong> Un barco pirata encuentra 250 monedas de oro y 110 monedas de plata. El capitán las reparte a partes iguales entre sus 9 marineros. ¿Cuántas monedas recibe cada uno?<br>
+                    一艘海盗船发现了250枚金币和110枚银币。船长把它们平均分给手下的9名水手。每人分得多少枚硬币？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 250 monedas de oro, 110 de plata, 9 marineros. (250金币，110银币，9个水手。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 250 + 110 = 360; 360 ÷ 9 = 40.</p>
+                        <p><strong>Solución / 答案:</strong> Cada uno recibe 40 monedas. 每人分得40枚。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>24.</strong> En una obra escolar, compran 16 paquetes de 50 ladrillos de plástico. Durante el ensayo se rompen 200 ladrillos. ¿Cuántos ladrillos quedan enteros?<br>
+                    在一场学校戏剧中，他们买了16包塑料砖，每包50块。在排练中弄坏了200块。还剩下多少块完好的砖？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 16 paquetes de 50, se rompen 200. (16包每包50块，坏了200块。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 16 × 50 = 800; 800 - 200 = 600.</p>
+                        <p><strong>Solución / 答案:</strong> Quedan 600 ladrillos enteros. 还剩600块完好的。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>25.</strong> Un tren lleva 450 pasajeros. En la primera estación, 50 personas se bajan. Los pasajeros que quedan ocupan 8 vagones por igual. ¿Cuántos pasajeros hay en cada vagón?<br>
+                    一列火车上载有450名乘客。在第一站有50人下车。剩下的乘客均匀分布在8个车厢里。每个车厢有多少名乘客？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 450 pasajeros, se bajan 50, 8 vagones. (450名乘客，下车50人，8个车厢。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 450 - 50 = 400; 400 ÷ 8 = 50.</p>
+                        <p><strong>Solución / 答案:</strong> Hay 50 pasajeros en cada vagón. 每个车厢有50人。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>26.</strong> Una papelería vende 14 cajas de rotuladores a 15 € cada una y 20 cajas de lápices a 8 € cada una. ¿Cuánto dinero hacen en esa venta?<br>
+                    一家文具店卖出了14盒马克笔，每盒15欧元，还卖出了20盒铅笔，每盒8欧元。这笔买卖一共卖了多少钱？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 14 cajas a 15 €, 20 cajas a 8 €. (14盒每盒15欧，20盒每盒8欧。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 14 × 15 = 210; 20 × 8 = 160; 210 + 160 = 370.</p>
+                        <p><strong>Solución / 答案:</strong> Hacen 370 €. 一共卖了370欧。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>27.</strong> Una fábrica de mermelada hace 215 frascos de fresa y 185 frascos de melocotón. Los embalan en cajas de 8 frascos. ¿Cuántas cajas completan?<br>
+                    一家果酱厂生产了215瓶草莓酱和185瓶桃子酱。他们把果酱装在每箱8瓶的纸箱里。他们一共装满了多少箱？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 215 frascos fresa, 185 frascos melocotón, cajas de 8. (215瓶草莓，185瓶桃子，每箱8瓶。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 215 + 185 = 400; 400 ÷ 8 = 50.</p>
+                        <p><strong>Solución / 答案:</strong> Completan 50 cajas. 一共装满了50箱。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>28.</strong> Se compran 200 copas de cristal para una fiesta. Al sacarlas, notan que 8 están rotas. El resto se pone en bandejas de 6 copas. ¿Cuántas bandejas se usan?<br>
+                    为了办派对买了200个玻璃杯。拿出来时，他们发现有8个破了。剩下的杯子放在每托盘6个的托盘上。一共用了多少个托盘？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 200 copas, 8 rotas, bandejas de 6. (200个杯子，破了8个，每盘6个。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 200 - 8 = 192; 192 ÷ 6 = 32.</p>
+                        <p><strong>Solución / 答案:</strong> Se usan 32 bandejas. 一共用了32个托盘。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>29.</strong> Un sastre compra 120 metros de hilo rojo y 240 metros de hilo azul. Corta todos los hilos en trozos de 4 metros. ¿Cuántos trozos obtiene?<br>
+                    一位裁缝买了120米红线和240米蓝线。他把所有的线都剪成4米长的一段段。他一共剪了多少段？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 120 m rojo, 240 m azul, trozos de 4 m. (120米红，240米蓝，每段4米。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 120 + 240 = 360; 360 ÷ 4 = 90.</p>
+                        <p><strong>Solución / 答案:</strong> Obtiene 90 trozos. 一共剪了90段。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>30.</strong> Un profesor compra 15 packs de 20 cartulinas cada uno. Los estudiantes usan 100 cartulinas para sus murales. ¿Cuántas cartulinas sobran?<br>
+                    一位老师买了15包卡纸，每包20张。学生们用掉了100张来做壁报。还剩下多少张卡纸？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 15 packs de 20, usan 100. (15包每包20张，用掉100张。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 15 × 20 = 300; 300 - 100 = 200.</p>
+                        <p><strong>Solución / 答案:</strong> Sobran 200 cartulinas. 还剩200张卡纸。</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 单元 4 -->
+            <h2 class="unit-title">Unidad 4: Problemas 31 - 40</h2>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>31.</strong> En la cocina hay un saco con 800 gramos de harina. Se derraman 80 gramos por accidente. Con lo que queda se hacen porciones de 90 gramos para pizzas. ¿Cuántas porciones salen?<br>
+                    厨房里有一袋800克的面粉。不小心洒出了80克。用剩下的面粉做成每份90克的披萨饼底。能做多少份？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 800 g harina, derraman 80 g, porciones de 90 g. (800克面粉，洒了80克，每份90克。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 800 - 80 = 720; 720 ÷ 90 = 8.</p>
+                        <p><strong>Solución / 答案:</strong> Salen 8 porciones. 能做8份。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>32.</strong> Para un campamento, compran 250 litros de agua y 110 litros de zumo. Lo reparten todo en botellas de 2 litros. ¿Cuántas botellas llenan?<br>
+                    为了一个夏令营，他们买了250升水和110升果汁。他们把所有的液体分装在2升的瓶子里。一共装满了多少瓶？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 250 L agua, 110 L zumo, botellas de 2 L. (250升水，110升果汁，2升的瓶子。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 250 + 110 = 360; 360 ÷ 2 = 180.</p>
+                        <p><strong>Solución / 答案:</strong> Llenan 180 botellas. 装满了180瓶。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>33.</strong> Carlos ha tomado 450 fotografías en sus vacaciones. Borra 90 fotos que salieron borrosas. Luego, imprime el resto poniendo 4 fotos por página. ¿Cuántas páginas imprime?<br>
+                    卡洛斯在假期拍了450张照片。他删除了90张模糊的照片。然后，他把剩下的按每页4张打印出来。他一共打印了多少页？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 450 fotos, borra 90, 4 por página. (450张照片，删了90张，每页4张。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 450 - 90 = 360; 360 ÷ 4 = 90.</p>
+                        <p><strong>Solución / 答案:</strong> Imprime 90 páginas. 打印了90页。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>34.</strong> Un sastre tiene 8 collares con 45 perlas cada uno y 5 pulseras con 20 perlas cada una. ¿Cuántas perlas hay en todas las joyas?<br>
+                    一位裁缝有8条项链，每条45颗珍珠；还有5条手链，每条20颗珍珠。所有的首饰加起来一共有多少颗珍珠？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 8 collares de 45, 5 pulseras de 20. (8条项链每条45颗，5条手链每条20颗。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 8 × 45 = 360; 5 × 20 = 100; 360 + 100 = 460.</p>
+                        <p><strong>Solución / 答案:</strong> Hay 460 perlas en total. 总共有460颗珍珠。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>35.</strong> Una oficina tiene 220 sobres blancos y 140 sobres amarillos. Los guardan en cajas que tienen capacidad para 15 sobres. ¿Cuántas cajas llenan?<br>
+                    一个办公室有220个白信封和140个黄信封。他们把信封收纳在能装15个的盒子里。他们装满了多少个盒子？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 220 sobres blancos, 140 amarillos, cajas de 15. (220白信封，140黄信封，每盒15个。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 220 + 140 = 360; 360 ÷ 15 = 24.</p>
+                        <p><strong>Solución / 答案:</strong> Llenan 24 cajas. 装满了24个盒子。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>36.</strong> En un torneo escolar compran 500 medallas. Al revisarlas, ven que 50 tienen defectos y no se usarán. Las buenas se reparten a partes iguales entre 15 colegios. ¿Cuántas recibe cada colegio?<br>
+                    在一次学校比赛中购买了500枚奖牌。检查时发现50枚有瑕疵不能用。完好的奖牌平均分给15所学校。每所学校分得多少枚？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 500 medallas, 50 defectuosas, 15 colegios. (500枚奖牌，50枚瑕疵，15个学校。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 500 - 50 = 450; 450 ÷ 15 = 30.</p>
+                        <p><strong>Solución / 答案:</strong> Cada colegio recibe 30 medallas. 每所学校分得30枚奖牌。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>37.</strong> Un kiosco recibe 15 paquetes de cromos a 12 € cada uno y 8 revistas a 10 € cada una. ¿Cuál es el valor de todo lo que recibieron?<br>
+                    一个报亭收到了15包球星卡，每包12欧元；以及8本杂志，每本10欧元。他们收到的所有东西总价值是多少？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 15 paquetes a 12 €, 8 revistas a 10 €. (15包每包12欧，8本每本10欧。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 15 × 12 = 180; 8 × 10 = 80; 180 + 80 = 260.</p>
+                        <p><strong>Solución / 答案:</strong> El valor es de 260 €. 总价值是260欧元。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>38.</strong> En un huerto hay 320 naranjas y 160 limones. Los envasan en mallas surtidas de 12 frutas cada una. ¿Cuántas mallas hacen?<br>
+                    果园里有320个橙子和160个柠檬。他们将其混合装在每袋12个水果的网袋里。一共装了多少袋？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 320 naranjas, 160 limones, mallas de 12. (320个橙子，160个柠檬，每袋12个。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 320 + 160 = 480; 480 ÷ 12 = 40.</p>
+                        <p><strong>Solución / 答案:</strong> Hacen 40 mallas. 一共装了40袋。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>39.</strong> Una pastelería hace 360 magdalenas. Se queman 20 en el horno y las tiran. Las demás las meten en cajas de 10. ¿Cuántas cajas preparan?<br>
+                    一家糕点店烤了360个玛芬蛋糕。烤箱里烤焦了20个被扔掉了。剩下的装进10个装的盒子里。他们准备了多少个盒子？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 360 magdalenas, 20 quemadas, cajas de 10. (360个蛋糕，烤焦20个，每盒10个。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 360 - 20 = 340; 340 ÷ 10 = 34.</p>
+                        <p><strong>Solución / 答案:</strong> Preparan 34 cajas. 准备了34个盒子。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>40.</strong> En la fiesta del barrio venden 25 raciones de paella a 10 € y 15 raciones de carne a 14 €. ¿Cuánto han recaudado?<br>
+                    在街区派对上，他们卖出了25份海鲜饭（每份10欧）和15份烤肉（每份14欧）。他们一共筹集了多少钱？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 25 raciones a 10 €, 15 raciones a 14 €. (25份每份10欧，15份每份14欧。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 25 × 10 = 250; 15 × 14 = 210; 250 + 210 = 460.</p>
+                        <p><strong>Solución / 答案:</strong> Han recaudado 460 €. 筹集了460欧元。</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 单元 5 -->
+            <h2 class="unit-title">Unidad 5: Problemas 41 - 50</h2>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>41.</strong> Una librería recibe 300 bolígrafos azules y 150 negros. Quieren hacer estuches con 5 bolígrafos cada uno. ¿Cuántas estuches pueden montar?<br>
+                    一家书店收到了300支蓝笔和150支黑笔。他们想把笔按每个笔袋5支的规格进行组装。他们能装配多少个笔袋？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 300 bolis azules, 150 negros, estuches de 5. (300蓝笔，150黑笔，每个笔袋5支。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 300 + 150 = 450; 450 ÷ 5 = 90.</p>
+                        <p><strong>Solución / 答案:</strong> Pueden montar 90 estuches. 他们能装配90个笔袋。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>42.</strong> Se han comprado 560 metros de cuerda para un polideportivo. Se dan cuenta de que 40 metros están deshilachados y se cortan. El resto se divide en 8 trozos iguales para las redes. ¿Cuánto mide cada trozo?<br>
+                    体育馆买来了560米绳子。他们发现有40米散线了就将其剪掉。剩下的绳子被分成8段等长的绳子做网。每段有多长？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 560 m de cuerda, 40 m deshilachados, 8 trozos. (560米绳子，散线40米，分8段。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 560 - 40 = 520; 520 ÷ 8 = 65.</p>
+                        <p><strong>Solución / 答案:</strong> Cada trozo mide 65 metros. 每段长65米。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>43.</strong> Un camión reparte 12 cajas con 25 litros de leche cada una. En la primera tienda deja 100 litros. ¿Cuántos litros de leche le quedan en el camión?<br>
+                    一辆卡车运送12箱牛奶，每箱25升。在第一家店卸下了100升。卡车上还剩多少升牛奶？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 12 cajas de 25 L, deja 100 L. (12箱每箱25升，卸下100升。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 12 × 25 = 300; 300 - 100 = 200.</p>
+                        <p><strong>Solución / 答案:</strong> Le quedan 200 litros. 还剩200升。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>44.</strong> En una fábrica empacan 210 clavos grandes y 350 pequeños. Se mezclan a partes iguales en 8 botes de plástico. ¿Cuántos clavos tiene cada bote?<br>
+                    一家工厂包装了210个大钉子和350个小钉子。它们被均匀地混合装进8个塑料罐中。每个罐子里有多少个钉子？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 210 clavos grandes, 350 pequeños, 8 botes. (210个大钉子，350个小钉子，8个罐子。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 210 + 350 = 560; 560 ÷ 8 = 70.</p>
+                        <p><strong>Solución / 答案:</strong> Cada bote tiene 70 clavos. 每个罐子有70个钉子。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>45.</strong> Una modista tiene 450 botones. Usa 30 botones en unas chaquetas viejas. Los que quedan los cose en 14 abrigos nuevos, poniendo la misma cantidad en cada uno. ¿Cuántos botones lleva cada abrigo nuevo?<br>
+                    一位女装裁缝有450个扣子。她在一些旧夹克上用掉了30个。剩下的她缝在14件新大衣上，每件数量一样多。每件新大衣缝了几个扣子？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 450 botones, usa 30, reparte en 14 abrigos. (450个扣子，用了30个，分在14件大衣上。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 450 - 30 = 420; 420 ÷ 14 = 30.</p>
+                        <p><strong>Solución / 答案:</strong> Cada abrigo lleva 30 botones. 每件大衣缝了30个扣子。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>46.</strong> Un supermercado compra 18 cajas de cereales a 12 € cada una y 15 botellas de aceite a 14 € cada una. ¿Cuánto dinero cuesta todo el pedido?<br>
+                    一家超市买了18箱麦片（每箱12欧）和15瓶油（每瓶14欧）。整个订单总共花多少钱？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 18 cajas a 12 €, 15 botellas a 14 €. (18箱每箱12欧，15瓶每瓶14欧。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 18 × 12 = 216; 15 × 14 = 210; 216 + 210 = 426.</p>
+                        <p><strong>Solución / 答案:</strong> Cuesta 426 €. 总花费426欧元。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>47.</strong> En un almacén hay 480 sillas. Las envían a un colegio pero en el camino 15 sillas se rompen. Las sillas enteras se reparten en aulas de 15 alumnos para cada uno. ¿Cuántas aulas se pueden equipar?<br>
+                    仓库里有480把椅子。运往学校途中坏了15把。完好的椅子分配到每间有15名学生的教室，每人一把。能配置多少间教室？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 480 sillas, 15 rotas, aulas de 15. (480把椅子，坏了15把，每教室15人。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 480 - 15 = 465; 465 ÷ 15 = 31.</p>
+                        <p><strong>Solución / 答案:</strong> Se pueden equipar 31 aulas. 能配置31间教室。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>48.</strong> Un barco pesca 240 kg de sardinas y 120 kg de boquerones. Lo colocan todo en cajas de corcho de 9 kg. ¿Cuántas cajas utilizan?<br>
+                    一艘船捕获了240公斤沙丁鱼和120公斤凤尾鱼。他们把这些鱼全都装进每箱9公斤的泡沫箱里。他们用了多少个箱子？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 240 kg de sardinas, 120 kg de boquerones, cajas de 9 kg. (240公斤沙丁鱼，120公斤凤尾鱼，每箱9公斤。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 240 + 120 = 360; 360 ÷ 9 = 40.</p>
+                        <p><strong>Solución / 答案:</strong> Utilizan 40 cajas. 他们用了40个箱子。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>49.</strong> Una panadería hornea 12 bandejas con 25 galletas cada una. Por la mañana venden 180 galletas. ¿Cuántas galletas les faltan por vender?<br>
+                    一家面包店烤了12烤盘饼干，每盘25块。早上卖出了180块。他们还剩多少块没卖出？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 12 bandejas de 25, venden 180. (12盘每盘25块，卖了180块。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 12 × 25 = 300; 300 - 180 = 120.</p>
+                        <p><strong>Solución / 答案:</strong> Faltan por vender 120 galletas. 还剩120块没卖出。</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="question-block">
+                <div class="q-text">
+                    <strong>50.</strong> Un organizador de eventos tiene 650 globos. Al inflarlos, explotan 50. Los globos que quedan los agrupa en racimos de 12 para decorar. ¿Cuántos racimos forma?<br>
+                    一位活动策划人有650个气球。充气时爆炸了50个。剩下的气球被扎成每束12个来做装饰。他一共扎了多少束？
+                </div>
+                <details class="answer-details">
+                    <summary>查看答案 / Ver respuesta</summary>
+                    <div class="answer-content">
+                        <p><strong>Datos / 已知信息:</strong> 650 globos, explotan 50, racimos de 12. (650个气球，爆了50个，每束12个。)</p>
+                        <p><strong>Operaciones / 运算:</strong> 650 - 50 = 600; 600 ÷ 12 = 50.</p>
+                        <p><strong>Solución / 答案:</strong> Forma 50 racimos. 扎了50束。</p>
+                    </div>
+                </details>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
