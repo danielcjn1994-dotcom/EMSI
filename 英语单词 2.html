@@ -485,7 +485,7 @@
             } else {
                 mcqArea.style.display = 'grid';
                 if (currentMode === 'en-cn') {
-                    document.getElementById('quiz-prompt').innerText = '🎯 请选择正确的中文：';
+                    document.getElementById('quiz-prompt').innerText = '🎯 请选择正确的翻译：';
                     display.innerText = item.en;
                 } else {
                     document.getElementById('quiz-prompt').innerText = '🎯 请选择正确的英文：';
@@ -500,11 +500,11 @@
         function renderMCQ(item) {
             const mcqArea = document.getElementById('mcq-area');
             mcqArea.innerHTML = '';
-            const correct = currentMode === 'en-cn' ? item.cn : item.en;
+            const correct = currentMode === 'en-cn' ? `${item.cn} / ${item.es}` : item.en;
             const currentUnitWords = vocabularyData[currentUnitIndex].words;
 
             if (!item.options) {
-                let distractors = currentUnitWords.map(d => currentMode === 'en-cn' ? d.cn : d.en)
+                let distractors = currentUnitWords.map(d => currentMode === 'en-cn' ? `${d.cn} / ${d.es}` : d.en)
                     .filter(v => v !== correct).sort(() => Math.random() - 0.5).slice(0, 3);
                 item.options = [correct, ...distractors].sort(() => Math.random() - 0.5);
             }
@@ -612,7 +612,7 @@
                 if(currentMode === 'fill') {
                     if(ans && ans.join('').toLowerCase() === item.en.toLowerCase()) correct++;
                 } else {
-                    const target = currentMode === 'en-cn' ? item.cn : item.en;
+                    const target = currentMode === 'en-cn' ? `${item.cn} / ${item.es}` : item.en;
                     if(ans === target) correct++;
                 }
             });
