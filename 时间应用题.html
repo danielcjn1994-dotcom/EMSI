@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 风格演示</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 新增：工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- 核心：复刻图片中的返回按钮样式 --- */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容区调整 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 40px 40px 40px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            min-height: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 40px; /* 增加内边距以容纳文字 */
+            box-sizing: border-box;
+            color: #333;
+            border: 1px solid #eee;
+        }
+
+        /* --- 题库折叠面板及黄色三角形箭头样式 --- */
+        
+        /* 隐藏默认黑色箭头 */
+        summary {
+            display: block; 
+        }
+        summary::-webkit-details-marker {
+            display: none; 
+        }
+        
+        /* 自定义黄色三角形 */
+        .custom-summary {
+            list-style: none;
+            cursor: pointer;
+            position: relative;
+            padding-left: 25px; /* 稍微加大一点基础左边距留出空间 */
+            user-select: none;
+            outline: none;
+        }
+        .custom-summary::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-style: solid;
+            border-width: 6px 0 6px 10px; /* 向右的三角形 */
+            border-color: transparent transparent transparent #f1c40f; /* 网页同款黄色 */
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        /* 展开时箭头向下旋转 */
+        details[open] > .custom-summary::before {
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        /* 单元外层样式 */
+        .unit-details {
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 10px 20px;
+            background-color: #fbfbfc;
+        }
+        .unit-summary {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a4a8e;
+            padding: 10px 0 10px 25px; /* 修复重叠关键点：加上左侧的 25px 避免文字覆盖箭头 */
+            border-bottom: 1px solid transparent;
+        }
+        details[open].unit-details > .unit-summary {
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 15px;
+        }
+
+        /* 单个题目样式 */
+        .question-item {
+            margin: 15px 0;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .question-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .q-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .q-text-es { font-weight: bold; color: #2d3748; }
+        .q-text-zh { color: #4a5568; margin-top: 4px; }
+
+        /* 答案解析样式 */
+        .ans-details {
+            margin-top: 10px;
+        }
+        .ans-summary {
+            font-size: 14px;
+            color: #d4ac0d; /* 稍深的黄色字，配合黄色箭头 */
+            font-weight: 600;
+        }
+        .ans-content {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #fff;
+            border-left: 4px solid #f1c40f;
+            border-radius: 0 5px 5px 0;
+            font-size: 14px;
+            color: #4a5568;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .ans-content p { 
+            margin: 5px 0; 
+            line-height: 1.5;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <!-- Unit 1 -->
+            <details class="unit-details">
+                <summary class="custom-summary unit-summary">单元 1 (第 1 - 10 题)</summary>
+                
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">1. Una película comienza a las 16:45 y dura 1 hora y 50 minutos. ¿A qué hora termina?</div>
+                        <div class="q-text-zh">一部电影16:45开始，时长1小时50分钟。几点结束？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 16:45. Duración 1 h 50 min. 开始 16:45。时长 1小时50分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 16 h + 1 h = 17 h. 45 min + 50 min = 95 min = 1 h 35 min. 17 h + 1 h 35 min = 18:35.</p>
+                            <p><strong>Solución 答案:</strong> Termina a las 18:35. 18:35结束。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">2. Marcos salió de casa a las 8:15 y llegó al colegio a las 8:50. ¿Cuántos minutos tardó en llegar?</div>
+                        <div class="q-text-zh">马科斯8:15离开家，8:50到达学校。他在路上花了多少分钟？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Salida 8:15. Llegada 8:50. 出发 8:15。到达 8:50。</p>
+                            <p><strong>Operaciones 计算:</strong> 50 min - 15 min = 35 min.</p>
+                            <p><strong>Solución 答案:</strong> Tardó 35 minutos. 花了35分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">3. Un pastel necesita estar en el horno 45 minutos. Si Ana lo mete a las 11:30, ¿a qué hora debe sacarlo?</div>
+                        <div class="q-text-zh">一个蛋糕需要在烤箱里烤45分钟。如果安娜11:30把它放进去，她应该几点把它拿出来？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Tiempo de horneado 45 min. Hora de inicio 11:30. 烘焙时间 45分钟。开始时间 11:30。</p>
+                            <p><strong>Operaciones 计算:</strong> 11:30 + 30 min = 12:00. Faltan 15 min (45 - 30). 12:00 + 15 min = 12:15.</p>
+                            <p><strong>Solución 答案:</strong> Debe sacarlo a las 12:15. 应该在12:15拿出来。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">4. El tren de Madrid a Barcelona sale a las 9:10 y el viaje dura 2 horas y cuarto. ¿A qué hora llega a Barcelona?</div>
+                        <div class="q-text-zh">从马德里到巴塞罗那的火车9:10出发，行程2小时15分钟（一刻钟）。它几点到达巴塞罗那？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Salida 9:10. Duración 2 h 15 min. 出发 9:10。时长 2小时15分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 9 h + 2 h = 11 h. 10 min + 15 min = 25 min.</p>
+                            <p><strong>Solución 答案:</strong> Llega a las 11:25. 11:25到达。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">5. Lucía estudió matemáticas durante 1 hora y media, y luego leyó un libro por 40 minutos. ¿Cuánto tiempo dedicó en total?</div>
+                        <div class="q-text-zh">露西娅学习了1个半小时的数学，然后读了40分钟的书。她总共花了多长时间？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Matemáticas 1 h 30 min. Lectura 40 min. 数学 1小时30分钟。阅读 40分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 30 min + 40 min = 70 min = 1 h 10 min. 1 h + 1 h 10 min = 2 h 10 min.</p>
+                            <p><strong>Solución 答案:</strong> Dedicó 2 horas y 10 minutos en total. 总共花了2小时10分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">6. El partido de fútbol empezó a las 18:00. Hubo dos partes de 45 minutos y un descanso de 15 minutos. ¿A qué hora terminó?</div>
+                        <div class="q-text-zh">足球比赛18:00开始。有两个45分钟的半场和一个15分钟的休息时间。几点结束？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 18:00. Partes 45 min + 45 min. Descanso 15 min. 开始 18:00。半场 45分钟+45分钟。休息 15分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 45 min + 45 min + 15 min = 105 min = 1 h 45 min. 18:00 + 1 h 45 min = 19:45.</p>
+                            <p><strong>Solución 答案:</strong> Terminó a las 19:45. 19:45结束。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">7. Carlos duerme 8 horas y media cada noche. Si se despierta a las 7:00 de la mañana, ¿a qué hora se acostó?</div>
+                        <div class="q-text-zh">卡洛斯每晚睡8个半小时。如果他早上7:00醒来，他是几点睡觉的？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Sueño 8 h 30 min. Despertar 7:00. 睡眠 8小时30分钟。醒来 7:00。</p>
+                            <p><strong>Operaciones 计算:</strong> 7:00 - 7 h = 00:00. Faltan 1 h 30 min. 00:00 - 1 h 30 min = 22:30.</p>
+                            <p><strong>Solución 答案:</strong> Se acostó a las 22:30. 他22:30睡觉的。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">8. Un autobús hace un recorrido en 3 horas y 20 minutos. Si llegó a su destino a las 14:10, ¿a qué hora salió?</div>
+                        <div class="q-text-zh">一辆公交车跑完全程需要3小时20分钟。如果它14:10到达目的地，它是几点出发的？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Duración 3 h 20 min. Llegada 14:10. 时长 3小时20分钟。到达 14:10。</p>
+                            <p><strong>Operaciones 计算:</strong> 14 h - 3 h = 11 h. 10 min - 20 min (tomamos 1 h prestada) -> 10 h 70 min - 20 min = 10:50.</p>
+                            <p><strong>Solución 答案:</strong> Salió a las 10:50. 10:50出发的。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">9. Sofía entrena natación de 17:15 a 18:45. ¿Cuántos minutos entrena?</div>
+                        <div class="q-text-zh">索菲亚从17:15到18:45练习游泳。她练习了多少分钟？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 17:15. Fin 18:45. 开始 17:15。结束 18:45。</p>
+                            <p><strong>Operaciones 计算:</strong> De 17:15 a 18:15 hay 1 h (60 min). De 18:15 a 18:45 hay 30 min. 60 + 30 = 90 min.</p>
+                            <p><strong>Solución 答案:</strong> Entrena 90 minutos. 练习了90分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">10. Para hacer la cena, corto las verduras en 15 minutos y las cocino por 1 hora y cuarto. ¿Cuánto tiempo tardo en total?</div>
+                        <div class="q-text-zh">为了做晚饭，我切蔬菜用了15分钟，然后煮了1小时15分钟（一刻钟）。我总共花了多长时间？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Cortar 15 min. Cocinar 1 h 15 min. 切菜 15分钟。烹饪 1小时15分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 15 min + 15 min = 30 min. Total: 1 h 30 min.</p>
+                            <p><strong>Solución 答案:</strong> Tardo 1 hora y media en total. 总共花了1个半小时。</p>
+                        </div>
+                    </details>
+                </div>
+
+            </details>
+
+            <!-- Unit 2 -->
+            <details class="unit-details">
+                <summary class="custom-summary unit-summary">单元 2 (第 11 - 20 题)</summary>
+                
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">11. Una excursión a la montaña dura 5 horas y 45 minutos. Si empezó a las 8:30, ¿a qué hora terminó?</div>
+                        <div class="q-text-zh">去山里远足持续5小时45分钟。如果8:30开始，几点结束？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 8:30. Duración 5 h 45 min. 开始 8:30。时长 5小时45分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 8 h + 5 h = 13 h. 30 min + 45 min = 75 min = 1 h 15 min. 13 h + 1 h 15 min = 14:15.</p>
+                            <p><strong>Solución 答案:</strong> Terminó a las 14:15. 14:15结束。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">12. Pablo juega a los videojuegos de 15:20 a 17:05. ¿Cuánto tiempo ha estado jugando?</div>
+                        <div class="q-text-zh">保罗从15:20到17:05玩电子游戏。他玩了多长时间？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 15:20. Fin 17:05. 开始 15:20。结束 17:05。</p>
+                            <p><strong>Operaciones 计算:</strong> De 15:20 a 16:20 es 1 h. De 16:20 a 17:05 son 45 min. Total: 1 h 45 min.</p>
+                            <p><strong>Solución 答案:</strong> Ha estado jugando 1 hora y 45 minutos. 他玩了1小时45分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">13. Un avión sale a las 21:50 y el vuelo dura 3 horas y 25 minutos. ¿A qué hora aterriza?</div>
+                        <div class="q-text-zh">一架飞机21:50起飞，飞行时间为3小时25分钟。它几点降落？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Salida 21:50. Duración 3 h 25 min. 起飞 21:50。时长 3小时25分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 21:50 + 10 min = 22:00. Quedan 3 h 15 min. 22:00 + 2 h = 00:00. 00:00 + 1 h 15 min = 01:15.</p>
+                            <p><strong>Solución 答案:</strong> Aterriza a las 01:15 de la madrugada. 凌晨01:15降落。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">14. Marta limpia su cuarto en 25 minutos y luego limpia el salón en 40 minutos. ¿Cuánto tiempo dedica a la limpieza en total?</div>
+                        <div class="q-text-zh">玛尔塔花25分钟打扫房间，然后花40分钟打扫客厅。她总共花了多少时间打扫？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Cuarto 25 min. Salón 40 min. 房间 25分钟。客厅 40分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 25 + 40 = 65 min. 65 min = 1 h 5 min.</p>
+                            <p><strong>Solución 答案:</strong> Dedica 1 hora y 5 minutos en total. 总共花了1小时5分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">15. El despertador de Juan suena a las 6:45. Si necesita 55 minutos para estar listo, ¿a qué hora terminará de prepararse?</div>
+                        <div class="q-text-zh">胡安的闹钟在6:45响。如果他需要55分钟准备好，他几点能准备完？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 6:45. Tiempo necesario 55 min. 开始 6:45。需要时间 55分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 45 min + 55 min = 100 min = 1 h 40 min. 6 h + 1 h 40 min = 7:40.</p>
+                            <p><strong>Solución 答案:</strong> Terminará a las 7:40. 7:40准备完。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">16. Una serie tiene episodios de 40 minutos. Si veo 3 episodios seguidos, ¿cuántas horas y minutos habré pasado viendo la serie?</div>
+                        <div class="q-text-zh">一部剧每集40分钟。如果我连续看3集，我看剧花了多少小时多少分钟？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Episodio 40 min. Cantidad 3. 每集 40分钟。数量 3。</p>
+                            <p><strong>Operaciones 计算:</strong> 40 × 3 = 120 min. 120 / 60 = 2 h.</p>
+                            <p><strong>Solución 答案:</strong> Habré pasado 2 horas viendo la serie. 我看了2个小时的剧。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">17. El abuelo salió a caminar a las 10:15 y regresó a las 12:00. ¿Cuánto tiempo caminó?</div>
+                        <div class="q-text-zh">爷爷10:15出去散步，12:00回来。他散步了多久？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Salida 10:15. Regreso 12:00. 出发 10:15。回来 12:00。</p>
+                            <p><strong>Operaciones 计算:</strong> De 10:15 a 11:15 es 1 h. De 11:15 a 12:00 son 45 min. Total: 1 h 45 min.</p>
+                            <p><strong>Solución 答案:</strong> Caminó 1 hora y 45 minutos. 散步了1小时45分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">18. Un examen dura 1 hora y cuarto. Si empezó a las 9:30, ¿a qué hora acabó?</div>
+                        <div class="q-text-zh">一场考试持续1小时15分钟（一刻钟）。如果9:30开始，几点结束？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 9:30. Duración 1 h 15 min. 开始 9:30。时长 1小时15分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 9 h + 1 h = 10 h. 30 min + 15 min = 45 min.</p>
+                            <p><strong>Solución 答案:</strong> Acabó a las 10:45. 10:45结束。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">19. Para ir de Madrid a Valencia en coche se tardan 3 horas y media. Si quiero llegar a las 14:00, ¿a qué hora debo salir?</div>
+                        <div class="q-text-zh">开车从马德里到瓦伦西亚需要3个半小时。如果我想14:00到达，我应该几点出发？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Llegada 14:00. Duración 3 h 30 min. 到达 14:00。时长 3小时30分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 14:00 - 3 h = 11:00. 11:00 - 30 min = 10:30.</p>
+                            <p><strong>Solución 答案:</strong> Debo salir a las 10:30. 应该10:30出发。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">20. Pedro duerme una siesta de 45 minutos. Si se durmió a las 15:50, ¿a qué hora se despertó?</div>
+                        <div class="q-text-zh">佩德罗午睡了45分钟。如果他15:50睡着，他几点醒来？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 15:50. Duración 45 min. 开始 15:50。时长 45分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 15:50 + 10 min = 16:00. Quedan 35 min (45 - 10). 16:00 + 35 min = 16:35.</p>
+                            <p><strong>Solución 答案:</strong> Se despertó a las 16:35. 16:35醒来。</p>
+                        </div>
+                    </details>
+                </div>
+
+            </details>
+
+            <!-- Unit 3 -->
+            <details class="unit-details">
+                <summary class="custom-summary unit-summary">单元 3 (第 21 - 30 题)</summary>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">21. La pizza debe estar en el horno 20 minutos. Si la meto a las 19:15, ¿a qué hora la saco?</div>
+                        <div class="q-text-zh">披萨需要在烤箱里烤20分钟。如果我19:15放进去，几点拿出来？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 19:15. Duración 20 min. 开始 19:15。时长 20分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 15 min + 20 min = 35 min.</p>
+                            <p><strong>Solución 答案:</strong> La saco a las 19:35. 19:35拿出来。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">22. Un concierto dura 2 horas y 15 minutos. Si empieza a las 20:30, ¿a qué hora termina?</div>
+                        <div class="q-text-zh">一场音乐会持续2小时15分钟（一刻钟）。如果20:30开始，几点结束？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 20:30. Duración 2 h 15 min. 开始 20:30。时长 2小时15分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 20 h + 2 h = 22 h. 30 min + 15 min = 45 min.</p>
+                            <p><strong>Solución 答案:</strong> Termina a las 22:45. 22:45结束。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">23. Paseo al perro desde las 7:20 hasta las 7:55. ¿Cuántos minutos dura el paseo?</div>
+                        <div class="q-text-zh">我从7:20到7:55遛狗。散步持续了多少分钟？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 7:20. Fin 7:55. 开始 7:20。结束 7:55。</p>
+                            <p><strong>Operaciones 计算:</strong> 55 min - 20 min = 35 min.</p>
+                            <p><strong>Solución 答案:</strong> El paseo dura 35 minutos. 散步持续了35分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">24. Si el recreo es de 11:15 a 11:45, ¿cuánto tiempo tienen los niños para jugar?</div>
+                        <div class="q-text-zh">如果课间休息是从11:15到11:45，孩子们有多少时间玩耍？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 11:15. Fin 11:45. 开始 11:15。结束 11:45。</p>
+                            <p><strong>Operaciones 计算:</strong> 45 min - 15 min = 30 min.</p>
+                            <p><strong>Solución 答案:</strong> Tienen 30 minutos. 他们有30分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">25. Un tren llega a las 16:10. Si el viaje duró 1 hora y 40 minutos, ¿a qué hora salió?</div>
+                        <div class="q-text-zh">一列火车16:10到达。如果旅程持续了1小时40分钟，它是几点出发的？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Llegada 16:10. Duración 1 h 40 min. 到达 16:10。时长 1小时40分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 16:10 - 1 h = 15:10. 15:10 - 40 min = 14:30.</p>
+                            <p><strong>Solución 答案:</strong> Salió a las 14:30. 14:30出发的。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">26. Tardo 15 minutos en caminar a la biblioteca y me quedo leyendo 1 hora y cuarto. ¿Cuánto tiempo pasa en total?</div>
+                        <div class="q-text-zh">我走路去图书馆需要15分钟，然后留在那里阅读1小时15分钟（一刻钟）。总共过去了多少时间？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Camino 15 min. Lectura 1 h 15 min. 走路 15分钟。阅读 1小时15分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 15 min + 15 min = 30 min.</p>
+                            <p><strong>Solución 答案:</strong> Pasa 1 hora y media en total. 总共过去了1个半小时。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">27. Una tarta se hornea durante 50 minutos. Si la meto a las 9:40, ¿a qué hora está lista?</div>
+                        <div class="q-text-zh">一个蛋糕需要烤50分钟。如果我9:40放进去，几点能烤好？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 9:40. Duración 50 min. 开始 9:40。时长 50分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 9:40 + 20 min = 10:00. Faltan 30 min. 10:00 + 30 min = 10:30.</p>
+                            <p><strong>Solución 答案:</strong> Está lista a las 10:30. 10:30准备好。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">28. Corro en el parque por 45 minutos. Si termino a las 18:00, ¿a qué hora empecé?</div>
+                        <div class="q-text-zh">我在公园里跑步45分钟。如果我18:00结束，我是几点开始的？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Fin 18:00. Duración 45 min. 结束 18:00。时长 45分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 18:00 - 45 min = 17:15.</p>
+                            <p><strong>Solución 答案:</strong> Empecé a las 17:15. 17:15开始的。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">29. El primer tiempo de un partido dura 45 minutos. Si empieza a las 21:00, ¿a qué hora llega el descanso?</div>
+                        <div class="q-text-zh">比赛的上半场持续45分钟。如果21:00开始，几点休息？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 21:00. Duración 45 min. 开始 21:00。时长 45分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 21 h + 45 min = 21:45.</p>
+                            <p><strong>Solución 答案:</strong> El descanso llega a las 21:45. 21:45休息。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">30. Estudio 35 minutos de inglés y 40 minutos de ciencias. ¿Cuánto tiempo estudio en total?</div>
+                        <div class="q-text-zh">我学习了35分钟的英语和40分钟的科学。我总共学习了多长时间？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inglés 35 min. Ciencias 40 min. 英语 35分钟。科学 40分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 35 + 40 = 75 min = 1 h 15 min.</p>
+                            <p><strong>Solución 答案:</strong> Estudio 1 hora y 15 minutos en total. 总共学习了1小时15分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+            </details>
+
+            <!-- Unit 4 -->
+            <details class="unit-details">
+                <summary class="custom-summary unit-summary">单元 4 (第 31 - 40 题)</summary>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">31. Tomo un vuelo que sale a las 8:20 y aterriza a las 11:05. ¿Cuánto dura el vuelo?</div>
+                        <div class="q-text-zh">我乘坐一架8:20起飞，11:05降落的航班。飞行时间是多久？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Salida 8:20. Llegada 11:05. 起飞 8:20。到达 11:05。</p>
+                            <p><strong>Operaciones 计算:</strong> De 8:20 a 10:20 son 2 h. De 10:20 a 11:00 son 40 min. De 11:00 a 11:05 son 5 min. Total: 2 h 45 min.</p>
+                            <p><strong>Solución 答案:</strong> El vuelo dura 2 horas y 45 minutos. 飞行时间是2小时45分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">32. Un trabajador tiene 1 hora para comer. Si sale a las 13:45, ¿a qué hora debe volver?</div>
+                        <div class="q-text-zh">一名工人有1小时的吃饭时间。如果他13:45离开，他应该几点回来？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Salida 13:45. Duración 1 h. 离开 13:45。时长 1小时。</p>
+                            <p><strong>Operaciones 计算:</strong> 13 h + 1 h = 14 h. 45 min = 45 min.</p>
+                            <p><strong>Solución 答案:</strong> Debe volver a las 14:45. 应该在14:45回来。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">33. Una lavadora tarda 1 hora y 20 minutos en terminar. Si empieza a las 10:10, ¿a qué hora acaba?</div>
+                        <div class="q-text-zh">洗衣机需要1小时20分钟才能洗完。如果10:10开始，几点结束？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 10:10. Duración 1 h 20 min. 开始 10:10。时长 1小时20分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 10 h + 1 h = 11 h. 10 min + 20 min = 30 min.</p>
+                            <p><strong>Solución 答案:</strong> Acaba a las 11:30. 11:30结束。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">34. La película termina a las 23:15 y duró 2 horas. ¿A qué hora empezó?</div>
+                        <div class="q-text-zh">电影23:15结束，时长2小时。它是几点开始的？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Fin 23:15. Duración 2 h. 结束 23:15。时长 2小时。</p>
+                            <p><strong>Operaciones 计算:</strong> 23 h - 2 h = 21 h.</p>
+                            <p><strong>Solución 答案:</strong> Empezó a las 21:15. 21:15开始的。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">35. Si un reloj marca las 14:50, ¿cuántos minutos faltan para las 15:30?</div>
+                        <div class="q-text-zh">如果时钟显示14:50，距离15:30还有多少分钟？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Hora actual 14:50. Hora destino 15:30. 当前时间 14:50。目标时间 15:30。</p>
+                            <p><strong>Operaciones 计算:</strong> 60 - 50 = 10 min para las 15:00. 15:00 a 15:30 = 30 min. 10 + 30 = 40 min.</p>
+                            <p><strong>Solución 答案:</strong> Faltan 40 minutos. 还有40分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">36. Hago mis deberes desde las 17:30 hasta las 19:15. ¿Cuánto tiempo he tardado?</div>
+                        <div class="q-text-zh">我从17:30做作业到19:15。我花了多少时间？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 17:30. Fin 19:15. 开始 17:30。结束 19:15。</p>
+                            <p><strong>Operaciones 计算:</strong> De 17:30 a 18:30 es 1 h. De 18:30 a 19:00 son 30 min. De 19:00 a 19:15 son 15 min. Total: 1 h 45 min.</p>
+                            <p><strong>Solución 答案:</strong> He tardado 1 hora y 45 minutos. 我花了1小时45分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">37. El museo abre a las 10:00 y cierra a las 19:30. ¿Cuántas horas está abierto?</div>
+                        <div class="q-text-zh">博物馆10:00开门，19:30关门。它开放了多少个小时？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Apertura 10:00. Cierre 19:30. 开门 10:00。关门 19:30。</p>
+                            <p><strong>Operaciones 计算:</strong> 19 - 10 = 9 h. Los minutos son 30.</p>
+                            <p><strong>Solución 答案:</strong> Está abierto 9 horas y media. 开放了9个半小时。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">38. Voy en bicicleta 20 minutos de ida y 25 de vuelta. ¿Cuánto tiempo en bicicleta es en total?</div>
+                        <div class="q-text-zh">我骑自行车去程20分钟，回程25分钟。总共骑了多长时间？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Ida 20 min. Vuelta 25 min. 去程 20分钟。回程 25分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 20 + 25 = 45 min.</p>
+                            <p><strong>Solución 答案:</strong> Son 45 minutos en total. 总共是45分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">39. Una conferencia empieza a las 9:15 y dura 3 horas y cuarto. ¿A qué hora termina?</div>
+                        <div class="q-text-zh">一场会议9:15开始，持续3小时15分钟（一刻钟）。几点结束？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 9:15. Duración 3 h 15 min. 开始 9:15。时长 3小时15分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 9 h + 3 h = 12 h. 15 min + 15 min = 30 min.</p>
+                            <p><strong>Solución 答案:</strong> Termina a las 12:30. 12:30结束。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">40. Tengo una cita con el dentista a las 16:40. Si dura 35 minutos, ¿a qué hora saldré?</div>
+                        <div class="q-text-zh">我16:40有牙医预约。如果持续35分钟，我几点能出来？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 16:40. Duración 35 min. 开始 16:40。时长 35分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 16:40 + 20 min = 17:00. Faltan 15 min. 17:00 + 15 min = 17:15.</p>
+                            <p><strong>Solución 答案:</strong> Saldré a las 17:15. 我17:15出来。</p>
+                        </div>
+                    </details>
+                </div>
+
+            </details>
+
+            <!-- Unit 5 -->
+            <details class="unit-details">
+                <summary class="custom-summary unit-summary">单元 5 (第 41 - 50 题)</summary>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">41. El programa de televisión dura 1 hora y 10 minutos y termina a las 22:00. ¿A qué hora empezó?</div>
+                        <div class="q-text-zh">电视节目时长1小时10分钟，22:00结束。几点开始的？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Fin 22:00. Duración 1 h 10 min. 结束 22:00。时长 1小时10分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 22:00 - 1 h = 21:00. 21:00 - 10 min = 20:50.</p>
+                            <p><strong>Solución 答案:</strong> Empezó a las 20:50. 20:50开始的。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">42. Si duermo 7 horas y media y me despierto a las 6:30, ¿a qué hora me dormí?</div>
+                        <div class="q-text-zh">如果我睡了7个半小时，早上6:30醒来，我是几点睡着的？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Sueño 7 h 30 min. Despertar 6:30. 睡眠 7小时30分钟。醒来 6:30。</p>
+                            <p><strong>Operaciones 计算:</strong> 6:30 - 6 h 30 min = 00:00. 00:00 - 1 h = 23:00.</p>
+                            <p><strong>Solución 答案:</strong> Me dormí a las 23:00. 我23:00睡着的。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">43. Un atleta corre una maratón en 2 horas y 55 minutos. Si cruzó la meta a las 12:10, ¿a qué hora empezó?</div>
+                        <div class="q-text-zh">一名运动员在2小时55分钟内跑完马拉松。如果他12:10越过终点线，他是几点开始的？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Llegada 12:10. Duración 2 h 55 min. 到达 12:10。时长 2小时55分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 12:10 - 2 h = 10:10. 10:10 - 55 min = 9:15.</p>
+                            <p><strong>Solución 答案:</strong> Empezó a las 9:15. 9:15开始的。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">44. Hacer una sopa tarda 15 minutos en prepararse y 40 minutos en hervir. ¿Cuánto tiempo toma en total?</div>
+                        <div class="q-text-zh">做汤需要15分钟准备和40分钟煮沸。总共需要多少时间？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Preparar 15 min. Hervir 40 min. 准备 15分钟。煮沸 40分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 15 + 40 = 55 min.</p>
+                            <p><strong>Solución 答案:</strong> Toma 55 minutos en total. 总共需要55分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">45. Espero el autobús desde las 14:45 hasta las 15:10. ¿Cuánto tiempo he esperado?</div>
+                        <div class="q-text-zh">我从14:45等到15:10才等来公交车。我等了多久？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 14:45. Fin 15:10. 开始 14:45。结束 15:10。</p>
+                            <p><strong>Operaciones 计算:</strong> 60 - 45 = 15 min (hasta las 15:00). 15 min + 10 min = 25 min.</p>
+                            <p><strong>Solución 答案:</strong> He esperado 25 minutos. 我等了25分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">46. Un viaje en barco sale a las 10:30 y dura 4 horas y media. ¿A qué hora llega a la isla?</div>
+                        <div class="q-text-zh">乘船旅行10:30出发，持续4个半小时。几点到达岛上？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Salida 10:30. Duración 4 h 30 min. 出发 10:30。时长 4小时30分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 10 h + 4 h = 14 h. 30 min + 30 min = 60 min = 1 h. 14 h + 1 h = 15:00.</p>
+                            <p><strong>Solución 答案:</strong> Llega a las 15:00. 15:00到达。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">47. Pinto una pared en 1 hora y 20 minutos, y otra en 1 hora y 35 minutos. ¿Cuánto tiempo he pintado?</div>
+                        <div class="q-text-zh">我粉刷一面墙用了1小时20分钟，另一面墙用了1小时35分钟。我粉刷了多长时间？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Pared 1 = 1 h 20 min. Pared 2 = 1 h 35 min. 墙1 = 1小时20分钟。墙2 = 1小时35分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 1 h + 1 h = 2 h. 20 min + 35 min = 55 min.</p>
+                            <p><strong>Solución 答案:</strong> He pintado durante 2 horas y 55 minutos. 我粉刷了2小时55分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">48. La clase de piano es de 18:15 a 19:00. ¿Cuántos minutos dura la clase?</div>
+                        <div class="q-text-zh">钢琴课从18:15上到19:00。课程持续多少分钟？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 18:15. Fin 19:00. 开始 18:15。结束 19:00。</p>
+                            <p><strong>Operaciones 计算:</strong> 60 - 15 = 45 min.</p>
+                            <p><strong>Solución 答案:</strong> La clase dura 45 minutos. 课程持续45分钟。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">49. Un festival de música empieza a las 16:00 y termina a las 23:30. ¿Cuántas horas y minutos dura?</div>
+                        <div class="q-text-zh">一个音乐节16:00开始，23:30结束。它持续了多少小时多少分钟？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Inicio 16:00. Fin 23:30. 开始 16:00。结束 23:30。</p>
+                            <p><strong>Operaciones 计算:</strong> 23 - 16 = 7 h. 30 - 0 = 30 min.</p>
+                            <p><strong>Solución 答案:</strong> Dura 7 horas y media. 持续了7个半小时。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="question-item">
+                    <div class="q-text">
+                        <div class="q-text-es">50. Necesito 1 hora y 10 minutos para hacer la compra. Si quiero terminar a las 12:00, ¿a qué hora debo empezar?</div>
+                        <div class="q-text-zh">我需要1小时10分钟去购物。如果我想在12:00完成，我应该几点开始？</div>
+                    </div>
+                    <details class="ans-details">
+                        <summary class="custom-summary ans-summary">查看答案解析</summary>
+                        <div class="ans-content">
+                            <p><strong>Datos 已知:</strong> Fin 12:00. Duración 1 h 10 min. 结束 12:00。时长 1小时10分钟。</p>
+                            <p><strong>Operaciones 计算:</strong> 12:00 - 1 h = 11:00. 11:00 - 10 min = 10:50.</p>
+                            <p><strong>Solución 答案:</strong> Debo empezar a las 10:50. 我应该10:50开始。</p>
+                        </div>
+                    </details>
+                </div>
+
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
