@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI-西语发音与词汇练习 (复合音节篇)</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容卡片区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 20px 40px 20px; 
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        
+        /* 章节分割线样式 */
+        .category-divider {
+            text-align: center;
+            margin: 40px 0 20px 0;
+            position: relative;
+        }
+        
+        .category-divider h2 {
+            font-size: 24px;
+            color: #1a4a8e;
+            background: white;
+            display: inline-block;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+            margin: 0;
+        }
+
+        .category-divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            border-top: 2px solid #f1c40f;
+            z-index: 0;
+        }
+
+        /* --- 下拉框 (Accordion) 样式 --- */
+        details {
+            margin-bottom: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        details[open] {
+            box-shadow: 0 4px 15px rgba(26, 74, 142, 0.08);
+            border-color: #1a4a8e;
+        }
+
+        summary {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a4a8e;
+            padding: 16px 20px;
+            cursor: pointer;
+            background-color: #f8fafc;
+            outline: none;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: '▼';
+            font-size: 16px;
+            color: #1a4a8e;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        details[open] summary {
+            background-color: #eef2f9;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .details-content {
+            padding: 25px 20px;
+        }
+
+        /* --- 内部组件样式 --- */
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 15px 0;
+            border-left: 5px solid #f1c40f;
+            padding-left: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 音节框 */
+        .syllable-box {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .syllable-box span {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1a4a8e;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* 表格响应式容器 */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px; 
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th:nth-child(3), td:nth-child(3) {
+            border-right: 2px dashed #e5e7eb;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #1a4a8e;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        td {
+            font-size: 16px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .emoji-cell {
+            width: 40px;
+            text-align: center;
+            font-size: 22px;
+        }
+
+        .es-cell {
+            font-weight: 600;
+            color: #333;
+            width: 25%;
+        }
+
+        .zh-cell {
+            color: #64748b;
+        }
+
+        /* 句子区域 */
+        .sentences-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .sentence-box {
+            background: #fdfdfd;
+            border-left: 4px solid #1a4a8e;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            border-top: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .es-sent {
+            font-weight: 600;
+            color: #1a4a8e;
+            margin: 0 0 6px 0;
+            font-size: 17px;
+        }
+
+        .zh-sent {
+            margin: 0;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 32px; }
+            .card { padding: 20px 15px; }
+            .syllable-box span { font-size: 18px; padding: 6px 12px; }
+            summary { font-size: 18px; padding: 14px 15px; }
+            .details-content { padding: 20px 15px; }
+            .es-sent { font-size: 16px; }
+            th, td { font-size: 14px; padding: 10px; }
+            .category-divider h2 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+
+            <!-- ================= Parte 1: Sílabas Compuestas ================= -->
+            <div class="category-divider">
+                <h2>📚 Sílabas Compuestas 复合音节 (Parte 1)</h2>
+            </div>
+
+            <!-- BR -->
+            <details>
+                <summary>📚 复合音节：Br</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Bra</span><span>Bre</span><span>Bri</span><span>Bro</span><span>Bru</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">💪</td><td class="es-cell">Brazo</td><td class="zh-cell">手臂</td>
+                                <td class="emoji-cell">😂</td><td class="es-cell">Broma</td><td class="zh-cell">玩笑</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧙‍♀️</td><td class="es-cell">Bruja</td><td class="zh-cell">女巫</td>
+                                <td class="emoji-cell">🧥</td><td class="es-cell">Abrigo</td><td class="zh-cell">大衣</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">La bruja tiene un sombrero negro.</p>
+                            <p class="zh-sent">那个女巫有一顶黑色的帽子。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Me duele el brazo.</p>
+                            <p class="zh-sent">我的手臂疼。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- PR -->
+            <details>
+                <summary>📚 复合音节：Pr</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Pra</span><span>Pre</span><span>Pri</span><span>Pro</span><span>Pru</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">👨‍🏫</td><td class="es-cell">Profesor</td><td class="zh-cell">老师</td>
+                                <td class="emoji-cell">🏆</td><td class="es-cell">Premio</td><td class="zh-cell">奖品</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">👦</td><td class="es-cell">Primo</td><td class="zh-cell">表兄弟</td>
+                                <td class="emoji-cell">🏞️</td><td class="es-cell">Prado</td><td class="zh-cell">草地</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El profesor da una clase.</p>
+                            <p class="zh-sent">老师正在上课。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Mi primo ganó el primer premio.</p>
+                            <p class="zh-sent">我的表哥赢得了第一名（一等奖）。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CR -->
+            <details>
+                <summary>📚 复合音节：Cr</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Cra</span><span>Cre</span><span>Cri</span><span>Cro</span><span>Cru</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧴</td><td class="es-cell">Crema</td><td class="zh-cell">面霜 / 奶油</td>
+                                <td class="emoji-cell">✝️</td><td class="es-cell">Cruz</td><td class="zh-cell">十字架</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🤫</td><td class="es-cell">Secreto</td><td class="zh-cell">秘密</td>
+                                <td class="emoji-cell">🪟</td><td class="es-cell">Cristal</td><td class="zh-cell">玻璃 / 水晶</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Tengo un secreto para ti.</p>
+                            <p class="zh-sent">我有一个秘密要告诉你。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">La ventana es de cristal.</p>
+                            <p class="zh-sent">窗户是玻璃做的。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- FR -->
+            <details>
+                <summary>📚 复合音节：Fr</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Fra</span><span>Fre</span><span>Fri</span><span>Fro</span><span>Fru</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍓</td><td class="es-cell">Fresa</td><td class="zh-cell">草莓</td>
+                                <td class="emoji-cell">🍎</td><td class="es-cell">Fruta</td><td class="zh-cell">水果</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🥶</td><td class="es-cell">Frío</td><td class="zh-cell">寒冷</td>
+                                <td class="emoji-cell">🧰</td><td class="es-cell">Cofre</td><td class="zh-cell">宝箱</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Me gusta la fruta fresca.</p>
+                            <p class="zh-sent">我喜欢新鲜的水果。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">En invierno hace mucho frío.</p>
+                            <p class="zh-sent">冬天非常冷。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- GR -->
+            <details>
+                <summary>📚 复合音节：Gr</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Gra</span><span>Gre</span><span>Gri</span><span>Gro</span><span>Gru</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐅</td><td class="es-cell">Tigre</td><td class="zh-cell">老虎</td>
+                                <td class="emoji-cell">🐘</td><td class="es-cell">Grande</td><td class="zh-cell">大的</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🚰</td><td class="es-cell">Grifo</td><td class="zh-cell">水龙头</td>
+                                <td class="emoji-cell">👥</td><td class="es-cell">Grupo</td><td class="zh-cell">团体 / 小组</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El tigre es muy grande y fuerte.</p>
+                            <p class="zh-sent">老虎非常大且强壮。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Abre el grifo del agua.</p>
+                            <p class="zh-sent">打开水龙头。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- TR -->
+            <details>
+                <summary>📚 复合音节：Tr</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Tra</span><span>Tre</span><span>Tri</span><span>Tro</span><span>Tru</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🚂</td><td class="es-cell">Tren</td><td class="zh-cell">火车</td>
+                                <td class="emoji-cell">⭐</td><td class="es-cell">Estrella</td><td class="zh-cell">星星</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🌾</td><td class="es-cell">Trigo</td><td class="zh-cell">小麦</td>
+                                <td class="emoji-cell">4️⃣</td><td class="es-cell">Cuatro</td><td class="zh-cell">四</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El tren viaja por la vía.</p>
+                            <p class="zh-sent">火车在铁轨上行驶。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Veo cuatro estrellas en el cielo.</p>
+                            <p class="zh-sent">我在天空中看到四颗星星。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- DR -->
+            <details>
+                <summary>📚 复合音节：Dr</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Dra</span><span>Dre</span><span>Dri</span><span>Dro</span><span>Dru</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐉</td><td class="es-cell">Dragón</td><td class="zh-cell">龙</td>
+                                <td class="emoji-cell">🪨</td><td class="es-cell">Piedra</td><td class="zh-cell">石头</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🖼️</td><td class="es-cell">Cuadro</td><td class="zh-cell">画作 / 画框</td>
+                                <td class="emoji-cell">🌅</td><td class="es-cell">Madrugada</td><td class="zh-cell">清晨 / 凌晨</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El dragón vuela muy alto.</p>
+                            <p class="zh-sent">龙飞得很高。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Hay una piedra en el camino.</p>
+                            <p class="zh-sent">路上有一块石头。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- BL -->
+            <details>
+                <summary>📚 复合音节：Bl</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Bla</span><span>Ble</span><span>Bli</span><span>Blo</span><span>Blu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">⚪</td><td class="es-cell">Blanco</td><td class="zh-cell">白色</td>
+                                <td class="emoji-cell">👚</td><td class="es-cell">Blusa</td><td class="zh-cell">女衬衫</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏘️</td><td class="es-cell">Pueblo</td><td class="zh-cell">村庄</td>
+                                <td class="emoji-cell">🪑</td><td class="es-cell">Mueble</td><td class="zh-cell">家具</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Mi blusa es de color blanco.</p>
+                            <p class="zh-sent">我的衬衫是白色的。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Vamos de viaje a mi pueblo.</p>
+                            <p class="zh-sent">我们要去我的村庄旅行。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- PL -->
+            <details>
+                <summary>📚 复合音节：Pl</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Pla</span><span>Ple</span><span>Pli</span><span>Plo</span><span>Plu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍽️</td><td class="es-cell">Plato</td><td class="zh-cell">盘子</td>
+                                <td class="emoji-cell">🏖️</td><td class="es-cell">Playa</td><td class="zh-cell">沙滩</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🍌</td><td class="es-cell">Plátano</td><td class="zh-cell">香蕉</td>
+                                <td class="emoji-cell">🪶</td><td class="es-cell">Pluma</td><td class="zh-cell">羽毛 / 钢笔</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">En verano voy a la playa.</p>
+                            <p class="zh-sent">夏天我去沙滩。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Pon el plátano en el plato.</p>
+                            <p class="zh-sent">把香蕉放在盘子里。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CL -->
+            <details>
+                <summary>📚 复合音节：Cl</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Cla</span><span>Cle</span><span>Cli</span><span>Clo</span><span>Clu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏫</td><td class="es-cell">Clase</td><td class="zh-cell">课堂</td>
+                                <td class="emoji-cell">🔨</td><td class="es-cell">Clavo</td><td class="zh-cell">钉子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🚲</td><td class="es-cell">Bicicleta</td><td class="zh-cell">自行车</td>
+                                <td class="emoji-cell">⌨️</td><td class="es-cell">Teclado</td><td class="zh-cell">键盘</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Voy a clase en bicicleta.</p>
+                            <p class="zh-sent">我骑自行车去上课。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Cuidado con ese clavo.</p>
+                            <p class="zh-sent">小心那个钉子。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- FL -->
+            <details>
+                <summary>📚 复合音节：Fl</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Fla</span><span>Fle</span><span>Fli</span><span>Flo</span><span>Flu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🌸</td><td class="es-cell">Flor</td><td class="zh-cell">花</td>
+                                <td class="emoji-cell">🪈</td><td class="es-cell">Flauta</td><td class="zh-cell">长笛</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏹</td><td class="es-cell">Flecha</td><td class="zh-cell">箭</td>
+                                <td class="emoji-cell">🦩</td><td class="es-cell">Flamenco</td><td class="zh-cell">火烈鸟</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El flamenco está junto a la flor.</p>
+                            <p class="zh-sent">火烈鸟在花朵旁边。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Mi amigo toca la flauta.</p>
+                            <p class="zh-sent">我的朋友吹长笛。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- GL -->
+            <details>
+                <summary>📚 复合音节：Gl</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Gla</span><span>Gle</span><span>Gli</span><span>Glo</span><span>Glu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🎈</td><td class="es-cell">Globo</td><td class="zh-cell">气球</td>
+                                <td class="emoji-cell">⛪</td><td class="es-cell">Iglesia</td><td class="zh-cell">教堂</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">📏</td><td class="es-cell">Regla</td><td class="zh-cell">尺子</td>
+                                <td class="emoji-cell">🧊</td><td class="es-cell">Iglú</td><td class="zh-cell">冰屋</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El globo rojo vuela alto.</p>
+                            <p class="zh-sent">红色的气球飞得很高。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Dibuja una línea con la regla.</p>
+                            <p class="zh-sent">用尺子画一条线。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- ================= Parte 2: Sílabas Inversas y Diptongos ================= -->
+            <div class="category-divider">
+                <h2>📚 Sílabas Inversas 反向音节 (Parte 2)</h2>
+            </div>
+
+            <!-- AS/ES/IS/OS/US -->
+            <details>
+                <summary>📚 反向音节：As, Es, Is, Os, Us</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>As</span><span>Es</span><span>Is</span><span>Os</span><span>Us</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🏝️</td><td class="es-cell">Isla</td><td class="zh-cell">岛屿</td>
+                                <td class="emoji-cell">⭐</td><td class="es-cell">Estrella</td><td class="zh-cell">星星</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧹</td><td class="es-cell">Escoba</td><td class="zh-cell">扫帚</td>
+                                <td class="emoji-cell">🚌</td><td class="es-cell">Autobús</td><td class="zh-cell">公交车</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">La estrella brilla en la isla.</p>
+                            <p class="zh-sent">星星在岛屿上闪耀。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Yo voy en autobús.</p>
+                            <p class="zh-sent">我坐公交车去。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- AL/EL/IL/OL/UL -->
+            <details>
+                <summary>📚 反向音节：Al, El, Il, Ol, Ul</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Al</span><span>El</span><span>Il</span><span>Ol</span><span>Ul</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">☀️</td><td class="es-cell">Sol</td><td class="zh-cell">太阳</td>
+                                <td class="emoji-cell">🐌</td><td class="es-cell">Caracol</td><td class="zh-cell">蜗牛</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐙</td><td class="es-cell">Pulpo</td><td class="zh-cell">章鱼</td>
+                                <td class="emoji-cell">🍰</td><td class="es-cell">Pastel</td><td class="zh-cell">蛋糕</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El caracol camina despacio.</p>
+                            <p class="zh-sent">蜗牛慢慢地走。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Me gusta comer pastel.</p>
+                            <p class="zh-sent">我喜欢吃蛋糕。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- AN/EN/IN/ON/UN -->
+            <details>
+                <summary>📚 反向音节：An, En, In, On, Un</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>An</span><span>En</span><span>In</span><span>On</span><span>Un</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">📡</td><td class="es-cell">Antena</td><td class="zh-cell">天线</td>
+                                <td class="emoji-cell">🌉</td><td class="es-cell">Puente</td><td class="zh-cell">桥</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐭</td><td class="es-cell">Ratón</td><td class="zh-cell">老鼠</td>
+                                <td class="emoji-cell">🌍</td><td class="es-cell">Mundo</td><td class="zh-cell">世界</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El ratón cruza el puente.</p>
+                            <p class="zh-sent">老鼠穿过那座桥。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Es el mejor del mundo.</p>
+                            <p class="zh-sent">这是世界上最好的。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- AR/ER/IR/OR/UR -->
+            <details>
+                <summary>📚 反向音节：Ar, Er, Ir, Or, Ur</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Ar</span><span>Er</span><span>Ir</span><span>Or</span><span>Ur</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🌳</td><td class="es-cell">Árbol</td><td class="zh-cell">树</td>
+                                <td class="emoji-cell">🍴</td><td class="es-cell">Tenedor</td><td class="zh-cell">叉子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">💻</td><td class="es-cell">Ordenador</td><td class="zh-cell">电脑</td>
+                                <td class="emoji-cell">📿</td><td class="es-cell">Collar</td><td class="zh-cell">项链</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El árbol tiene hojas verdes.</p>
+                            <p class="zh-sent">树有绿色的叶子。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Yo uso el ordenador para trabajar.</p>
+                            <p class="zh-sent">我用电脑工作。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- AM/EM/IM/OM/UM -->
+            <details>
+                <summary>📚 反向音节：Am, Em, Im, Om, Um</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Am</span><span>Em</span><span>Im</span><span>Om</span><span>Um</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🔔</td><td class="es-cell">Campana</td><td class="zh-cell">钟 / 铃铛</td>
+                                <td class="emoji-cell">🚒</td><td class="es-cell">Bombero</td><td class="zh-cell">消防员</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧲</td><td class="es-cell">Imán</td><td class="zh-cell">磁铁</td>
+                                <td class="emoji-cell">⛱️</td><td class="es-cell">Sombrilla</td><td class="zh-cell">遮阳伞</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El bombero toca la campana.</p>
+                            <p class="zh-sent">消防员敲响了钟。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">El imán atrae el metal.</p>
+                            <p class="zh-sent">磁铁吸引金属。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- AC/EC/IC/OC/UC -->
+            <details>
+                <summary>📚 反向音节：Ac, Ec, Ic, Oc, Uc</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Ac</span><span>Ec</span><span>Ic</span><span>Oc</span><span>Uc</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">👨‍⚕️</td><td class="es-cell">Doctor</td><td class="zh-cell">医生</td>
+                                <td class="emoji-cell">📅</td><td class="es-cell">Octubre</td><td class="zh-cell">十月</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🌵</td><td class="es-cell">Cactus</td><td class="zh-cell">仙人掌</td>
+                                <td class="emoji-cell">🐛</td><td class="es-cell">Insecto</td><td class="zh-cell">昆虫</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El doctor trabaja en el hospital.</p>
+                            <p class="zh-sent">医生在医院工作。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Tengo un cactus en mi casa.</p>
+                            <p class="zh-sent">我家里有一盆仙人掌。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- AZ/EZ/IZ/OZ/UZ -->
+            <details>
+                <summary>📚 反向音节：Az, Ez, Iz, Oz, Uz</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Az</span><span>Ez</span><span>Iz</span><span>Oz</span><span>Uz</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">✏️</td><td class="es-cell">Lápiz</td><td class="zh-cell">铅笔</td>
+                                <td class="emoji-cell">👃</td><td class="es-cell">Nariz</td><td class="zh-cell">鼻子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🔟</td><td class="es-cell">Diez</td><td class="zh-cell">十</td>
+                                <td class="emoji-cell">💡</td><td class="es-cell">Luz</td><td class="zh-cell">光 / 灯光</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Escribe con el lápiz.</p>
+                            <p class="zh-sent">用铅笔写字。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Enciende la luz, por favor.</p>
+                            <p class="zh-sent">请开灯。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- AY/EY/IY/OY/UY -->
+            <details>
+                <summary>📚 反向音节：Ay, Ey, Iy, Oy, Uy</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Ay</span><span>Ey</span><span>Iy</span><span>Oy</span><span>Uy</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">👑</td><td class="es-cell">Rey</td><td class="zh-cell">国王</td>
+                                <td class="emoji-cell">⚖️</td><td class="es-cell">Ley</td><td class="zh-cell">法律</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🐂</td><td class="es-cell">Buey</td><td class="zh-cell">公牛</td>
+                                <td class="emoji-cell">🧥</td><td class="es-cell">Jersey</td><td class="zh-cell">毛衣</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El rey tiene una corona.</p>
+                            <p class="zh-sent">国王有一顶王冠。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Hoy me pongo un jersey.</p>
+                            <p class="zh-sent">今天我穿了一件毛衣。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <div class="category-divider">
+                <h2>📚 Diptongos 二重元音 (Parte 2)</h2>
+            </div>
+
+            <!-- IA/IE/IO/UA/UE -->
+            <details>
+                <summary>📚 二重元音：Ia, Ie, Io, Ua, Ue</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Ia</span><span>Ie</span><span>Io</span><span>Ua</span><span>Ue</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🎹</td><td class="es-cell">Piano</td><td class="zh-cell">钢琴</td>
+                                <td class="emoji-cell">🧊</td><td class="es-cell">Hielo</td><td class="zh-cell">冰</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🔥</td><td class="es-cell">Fuego</td><td class="zh-cell">火</td>
+                                <td class="emoji-cell">💧</td><td class="es-cell">Agua</td><td class="zh-cell">水</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">Me gusta tocar el piano.</p>
+                            <p class="zh-sent">我喜欢弹钢琴。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Bebo agua con hielo.</p>
+                            <p class="zh-sent">我喝加冰的水。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- AI/EI/OI/AU/EU -->
+            <details>
+                <summary>📚 二重元音：Ai, Ei, Oi, Au, Eu</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Ai</span><span>Ei</span><span>Oi</span><span>Au</span><span>Eu</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🌬️</td><td class="es-cell">Aire</td><td class="zh-cell">空气</td>
+                                <td class="emoji-cell">🪮</td><td class="es-cell">Peine</td><td class="zh-cell">梳子</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🕸️</td><td class="es-cell">Jaula</td><td class="zh-cell">笼子</td>
+                                <td class="emoji-cell">🚗</td><td class="es-cell">Auto</td><td class="zh-cell">汽车</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El pájaro está en la jaula.</p>
+                            <p class="zh-sent">鸟在笼子里。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">Usa el peine para el pelo.</p>
+                            <p class="zh-sent">用梳子梳头发。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CIA/CIE/CIO/GUA/GUO -->
+            <details>
+                <summary>📚 二重元音：Cia, Cie, Cio, Gua, Guo</summary>
+                <div class="details-content">
+                    <div class="section-title">🧩 音节组合 (Sílabas)</div>
+                    <div class="syllable-box">
+                        <span>Cia</span><span>Cie</span><span>Cio</span><span>Gua</span><span>Guo</span>
+                    </div>
+
+                    <div class="section-title">📝 词汇表 (Vocabulario)</div>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                                <th class="emoji-cell">🖼️</th><th class="es-cell">Español</th><th class="zh-cell">中文</th>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">👮</td><td class="es-cell">Policía</td><td class="zh-cell">警察</td>
+                                <td class="emoji-cell">🌌</td><td class="es-cell">Cielo</td><td class="zh-cell">天空</td>
+                            </tr>
+                            <tr>
+                                <td class="emoji-cell">🧤</td><td class="es-cell">Guante</td><td class="zh-cell">手套</td>
+                                <td class="emoji-cell">🏺</td><td class="es-cell">Antiguo</td><td class="zh-cell">古老的</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section-title">📖 双语例句 (Oraciones)</div>
+                    <div class="sentences-container">
+                        <div class="sentence-box">
+                            <p class="es-sent">El cielo es azul.</p>
+                            <p class="zh-sent">天空是蓝色的。</p>
+                        </div>
+                        <div class="sentence-box">
+                            <p class="es-sent">El policía ayuda a la gente.</p>
+                            <p class="zh-sent">警察帮助人们。</p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
