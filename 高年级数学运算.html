@@ -247,6 +247,15 @@
                     <button class="btn-emsi" onclick="startQuiz('mul_2_3')">两位数 × 三位数<small>2 dígitos × 3 dígitos</small></button>
                     <button class="btn-emsi" onclick="startQuiz('div_2_1')">两位数 ÷ 一位数<small>2 dígitos ÷ 1 dígito</small></button>
                     <button class="btn-emsi" onclick="startQuiz('div_2_2')">两位数 ÷ 两位数<small>2 dígitos ÷ 2 dígitos</small></button>
+                    <!-- 新增部分 -->
+                    <button class="btn-emsi" onclick="startQuiz('div_3_2')">三位数 ÷ 两位数<small>3 dígitos ÷ 2 dígitos</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('div_2_1_r1')">两位数 ÷ 一位数 (一位商有余)<small>Cociente 1 dígito, c/ resto</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('div_2_1_r2')">两位数 ÷ 一位数 (两位商有余)<small>Cociente 2 dígitos, c/ resto</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('div_2_2_r1')">两位数 ÷ 两位数 (一位余数)<small>Resto 1 dígito</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('div_2_2_r2')">两位数 ÷ 两位数 (两位余数)<small>Resto 2 dígitos</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('div_3_1_r1')">三位数 ÷ 一位数 (两位商有余)<small>Cociente 2 dígitos, c/ resto</small></button>
+                    <button class="btn-emsi" onclick="startQuiz('div_3_1_r2')">三位数 ÷ 一位数 (三位商有余)<small>Cociente 3 dígitos, c/ resto</small></button>
+                    <!-- 混合运算部分 -->
                     <button class="btn-emsi" onclick="startQuiz('mix_normal')">加减乘除混合运算<small>Operaciones mixtas (+ - × ÷)</small></button>
                     <button class="btn-emsi" onclick="startQuiz('mix_small')">混合运算 (带小括号)<small>Mixtas con paréntesis ( )</small></button>
                     <button class="btn-emsi" onclick="startQuiz('mix_middle')">混合运算 (带中括号)<small>Mixtas con corchetes [ ]</small></button>
@@ -296,7 +305,15 @@
         'mul_2_1': '两位数 × 一位数', 'mul_2_2': '两位数 × 两位数', 'mul_2_3': '两位数 × 三位数',
         'div_2_1': '两位数 ÷ 一位数', 'div_2_2': '两位数 ÷ 两位数', 'mix_normal': '混合运算',
         'mix_small': '带小括号 ( )', 'mix_middle': '带中括号 [ ]',
-        // 新增
+        // 新增除法
+        'div_3_2': '三位数 ÷ 两位数',
+        'div_2_1_r1': '两位数 ÷ 一位数 (一位商有余)',
+        'div_2_1_r2': '两位数 ÷ 一位数 (两位商有余)',
+        'div_2_2_r1': '两位数 ÷ 两位数 (一位数余数)',
+        'div_2_2_r2': '两位数 ÷ 两位数 (两位数余数)',
+        'div_3_1_r1': '三位数 ÷ 一位数 (两位商有余)',
+        'div_3_1_r2': '三位数 ÷ 一位数 (三位商有余)',
+        // 新增定律
         'law_comm_add': '加法巧算 (凑整)', 
         'law_assoc_mul': '乘法巧算 (结合律)',
         'law_dist_merge': '分配律 (提取公因数)',
@@ -332,7 +349,7 @@
     }
 
     function getQuestion(type) {
-        let a, b, c, d, res, s1, s2;
+        let a, b, c, d, q, r, res, s1, s2;
         switch(type) {
             // --- 原有逻辑 ---
             case 'mul_2_1':
@@ -351,6 +368,67 @@
                 b = getNum(11, 30); res = getNum(2, 9); a = b * res;
                 return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${res}` };
 
+            // --- 新增除法类型 ---
+            case 'div_3_2': // 3位数 / 2位数 (整除)
+                b = getNum(11, 49); q = getNum(2, Math.floor(999/b)); a = b * q;
+                if(a < 100) { q = Math.ceil(100/b); a = b * q; } 
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${q}` };
+
+            case 'div_2_1_r1': // 2位数 / 1位数 (1位数商, 必带余数)
+                do {
+                    b = getNum(2, 9);
+                    q = getNum(2, 9); // min 2
+                    r = getNum(1, b - 1);
+                    a = b * q + r;
+                } while(a < 10 || a > 99 || q >= 10);
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${q} con resto ${r}` };
+
+            case 'div_2_1_r2': // 2位数 / 1位数 (2位数商, 必带余数)
+                do {
+                    b = getNum(2, 9);
+                    q = getNum(10, 49);
+                    r = getNum(1, b - 1);
+                    a = b * q + r;
+                } while(a > 99);
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${q} con resto ${r}` };
+
+            case 'div_2_2_r1': // 2位数 / 2位数 (1位数余数)
+                do {
+                    b = getNum(11, 49);
+                    r = getNum(1, 9); 
+                    q = getNum(1, 8);
+                    a = b * q + r;
+                } while(a > 99 || r >= b);
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${q} con resto ${r}` };
+
+            case 'div_2_2_r2': // 2位数 / 2位数 (2位数余数)
+                do {
+                    b = getNum(11, 49);
+                    r = getNum(10, b - 1); 
+                    q = getNum(1, 8);
+                    a = b * q + r;
+                } while(a > 99);
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${q} con resto ${r}` };
+
+            case 'div_3_1_r1': // 3位数 / 1位数 (2位数商, 必带余数)
+                do {
+                    b = getNum(2, 9);
+                    q = getNum(10, 99);
+                    r = getNum(1, b - 1);
+                    a = b * q + r;
+                } while(a < 100 || a > 999);
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${q} con resto ${r}` };
+
+            case 'div_3_1_r2': // 3位数 / 1位数 (3位数商, 必带余数)
+                do {
+                    b = getNum(2, 9);
+                    q = getNum(100, 499);
+                    r = getNum(1, b - 1);
+                    a = b * q + r;
+                } while(a > 999);
+                return { text: `${a} ÷ ${b}`, solveHTML: `Resultado: ${q} con resto ${r}` };
+
+            // --- 混合运算逻辑 ---
             case 'mix_normal':
                 a = getNum(10, 50); b = getNum(2, 5); c = getNum(10, 50);
                 s1 = a * b;
@@ -360,28 +438,13 @@
                 };
 
             case 'mix_small':
-                // 修改后的复杂混合运算逻辑
-                let C = getNum(4, 9);
-                let D = getNum(4, 9);
-                let mul1 = C * D;
-
-                let F = getNum(2, 9);
-                let divRes = getNum(1, 9);
-                if(divRes >= mul1) divRes = Math.floor(mul1 / 2) || 1; // 确保括号内减法结果为正数
-                let E = F * divRes;
-                
-                let P = mul1 - divRes;
-
-                a = getNum(200, 999);
-                b = getNum(10, 99);
-                let G = getNum(2, 9);
-                let H = getNum(2, 9);
-                let mul2 = G * H;
-
-                s1 = a - b;
-                s2 = s1 + P;
-                res = s2 - mul2;
-
+                let C = getNum(4, 9), D = getNum(4, 9), mul1 = C * D;
+                let F = getNum(2, 9), divRes = getNum(1, 9);
+                if(divRes >= mul1) divRes = Math.floor(mul1 / 2) || 1; 
+                let E = F * divRes, P = mul1 - divRes;
+                a = getNum(200, 999); b = getNum(10, 99);
+                let G = getNum(2, 9), H = getNum(2, 9), mul2 = G * H;
+                s1 = a - b; s2 = s1 + P; res = s2 - mul2;
                 return { 
                     text: `${a} - ${b} + (${C} × ${D} - ${E} ÷ ${F}) - ${G} × ${H}`, 
                     solveHTML: `<span class="step-txt">Paso 1:</span> ${C}×${D} = ${mul1}, ${E}÷${F} = ${divRes}<br><span class="step-txt">Paso 2:</span> ${mul1} - ${divRes} = ${P} (Paréntesis)<br><span class="step-txt">Paso 3:</span> ${G}×${H} = ${mul2}<br><span class="step-txt">Paso 4:</span> ${a} - ${b} = ${s1}<br><span class="step-txt">Paso 5:</span> ${s1} + ${P} = ${s2}<br><span class="step-txt">Paso 6:</span> ${s2} - ${mul2} = ${res}` 
@@ -399,56 +462,38 @@
                     solveHTML: `<span class="step-txt">Paso 1:</span> (${final_b}-${c}) = ${step1}<br><span class="step-txt">Paso 2:</span> ${step1}÷${d} = ${step2}<br><span class="step-txt">Paso 3:</span> ${a}×${step2} = ${a*step2}` 
                 };
 
-            // --- 新增：运算定律模块 ---
-            
-            // 1. 加法交换律/结合律 (凑整到100)
+            // --- 运算定律模块 ---
             case 'law_comm_add':
-                a = getNum(11, 89);
-                c = 100 - a; // a + c = 100
-                b = getNum(12, 98);
-                // 随机打乱顺序显示
+                a = getNum(11, 89); c = 100 - a; b = getNum(12, 98);
                 return {
                     text: `${a} + ${b} + ${c}`,
                     solveHTML: `<span class="step-txt">Paso 1 (凑整):</span> ${a} + ${c} = 100<br><span class="step-txt">Paso 2:</span> 100 + ${b} = ${100+b}`
                 };
 
-            // 2. 乘法结合律 (找朋友)
             case 'law_assoc_mul':
                 let pairs = [[25, 4], [125, 8], [20, 5], [50, 2]];
-                let p = pairs[getNum(0, 3)];
-                let factor = getNum(3, 19);
+                let p = pairs[getNum(0, 3)], factor = getNum(3, 19);
                 return {
                     text: `${p[0]} × ${factor} × ${p[1]}`,
                     solveHTML: `<span class="step-txt">Paso 1 (找朋友):</span> ${p[0]} × ${p[1]} = ${p[0]*p[1]}<br><span class="step-txt">Paso 2:</span> ${p[0]*p[1]} × ${factor} = ${p[0]*p[1]*factor}`
                 };
 
-            // 3. 乘法分配律 (提取公因数)
             case 'law_dist_merge':
-                let common = getNum(11, 99);
-                let m = getNum(11, 89);
-                let n = 100 - m; // m + n = 100
-                if(Math.random() > 0.5) n = 10 - m; // 偶尔凑成10
+                let common = getNum(11, 99), m = getNum(11, 89), n = 100 - m;
+                if(Math.random() > 0.5) n = 10 - m; 
                 if(n <= 0) n = 100 - m;
                 return {
                     text: `${common} × ${m} + ${common} × ${n}`,
                     solveHTML: `<span class="step-txt">Paso 1 (提取):</span> ${common} × (${m} + ${n})<br><span class="step-txt">Paso 2:</span> ${common} × ${m+n} = ${common*(m+n)}`
                 };
 
-            // 4. 乘法分配律 (拆分凑整)
             case 'law_dist_split':
                 let baseOptions = [101, 102, 99, 98];
-                let base = baseOptions[getNum(0, 3)];
-                let mult = getNum(11, 99);
-                
-                let splitBase = (base > 100) ? 100 : 100;
-                let splitDiff = base - 100; // 1, 2, -1, -2
+                let base = baseOptions[getNum(0, 3)], mult = getNum(11, 99);
+                let splitDiff = base - 100; 
                 let sign = (splitDiff > 0) ? '+' : '-';
                 let absDiff = Math.abs(splitDiff);
-
-                let calcStr = (splitDiff > 0) 
-                    ? `${mult}00 + ${mult*absDiff}` 
-                    : `${mult}00 - ${mult*absDiff}`;
-
+                let calcStr = (splitDiff > 0) ? `${mult}00 + ${mult*absDiff}` : `${mult}00 - ${mult*absDiff}`;
                 return {
                     text: `${base} × ${mult}`,
                     solveHTML: `<span class="step-txt">Paso 1 (拆分):</span> (100 ${sign} ${absDiff}) × ${mult}<br><span class="step-txt">Paso 2:</span> ${mult}×100 ${sign} ${mult}×${absDiff}<br><span class="step-txt">Paso 3:</span> ${calcStr} = ${base*mult}`
