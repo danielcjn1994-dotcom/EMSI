@@ -360,11 +360,31 @@
                 };
 
             case 'mix_small':
-                a = getNum(5, 15); b = getNum(10, 30); c = getNum(2, 9);
-                s1 = b - c;
+                // 修改后的复杂混合运算逻辑
+                let C = getNum(4, 9);
+                let D = getNum(4, 9);
+                let mul1 = C * D;
+
+                let F = getNum(2, 9);
+                let divRes = getNum(1, 9);
+                if(divRes >= mul1) divRes = Math.floor(mul1 / 2) || 1; // 确保括号内减法结果为正数
+                let E = F * divRes;
+                
+                let P = mul1 - divRes;
+
+                a = getNum(200, 999);
+                b = getNum(10, 99);
+                let G = getNum(2, 9);
+                let H = getNum(2, 9);
+                let mul2 = G * H;
+
+                s1 = a - b;
+                s2 = s1 + P;
+                res = s2 - mul2;
+
                 return { 
-                    text: `${a} × (${b} - ${c})`, 
-                    solveHTML: `<span class="step-txt">Paso 1:</span> (${b}-${c}) = ${s1}<br><span class="step-txt">Paso 2:</span> ${a}×${s1} = ${a*s1}` 
+                    text: `${a} - ${b} + (${C} × ${D} - ${E} ÷ ${F}) - ${G} × ${H}`, 
+                    solveHTML: `<span class="step-txt">Paso 1:</span> ${C}×${D} = ${mul1}, ${E}÷${F} = ${divRes}<br><span class="step-txt">Paso 2:</span> ${mul1} - ${divRes} = ${P} (Paréntesis)<br><span class="step-txt">Paso 3:</span> ${G}×${H} = ${mul2}<br><span class="step-txt">Paso 4:</span> ${a} - ${b} = ${s1}<br><span class="step-txt">Paso 5:</span> ${s1} + ${P} = ${s2}<br><span class="step-txt">Paso 6:</span> ${s2} - ${mul2} = ${res}` 
                 };
 
             case 'mix_middle':
@@ -382,7 +402,6 @@
             // --- 新增：运算定律模块 ---
             
             // 1. 加法交换律/结合律 (凑整到100)
-            // 形如: 37 + 58 + 63 -> (37+63) + 58
             case 'law_comm_add':
                 a = getNum(11, 89);
                 c = 100 - a; // a + c = 100
@@ -394,7 +413,6 @@
                 };
 
             // 2. 乘法结合律 (找朋友)
-            // 形如: 25 x 13 x 4 -> (25x4) x 13
             case 'law_assoc_mul':
                 let pairs = [[25, 4], [125, 8], [20, 5], [50, 2]];
                 let p = pairs[getNum(0, 3)];
@@ -405,7 +423,6 @@
                 };
 
             // 3. 乘法分配律 (提取公因数)
-            // 形如: 36 x 45 + 36 x 55 -> 36 x (45+55)
             case 'law_dist_merge':
                 let common = getNum(11, 99);
                 let m = getNum(11, 89);
@@ -418,7 +435,6 @@
                 };
 
             // 4. 乘法分配律 (拆分凑整)
-            // 形如: 102 x 35 -> (100+2) x 35
             case 'law_dist_split':
                 let baseOptions = [101, 102, 99, 98];
                 let base = baseOptions[getNum(0, 3)];
