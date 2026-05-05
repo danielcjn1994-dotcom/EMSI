@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI - 单位转换</title>
+    <title>EMSI - 单位转换与练习</title>
     <style>
-        /* 基础样式复刻 */
+        /* ================= 基础样式 ================= */
         body {
             margin: 0;
             padding: 0;
@@ -17,7 +17,6 @@
             color: #333;
         }
 
-        /* --- 页眉设计 --- */
         .header {
             background-color: white;
             text-align: center;
@@ -46,7 +45,6 @@
             font-weight: 400;
         }
 
-        /* --- 工具栏/返回按钮区域 --- */
         .toolbar {
             width: 100%;
             max-width: 900px;
@@ -86,12 +84,6 @@
             color: #153a70;
         }
 
-        .btn-back:active {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
-        }
-
-        /* --- 内容占位区 --- */
         .main-content {
             flex: 1;
             display: flex;
@@ -100,7 +92,6 @@
             padding: 20px 40px 40px 40px;
         }
 
-        /* 修改了 card 样式使其适应长列表内容 */
         .card {
             background: white;
             width: 100%;
@@ -112,7 +103,7 @@
             border: 1px solid #eee;
         }
 
-        /* --- 折叠面板样式 (单元设计) --- */
+        /* ================= 折叠面板样式 ================= */
         details {
             margin-bottom: 20px;
             border: 1px solid #e5e7eb;
@@ -129,14 +120,13 @@
             background-color: #f8fafc;
             padding: 18px 20px;
             cursor: pointer;
-            list-style: none; /* 隐藏默认小三角以自定义，或保持默认 */
+            list-style: none;
             display: flex;
             align-items: center;
             border-bottom: 1px solid transparent;
             transition: background-color 0.2s;
         }
 
-        /* 自定义折叠三角箭头 */
         summary::before {
             content: "▶";
             font-size: 16px;
@@ -155,7 +145,6 @@
             background-color: #eff6ff;
         }
 
-        /* 单元内部内容区 */
         .unit-content {
             padding: 25px 20px;
             line-height: 1.6;
@@ -181,7 +170,6 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* 表格样式 */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -204,7 +192,6 @@
             background-color: #f8fafc;
         }
 
-        /* 实例框样式 */
         .example-box {
             background-color: #fffbeb;
             border-left: 5px solid #f1c40f;
@@ -219,7 +206,67 @@
             margin-bottom: 5px;
         }
 
-        /* --- 页脚设计 --- */
+        /* ================= 练习区域专门样式 ================= */
+        .practice-divider {
+            border: 0; height: 1px; background: #e5e7eb; margin: 30px 0 20px;
+        }
+        
+        .practice-area {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px dashed #cbd5e1;
+        }
+        
+        .practice-area h3 {
+            color: #1a4a8e;
+            margin-top: 0;
+        }
+
+        .practice-controls {
+            display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
+        }
+
+        .practice-select {
+            padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 16px; outline: none; background: white;
+        }
+
+        .btn-practice {
+            padding: 10px 20px; border: none; border-radius: 8px; background: #1a4a8e; color: white; cursor: pointer; font-size: 16px; transition: 0.2s; font-weight: bold;
+        }
+
+        .btn-practice.check { background: #10b981; }
+        .btn-practice:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-practice:active { transform: translateY(1px); }
+
+        .practice-questions {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; 
+        }
+
+        .q-item {
+            background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+            font-size: 16px; display:flex; align-items:center; flex-wrap: wrap; gap: 8px; font-weight: 500;
+        }
+
+        .q-item input, .q-item select {
+            padding: 6px; width: 65px; text-align: center; border: 2px solid #cbd5e1; border-radius: 6px; font-size: 16px; font-weight: bold; outline: none; transition: 0.3s;
+        }
+        
+        .q-item input:focus, .q-item select:focus {
+            border-color: #f1c40f;
+        }
+
+        .q-item input.correct, .q-item select.correct { border-color: #10b981; background: #d1fae5; color: #047857; }
+        .q-item input.wrong, .q-item select.wrong { border-color: #ef4444; background: #fee2e2; color: #b91c1c; }
+
+        .ans-label {
+            color: #ef4444; font-size: 15px; font-weight: bold; margin-left: auto; display: none; background: #fee2e2; padding: 4px 8px; border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .practice-questions { grid-template-columns: 1fr; }
+        }
+
         .footer {
             background-color: #1a4a8e;
             color: white;
@@ -227,10 +274,6 @@
             padding: 18px 20px;
             font-size: 15px;
             letter-spacing: 0.5px;
-        }
-
-        .footer span {
-            opacity: 0.9;
         }
     </style>
 </head>
@@ -248,6 +291,7 @@
     <main class="main-content">
         <div class="card">
             
+            <!-- 长度单位 -->
             <details>
                 <summary>Unidades de Longitud (长度单位)</summary>
                 <div class="unit-content">
@@ -259,16 +303,12 @@
                     
                     <div class="image-gallery">
                         <img src="单位转换/Unidades mayores que el metro.png" alt="Unidades mayores">
-                        <img src="单位转换/Metro,decímetro,centímetro y milímetro.png" alt="Unidades menores">
+                        <img src="单位转换/Metro,decímetro,centímetro y milímetro.png" alt="Unidades menores">
                         <img src="单位转换/Medidas de longitud.png" alt="Equivalencias de longitud">
                     </div>
 
                     <table>
-                        <tr>
-                            <th>Unidad (单位)</th>
-                            <th>Símbolo (符号)</th>
-                            <th>Equivalencia en metros (换算成米)</th>
-                        </tr>
+                        <tr><th>Unidad (单位)</th><th>Símbolo (符号)</th><th>Equivalencia en metros (换算成米)</th></tr>
                         <tr><td>Kilómetro (千米/公里)</td><td>km</td><td>1000 m</td></tr>
                         <tr><td>Hectómetro (百米)</td><td>hm</td><td>100 m</td></tr>
                         <tr><td>Decámetro (十米)</td><td>dam</td><td>10 m</td></tr>
@@ -284,9 +324,28 @@
                         • 2 m = 2 × 100 = 200 cm<br>
                         • 3000 mm = 3 m
                     </div>
+
+                    <!-- 练习区域：长度 -->
+                    <hr class="practice-divider">
+                    <div class="practice-area">
+                        <h3>📝 Prácticas / 随堂练习</h3>
+                        <div class="practice-controls">
+                            <select id="type-longitud" class="practice-select">
+                                <option value="1">1. 单位之间的转换 (单一)</option>
+                                <option value="2">2. 单位之间的转换 (复合)</option>
+                                <option value="3">3. 单位之间的大小比较 (单一)</option>
+                                <option value="4">4. 单位之间的大小比较 (复合)</option>
+                                <option value="5">5. 复合单位之间的加减</option>
+                            </select>
+                            <button class="btn-practice" onclick="generateQuestions('longitud')">🔄 刷新/生成新题</button>
+                            <button class="btn-practice check" onclick="checkAnswers('longitud')">✅ 查看答案</button>
+                        </div>
+                        <div class="practice-questions" id="container-longitud"></div>
+                    </div>
                 </div>
             </details>
 
+            <!-- 质量单位 -->
             <details>
                 <summary>Unidades de Masa (质量/重量单位)</summary>
                 <div class="unit-content">
@@ -303,11 +362,7 @@
                     </div>
 
                     <table>
-                        <tr>
-                            <th>Unidad (单位)</th>
-                            <th>Símbolo (符号)</th>
-                            <th>Equivalencia (换算)</th>
-                        </tr>
+                        <tr><th>Unidad (单位)</th><th>Símbolo (符号)</th><th>Equivalencia (换算)</th></tr>
                         <tr><td>Tonelada (吨)</td><td>t</td><td>1000 kg</td></tr>
                         <tr><td><strong>Kilogramo (千克)</strong></td><td><strong>kg</strong></td><td><strong>1000 g</strong></td></tr>
                         <tr><td>Hectogramo (百克)</td><td>hg</td><td>100 g</td></tr>
@@ -323,9 +378,28 @@
                         • 4 kg = 4000 g<br>
                         • 500 g = 0.5 kg
                     </div>
+
+                    <!-- 练习区域：质量 -->
+                    <hr class="practice-divider">
+                    <div class="practice-area">
+                        <h3>📝 Prácticas / 随堂练习</h3>
+                        <div class="practice-controls">
+                            <select id="type-masa" class="practice-select">
+                                <option value="1">1. 单位之间的转换 (单一)</option>
+                                <option value="2">2. 单位之间的转换 (复合)</option>
+                                <option value="3">3. 单位之间的大小比较 (单一)</option>
+                                <option value="4">4. 单位之间的大小比较 (复合)</option>
+                                <option value="5">5. 复合单位之间的加减</option>
+                            </select>
+                            <button class="btn-practice" onclick="generateQuestions('masa')">🔄 刷新/生成新题</button>
+                            <button class="btn-practice check" onclick="checkAnswers('masa')">✅ 查看答案</button>
+                        </div>
+                        <div class="practice-questions" id="container-masa"></div>
+                    </div>
                 </div>
             </details>
 
+            <!-- 容量单位 -->
             <details>
                 <summary>Unidades de Capacidad (容量/体积单位)</summary>
                 <div class="unit-content">
@@ -341,11 +415,7 @@
                     </div>
 
                     <table>
-                        <tr>
-                            <th>Unidad (单位)</th>
-                            <th>Símbolo (符号)</th>
-                            <th>Equivalencia en litros (换算成升)</th>
-                        </tr>
+                        <tr><th>Unidad (单位)</th><th>Símbolo (符号)</th><th>Equivalencia en litros (换算成升)</th></tr>
                         <tr><td>Kilolitro (千升)</td><td>kl</td><td>1000 l</td></tr>
                         <tr><td>Hectolitro (百升)</td><td>hl</td><td>100 l</td></tr>
                         <tr><td>Decalitro (十升)</td><td>dal</td><td>10 l</td></tr>
@@ -361,9 +431,28 @@
                         • 2000 ml = 2 l<br>
                         • 1 kl = 1000 l
                     </div>
+
+                    <!-- 练习区域：容量 -->
+                    <hr class="practice-divider">
+                    <div class="practice-area">
+                        <h3>📝 Prácticas / 随堂练习</h3>
+                        <div class="practice-controls">
+                            <select id="type-capacidad" class="practice-select">
+                                <option value="1">1. 单位之间的转换 (单一)</option>
+                                <option value="2">2. 单位之间的转换 (复合)</option>
+                                <option value="3">3. 单位之间的大小比较 (单一)</option>
+                                <option value="4">4. 单位之间的大小比较 (复合)</option>
+                                <option value="5">5. 复合单位之间的加减</option>
+                            </select>
+                            <button class="btn-practice" onclick="generateQuestions('capacidad')">🔄 刷新/生成新题</button>
+                            <button class="btn-practice check" onclick="checkAnswers('capacidad')">✅ 查看答案</button>
+                        </div>
+                        <div class="practice-questions" id="container-capacidad"></div>
+                    </div>
                 </div>
             </details>
 
+            <!-- 货币单位 -->
             <details>
                 <summary>Situaciones de Compra (货币与购物)</summary>
                 <div class="unit-content">
@@ -378,11 +467,7 @@
                     </div>
 
                     <table>
-                        <tr>
-                            <th>Moneda (货币)</th>
-                            <th>Símbolo (符号)</th>
-                            <th>Equivalencia (换算)</th>
-                        </tr>
+                        <tr><th>Moneda (货币)</th><th>Símbolo (符号)</th><th>Equivalencia (换算)</th></tr>
                         <tr><td><strong>Euro (欧元)</strong></td><td><strong>€</strong></td><td><strong>100 céntimos</strong></td></tr>
                         <tr><td>Céntimo (欧分)</td><td>cts</td><td>0.01 €</td></tr>
                     </table>
@@ -392,6 +477,27 @@
                         • 3 € = 300 céntimos<br>
                         • 150 céntimos = 1,50 € (1 euro y 50 céntimos)<br>
                         • 4,05 € = 4 euros y 5 céntimos = 405 céntimos
+                    </div>
+
+                    <!-- 练习区域：货币 -->
+                    <hr class="practice-divider">
+                    <div class="practice-area">
+                        <h3>📝 Prácticas / 随堂练习</h3>
+                        <div class="practice-controls">
+                            <select id="type-dinero" class="practice-select">
+                                <option value="1">1. 单位之间的转换 (单一)</option>
+                                <option value="2">2. 单位之间的转换 (复合)</option>
+                                <option value="3">3. 单位之间的大小比较 (单一)</option>
+                                <option value="4">4. 单位之间的大小比较 (复合)</option>
+                                <option value="5">5. 复合单位之间的加减</option>
+                                <!-- 在此添加两个新练习选项 -->
+                                <option value="6">6. 复合货币数字 转写成 西语</option>
+                                <option value="7">7. 西语货币文字 转写成 数字</option>
+                            </select>
+                            <button class="btn-practice" onclick="generateQuestions('dinero')">🔄 刷新/生成新题</button>
+                            <button class="btn-practice check" onclick="checkAnswers('dinero')">✅ 查看答案</button>
+                        </div>
+                        <div class="practice-questions" id="container-dinero"></div>
                     </div>
                 </div>
             </details>
@@ -403,5 +509,321 @@
         <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
     </footer>
 
+    <!-- ================= 练习系统 JavaScript 核心逻辑 ================= -->
+    <script>
+        // 定义所有单位及其相对基准值（为避免小数精度丢失，均放大为整数处理）
+        const UNITS = {
+            longitud: {
+                list: [ {u:'km',v:1000000}, {u:'hm',v:100000}, {u:'dam',v:10000}, {u:'m',v:1000}, {u:'dm',v:100}, {u:'cm',v:10}, {u:'mm',v:1} ],
+                pairs: [ ['km','m'], ['m','cm'], ['m','mm'], ['cm','mm'] ]
+            },
+            masa: {
+                list: [ {u:'t',v:100000000}, {u:'kg',v:100000}, {u:'hg',v:10000}, {u:'dag',v:1000}, {u:'g',v:100}, {u:'dg',v:10}, {u:'cg',v:1} ],
+                pairs: [ ['t','kg'], ['kg','g'] ]
+            },
+            capacidad: {
+                list: [ {u:'kl',v:1000000}, {u:'hl',v:100000}, {u:'dal',v:10000}, {u:'l',v:1000}, {u:'dl',v:100}, {u:'cl',v:10}, {u:'ml',v:1} ],
+                pairs: [ ['kl','l'], ['l','cl'], ['l','ml'] ]
+            },
+            dinero: {
+                list: [ {u:'€',v:100}, {u:'cts',v:1} ],
+                pairs: [ ['€','cts'] ]
+            }
+        };
+
+        // 辅助函数：生成范围内的随机整数
+        function rand(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 辅助函数：根据单位名称获取具体信息
+        function getUnitInfo(category, unitName) {
+            return UNITS[category].list.find(x => x.u === unitName);
+        }
+
+        // 辅助函数：将数字转换为西语货币文字
+        function getSpanishCurrencyText(e, c) {
+            function getNum(n) {
+                const units = ["", "un", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez", "once", "doce", "trece", "catorce", "quince"];
+                const tens = ["", "diez", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"];
+                
+                if (n <= 15) return units[n];
+                if (n === 16) return "dieciséis";
+                if (n === 17) return "diecisiete";
+                if (n === 18) return "dieciocho";
+                if (n === 19) return "diecinueve";
+                
+                if (n === 20) return "veinte";
+                if (n === 21) return "veintiún";
+                if (n === 22) return "veintidós";
+                if (n === 23) return "veintitrés";
+                if (n === 24) return "veinticuatro";
+                if (n === 25) return "veinticinco";
+                if (n === 26) return "veintiséis";
+                if (n === 27) return "veintisiete";
+                if (n === 28) return "veintiocho";
+                if (n === 29) return "veintinueve";
+
+                let t = Math.floor(n / 10);
+                let u = n % 10;
+                if (u === 0) return tens[t];
+                if (u === 1) return tens[t] + " y un";
+                return tens[t] + " y " + units[u];
+            }
+            
+            let eStr = "";
+            if (e === 1) eStr = "un euro";
+            else if (e > 1) eStr = getNum(e) + " euros";
+            
+            let cStr = "";
+            if (c === 1) cStr = "un céntimo";
+            else if (c > 1) cStr = getNum(c) + " céntimos";
+            
+            if (e === 0) return cStr;
+            if (c === 0) return eStr;
+            return eStr + " y " + cStr;
+        }
+
+        // 核心出题引擎
+        function generateQuestions(category) {
+            const type = parseInt(document.getElementById(`type-${category}`).value);
+            const container = document.getElementById(`container-${category}`);
+            container.innerHTML = '';
+            
+            // 针对较长的西语文字题型，强制单列显示，避免文字挤压；其他题型恢复原有网格布局
+            if (category === 'dinero' && (type === 6 || type === 7)) {
+                container.style.gridTemplateColumns = '1fr';
+            } else {
+                container.style.gridTemplateColumns = ''; 
+            }
+
+            let html = '';
+            for(let i = 0; i < 10; i++) {
+                html += `<div class="q-item"><span style="color:#6b7280; width:20px;">${i+1}.</span>`;
+                
+                if (type === 1) {
+                    // 1. 单一单位转换
+                    const uList = UNITS[category].list;
+                    let idx1 = rand(0, uList.length-1);
+                    let idx2 = rand(0, uList.length-1);
+                    while(idx1 === idx2) idx2 = rand(0, uList.length-1); // 确保两个单位不同
+                    
+                    let u1 = uList[idx1], u2 = uList[idx2];
+                    let val1, ans;
+                    
+                    if (u1.v > u2.v) {
+                        val1 = rand(1, 50);
+                        ans = val1 * (u1.v / u2.v);
+                    } else {
+                        val1 = rand(1, 50) * (u2.v / u1.v); // 确保除法结果为整数
+                        ans = val1 / (u2.v / u1.v);
+                    }
+                    
+                    html += `${val1} ${u1.u} &nbsp;=&nbsp; <input type="number" data-ans="${ans}"> ${u2.u}`;
+                    html += `<span class="ans-label">正确: ${ans}</span>`;
+                }
+                else if (type === 2) {
+                    // 2. 复合单位转换
+                    const pairs = UNITS[category].pairs;
+                    const pair = pairs[rand(0, pairs.length-1)];
+                    const uBig = getUnitInfo(category, pair[0]);
+                    const uSmall = getUnitInfo(category, pair[1]);
+                    const factor = uBig.v / uSmall.v;
+                    
+                    if (Math.random() > 0.5) {
+                        // 复合转单一
+                        let bVal = rand(1, 20);
+                        let sVal = rand(1, factor - 1);
+                        let ans = bVal * factor + sVal;
+                        html += `${bVal}${uBig.u} ${sVal}${uSmall.u} &nbsp;=&nbsp; <input type="number" data-ans="${ans}"> ${uSmall.u}`;
+                        html += `<span class="ans-label">正确: ${ans}</span>`;
+                    } else {
+                        // 单一转复合
+                        let bAns = rand(1, 20);
+                        let sAns = rand(1, factor - 1);
+                        let total = bAns * factor + sAns;
+                        html += `${total}${uSmall.u} &nbsp;=&nbsp; <input type="number" data-ans="${bAns}"> ${uBig.u} <input type="number" data-ans="${sAns}"> ${uSmall.u}`;
+                        html += `<span class="ans-label">正确: ${bAns} ${uBig.u} ${sAns} ${uSmall.u}</span>`;
+                    }
+                }
+                else if (type === 3) {
+                    // 3. 单一单位比较
+                    const uList = UNITS[category].list;
+                    let u1 = uList[rand(0, uList.length-1)];
+                    let u2 = uList[rand(0, uList.length-1)];
+                    let val1 = rand(1, 50);
+                    
+                    let baseVal1 = val1 * u1.v;
+                    let approximateVal2 = baseVal1 / u2.v;
+                    
+                    let r = rand(0,2);
+                    let val2;
+                    if (r === 0) val2 = approximateVal2; 
+                    else if (r === 1) val2 = approximateVal2 * 1.5;
+                    else val2 = approximateVal2 * 0.8;
+                    
+                    val2 = Math.ceil(val2);
+                    if (val2 <= 0) val2 = 1;
+                    
+                    let ans = '=';
+                    if (val1 * u1.v > val2 * u2.v) ans = '>';
+                    else if (val1 * u1.v < val2 * u2.v) ans = '<';
+                    
+                    html += `${val1} ${u1.u} 
+                        <select data-ans="${ans}">
+                            <option value="?">?</option>
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                        </select> 
+                        ${val2} ${u2.u}`;
+                    html += `<span class="ans-label">正确: ${ans}</span>`;
+                }
+                else if (type === 4) {
+                    // 4. 复合单位比较
+                    const pairs = UNITS[category].pairs;
+                    const pair = pairs[rand(0, pairs.length-1)];
+                    const uBig = getUnitInfo(category, pair[0]);
+                    const uSmall = getUnitInfo(category, pair[1]);
+                    const factor = uBig.v / uSmall.v;
+                    
+                    let bVal = rand(1, 10);
+                    let sVal = rand(1, factor - 1);
+                    let baseMix = bVal * factor + sVal;
+                    
+                    let singleVal = baseMix;
+                    let r = rand(0,2);
+                    if(r===1) singleVal += rand(1, Math.min(10, factor-1));
+                    if(r===2) singleVal -= rand(1, Math.min(10, factor-1));
+                    if(singleVal <= 0) singleVal = 1;
+                    
+                    let ans = '=';
+                    if (baseMix > singleVal) ans = '>';
+                    else if (baseMix < singleVal) ans = '<';
+                    
+                    html += `${bVal}${uBig.u} ${sVal}${uSmall.u} 
+                        <select data-ans="${ans}">
+                            <option value="?">?</option>
+                            <option value=">">&gt;</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                        </select> 
+                        ${singleVal}${uSmall.u}`;
+                    html += `<span class="ans-label">正确: ${ans}</span>`;
+                }
+                else if (type === 5) {
+                    // 5. 复合单位加减法
+                    const pairs = UNITS[category].pairs;
+                    const pair = pairs[rand(0, pairs.length-1)];
+                    const uBig = pair[0];
+                    const uSmall = pair[1];
+                    const factor = getUnitInfo(category, uBig).v / getUnitInfo(category, uSmall).v;
+                    
+                    let b1 = rand(1, 15), s1 = rand(1, factor - 1);
+                    let b2 = rand(1, 15), s2 = rand(1, factor - 1);
+                    
+                    let total1 = b1 * factor + s1;
+                    let total2 = b2 * factor + s2;
+                    
+                    let isAdd = Math.random() > 0.5;
+                    // 若为减法，确保前面大后面小，不出现负数
+                    if (!isAdd && total1 < total2) {
+                        let temp = total1; total1 = total2; total2 = temp;
+                        temp = b1; b1 = b2; b2 = temp;
+                        temp = s1; s1 = s2; s2 = temp;
+                    }
+                    
+                    let op = isAdd ? '+' : '-';
+                    let resTotal = isAdd ? (total1 + total2) : (total1 - total2);
+                    let ansB = Math.floor(resTotal / factor);
+                    let ansS = resTotal % factor;
+                    
+                    html += `${b1}${uBig} ${s1}${uSmall} <strong style="color:#1a4a8e;">${op}</strong> ${b2}${uBig} ${s2}${uSmall} &nbsp;=&nbsp; 
+                            <input type="number" data-ans="${ansB}"> ${uBig} <input type="number" data-ans="${ansS}"> ${uSmall}`;
+                    html += `<span class="ans-label">正确: ${ansB}${uBig} ${ansS}${uSmall}</span>`;
+                }
+                else if (type === 6 && category === 'dinero') {
+                    // 6. 复合货币数字 转写成 西语 (选择题防止拼写门槛过高)
+                    let e = rand(1, 50), c = rand(1, 99);
+                    let correctStr = getSpanishCurrencyText(e, c);
+                    
+                    // 伪造3个混淆选项
+                    let opts = [correctStr];
+                    while(opts.length < 4) {
+                        let fe = rand(1, 50), fc = rand(1, 99);
+                        let fakeStr = getSpanishCurrencyText(fe, fc);
+                        if(!opts.includes(fakeStr)) opts.push(fakeStr);
+                    }
+                    // 随机打乱
+                    for (let k = opts.length - 1; k > 0; k--) {
+                        const j = Math.floor(Math.random() * (k + 1));
+                        [opts[k], opts[j]] = [opts[j], opts[k]];
+                    }
+
+                    html += `<strong>${e}€ ${c}cts</strong> &nbsp;➡️&nbsp; 
+                             <select data-ans="${correctStr}" style="width: auto; max-width: 100%; padding-right: 15px;">
+                                <option value="?">-- 请选择正确的西语读法 --</option>
+                                ${opts.map(o => `<option value="${o}">${o}</option>`).join('')}
+                             </select>`;
+                    // 修复：去掉了 style 中的 display:block，使答案能够被隐藏
+                    html += `<span class="ans-label" style="width:100%; margin-top:8px;">正确: ${correctStr}</span>`;
+                }
+                else if (type === 7 && category === 'dinero') {
+                    // 7. 西语文字 转写成 数字 (填空)
+                    let e = rand(1, 50), c = rand(1, 99);
+                    let str = getSpanishCurrencyText(e, c);
+                    
+                    html += `<span style="font-style:italic; color:#1a4a8e;">"${str}"</span> &nbsp;➡️&nbsp; 
+                             <input type="number" style="width:50px;" data-ans="${e}"> € <input type="number" style="width:50px;" data-ans="${c}"> cts`;
+                    html += `<span class="ans-label">正确: ${e}€ ${c}cts</span>`;
+                }
+                
+                html += `</div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        // 答案核对引擎
+        function checkAnswers(category) {
+            const container = document.getElementById(`container-${category}`);
+            const qItems = container.querySelectorAll('.q-item');
+            if(qItems.length === 0) return;
+            
+            qItems.forEach(item => {
+                let inputs = item.querySelectorAll('input, select');
+                let isCorrect = true;
+                inputs.forEach(input => {
+                    let userVal = input.value.trim();
+                    let correctVal = input.getAttribute('data-ans');
+                    // 重置样式
+                    input.classList.remove('correct', 'wrong');
+                    
+                    if (userVal === correctVal) {
+                        input.classList.add('correct');
+                    } else {
+                        input.classList.add('wrong');
+                        isCorrect = false;
+                    }
+                });
+                
+                // 只要此题有错或者未填，就显示正确答案标签
+                let label = item.querySelector('.ans-label');
+                if (!isCorrect) {
+                    label.style.display = 'inline-block';
+                } else {
+                    label.style.display = 'none';
+                }
+            });
+        }
+
+        // 初始化：页面加载时为每个单元自动生成第一套题库
+        window.onload = () => {
+            ['longitud', 'masa', 'capacidad', 'dinero'].forEach(cat => {
+                // 绑定select更改事件，自动刷新题库
+                document.getElementById(`type-${cat}`).addEventListener('change', () => generateQuestions(cat));
+                generateQuestions(cat);
+            });
+        };
+    </script>
 </body>
 </html>

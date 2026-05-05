@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMSI - 认识时间</title>
     <style>
-        /* 基础样式复刻 */
+        /* ================= 基础样式 ================= */
         body {
             margin: 0;
             padding: 0;
@@ -17,7 +17,6 @@
             color: #333;
         }
 
-        /* --- 页眉设计 --- */
         .header {
             background-color: white;
             text-align: center;
@@ -46,7 +45,6 @@
             font-weight: 400;
         }
 
-        /* --- 工具栏/返回按钮区域 --- */
         .toolbar {
             width: 100%;
             max-width: 900px;
@@ -86,12 +84,6 @@
             color: #153a70;
         }
 
-        .btn-back:active {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
-        }
-
-        /* --- 内容占位区 --- */
         .main-content {
             flex: 1;
             display: flex;
@@ -100,7 +92,6 @@
             padding: 20px 40px 40px 40px;
         }
 
-        /* 卡片样式修改为适应长篇幅内容 */
         .card {
             background: white;
             width: 100%;
@@ -110,10 +101,10 @@
             padding: 30px;
             box-sizing: border-box;
             border: 1px solid #eee;
-            display: block; /* 取消原有的flex居中，允许内部元素自然排列 */
+            display: block;
         }
 
-        /* --- 折叠面板样式 (单元设计) --- */
+        /* ================= 折叠面板样式 ================= */
         details {
             margin-bottom: 20px;
             border: 1px solid #e5e7eb;
@@ -130,7 +121,7 @@
             background-color: #f8fafc;
             padding: 18px 20px;
             cursor: pointer;
-            list-style: none; /* 隐藏默认小三角 */
+            list-style: none; 
             display: flex;
             align-items: center;
             border-bottom: 1px solid transparent;
@@ -138,10 +129,9 @@
         }
 
         summary::-webkit-details-marker {
-            display: none; /* 隐藏Safari默认小三角 */
+            display: none; 
         }
 
-        /* 自定义折叠三角箭头 */
         summary::before {
             content: "▶";
             font-size: 16px;
@@ -160,7 +150,6 @@
             background-color: #eff6ff;
         }
 
-        /* 单元内部内容区 */
         .unit-content {
             padding: 25px 20px;
             line-height: 1.6;
@@ -186,7 +175,6 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* 表格样式 */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -209,7 +197,6 @@
             background-color: #f8fafc;
         }
 
-        /* 实例框样式 */
         .example-box {
             background-color: #fffbeb;
             border-left: 5px solid #f1c40f;
@@ -224,18 +211,69 @@
             margin-bottom: 5px;
         }
 
-        /* --- 页脚设计 --- */
-        .footer {
-            background-color: #1a4a8e;
-            color: white;
-            text-align: center;
-            padding: 18px 20px;
-            font-size: 15px;
-            letter-spacing: 0.5px;
+        /* ================= 练习区域专门样式 ================= */
+        .practice-divider {
+            border: 0; height: 1px; background: #e5e7eb; margin: 30px 0 20px;
+        }
+        
+        .practice-area {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px dashed #cbd5e1;
+        }
+        
+        .practice-area h3 {
+            color: #1a4a8e;
+            margin-top: 0;
         }
 
-        .footer span {
-            opacity: 0.9;
+        .practice-controls {
+            display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
+        }
+
+        .practice-select {
+            padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 16px; outline: none; background: white; flex: 1; min-width: 280px;
+        }
+
+        .btn-practice {
+            padding: 10px 20px; border: none; border-radius: 8px; background: #1a4a8e; color: white; cursor: pointer; font-size: 16px; transition: 0.2s; font-weight: bold;
+        }
+
+        .btn-practice.check { background: #10b981; }
+        .btn-practice:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-practice:active { transform: translateY(1px); }
+
+        .practice-questions {
+            display: grid; grid-template-columns: 1fr; gap: 15px; 
+        }
+
+        .q-item {
+            background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+            font-size: 16px; display:flex; align-items:center; flex-wrap: wrap; gap: 8px; font-weight: 500;
+        }
+
+        .q-item input {
+            padding: 6px; width: 65px; text-align: center; border: 2px solid #cbd5e1; border-radius: 6px; font-size: 16px; font-weight: bold; outline: none; transition: 0.3s;
+        }
+
+        .q-item select {
+            padding: 6px; border: 2px solid #cbd5e1; border-radius: 6px; font-size: 15px; font-weight: bold; outline: none; transition: 0.3s;
+        }
+        
+        .q-item input:focus, .q-item select:focus { border-color: #f1c40f; }
+        .q-item input.correct, .q-item select.correct { border-color: #10b981; background: #d1fae5; color: #047857; }
+        .q-item input.wrong, .q-item select.wrong { border-color: #ef4444; background: #fee2e2; color: #b91c1c; }
+
+        /* 特殊时间输入框样式 */
+        .time-box { width: 45px !important; }
+        
+        .ans-label {
+            color: #ef4444; font-size: 15px; font-weight: bold; margin-left: auto; display: none; background: #fee2e2; padding: 4px 8px; border-radius: 4px;
+        }
+
+        .footer {
+            background-color: #1a4a8e; color: white; text-align: center; padding: 18px 20px; font-size: 15px; letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -253,6 +291,7 @@
     <main class="main-content">
         <div class="card">
             
+            <!-- 第一单元 -->
             <details>
                 <summary>1. Leer el reloj (认识钟表)</summary>
                 <div class="unit-content">
@@ -261,12 +300,10 @@
                         <br><br>
                         钟表帮助我们测量一天中的时间。常见的模拟钟表（指针表）有指针：短针用来指示小时（时针），长针用来指示分钟（分针）。有些钟表还有一根走得最快的细针，用来指示秒（秒针）。
                     </div>
-                    
                     <div class="image-gallery">
                         <img src="时间/El reloj.png" alt="认识钟表1">
                         <img src="时间/El reloj digital.png" alt="认识钟表2">
                     </div>
-
                     <div class="example-box">
                         <strong>Ejemplos / 实例：</strong>
                         • Si la aguja corta está en el 3 y la larga en el 12, son las 3 en punto. (如果短针指着3，长针指着12，就是3点整。)<br>
@@ -275,7 +312,8 @@
                 </div>
             </details>
 
-            <details>
+            <!-- 第二单元及练习 -->
+            <details open>
                 <summary>2. Unidades de tiempo y conversión (时间单位与转换)</summary>
                 <div class="unit-content">
                     <div class="theory-text">
@@ -290,11 +328,7 @@
                     </div>
 
                     <table>
-                        <tr>
-                            <th>Unidad Mayor (大单位)</th>
-                            <th>Equivalencia (换算关系)</th>
-                            <th>Unidad Menor (小单位)</th>
-                        </tr>
+                        <tr><th>Unidad Mayor (大单位)</th><th>Equivalencia (换算)</th><th>Unidad Menor (小单位)</th></tr>
                         <tr><td>1 año (年)</td><td>=</td><td>12 meses (个月)</td></tr>
                         <tr><td>1 semana (星期)</td><td>=</td><td>7 días (天)</td></tr>
                         <tr><td>1 día (天)</td><td>=</td><td>24 horas (小时)</td></tr>
@@ -310,6 +344,28 @@
                         • 1 hora y 15 minutos = 60 + 15 = 75 minutos (1小时15分 = 75分钟)<br>
                         • 120 segundos = 2 minutos (120秒 = 2分钟)
                     </div>
+
+                    <!-- ======= 时间专项练习区域 ======= -->
+                    <hr class="practice-divider">
+                    <div class="practice-area">
+                        <h3>📝 Prácticas / 时间专项练习</h3>
+                        <div class="practice-controls">
+                            <select id="type-tiempo" class="practice-select">
+                                <option value="1">1. 时、分、秒之间单独的转换</option>
+                                <option value="2">2. 复合时间的转换 (时分秒、天)</option>
+                                <option value="3">3. 几点几分过 [几小时] 后是几点</option>
+                                <option value="4">4. 几点几分过 [几分钟] 后是几点</option>
+                                <option value="5">5. 几点几分 [几小时] 前是几点</option>
+                                <option value="6">6. 几点几分 [几分钟] 前是几点</option>
+                                <option value="7">7. 数字时间 (带AM/PM) 转西语文字</option>
+                                <option value="8">8. 西语文字时间 转数字时间 (24h)</option>
+                                <option value="9">9. 24小时制 转 12小时制</option>
+                            </select>
+                            <button class="btn-practice" onclick="generateQuestions()">🔄 生成新题</button>
+                            <button class="btn-practice check" onclick="checkAnswers()">✅ 查看答案</button>
+                        </div>
+                        <div class="practice-questions" id="container-tiempo"></div>
+                    </div>
                 </div>
             </details>
 
@@ -320,5 +376,218 @@
         <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
     </footer>
 
+    <!-- ================= 核心 JS 逻辑 ================= -->
+    <script>
+        const numsEs = ['doce', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once'];
+        const minsEs = {0: 'en punto', 15: 'y cuarto', 30: 'y media', 45: 'menos cuarto'};
+
+        function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+        function pad(n) { return n < 10 ? '0' + n : n; }
+
+        // 生成西语时间字符串 (逻辑：处理差一刻、冠词、早中晚)
+        function getSpanishTimeText(h24, m) {
+            let effHour = (h24 + (m === 45 ? 1 : 0)) % 24;
+            let h12 = effHour % 12;
+            let article = (h12 === 1) ? 'la' : 'las';
+            
+            let period = '';
+            if (effHour < 12) period = 'de la mañana';
+            else if (effHour < 21) period = 'de la tarde';
+            else period = 'de la noche';
+
+            return `${article} ${numsEs[h12]} ${minsEs[m]} ${period}`;
+        }
+
+        // 随机打乱数组
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function generateQuestions() {
+            const type = parseInt(document.getElementById('type-tiempo').value);
+            const container = document.getElementById('container-tiempo');
+            container.innerHTML = '';
+            
+            let html = '';
+            for(let i = 0; i < 10; i++) {
+                html += `<div class="q-item"><span style="color:#6b7280; width:20px;">${i+1}.</span>`;
+                
+                if (type === 1) {
+                    // 1. 时分秒单独转换
+                    let r = rand(0, 3);
+                    let v, ans;
+                    if (r === 0) { v = rand(1, 10); ans = v * 60; html += `${v} h &nbsp;=&nbsp; <input type="number" data-ans="${ans}"> min`; }
+                    else if (r === 1) { v = rand(1, 20); ans = v * 60; html += `${v} min &nbsp;=&nbsp; <input type="number" data-ans="${ans}"> s`; }
+                    else if (r === 2) { ans = rand(1, 10); v = ans * 60; html += `${v} min &nbsp;=&nbsp; <input type="number" data-ans="${ans}"> h`; }
+                    else { ans = rand(1, 20); v = ans * 60; html += `${v} s &nbsp;=&nbsp; <input type="number" data-ans="${ans}"> min`; }
+                    html += `<span class="ans-label">正确: ${ans}</span>`;
+                }
+                else if (type === 2) {
+                    // 2. 复合时间转换
+                    let r = rand(0, 3);
+                    if (r === 0) { 
+                        let h = rand(1, 5), m = rand(1, 59); let ans = h * 60 + m; 
+                        html += `${h}h ${m}min &nbsp;=&nbsp; <input type="number" data-ans="${ans}"> min`; 
+                        html += `<span class="ans-label">正确: ${ans}</span>`;
+                    }
+                    else if (r === 1) { 
+                        let m = rand(1, 10), s = rand(1, 59); let ans = m * 60 + s; 
+                        html += `${m}min ${s}s &nbsp;=&nbsp; <input type="number" data-ans="${ans}"> s`; 
+                        html += `<span class="ans-label">正确: ${ans}</span>`;
+                    }
+                    else if (r === 2) { 
+                        let d = rand(2, 10); let ans = d * 24; 
+                        html += `${d} días (天) &nbsp;=&nbsp; <input type="number" data-ans="${ans}"> horas (小时)`; 
+                        html += `<span class="ans-label">正确: ${ans}</span>`;
+                    }
+                    else { 
+                        let total = rand(65, 300); let ansH = Math.floor(total/60), ansM = total%60; 
+                        html += `${total} min &nbsp;=&nbsp; <input type="number" data-ans="${ansH}"> h <input type="number" data-ans="${ansM}"> min`; 
+                        html += `<span class="ans-label">正确: ${ansH} h ${ansM} min</span>`;
+                    }
+                }
+                else if (type === 3) {
+                    // 3. 加小时 (西中双语)
+                    let h = rand(0, 23), m = rand(0, 59), add = rand(1, 12);
+                    let ansH = (h + add) % 24;
+                    html += `<strong>${add} horas</strong> después de las <strong>${pad(h)}:${pad(m)}</strong> 
+                             <span style="color:#6b7280; margin:0 5px;">( <strong>${pad(h)}:${pad(m)}</strong> 过 <strong>${add} 小时</strong>后 )</span> :&nbsp;&nbsp; 
+                             <input type="text" class="time-box" data-ans="${pad(ansH)}"> : <input type="text" class="time-box" data-ans="${pad(m)}">`;
+                    html += `<span class="ans-label">正确: ${pad(ansH)}:${pad(m)}</span>`;
+                }
+                else if (type === 4) {
+                    // 4. 加分钟 (西中双语)
+                    let h = rand(0, 23), m = rand(0, 59), add = rand(15, 120);
+                    let tm = h * 60 + m + add;
+                    let ansH = Math.floor(tm / 60) % 24, ansM = tm % 60;
+                    html += `<strong>${add} minutos</strong> después de las <strong>${pad(h)}:${pad(m)}</strong> 
+                             <span style="color:#6b7280; margin:0 5px;">( <strong>${pad(h)}:${pad(m)}</strong> 过 <strong>${add} 分钟</strong>后 )</span> :&nbsp;&nbsp; 
+                             <input type="text" class="time-box" data-ans="${pad(ansH)}"> : <input type="text" class="time-box" data-ans="${pad(ansM)}">`;
+                    html += `<span class="ans-label">正确: ${pad(ansH)}:${pad(ansM)}</span>`;
+                }
+                else if (type === 5) {
+                    // 5. 减小时 (西中双语) - 新增
+                    let h = rand(0, 23), m = rand(0, 59), sub = rand(1, 12);
+                    let ansH = (h - sub + 24) % 24;
+                    html += `<strong>${sub} horas</strong> antes de las <strong>${pad(h)}:${pad(m)}</strong> 
+                             <span style="color:#6b7280; margin:0 5px;">( <strong>${pad(h)}:${pad(m)}</strong> 前 <strong>${sub} 小时</strong>是 )</span> :&nbsp;&nbsp; 
+                             <input type="text" class="time-box" data-ans="${pad(ansH)}"> : <input type="text" class="time-box" data-ans="${pad(m)}">`;
+                    html += `<span class="ans-label">正确: ${pad(ansH)}:${pad(m)}</span>`;
+                }
+                else if (type === 6) {
+                    // 6. 减分钟 (西中双语) - 新增
+                    let h = rand(0, 23), m = rand(0, 59), sub = rand(15, 120);
+                    let tm = h * 60 + m - sub;
+                    if (tm < 0) tm += 24 * 60;
+                    let ansH = Math.floor(tm / 60) % 24, ansM = tm % 60;
+                    html += `<strong>${sub} minutos</strong> antes de las <strong>${pad(h)}:${pad(m)}</strong> 
+                             <span style="color:#6b7280; margin:0 5px;">( <strong>${pad(h)}:${pad(m)}</strong> 前 <strong>${sub} 分钟</strong>是 )</span> :&nbsp;&nbsp; 
+                             <input type="text" class="time-box" data-ans="${pad(ansH)}"> : <input type="text" class="time-box" data-ans="${pad(ansM)}">`;
+                    html += `<span class="ans-label">正确: ${pad(ansH)}:${pad(ansM)}</span>`;
+                }
+                else if (type === 7) {
+                    // 7. 数字带AM/PM 转西语 (已去除了导致直接显示的 display:block 样式)
+                    let h24 = rand(0, 23);
+                    let minOpts = [0, 15, 30, 45];
+                    let m = minOpts[rand(0, 3)];
+                    
+                    let displayH12 = h24 % 12 || 12;
+                    let ampm = h24 < 12 ? 'AM' : 'PM';
+                    let correctStr = getSpanishTimeText(h24, m);
+                    
+                    // 伪造3个错误选项
+                    let opts = [correctStr];
+                    while(opts.length < 4) {
+                        let fH = rand(0, 23), fM = minOpts[rand(0, 3)];
+                        let fakeStr = getSpanishTimeText(fH, fM);
+                        if(!opts.includes(fakeStr)) opts.push(fakeStr);
+                    }
+                    shuffle(opts);
+                    
+                    html += `<strong>${displayH12}:${pad(m)} ${ampm}</strong> 
+                             <select data-ans="${correctStr}" style="max-width:300px;">
+                                <option value="?">-- 请选择正确的西语表达 --</option>
+                                ${opts.map(o => `<option value="${o}">${o}</option>`).join('')}
+                             </select>`;
+                    html += `<span class="ans-label" style="width:100%; margin-top:5px;">正确: ${correctStr}</span>`;
+                }
+                else if (type === 8) {
+                    // 8. 西语文字 转数字时间(24h)
+                    let h24 = rand(0, 23);
+                    let minOpts = [0, 15, 30, 45];
+                    let m = minOpts[rand(0, 3)];
+                    let str = getSpanishTimeText(h24, m);
+                    
+                    html += `<span style="font-style:italic; color:#1a4a8e;">"${str}"</span> &nbsp;➡️&nbsp; 
+                             <input type="text" class="time-box" data-ans="${pad(h24)}"> : <input type="text" class="time-box" data-ans="${pad(m)}"> (24h格式)`;
+                    html += `<span class="ans-label">正确: ${pad(h24)}:${pad(m)}</span>`;
+                }
+                else if (type === 9) {
+                    // 9. 24小时制 转 12小时制
+                    let h24 = rand(0, 23), m = rand(0, 59);
+                    let h12 = h24 % 12 || 12;
+                    let ampm = h24 < 12 ? 'AM' : 'PM';
+                    
+                    html += `<strong>${pad(h24)}:${pad(m)}</strong> &nbsp;=&nbsp; 
+                             <input type="text" class="time-box" data-ans="${h12}"> : <input type="text" class="time-box" data-ans="${pad(m)}">
+                             <select data-ans="${ampm}">
+                                <option value="?">AM/PM</option>
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                             </select>`;
+                    html += `<span class="ans-label">正确: ${h12}:${pad(m)} ${ampm}</span>`;
+                }
+                
+                html += `</div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        // 验证答案
+        function checkAnswers() {
+            const container = document.getElementById('container-tiempo');
+            const qItems = container.querySelectorAll('.q-item');
+            if(qItems.length === 0) return;
+            
+            qItems.forEach(item => {
+                let inputs = item.querySelectorAll('input, select');
+                let isCorrect = true;
+                inputs.forEach(input => {
+                    let userVal = input.value.trim();
+                    // 处理输入框补零容错（比如用户输入 8 而不是 08，在时间格式下均算对）
+                    let correctVal = input.getAttribute('data-ans');
+                    if (input.classList.contains('time-box') && !isNaN(userVal) && userVal !== '') {
+                        userVal = pad(parseInt(userVal));
+                        correctVal = pad(parseInt(correctVal));
+                    }
+                    
+                    input.classList.remove('correct', 'wrong');
+                    if (userVal === correctVal) {
+                        input.classList.add('correct');
+                    } else {
+                        input.classList.add('wrong');
+                        isCorrect = false;
+                    }
+                });
+                
+                let label = item.querySelector('.ans-label');
+                if (!isCorrect) {
+                    label.style.display = 'inline-block';
+                } else {
+                    label.style.display = 'none';
+                }
+            });
+        }
+
+        // 页面加载自动初始化生成题库
+        window.onload = () => {
+            document.getElementById('type-tiempo').addEventListener('change', generateQuestions);
+            generateQuestions();
+        };
+    </script>
 </body>
 </html>
