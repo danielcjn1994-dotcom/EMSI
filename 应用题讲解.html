@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 数学应用题逻辑指南</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15);
+            color: #153a70;
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容占位区 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 20px 40px 20px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            padding: 30px;
+            box-sizing: border-box;
+            color: #333;
+            font-size: 16px;
+        }
+
+        /* --- 折叠面板 (Accordion) 样式 --- */
+        details {
+            margin-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #f1c40f;
+            background-color: #fff;
+        }
+
+        summary {
+            background-color: #f1c40f;
+            color: #1a4a8e;
+            font-size: 20px;
+            font-weight: 600;
+            padding: 16px 24px;
+            cursor: pointer;
+            list-style: none; /* 隐藏默认三角 */
+            position: relative;
+            transition: background-color 0.3s;
+            user-select: none;
+        }
+
+        /* 隐藏不同浏览器的默认三角形 */
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* 自定义折叠指示器 (修改为▶箭头) */
+        summary::after {
+            content: "▶";
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            line-height: 1;
+            color: #1a4a8e;
+            transition: transform 0.3s ease;
+        }
+
+        /* 展开时箭头向下旋转 */
+        details[open] summary::after {
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        details[open] summary {
+            border-bottom: 2px solid #e0b60d;
+        }
+
+        .details-content {
+            padding: 24px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .details-content h3 {
+            color: #1a4a8e;
+            margin-top: 0;
+            border-left: 4px solid #f1c40f;
+            padding-left: 10px;
+        }
+
+        .details-content ul {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .details-content li {
+            margin-bottom: 8px;
+        }
+
+        .example-box {
+            background-color: #f9fbfd;
+            border-left: 4px solid #1a4a8e;
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 15px;
+        }
+
+        .formula-box {
+            background-color: #fffde7;
+            border: 1px dashed #f1c40f;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #1a4a8e;
+            font-size: 18px;
+        }
+
+        /* --- 表格样式 --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            border: 1px solid #eee;
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1a4a8e;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            <h2 style="color: #1a4a8e; margin-top: 0; text-align: center; margin-bottom: 30px;">
+                数学应用题逻辑指南 <br> 
+                <span style="font-size: 18px; font-weight: normal; color: #666;">Guía Lógica para Problemas Matemáticos</span>
+            </h2>
+
+            <!-- 第一部分：理论基础 -->
+            <details>
+                <summary>1. 运算逻辑选择 (Lógica de Operaciones)</summary>
+                <div class="details-content">
+                    <h3>La Suma 加法</h3>
+                    <p>La suma se utiliza cuando el objetivo es juntar, reunir o añadir varias cantidades para obtener un total. Es el proceso de unir diferentes partes para formar un grupo más grande. Si en el problema aparecen palabras o conceptos como "en total", "más que antes", "recibir" o "ganar", lo más probable es que necesites realizar una suma para encontrar la solución.</p>
+                    <p>当你的目标是将几个数量合并、聚集或添加在一起以获得一个总数时，就需要使用加法。这是将不同的部分组合成一个更大整体的过程。如果题目中出现“总计”、“比以前多”、“收到”或“赢得”等词汇或概念，通常意味着你需要通过加法来找到答案。</p>
+                    <div class="example-box">
+                        <strong>Ejemplo 例子:</strong><br>
+                        Si tienes 15 pegatinas y tu amigo te regala 8 más, ¿cuántas tienes ahora? (15 + 8 = 23)<br>
+                        如果你有15张贴纸，朋友又送了你8张，你现在一共有多少张？
+                    </div>
+
+                    <h3>La Resta 减法</h3>
+                    <p>La resta se aplica principalmente en dos situaciones: cuando algo desaparece de un total o cuando comparamos dos cantidades para ver la diferencia entre ellas. Sirve para calcular lo que queda después de un gasto o una pérdida, o para saber cuánto más tiene uno respecto al otro. Debes fijarte en expresiones como "¿cuánto queda?", "¿cuál es la diferencia?", "gastar", "perder" o "¿cuántos más/menos que...?".</p>
+                    <p>减法主要用于两种情况：当某些东西从总数中消失时，或者当我们比较两个数量以找出它们之间的差异时。它用于计算支出、损失后剩余的部分，或者是为了知道一个数比另一个数多出多少。你需要留意诸如“还剩多少？”、“差额是多少？”、“花掉”、“丢失”或“比……多/少多少？”之类的表达。</p>
+                    <div class="example-box">
+                        <strong>Ejemplo 例子:</strong><br>
+                        Tenías 50 euros y te has gastado 12 en un libro, ¿cuánto dinero te queda? (50 - 12 = 38)<br>
+                        你原来有50欧元，买书花掉了12欧元，你还剩多少钱？
+                    </div>
+
+                    <h3>La Multiplicación 乘法</h3>
+                    <p>La multiplicación es una forma rápida de realizar una suma cuando el mismo número se repite muchas veces. En lugar de sumar el mismo valor una y otra vez, lo multiplicamos por la cantidad de veces que aparece. Se usa habitualmente cuando conocemos el valor de una sola unidad y queremos saber el total de un grupo donde todas las partes son iguales.</p>
+                    <p>当同一个数字重复出现多次时，乘法是进行加法计算的一种快捷方式。我们不再一遍又一遍地累加同一个数值，而是将其乘以它出现的次数。当我们知道单个物品的数值，并想知道一个由多个相同部分组成的整体总数时，通常会用到乘法。</p>
+                    <div class="example-box">
+                        <strong>Ejemplo 例子:</strong><br>
+                        Un paquete de chicles cuesta 2 euros, ¿cuánto cuestan 8 paquetes? (2 × 8 = 16)<br>
+                        一包口香糖卖2欧元，买8包要多少钱？
+                    </div>
+
+                    <h3>La División 除法</h3>
+                    <p>La división se utiliza cuando tenemos una cantidad total y queremos repartirla o distribuirla en partes iguales. Es el proceso opuesto a la multiplicación: rompemos un grupo grande en trozos más pequeños y equitativos. Si necesitas compartir algo de forma justa entre varias personas o quieres saber cuántos grupos pequeños caben en un total, la división es la operación correcta.</p>
+                    <p>当我们有一个总数并希望将其平均分配或分发时，就需要用到除法。这是乘法的逆向过程：将一个大组拆解成更小且相等的部分。如果你需要公平地在几个人之间分享东西，或者想知道总数中可以分成多少个小组，除法就是正确的运算。</p>
+                    <div class="example-box">
+                        <strong>Ejemplo 例子:</strong><br>
+                        Tienes 24 caramelos y los quieres repartir entre 6 amigos, ¿cuántos recibe cada uno? (24 ÷ 6 = 4)<br>
+                        你有24颗糖果，想平分给6个朋友，每人能拿到多少颗？
+                    </div>
+                </div>
+            </details>
+
+            <!-- 第二部分：关键词对照表 -->
+            <details>
+                <summary>2. 关键词对照表 (Tabla de Palabras Clave)</summary>
+                <div class="details-content">
+                    <p>Encuentra el verbo o frase clave en el problema para saber qué operación utilizar. 在题目中找到这些关键词，就能快速锁定运算符号。</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Operación 运算</th>
+                                <th>Palabras Clave (Español) 西语关键词</th>
+                                <th>Conceptos (Chino) 中文核心逻辑</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Suma (+) 加法</strong></td>
+                                <td>En total, Juntar, Añadir, Más que antes, Ganar, Sumar, Aumentar, Poner, Subir, Ambos, Entre todos, Agrupar, Coleccionar, Ascender a</td>
+                                <td>总共，合并，添加，比以前多，赢得，增加，放入，两个都，大家一共，收集，合计为</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resta (-) 减法</strong></td>
+                                <td>Diferencia, Quedar, Perder, Gastar, Quitar, Sustraer, ¿Cuánto falta para...?, Menos que, ¿Cuántos más/menos?, Rebajar, Descontar, Sobrar, Disminuir, Reducir, Regalar</td>
+                                <td>差额，剩下，失去，花费，拿走，减去，还差多少，比...少，多/少多少，降价，折扣，多余，减少，送给别人</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Multiplicación (×) 乘法</strong></td>
+                                <td>Cada uno, Por cada, Veces, Producto, El doble, El triple, El cuádruple, Factores, Por, Total de grupos iguales, Repetir, A razón de</td>
+                                <td>每个，每份，次/倍，积，两倍，三倍，四倍，乘以，相同部分的合计，重复，按...的比率</td>
+                            </tr>
+                            <tr>
+                                <td><strong>División (÷) 除法</strong></td>
+                                <td>Repartir, Distribuir, Dividir, Entre, Mitad, Tercera parte, Compartir, Separar, ¿Cuántos caben?, A partes iguales, Promedio, Fraccionar, Por cabeza</td>
+                                <td>分配，分发，除以，在...中分，一半，三分之一，分享，拆分，能装下多少个？，平均分配，平均数，切碎，人均</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+
+            <!-- 第三部分：解题步骤 -->
+            <details>
+                <summary>3. 混合运算解题步骤 (Pasos para Resolver)</summary>
+                <div class="details-content">
+                    <h3>Primero Multiplicar/Dividir, luego Sumar/Restar 先乘除后加减</h3>
+                    <p>Este es el escenario más común. Primero calculas el precio total de varios artículos iguales (multiplicación) y, al final, añades un gasto extra o pagas con un billete y calculas el cambio (suma/resta).</p>
+                    <p>这是最常见的场景。首先算出几件相同商品的单价总和（乘法），最后再加上额外的费用，或者用一张大钞付款并计算找零（加减法）。</p>
+                    <div class="example-box">
+                        <strong>Ejemplo 例子:</strong> Tienes 20 euros, compras 4 piruletas de 2 euros cada una. ¿Cuánto te queda?<br>
+                        (你有20欧元，买了4根2欧元的棒棒糖。还剩多少钱？)<br>
+                        Paso 1: 4 × 2 = 8 (Gasto total 花费总计)<br>
+                        Paso 2: 20 - 8 = 12 (Lo que queda 剩余钱数)
+                    </div>
+
+                    <h3>Primero Sumar/Restar, luego Multiplicar/Dividir 先加减后乘除</h3>
+                    <p>Ocurre cuando la cantidad base cambia antes de repetirse o repartirse. Por ejemplo, un descuento se aplica primero a un artículo, y luego compras varios. Aquí usamos paréntesis.</p>
+                    <p>发生在数量在被重复或分配之前先发生了变化。例如，商品先打折，然后你买了好几个。这时我们需要用括号改变运算顺序。</p>
+                    <div class="example-box">
+                        <strong>Ejemplo 例子:</strong> Un cuaderno costaba 5 euros, pero hoy tiene 1 euro de descuento. ¿Cuánto cuestan 3 cuadernos?<br>
+                        (一本笔记本原价5欧元，今天降价1欧元。买3本要多少钱？)<br>
+                        Paso 1: 5 - 1 = 4 (Precio nuevo 新价格)<br>
+                        Paso 2: 4 × 3 = 12 (Total final 最终总价)
+                    </div>
+
+                    <h3>Guía de Pasos (4 Pasos de Oro) 解题四步法</h3>
+                    <ul>
+                        <li><strong>1. Identifica la pregunta:</strong> ¿Qué me piden al final? (确定最终目标：题目最后问的是什么？)</li>
+                        <li><strong>2. Busca el dato que falta:</strong> ¿Qué número necesito saber antes de contestar? (寻找缺失数据：回答前我必须先算出哪个中间数字？)</li>
+                        <li><strong>3. Dibuja el camino:</strong> Sumar, restar, multiplicar o dividir para hallar ese dato. (规划路径：这个中间数字该用什么运算求出？)</li>
+                        <li><strong>4. Ejecuta el plan:</strong> Haz la primera operación y usa el resultado para la segunda. (执行计划：分步计算，得出最终答案。)</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- 第四部分：常用公式大全 -->
+            <details>
+                <summary>4. 常用公式大全 (Fórmulas Útiles)</summary>
+                <div class="details-content">
+                    <h3 style="margin-top: 20px;">Problemas de Movimiento 行程问题</h3>
+                    <p>Analizan la relación entre velocidad, tiempo y distancia. 分析速度、时间与距离的关系。</p>
+                    <div class="formula-box">
+                        Distancia = Velocidad × Tiempo (路程 = 速度 × 时间)<br>
+                        Velocidad = Distancia ÷ Tiempo (速度 = 路程 ÷ 时间)<br>
+                        Tiempo = Distancia ÷ Velocidad (时间 = 路程 ÷ 速度)
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Compra, Venta y Consumo 购物与消耗</h3>
+                    <p>Basado en el valor de una unidad. 基于单价的概念。</p>
+                    <div class="formula-box">
+                        Precio Total = Precio Unitario × Cantidad (总价 = 单价 × 数量)<br>
+                        Precio Unitario = Precio Total ÷ Cantidad (单价 = 总价 ÷ 数量)
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Porcentajes: Descuentos e IVA 百分比：折扣与增值税</h3>
+                    <p>Para calcular rebajas o impuestos. 用于计算打折或加税。</p>
+                    <div class="formula-box">
+                        Importe del Porcentaje = (Total × Porcentaje) ÷ 100 <br> (百分比对应数值 = 总额 × 百分比 ÷ 100)<br>
+                        Rebaja (打折) = Precio Original - Descuento<br>
+                        IVA (含税) = Precio Base + Impuesto
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Trabajo en Equipo (Grifos) 工程与效率问题</h3>
+                    <p>Cuando máquinas o personas trabajan juntas, sumamos su trabajo por hora. 多人合作时，相加的是工作效率（每小时完成的份数）。</p>
+                    <div class="formula-box">
+                        Velocidad Conjunta = 1/Tiempo₁ + 1/Tiempo₂ (联合效率 = 1/时间₁ + 1/时间₂)<br>
+                        Tiempo Total = 1 ÷ Velocidad Conjunta (总时间 = 1 ÷ 联合效率)
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Problemas de Edades 年龄问题</h3>
+                    <p>La diferencia de edad entre dos personas NUNCA cambia. 两人之间的年龄差永远不变。</p>
+                    <div class="formula-box">
+                        Edad Futura = Edad Actual + Años que pasan (未来年龄 = 现年 + 经过的年数)<br>
+                        Diferencia de Edad = Constante (年龄差 = 常数/不变)
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Geometría Básica 基础几何</h3>
+                    <p>Perímetro es el contorno, área es la superficie interior. 周长是轮廓外边，面积是内部表面。</p>
+                    <div class="formula-box">
+                        Perímetro del Rectángulo = 2 × (Largo + Ancho) [长方形周长 = 2 × (长 + 宽)]<br>
+                        Área del Rectángulo = Largo × Ancho (长方形面积 = 长 × 宽)<br>
+                        Área del Triángulo = (Base × Altura) ÷ 2 [三角形面积 = (底 × 高) ÷ 2]
+                    </div>
+
+                    <!-- 新增：生活上的公式 -->
+                    <h3 style="margin-top: 20px;">Matemáticas en la Vida Diaria 生活中的数学</h3>
+                    <p>Fórmulas que se usan en situaciones cotidianas como en el supermercado o el banco. 日常生活（如超市购物或储蓄）中常用的公式。</p>
+                    <div class="formula-box">
+                        Precio por Unidad (单位价格) = Precio Total ÷ Peso o Cantidad (总价 ÷ 重量或数量)<br>
+                        Interés Simple (基础利息) = Capital × Tasa de Interés × Tiempo (本金 × 利率 × 存期)<br>
+                        Propina del 10% (10%餐厅小费) = Cuenta Total × 0.10 (总消费 × 0.10)
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Salud y Cocina 健康与烹饪</h3>
+                    <p>Cálculos útiles para cuidar la salud o seguir una receta de cocina. 关注健康或按照菜谱做饭时的常用计算。</p>
+                    <div class="formula-box">
+                        Índice de Masa Corporal (IMC 身体质量指数) = Peso en kg ÷ [Altura en m × Altura en m] (体重 ÷ 身高²)<br>
+                        1 Taza (1标准杯) ≈ 250 ml<br>
+                        1 Cucharada (1大汤匙) ≈ 15 ml
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
