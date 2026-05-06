@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 标点符号讲义 - Lengua Española</title>
+    <style>
+        /* --- 基础样式复刻 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: clamp(24px, 5vw, 42px);
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: clamp(14px, 3vw, 20px);
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 1000px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 25px; 
+            background-color: white;
+            color: #1a4a8e;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(26, 74, 142, 0.15);
+        }
+
+        /* --- 内容区域 --- */
+        .main-content {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- 表格样式 --- */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            border: 1px solid #eee;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        thead {
+            background-color: #1a4a8e;
+            color: white;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .symbol-col {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f1c40f;
+            width: 60px;
+            text-align: center;
+        }
+
+        /* --- 折叠讲解样式 --- */
+        .explanation-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        details {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        summary {
+            list-style: none;
+            padding: 18px 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a4a8e;
+            display: flex;
+            align-items: center;
+            outline: none;
+        }
+
+        /* 自定义黄色三角形 */
+        summary::before {
+            content: "▶";
+            color: #f1c40f;
+            font-size: 14px;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .details-content {
+            padding: 0 25px 25px 55px;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .details-content h4 {
+            margin: 20px 0 10px 0;
+            color: #1a4a8e;
+            border-left: 4px solid #f1c40f;
+            padding-left: 10px;
+        }
+
+        .example-list {
+            background-color: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .example-item {
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 5px;
+        }
+
+        .example-item:last-child {
+            border-bottom: none;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .details-content {
+                padding: 0 20px 20px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="#" class="btn-back">Volver / 返回</a>
+    </div>
+
+    <main class="main-content">
+        
+        <section class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="symbol-col">Signo</th>
+                        <th>Nombre / 名称</th>
+                        <th>Uso principal / 主要用途</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="symbol-col">.</td><td>Punto / 句号</td><td>Final de enunciado / 结束陈述句</td></tr>
+                    <tr><td class="symbol-col">,</td><td>Coma / 逗号</td><td>Pausa breve y enumeración / 短暂停顿与列举</td></tr>
+                    <tr><td class="symbol-col">;</td><td>Punto y coma / 分号</td><td>Pausa media e ideas relacionadas / 中等停顿与关联逻辑</td></tr>
+                    <tr><td class="symbol-col">:</td><td>Dos puntos / 冒号</td><td>Llamada de atención y citas / 引起注意与引用</td></tr>
+                    <tr><td class="symbol-col">...</td><td>Puntos suspensivos / 省略号</td><td>Suspenso u omisión / 悬念或省略</td></tr>
+                    <tr><td class="symbol-col">¿ ?</td><td>Interrogación / 问号</td><td>Preguntas directas / 直接提问</td></tr>
+                    <tr><td class="symbol-col">¡ !</td><td>Exclamación / 感叹号</td><td>Emociones y órdenes / 情感与命令</td></tr>
+                    <tr><td class="symbol-col">—</td><td>Raya / 破折号</td><td>Diálogos e incisos / 对话与插入语</td></tr>
+                    <tr><td class="symbol-col">« »</td><td>Comillas / 引号</td><td>Citas y títulos / 引用与标题</td></tr>
+                    <tr><td class="symbol-col">¨</td><td>Diéresis / 分音符</td><td>Pronunciación de la "u" / 元音U的发音</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="explanation-section">
+
+            <details>
+                <summary>Punto (.) 句号</summary>
+                <div class="details-content">
+                    El punto se utiliza para indicar el final de un sentido completo. Existen tres tipos: punto y seguido (dentro del párrafo), punto y aparte (cambio de párrafo) y punto final (conclusión del texto). También es fundamental en las abreviaturas.
+                    句号用于表示完整意思的结束。分为三种：句中点（用于句内）、段落点（用于分段）和终结点（用于全篇结束）。在缩写词中也必不可少。
+                    <h4>Ejemplos / 例子</h4>
+                    <div class="example-list">
+                        <div class="example-item">El sol sale cada mañana. Es un nuevo día. 太阳每天升起。这是新的一天。</div>
+                        <div class="example-item">El Sr. García llegó tarde. García 先生迟到了。</div>
+                        <div class="example-item">Estudiamos para el examen. Fin. 我们为考试学习。结束。</div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Coma (,) 逗号</summary>
+                <div class="details-content">
+                    Representa una pausa breve. Se usa para separar elementos de una lista, para aislar el nombre de la persona a la que llamamos (vocativo) o para añadir explicaciones (incisos). Nunca debe separar el sujeto del verbo.
+                    表示短暂停顿。用于分隔列表项，隔离呼唤的人名（呼语），或添加说明（插入语）。绝不应将主语和动词分隔开。
+                    <h4>Ejemplos / 例子</h4>
+                    <div class="example-list">
+                        <div class="example-item">Compré manzanas, peras y limones. 我买了苹果、梨和柠檬。</div>
+                        <div class="example-item">María, escucha con atención. 玛丽亚，认真听。</div>
+                        <div class="example-item">Valencia, la ciudad de las flores, es hermosa. 瓦伦西亚，这座鲜花之城，非常美丽。</div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Dos puntos (:) 冒号</summary>
+                <div class="details-content">
+                    Se usan para detener el discurso y llamar la atención sobre lo que sigue. Es común en los encabezamientos de cartas, antes de una cita textual o para iniciar una enumeración.
+                    用于暂停叙述并引起对后续内容的注意。常见于信件开头、直接引用原话前或开始列举前。
+                    <h4>Ejemplos / 例子</h4>
+                    <div class="example-list">
+                        <div class="example-item">Estimada directora: 尊敬的女校长：</div>
+                        <div class="example-item">Dijo el profesor: "Saquen sus libros". 老师说：“拿出你们的书。”</div>
+                        <div class="example-item">Solo necesito tres cosas: paz, tiempo y café. 我只需要三样东西：和平、时间和咖啡。</div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Interrogación y Exclamación (¿? ¡!) 问号与感叹号</summary>
+                <div class="details-content">
+                    En español son signos dobles: obligatoriamente deben ir al principio y al final del enunciado. Los de interrogación marcan una pregunta y los de exclamación expresan sentimientos fuertes o mandatos.
+                    在西班牙语中它们是双符号：必须出现在句首和句尾。问号标记提问，感叹号表达强烈情感或指令。
+                    <h4>Ejemplos / 例子</h4>
+                    <div class="example-list">
+                        <div class="example-item">¿Cuántos años tienes? 你几岁了？</div>
+                        <div class="example-item">¡Qué alegría verte de nuevo! 再次见到你真高兴！</div>
+                        <div class="example-item">¿Adónde vas? ¡Vuelve aquí! 你去哪？快回来！</div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Raya (—) 破折号 / 对话符</summary>
+                <div class="details-content">
+                    Es más larga que el guion. Se utiliza principalmente para introducir las intervenciones de los personajes en un diálogo o para encerrar aclaraciones que interrumpen el discurso principal.
+                    它比连字符更长。主要用于在对话中引入角色的发言，或括起打断主叙述的说明文字。
+                    <h4>Ejemplos / 例子</h4>
+                    <div class="example-list">
+                        <div class="example-item">—Hola, ¿cómo estás? —Muy bien, gracias. “你好吗？”“很好，谢谢。”</div>
+                        <div class="example-item">La casa —construida en 1920— se derrumbó. 那栋房子——建于1920年——倒塌了。</div>
+                        <div class="example-item">—No quiero ir —susurró él. “我不想去，”他低声说。</div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Diéresis (¨) 分音符</summary>
+                <div class="details-content">
+                    Es un signo que se coloca sobre la "u" para indicar que esta debe pronunciarse en las combinaciones "gue" y "gui". Sin ella, la "u" sería muda.
+                    这是放在 "u" 上的符号，表示在 "gue" 和 "gui" 组合中 "u" 必须发音。如果没有它，"u" 将不发音。
+                    <h4>Ejemplos / 例子</h4>
+                    <div class="example-list">
+                        <div class="example-item">El pingüino vive en el hielo. 企鹅生活在冰上。</div>
+                        <div class="example-item">Siento mucha vergüenza. 我感到很羞愧。</div>
+                        <div class="example-item">La cigüeña vuela alto. 鹳鸟飞得很高。</div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Comillas (« ») 书名号 / 引号</summary>
+                <div class="details-content">
+                    En español se prefieren las comillas angulares o latinas (« »). Se usan para citar palabras de otros, para indicar que una palabra es irónica o para mencionar títulos de artículos o poemas.
+                    在西班牙语中首选书名号（角引号）。用于引用他人原话、表示讽刺意味，或提及文章和诗歌的标题。
+                    <h4>Ejemplos / 例子</h4>
+                    <div class="example-list">
+                        <div class="example-item">Leí el poema «Caminante no hay camino». 我读了《行人啊，本没有路》这首诗。</div>
+                        <div class="example-item">Ella es muy «lista» (en sentido irónico). 她可真是“聪明”（反话）。</div>
+                        <div class="example-item">Dice el cartel: «Prohibido fumar». 牌子上写着：“禁止吸烟”。</div>
+                    </div>
+                </div>
+            </details>
+
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+</body>
+</html>
