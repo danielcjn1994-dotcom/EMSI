@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 风格演示 - 语法规则手册</title>
+    <style>
+        /* 基础样式复刻 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', -apple-system, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 页眉设计 --- */
+        .header {
+            background-color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+            border-bottom: 5px solid #f1c40f;
+        }
+
+        .header h1 {
+            color: #1a4a8e;
+            font-size: 42px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            font-weight: 800;
+            margin-right: 15px;
+        }
+
+        .header .subtitle {
+            color: #6b7280;
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        /* --- 工具栏/返回按钮区域 --- */
+        .toolbar {
+            width: 100%;
+            max-width: 900px; 
+            margin: 30px auto 0 auto; 
+            padding: 0 20px; 
+            box-sizing: border-box;
+        }
+
+        /* --- 返回按钮样式 --- */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px; 
+            background-color: white;
+            color: #1a4a8e; 
+            text-decoration: none;
+            border-radius: 50px; 
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(26, 74, 142, 0.1); 
+            transition: all 0.3s ease;
+            border: 1px solid transparent; 
+        }
+
+        .btn-back::before {
+            content: "←";
+            margin-right: 12px;
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+            transform: translateY(-2px); 
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 25px rgba(26, 74, 142, 0.15); 
+            color: #153a70; 
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(26, 74, 142, 0.1);
+        }
+
+        /* --- 内容区卡片 --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+            padding: 20px 40px 40px 40px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 30px 40px;
+            box-sizing: border-box;
+            border: 1px solid #eee;
+        }
+
+        /* --- 手风琴组件及排版样式 --- */
+        .category-title {
+            color: #1a4a8e;
+            font-size: 26px;
+            border-bottom: 3px solid #f1c40f;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .category-title:first-child {
+            margin-top: 0;
+        }
+
+        .accordion-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            background-color: #fdfdfd;
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            background-color: #f8fafc;
+            transition: background-color 0.2s ease;
+            user-select: none;
+        }
+
+        .accordion-header:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* 三角形图标 */
+        .accordion-header::before {
+            content: '▶';
+            font-size: 14px;
+            color: #1a4a8e;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        /* 展开状态的三角形 */
+        .accordion-item.active .accordion-header::before {
+            transform: rotate(90deg);
+        }
+
+        .accordion-content {
+            display: none; 
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            color: #374151; /* 西语主色调略深 */
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .accordion-content ul {
+            margin: 0;
+            padding-left: 24px;
+        }
+
+        .accordion-content li {
+            margin-bottom: 20px; /* 增加列表项之间的间距 */
+        }
+
+        .accordion-content li ul {
+            margin-top: 12px;
+            margin-bottom: 0;
+            list-style-type: circle;
+        }
+
+        .accordion-content strong {
+            color: #1a4a8e;
+        }
+
+        /* --- 新增：双语排版样式 --- */
+        .es-text {
+            margin-bottom: 8px;
+        }
+        
+        .zh-text {
+            color: #64748b; /* 翻译文字颜色变浅 */
+            margin-bottom: 10px;
+            padding-left: 12px;
+            border-left: 3px solid #cbd5e1; /* 左侧视觉引导线 */
+            font-size: 15.5px;
+        }
+
+        /* --- 页脚设计 --- */
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1><span>EMSI</span> 马德里国际中文学校</h1>
+        <div class="subtitle">Colegio Chino Internacional de Madrid</div>
+    </header>
+
+    <div class="toolbar">
+        <a href="index.html" class="btn-back">返回首页</a>
+    </div>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <h2 class="category-title">一、 拼写规则 (Reglas Ortográficas)</h2>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">1. Signos de puntuación y mayúsculas（标点符号与大写）</div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>
+                            <div class="es-text"><strong>Las comillas (<< >>) se utilizan:</strong> Para reproducir las palabras exactas o pensamientos de alguien (Mi madre me dijo: «Ten cuidado»). Para destacar una palabra o expresión extranjera u otra palabra o expresión, por ejemplo, utilizada en sentido irónico (He comprado una baguette» en la panadería, Qué bonita>> tarde! No para de llover). Para los títulos de las obras de arte («Las Meninas es un cuadro de Velázquez).</div>
+                            <div class="zh-text">括号 (<< >>) 用于：引用某人的原话或想法 (Mi madre me dijo: «Ten cuidado»)。强调外语单词/表达，或在带有讽刺意味的词汇/表达中使用 (He comprado una baguette» en la panadería, Qué bonita>> tarde! No para de llover)。也用于艺术作品的标题 («Las Meninas es un cuadro de Velázquez)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>El guion (-):</strong> Se utiliza para separar las silabas de una palabra y dividirla al final de línea.</div>
+                            <div class="zh-text">连字符 (-) 用于分隔单词的音节，并在行末将单词断开换行。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>La raya (-):</strong> Se utiliza para indicar las intervenciones de un diálogo.</div>
+                            <div class="zh-text">破折号 (-) 用于标示对话中的发言。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>El punto (.):</strong> Indica una pausa larga en la lectura. Utilizamos punto para separar oraciones (punto y seguido), para separar párrafos (punto y aparte) y al final de un escrito (punto final).</div>
+                            <div class="zh-text">句号 (.) 表示阅读中的长停顿。我们使用句号来分隔句子（句号不换行），分隔段落（句号并换行），以及在文章的末尾（全文结尾句号）。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>La mayúscula:</strong> Se escriben con mayúscula inicial la primera letra de una oración o un escrito, después de un punto, y los nombres propios.</div>
+                            <div class="zh-text">大写字母：句子或文章的第一个字母、句号之后的第一个字母以及专有名词都需要大写。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>La coma (,):</strong> Indica una pausa breve en la lectura. Estos son algunos de los usos de la coma: en una enumeración (En la cesta llevo pastel, limonada, manzanas y queso), en una aclaración (Ursula, la bruja del mar, le robó la voz), y antes y después de expresiones como primero después, de repente, por ejemplo...</div>
+                            <div class="zh-text">逗号 (,) 表示阅读中的短暂停顿。逗号的一些用法包括：用于列举事物 (En la cesta llevo pastel, limonada, manzanas y queso)，用于补充说明 (Ursula, la bruja del mar, le robó la voz)，以及用在 primero, después, de repente, por ejemplo 等表达的前后。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>El punto y coma (;):</strong> Se utiliza para separar oraciones cuyo significado está relacionado o para separar distintas partes de una oración en la que ya hay alguna coma.</div>
+                            <div class="zh-text">分号 (;) 用于分隔意思相关的句子，或用来分隔已经包含逗号的长句中的不同部分。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Los dos puntos (:):</strong> Se utilizan detrás del saludo en una carta, para indicar el inicio de una enumeración o para indicar el inicio de una cita textual.</div>
+                            <div class="zh-text">冒号 (:) 用在信件的问候语之后，用于引出枚举内容的开始，或表示直接引语的开始。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Los puntos suspensivos (...):</strong> Indican que una oración está incompleta.</div>
+                            <div class="zh-text">省略号 (...) 表示句子未完成或话语未尽。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Los paréntesis ( ):</strong> Se utilizan para separar aclaraciones a incisos, para introducir datos concretos, y para presentar las acotaciones en las obras de teatro.</div>
+                            <div class="zh-text">括号 ( ) 用于分隔解释说明或插入语，引入具体数据，以及在戏剧作品中表示舞台指示。</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header">2. Uso de las letras（字母使用规则）</div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>
+                            <div class="es-text"><strong>Palabras con m antes de p y b:</strong> Delante de b y p se escribe siempre m, y nunca n (lámpara, ambiente).</div>
+                            <div class="zh-text">字母 b 和 p 前面总是写 m，绝不写 n (lámpara, ambiente)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Palabras con r y con rr:</strong> El sonido suave de la r se escribe siempre con una sola r (nariz). El sonido fuerte de la r se escribe rr cuando va entre vocales (carro) y r al comienzo de palabra y detrás de l, n y s (rueda, alrededor, enredo, israelita).</div>
+                            <div class="zh-text">柔和的 r 音总是用单个 r 拼写 (nariz)。当 r 发颤音重音时，如果在两个元音之间则写为 rr (carro)，如果在词首或在字母 l、n 和 s 之后则写为 r (rueda, alrededor, enredo, israelita)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Palabras con c/q y c/z:</strong> Se escribe c delante de las vocales a, o, u para obtener el sonido ca, co, cu de palabras como campo, coche, cucaracha. Se escribe qu delante de las vocales e, i para obtener el sonido que, qui de palabras como queso, quinto. La u no suena. Se escribe z delante de las vocales a, o, u para obtener el sonido za, zo, zu de palabras como Zamora, zombi, zumo. Se escribe c delante de las vocales e, i para obtener el sonido ce, ci de palabras como cepillo, circo.</div>
+                            <div class="zh-text">在元音 a, o, u 前面写 c，以发出如 campo, coche, cucaracha 等词中的 ca, co, cu 音。在元音 e, i 前面写 qu，以发出如 queso, quinto 等词中的 que, qui 音。这里的 u 不发音。在元音 a, o, u 前面写 z，以发出如 Zamora, zombi, zumo 等词中的 za, zo, zu 音。在元音 e, i 前面写 c，以发出如 cepillo, circo 等词中的 ce, ci 音。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Palabras con h:</strong> Se escriben con h las formas de los verbos hacer, haber, hablar, hallar, habitar; y las palabras que empiezan por hie-, hue-, hui- (hielo, huella, huida).</div>
+                            <div class="zh-text">动词 hacer, haber, hablar, hallar, habitar 的各种变位形式都要带 h；以及以 hie-, hue-, hui- 开头的单词 (hielo, huella, huida)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Palabras con g y con j:</strong> Se escriben con g las palabras que comienzan por geo- y gest- (geologia, gesto); los verbos terminados en -ger, -gir, y todas sus formas verbales, excepto tejer y crujir (recoger, fingir). Se escriben con j las palabras terminadas en -jero, -jería (relojero, brujería); y las palabras terminadas en -aje, -eje (maquillaje, maneje).</div>
+                            <div class="zh-text">以 geo- 和 gest- 开头的单词写 g (geología, gesto)；以 -ger, -gir 结尾的动词及其所有动词形式都写 g，但 tejer 和 crujir 除外 (recoger, fingir)。以 -jero, -jería 结尾的单词写 j (relojero, brujería)；以 -aje, -eje 结尾的单词也写 j (maquillaje, maneje)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Palabras terminadas en -d y en -z:</strong> El plural de las palabras acabadas en -d se forma añadiendo -des (ciudad, ciudades). El plural de las palabras acabadas en -z se forma añadiendo -ces (nuez, nueces).</div>
+                            <div class="zh-text">以 -d 结尾的单词，其复数形式通过加 -des 构成 (ciudad, ciudades)。以 -z 结尾的单词，其复数形式通过加 -ces 构成 (nuez, nueces)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Palabras con ll y con y:</strong> Se escriben con ll las palabras terminadas en -illo, -illa, -ello, -ella, -alle, -elle (amarillo, chiquilla, bello, aquella, valle, muelle) y la mayor parte de los verbos terminados en -illar, -ullar y -ullir en todas sus formas (chillar, maullar, engullir). Se escriben con y las palabras que contienen las sílabas -yec- y -yer- (trayecto, yerno), y algunas formas de verbos que no contienen ni y ni ll en su infinitivo (leyó, vayamos).</div>
+                            <div class="zh-text">以 -illo, -illa, -ello, -ella, -alle, -elle 结尾的单词写 ll (amarillo, chiquilla, bello, aquella, valle, muelle)，大多数以 -illar, -ullar 和 -ullir 结尾的动词及其所有形式也写 ll (chillar, maullar, engullir)。包含音节 -yec- y -yer- 的单词写 y (trayecto, yerno)，以及原形动词中既没有 y 也没有 ll 的某些动词变位形式也写 y (leyó, vayamos)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Palabras con x:</strong> Se escriben con x las palabras que empiezan por los prefijos ex- y extra- (exalumno, extraordinario), empiezan por la silaba ex seguida de h o de vocal (exhibir, examen), y contienen los grupos consonanticos pr y pl, excepto esplendor y espliego (expresivo, explicar).</div>
+                            <div class="zh-text">以 ex- 和 extra- 前缀开头的单词写 x (exalumno, extraordinario)，以 ex 音节开头且后面紧跟 h 或元音的单词写 x (exhibir, examen)，包含辅音组合 pr 和 pl 的单词也写 x，但 esplendor 和 espliego 除外 (expresivo, explicar)。</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header">3. Acentuación y Vocales（重音与元音组合）</div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>
+                            <div class="es-text"><strong>Palabras agudas, llanas y esdrújulas:</strong> La silaba que pronunciamos con mayor fuerza de voz es la sílaba tónica; las otras silabas son sílabas átonas. Agudas: la silaba tónica es la última (castor, mamá). Llanas: la sílaba tónica es la penúltima (gallina, López). Esdrújulas: la sílaba tónica es la antepenúltima (hipopótama, Penélope).</div>
+                            <div class="zh-text">我们发音最用力的那个音节是重读音节 (sílaba tónica)；其他音节是轻读音节。Agudas（末音节重读词）：重读音节在最后一个 (castor, mamá)。Llanas（次末音节重读词）：重读音节在倒数第二个 (gallina, López)。Esdrújulas（倒数第三音节重读词）：重读音节在倒数第三个 (hipopótama, Penélope)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>La tilde:</strong> Algunas palabras llevan el signo de la tilde (´) sobre la sílaba tónica. Las palabras agudas llevan tilde cuando acaban en -n, -s o vocal (melocotón, además, carné). Las palabras llanas llevan tilde cuando no acaban en -n, -s o vocal (arbol, césped, hamburguesa). Las palabras esdrújulas llevan tilde siempre (médica, científico, fantástico).</div>
+                            <div class="zh-text">重音符号：有些单词的重读音节上带有重音符号 (´)。当 Agudas 单词以 -n、-s 或元音结尾时，需要加重音符号 (melocotón, además, carné)。当 Llanas 单词不以 -n、-s 或元音结尾时，需要加重音符号 (árbol, césped，其中 hamburguesa 属于常规不加重音符的情况)。Esdrújulas 单词始终带有重音符号 (médica, científico, fantástico)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>El diptongo:</strong> Se produce cuando se unen dos vocales en la misma silaba. Una de las vocales siempre será cerrada (i, u) y la otra puede ser abierta (a, e, o) o cerrada (ciu-dad, cie-lo, pei-ne).</div>
+                            <div class="zh-text">二重元音：当两个元音结合在同一个音节中时产生。其中一个元音必须是闭元音 (i, u)，另一个可以是开元音 (a, e, o) 或闭元音 (ciu-dad, cie-lo, pei-ne)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>La diéresis:</strong> Para que la u suene en güe, güi, formando asi un diptongo, se coloca una diéresis: piragüista, antigüedad.</div>
+                            <div class="zh-text">分音符：为了让 u 在 güe, güi 中发音从而形成二重元音，需要在 u 上加上分音符 (diéresis)：piragüista, antigüedad。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>El hiato:</strong> Se produce un hiato cuando dos vocales juntas pertenecen a silabas distintas. Una de las vocales siempre será abierta (a, e, o) y la otra puede ser abierta o cerrada tónica (í, ú) (lí-ne-a, dor-mí-a, ba-úl).</div>
+                            <div class="zh-text">元音分立：当连在一起的两个元音属于不同的音节时产生。其中一个元音总是开元音 (a, e, o)，另一个可以是开元音或重读闭元音 (í, ú) (lí-ne-a, dor-mí-a, ba-úl)。</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="category-title">二、 语法规则 (Reglas Gramaticales)</h2>
+
+            <div class="accordion-item">
+                <div class="accordion-header">1. Conceptos básicos（基础概念）</div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>
+                            <div class="es-text"><strong>Letra, sílaba y palabra:</strong> Las palabras están formadas por sílabas y estas, por letras. Las letras representan los sonidos de la lengua en la escritura; pueden ser vocales y consonantes. La sílaba es el sonido o conjunto de sonidos que pronunciamos con cada golpe de voz cuando decimos una palabra. Según su número de silabas, las palabras pueden ser: Monosílabas (sol), Bisílabas (vida), Trisílabas (ventanas), Polisílabas (caramelo).</div>
+                            <div class="zh-text">单词由音节组成，音节由字母组成。字母在书面语中代表语言的声音；它们可以是元音和辅音。音节是我们说出一个单词时，每次发声所发出的一组声音。根据音节数量，单词可以是：单音节词 (sol)、双音节词 (vida)、三音节词 (ventanas)、多音节词 (caramelo)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Enunciado, frase y oración:</strong> Un enunciado es una palabra o un conjunto de palabras ordenadas que forman un mensaje con sentido completo. Si el enunciado no tiene verbo, se llama frase (¡Buenos días!). Si el enunciado tiene verbo, se llama oración (¿Te ha gustado mi pastel?).</div>
+                            <div class="zh-text">话语 (enunciado) 是由一个或一组排列好的单词组成的，表达完整意义的信息。如果话语中没有动词，就叫短语/无动词句 (¡Buenos días!)。如果话语中含有动词，就叫句子 (¿Te ha gustado mi pastel?)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Oración: sujeto y predicado:</strong> En la oración podemos diferenciar dos partes: sujeto, que es la palabra o grupo de palabras de las que se dice algo, y predicado, que es la palabra o grupo de palabras que expresan lo que se dice del sujeto. La palabra más importante del sujeto y del predicado se llama núcleo; el núcleo del sujeto es el nombre o el pronombre, y el núcleo del predicado es el verbo.</div>
+                            <div class="zh-text">在句子中我们可以区分两个部分：主语，即被陈述说明的人或物；谓语，即用来陈述主语情况的成分。主语和谓语中最核心的词称为核心词 (núcleo)；主语的核心词是名词或代词，谓语的核心词是动词。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Clases de oraciones:</strong> Según la intención del emisor, pueden ser: Enunciativas (para dar información, afirmativas o negativas), Interrogativas (para hacer preguntas, entre signos de interrogación), o Exclamativas (para expresar sorpresa, miedo, alegría, entre signos de exclamación).</div>
+                            <div class="zh-text">句子分类：根据表达者的意图，句子可以是：陈述句（用于提供信息，分肯定或否定）、疑问句（用于提问，带问号）或感叹句（用于表达惊讶、恐惧、喜悦，带感叹号）。</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header">2. Clases de palabras（词类结构）</div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>
+                            <div class="es-text"><strong>El nombre:</strong> Designan a personas, animales, plantas, objetos, lugares...</div>
+                            <div class="zh-text">名词：用于指代人、动物、植物、物体、地点等...</div>
+                            <ul>
+                                <li>
+                                    <div class="es-text">Según su género, pueden ser masculinos (suelen terminar en -o) o femeninos (suelen terminar en -a). Casos especiales tienen formas distintas (carnero, oveja), añaden -triz, -esa o -ina al masculino (actriz), o son iguales y solo se diferencian por el artículo (el artista/la artista).</div>
+                                    <div class="zh-text">根据性别，可以是阳性（通常以 -o 结尾）或阴性（通常以 -a 结尾）。特殊情况下会有完全不同的词形 (carnero 公羊, oveja 母羊)，或在阳性词尾加 -triz, -esa 或 -ina (actriz 女演员)，也有词形相同仅靠冠词区分性别的情况 (el artista/la artista)。</div>
+                                </li>
+                                <li>
+                                    <div class="es-text">Según su número, pueden ser singulares o plurales. Si termina en vocal se añade -s, en consonante se añade -es, en -z se añade -ces, y si termina en -s no cambia.</div>
+                                    <div class="zh-text">根据数量，可以是单数或复数。如果以元音结尾加 -s，以辅音结尾加 -es，以 -z 结尾加 -ces，如果以 -s 结尾则不改变。</div>
+                                </li>
+                                <li>
+                                    <div class="es-text">Según su significado, se clasifican en Propios (Lola, Dalí), Comunes (oveja, pintor), Individuales (oveja), y Colectivos (rebaño).</div>
+                                    <div class="zh-text">根据意义，可分为专有名词 (Lola, Dalí)、普通名词 (oveja, pintor)、个体名词 (oveja) 和集合名词 (rebaño)。</div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>El adjetivo:</strong> Expresa una cualidad del nombre al que acompaña y concuerda con él en género y número. Algunos adjetivos no varían en cuanto al género. Si el singular acaba en vocal tónica o consonante, el plural se forma añadiendo -es.</div>
+                            <div class="zh-text">形容词：表达其所修饰名词的特征，并与之保持性数一致。有些形容词在性别上没有变化。如果单数以重读元音或辅音结尾，复数形式则加 -es。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Los determinantes:</strong> Acompañan al nombre, concretan su significado y concuerdan con él en género y número.</div>
+                            <div class="zh-text">限定词：伴随名词，具体化其意义，并与之保持性数一致。</div>
+                            <ul>
+                                <li>
+                                    <div class="es-text"><strong>Artículos:</strong> Determinados (el, la, los, las) e Indeterminados (un, una, unos, unas).</div>
+                                    <div class="zh-text">冠词：定冠词 (el, la, los, las) 和不定冠词 (un, una, unos, unas)。</div>
+                                </li>
+                                <li>
+                                    <div class="es-text"><strong>Demostrativos:</strong> Sitúan el ser u objeto cerca (este, esta...), a distancia media (ese, esa...) o lejos (aquel, aquella...) de la persona que habla.</div>
+                                    <div class="zh-text">指示词：指出人或物距离说话人的位置，分为近处 (este, esta...)、中处 (ese, esa...) 或远处 (aquel, aquella...)。</div>
+                                </li>
+                                <li>
+                                    <div class="es-text"><strong>Posesivos:</strong> Expresan posesión o pertenencia (mi, tu, su, nuestro, vuestro, etc.).</div>
+                                    <div class="zh-text">物主词：表达所有权或归属关系 (mi, tu, su, nuestro, vuestro, 等等)。</div>
+                                </li>
+                                <li>
+                                    <div class="es-text"><strong>Numerales:</strong> Los cardinales expresan cantidad (uno, dos...). Los ordinales no son determinantes, sino adjetivos, e indican orden (segundo, cuarto...).</div>
+                                    <div class="zh-text">数词：基数词表示数量 (uno, dos...)。序数词不是限定词而是形容词，表示顺序 (segundo 第二, cuarto 第四...)。</div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Los pronombres personales:</strong> Sustituyen a los nombres. Designan a quien habla (yo, nosotros/nosotras), a quien escucha (tú, vosotros/vosotras), y de quien se habla (él/ella, ellos/ellas).</div>
+                            <div class="zh-text">人称代词：替代名词。指代说话人 (yo, nosotros/nosotras)、听话人 (tú, vosotros/vosotras) 以及被谈论的人 (él/ella, ellos/ellas)。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Las preposiciones:</strong> Sirven para relacionar unas palabras con otras: a, ante, bajo, con, contra, de, desde, durante, en, entre, hacia, hasta, mediante, para, por, según, sin, sobre, tras.</div>
+                            <div class="zh-text">介词：用于连接词与词之间的关系：a, ante, bajo, con, contra, de, desde, durante, en, entre, hacia, hasta, mediante, para, por, según, sin, sobre, tras。</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Las conjunciones:</strong> Sirven para unir palabras (fútbol y baloncesto) u oraciones (Haz ejercicio y bebe agua). Ejemplos: y, e, ni, o, pero...</div>
+                            <div class="zh-text">连词：用于连接单词 (fútbol y baloncesto) 或句子 (Haz ejercicio y bebe agua)。例如：y, e, ni, o, pero...</div>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Los verbos:</strong> Indica acción (comprar, leer...) o estado (dormir, pensar...). Está formado por el lexema o raíz, que no cambia, y las desinencias, que indican número y persona.</div>
+                            <div class="zh-text">动词：表示动作 (comprar, leer...) 或状态 (dormir, pensar...)。由不变的词根 (lexema) 和表示人称与数的词尾 (desinencias) 组成。</div>
+                            <ul>
+                                <li>
+                                    <div class="es-text">Las formas verbales pueden ser personales (indican número y persona) y no personales (se forman con sufijos y no indican número y persona: hablar, hablando, hablado).</div>
+                                    <div class="zh-text">动词形式分为有人称形式（标明数和人称）和无人称形式（通过后缀构成，不标明数和人称，如：hablar 动词原形, hablando 副动词, hablado 过去分词）。</div>
+                                </li>
+                                <li>
+                                    <div class="es-text">Los tiempos verbales señalan el momento: pasado (ya se ha producido), presente (se produce en el momento) y futuro (se va a producir).</div>
+                                    <div class="zh-text">动词时态指出动作发生的时间：过去时（已发生）、现在时（此时发生）和将来时（将要发生）。</div>
+                                </li>
+                                <li>
+                                    <div class="es-text">Tres conjugaciones: primera (-ar), segunda (-er) y tercera (-ir).</div>
+                                    <div class="zh-text">三种变位：第一变位 (-ar)，第二变位 (-er) 和第三变位 (-ir)。</div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="es-text"><strong>Los adverbios:</strong> Expresan circunstancias de lugar (cerca, lejos...), tiempo (ayer, mañana...), modo (bien, despacio...) y cantidad (mucho, poco, nada...). Pueden complementar a un verbo, a un adjetivo o a otro adverbio.</div>
+                            <div class="zh-text">副词：表达地点 (cerca, lejos...)、时间 (ayer, mañana...)、方式 (bien, despacio...) 和数量 (mucho, poco, nada...) 等情况。它可以用来修饰动词、形容词或其他副词。</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor</span>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const headers = document.querySelectorAll('.accordion-header');
+            
+            headers.forEach(header => {
+                header.addEventListener('click', function() {
+                    const currentItem = this.parentElement;
+                    const content = currentItem.querySelector('.accordion-content');
+                    
+                    // 切换当前的展开/折叠状态
+                    if (currentItem.classList.contains('active')) {
+                        currentItem.classList.remove('active');
+                        content.style.display = 'none';
+                    } else {
+                        currentItem.classList.add('active');
+                        content.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
