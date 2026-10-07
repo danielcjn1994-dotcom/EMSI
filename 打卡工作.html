@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作日历记录本 (电脑宽屏版)</title>
+    <style>
+        /* 全局样式 - 居中显示，背景柔和 */
+        body {
+            font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #e9ecef;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* 左右分栏主容器 */
+        .app-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+        }
+
+        /* ==== 左侧：日历区域 ==== */
+        .left-panel {
+            flex: 6.5; 
+            padding: 30px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header button {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            color: #495057;
+            font-size: 18px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .calendar-header button:hover {
+            background: #00b894;
+            color: white;
+            border-color: #00b894;
+        }
+
+        /* 年月下拉选择器 */
+        .date-selectors select {
+            font-size: 18px;
+            padding: 6px 10px;
+            margin: 0 5px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            background-color: white;
+            color: #2c3e50;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .date-selectors select:focus {
+            outline: none;
+            border-color: #00b894;
+        }
+
+        /* 星期表头 */
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        /* 日历网格 */
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .day {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #2c3e50;
+            user-select: none;
+            background-color: #fdfdfd;
+            border: 1px solid transparent;
+        }
+
+        .day:hover:not(.empty) {
+            background-color: #f1f2f6;
+            border-color: #ced4da;
+        }
+
+        .day.empty {
+            cursor: default;
+            background: transparent;
+        }
+
+        /* 状态颜色 */
+        .day.today {
+            border: 2px solid #00b894;
+            color: #00b894;
+            font-weight: bold;
+        }
+
+        .day.worked {
+            background-color: #00b894;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 3px 8px rgba(0, 184, 148, 0.3);
+        }
+
+        .day.worked.today {
+            border-color: transparent;
+        }
+
+        /* ==== 右侧：统计与操作区域 ==== */
+        .right-panel {
+            flex: 3.5; 
+            background-color: #f8f9fa;
+            border-left: 1px solid #e9ecef;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+        }
+
+        .stat-card {
+            background: white;
+            width: 100%;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            margin-bottom: 30px;
+        }
+
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: #6c757d;
+            font-size: 18px;
+            font-weight: normal;
+        }
+
+        .stat-card .number {
+            font-size: 56px; 
+            font-weight: bold;
+            color: #00b894;
+            line-height: 1;
+        }
+
+        .stat-card .unit {
+            font-size: 18px;
+            color: #adb5bd;
+            margin-left: 4px;
+        }
+
+        /* 按钮区域 */
+        .action-buttons {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-export {
+            background-color: #2c3e50;
+            color: white;
+        }
+        .btn-export:hover {
+            background-color: #1a252f;
+        }
+
+        .btn-import {
+            background-color: white;
+            color: #2c3e50;
+            border: 1px solid #ced4da;
+        }
+        .btn-import:hover {
+            border-color: #2c3e50;
+            background-color: #f1f2f6;
+        }
+
+        /* 新增：返回主页按钮样式 */
+        .btn-home {
+            background-color: #e9ecef;
+            color: #495057;
+            margin-top: 15px; /* 与上面的数据按钮稍微拉开一点距离 */
+        }
+        .btn-home:hover {
+            background-color: #dee2e6;
+            color: #212529;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- 左侧：日历打卡 -->
+    <div class="left-panel">
+        <div class="calendar-header">
+            <button onclick="changeMonth(-1)" title="上个月">◀</button>
+            <div class="date-selectors">
+                <select id="yearSelect" onchange="jumpToDate()"></select>
+                <select id="monthSelect" onchange="jumpToDate()">
+                    <option value="0">1月</option><option value="1">2月</option>
+                    <option value="2">3月</option><option value="3">4月</option>
+                    <option value="4">5月</option><option value="5">6月</option>
+                    <option value="6">7月</option><option value="7">8月</option>
+                    <option value="8">9月</option><option value="9">10月</option>
+                    <option value="10">11月</option><option value="11">12月</option>
+                </select>
+            </div>
+            <button onclick="changeMonth(1)" title="下个月">▶</button>
+        </div>
+
+        <div class="weekdays">
+            <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+        </div>
+
+        <div id="calendarGrid" class="days-grid">
+            <!-- 网格由JS生成 -->
+        </div>
+    </div>
+
+    <!-- 右侧：统计与数据管理 -->
+    <div class="right-panel">
+        <div class="stat-card">
+            <h3>本月上班</h3>
+            <div><span class="number" id="monthCount">0</span><span class="unit">天</span></div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-export" onclick="exportData()">💾 下载打卡数据</button>
+            <button class="btn btn-import" onclick="document.getElementById('importFile').click()">📂 上传历史数据</button>
+            <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+            
+            <!-- 新增：返回主页按钮 -->
+            <button class="btn btn-home" onclick="window.location.href='index.html'">🏠 返回主页</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let workedDates = JSON.parse(localStorage.getItem('myCalendarWorkRecords')) || [];
+    let displayDate = new Date(); 
+
+    // 初始化年份选择器 (前后各保留一定范围)
+    function initYearSelect() {
+        const yearSelect = document.getElementById('yearSelect');
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear - 5; i <= currentYear + 15; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i + "年";
+            yearSelect.appendChild(option);
+        }
+    }
+
+    function formatDate(year, month, day) {
+        const m = String(month + 1).padStart(2, '0');
+        const d = String(day).padStart(2, '0');
+        return `${year}-${m}-${d}`;
+    }
+
+    // 核心渲染函数
+    function renderCalendar() {
+        const year = displayDate.getFullYear();
+        const month = displayDate.getMonth(); 
+        
+        // 同步更新下拉框的显示
+        document.getElementById('yearSelect').value = year;
+        document.getElementById('monthSelect').value = month;
+
+        const firstDayIndex = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        const today = new Date();
+        const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+        const todayDate = today.getDate();
+
+        const grid = document.getElementById('calendarGrid');
+        grid.innerHTML = ''; 
+
+        for (let i = 0; i < firstDayIndex; i++) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'day empty';
+            grid.appendChild(emptyDiv);
+        }
+
+        let currentMonthWorkDays = 0;
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = formatDate(year, month, day);
+            const isWorked = workedDates.includes(dateStr);
+            
+            if (isWorked) currentMonthWorkDays++;
+
+            const dayDiv = document.createElement('div');
+            let classes = 'day';
+            if (isWorked) classes += ' worked';
+            if (isCurrentMonth && day === todayDate) classes += ' today';
+            
+            dayDiv.className = classes;
+            dayDiv.innerText = day;
+            dayDiv.onclick = () => toggleWorkStatus(dateStr);
+            grid.appendChild(dayDiv);
+        }
+
+        // 更新右侧统计数据
+        document.getElementById('monthCount').innerText = currentMonthWorkDays;
+    }
+
+    // 通过下拉框跳转日期
+    function jumpToDate() {
+        const year = parseInt(document.getElementById('yearSelect').value);
+        const month = parseInt(document.getElementById('monthSelect').value);
+        displayDate.setFullYear(year);
+        displayDate.setMonth(month);
+        renderCalendar();
+    }
+
+    // 通过左右箭头切换月份
+    function changeMonth(offset) {
+        displayDate.setMonth(displayDate.getMonth() + offset);
+        renderCalendar();
+    }
+
+    // 点击打卡/取消打卡
+    function toggleWorkStatus(dateStr) {
+        const index = workedDates.indexOf(dateStr);
+        if (index > -1) {
+            workedDates.splice(index, 1);
+        } else {
+            workedDates.push(dateStr);
+        }
+        localStorage.setItem('myCalendarWorkRecords', JSON.stringify(workedDates));
+        renderCalendar();
+    }
+
+    // 导出(下载)数据
+    function exportData() {
+        if (workedDates.length === 0) {
+            alert("目前还没有任何打卡记录可下载！");
+            return;
+        }
+        const dataStr = JSON.stringify(workedDates);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        
+        const linkElement = document.createElement('a');
+        linkElement.href = url;
+        linkElement.download = '上班打卡数据备份.json';
+        linkElement.click();
+        
+        URL.revokeObjectURL(url); // 释放内存
+    }
+
+    // 导入(上传)数据
+    function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const imported = JSON.parse(e.target.result);
+                if (Array.isArray(imported)) {
+                    // 合并数据并去重，以防误删已有记录
+                    const mergedSet = new Set([...workedDates, ...imported]);
+                    workedDates = Array.from(mergedSet);
+                    
+                    localStorage.setItem('myCalendarWorkRecords', JSON.stringify(workedDates));
+                    renderCalendar();
+                    alert("✅ 数据上传成功并已合并！");
+                } else {
+                    alert("❌ 文件格式不正确。");
+                }
+            } catch (err) {
+                alert("❌ 读取文件失败。");
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = ''; // 允许重复上传同一文件
+    }
+
+    // 页面加载初始化
+    initYearSelect();
+    renderCalendar();
+</script>
+
+</body>
+</html>
