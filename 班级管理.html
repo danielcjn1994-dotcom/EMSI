@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生每日签到本</title>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #e9ecef;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .app-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        /* ==== 左侧：日历区域 ==== */
+        .left-panel {
+            flex: 4; 
+            padding: 30px;
+            background: #fff;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header button {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            color: #495057;
+            font-size: 16px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .calendar-header button:hover {
+            background: #00b894;
+            color: white;
+            border-color: #00b894;
+        }
+
+        .date-selectors select {
+            font-size: 16px;
+            padding: 4px 8px;
+            margin: 0 2px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            color: #6c757d;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+
+        .day {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #2c3e50;
+            background-color: #fdfdfd;
+            border: 1px solid transparent;
+        }
+
+        .day:hover:not(.empty) { background-color: #f1f2f6; border-color: #ced4da; }
+        .day.empty { cursor: default; background: transparent; }
+        .day.today { border: 2px solid #00b894; color: #00b894; font-weight: bold; }
+        
+        .day.selected {
+            background-color: #00b894;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 3px 8px rgba(0, 184, 148, 0.3);
+            border-color: #00b894;
+        }
+
+        /* ==== 右侧：操作区域 ==== */
+        .right-panel {
+            flex: 6; 
+            background-color: #f8f9fa;
+            border-left: 1px solid #e9ecef;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶部导航 Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+            align-items: center;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            cursor: pointer;
+            color: #6c757d;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .tab-btn.active { background: #00b894; color: white; }
+
+        /* 返回主页按钮样式 */
+        .btn-home {
+            margin-left: auto; /* 靠右对齐 */
+            background-color: #e2e6ea;
+            color: #383d41;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .btn-home:hover {
+            background-color: #dae0e5;
+            color: #1a1e21;
+        }
+
+        .tab-content { display: none; flex: 1; overflow-y: auto;}
+        .tab-content.active { display: block; }
+
+        .control-group { margin-bottom: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
+        select, input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .btn-primary { background: #00b894; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;}
+        .btn-primary:hover { background: #00a884; }
+        .btn-danger { background: #ff7675; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;}
+
+        .student-item {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .status-options { display: flex; gap: 5px; }
+        .status-btn {
+            padding: 6px 12px;
+            border: 1px solid #ced4da;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .status-btn.active[data-status="present"] { background: #00b894; color: white; border-color: #00b894; }
+        .status-btn.active[data-status="absent"] { background: #ff7675; color: white; border-color: #ff7675; }
+        .status-btn.active[data-status="leave"] { background: #b2bec3; color: white; border-color: #b2bec3; }
+
+        .manage-list { background: white; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .manage-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f2f6; }
+        .manage-item:last-child { border-bottom: none; }
+        .tag { font-size: 12px; padding: 2px 6px; border-radius: 4px; background: #e9ecef; margin-left: 10px;}
+        .tag.fixed { background: #74b9ff; color: white;}
+        .tag.temp { background: #fdcb6e; color: white;}
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- 左侧：日历选择器 -->
+    <div class="left-panel">
+        <h3 style="margin-top: 0; color: #2c3e50;">📅 选择考勤日期</h3>
+        <div class="calendar-header">
+            <button onclick="changeMonth(-1)">◀</button>
+            <div class="date-selectors">
+                <select id="yearSelect" onchange="jumpToDate()"></select>
+                <select id="monthSelect" onchange="jumpToDate()">
+                    <option value="0">1月</option><option value="1">2月</option>
+                    <option value="2">3月</option><option value="3">4月</option>
+                    <option value="4">5月</option><option value="5">6月</option>
+                    <option value="6">7月</option><option value="7">8月</option>
+                    <option value="8">9月</option><option value="9">10月</option>
+                    <option value="10">11月</option><option value="11">12月</option>
+                </select>
+            </div>
+            <button onclick="changeMonth(1)">▶</button>
+        </div>
+        <div class="weekdays">
+            <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+        </div>
+        <div id="calendarGrid" class="days-grid"></div>
+    </div>
+
+    <!-- 右侧：功能区域 -->
+    <div class="right-panel">
+        <!-- 顶部导航栏 -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('attendance')">📝 每日签到</button>
+            <button class="tab-btn" onclick="switchTab('manage')">⚙️ 班级/人员管理</button>
+            <button class="tab-btn" onclick="switchTab('data')">💾 数据导出/导入</button>
+            <!-- 补回的返回主页按钮 -->
+            <button class="btn-home" onclick="window.location.href='index.html'">🏠 返回主页</button>
+        </div>
+
+        <!-- 选项卡 1: 签到 -->
+        <div id="tab-attendance" class="tab-content active">
+            <h3 id="currentDateDisplay" style="margin-top:0; color:#00b894;">正在读取...</h3>
+            <div class="control-group">
+                <label>选择班级: </label>
+                <select id="attendanceClassSelect" onchange="renderAttendanceList()"></select>
+            </div>
+            <div id="attendanceList" style="margin-top: 15px;">
+                <!-- 签到列表动态生成 -->
+            </div>
+        </div>
+
+        <!-- 选项卡 2: 管理 -->
+        <div id="tab-manage" class="tab-content">
+            <h4>班级管理</h4>
+            <div class="control-group">
+                <input type="text" id="newClassName" placeholder="输入新班级名称">
+                <button class="btn-primary" onclick="addClass()">添加班级</button>
+            </div>
+            <div class="manage-list" id="classList"></div>
+
+            <h4>学生管理</h4>
+            <div class="control-group">
+                <input type="text" id="newStudentName" placeholder="学生姓名" style="width: 100px;">
+                <select id="newStudentClass"></select>
+                <select id="newStudentType">
+                    <option value="fixed">固定班级</option>
+                    <option value="temp">临时学生</option>
+                </select>
+                <button class="btn-primary" onclick="addStudent()">添加学生</button>
+            </div>
+            <div class="manage-list" id="studentList"></div>
+        </div>
+
+        <!-- 选项卡 3: 数据 -->
+        <div id="tab-data" class="tab-content">
+            <h4>数据管理</h4>
+            <p style="color: #6c757d; font-size: 14px;">您的所有考勤数据均保存在当前浏览器中。换电脑或清理缓存前，请务必导出数据备份，之后再通过导入功能恢复。</p>
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button class="btn-primary" onclick="exportData()">📥 下载打卡数据</button>
+                
+                <!-- 明确的导入按钮 -->
+                <button class="btn-primary" style="background: #2c3e50;" onclick="document.getElementById('importFile').click()">📤 导入历史数据</button>
+                <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // === 数据结构初始化 ===
+    let appData = JSON.parse(localStorage.getItem('studentAttendanceData')) || {
+        classes: [], 
+        students: [], 
+        records: {} 
+    };
+
+    let displayDate = new Date(); 
+    let selectedDateStr = formatDateStr(displayDate);
+
+    // === 日历与日期功能 ===
+    function initYearSelect() {
+        const yearSelect = document.getElementById('yearSelect');
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear - 2; i <= currentYear + 5; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i + "年";
+            yearSelect.appendChild(option);
+        }
+    }
+
+    function formatDateStr(dateObj) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(dateObj.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    function renderCalendar() {
+        const year = displayDate.getFullYear();
+        const month = displayDate.getMonth(); 
+        
+        document.getElementById('yearSelect').value = year;
+        document.getElementById('monthSelect').value = month;
+
+        const firstDayIndex = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const todayStr = formatDateStr(new Date());
+
+        const grid = document.getElementById('calendarGrid');
+        grid.innerHTML = ''; 
+
+        for (let i = 0; i < firstDayIndex; i++) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'day empty';
+            grid.appendChild(emptyDiv);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const currentDate = new Date(year, month, day);
+            const dateStr = formatDateStr(currentDate);
+            
+            const dayDiv = document.createElement('div');
+            let classes = 'day';
+            
+            if (dateStr === todayStr) classes += ' today';
+            if (dateStr === selectedDateStr) classes += ' selected';
+            
+            dayDiv.className = classes;
+            dayDiv.innerText = day;
+            dayDiv.onclick = () => selectDate(dateStr);
+            grid.appendChild(dayDiv);
+        }
+    }
+
+    function selectDate(dateStr) {
+        selectedDateStr = dateStr;
+        document.getElementById('currentDateDisplay').innerText = `当前打卡日期: ${dateStr}`;
+        renderCalendar();
+        renderAttendanceList();
+    }
+
+    function jumpToDate() {
+        displayDate.setFullYear(parseInt(document.getElementById('yearSelect').value));
+        displayDate.setMonth(parseInt(document.getElementById('monthSelect').value));
+        renderCalendar();
+    }
+
+    function changeMonth(offset) {
+        displayDate.setMonth(displayDate.getMonth() + offset);
+        renderCalendar();
+    }
+
+    // === UI 切换 ===
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        event.target.classList.add('active');
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+
+        if(tabId === 'manage') renderManageView();
+    }
+
+    function saveData() {
+        localStorage.setItem('studentAttendanceData', JSON.stringify(appData));
+    }
+
+    // === 管理功能：班级与学生 ===
+    function addClass() {
+        const name = document.getElementById('newClassName').value.trim();
+        if (!name) return;
+        const id = 'class_' + Date.now();
+        appData.classes.push({id, name});
+        document.getElementById('newClassName').value = '';
+        saveData();
+        renderManageView();
+        updateClassDropdowns();
+    }
+
+    function deleteClass(id) {
+        if (confirm('确定删除该班级吗？相关学生将被解除班级绑定。')) {
+            appData.classes = appData.classes.filter(c => c.id !== id);
+            appData.students.forEach(s => { if (s.classId === id) s.classId = ''; });
+            saveData();
+            renderManageView();
+            updateClassDropdowns();
+        }
+    }
+
+    function addStudent() {
+        const name = document.getElementById('newStudentName').value.trim();
+        const classId = document.getElementById('newStudentClass').value;
+        const type = document.getElementById('newStudentType').value;
+        
+        if (!name || !classId) return alert('请填写姓名并选择班级');
+        
+        appData.students.push({ id: 'stu_' + Date.now(), name, classId, type });
+        document.getElementById('newStudentName').value = '';
+        saveData();
+        renderManageView();
+    }
+
+    function deleteStudent(id) {
+        if (confirm('确定删除该学生吗？')) {
+            appData.students = appData.students.filter(s => s.id !== id);
+            saveData();
+            renderManageView();
+        }
+    }
+
+    function updateStudentClass(studentId, newClassId) {
+        const stu = appData.students.find(s => s.id === studentId);
+        if (stu) {
+            stu.classId = newClassId;
+            stu.type = 'fixed';
+            saveData();
+            renderManageView();
+        }
+    }
+
+    function updateClassDropdowns() {
+        const html = appData.classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        document.getElementById('newStudentClass').innerHTML = html;
+        
+        const attSelect = document.getElementById('attendanceClassSelect');
+        const currentVal = attSelect.value;
+        attSelect.innerHTML = html;
+        if(currentVal && appData.classes.find(c => c.id === currentVal)) attSelect.value = currentVal;
+        
+        renderAttendanceList();
+    }
+
+    function renderManageView() {
+        document.getElementById('classList').innerHTML = appData.classes.map(c => `
+            <div class="manage-item">
+                <span>${c.name}</span>
+                <button class="btn-danger" onclick="deleteClass('${c.id}')">删除</button>
+            </div>
+        `).join('') || '<p style="color:#999; font-size:14px;">暂无班级</p>';
+
+        const classMap = {};
+        appData.classes.forEach(c => classMap[c.id] = c.name);
+        
+        document.getElementById('studentList').innerHTML = appData.students.map(s => `
+            <div class="manage-item">
+                <div>
+                    <strong>${s.name}</strong> 
+                    <span class="tag ${s.type === 'fixed' ? 'fixed' : 'temp'}">${s.type === 'fixed' ? '固定' : '临时'}</span>
+                    <select onchange="updateStudentClass('${s.id}', this.value)" style="margin-left:10px; padding:2px;">
+                        ${appData.classes.map(c => `<option value="${c.id}" ${s.classId === c.id ? 'selected' : ''}>${c.name}</option>`).join('')}
+                    </select>
+                </div>
+                <button class="btn-danger" onclick="deleteStudent('${s.id}')">删除</button>
+            </div>
+        `).join('') || '<p style="color:#999; font-size:14px;">暂无学生</p>';
+    }
+
+    // === 签到核心逻辑 ===
+    function setAttendance(studentId, classId, status) {
+        if (!appData.records[selectedDateStr]) appData.records[selectedDateStr] = {};
+        appData.records[selectedDateStr][studentId] = { status, classId };
+        saveData();
+        renderAttendanceList();
+    }
+
+    function renderAttendanceList() {
+        const classId = document.getElementById('attendanceClassSelect').value;
+        const listDiv = document.getElementById('attendanceList');
+        
+        if (!classId) {
+            listDiv.innerHTML = '<p>请先在管理页面添加班级</p>';
+            return;
+        }
+
+        const dateRecords = appData.records[selectedDateStr] || {};
+        let displayStudentsMap = {};
+        
+        appData.students.forEach(s => {
+            if (s.classId === classId) displayStudentsMap[s.id] = s;
+        });
+        
+        Object.keys(dateRecords).forEach(stuId => {
+            if (dateRecords[stuId].classId === classId) {
+                const stuInfo = appData.students.find(s => s.id === stuId) || { id: stuId, name: '已删除学生', type: 'unknown' };
+                displayStudentsMap[stuId] = stuInfo;
+            } else {
+                if (displayStudentsMap[stuId]) delete displayStudentsMap[stuId];
+            }
+        });
+
+        const displayStudents = Object.values(displayStudentsMap);
+
+        if (displayStudents.length === 0) {
+            listDiv.innerHTML = '<p style="color:#999;">该班级当前没有学生，或当天无相关记录。</p>';
+            return;
+        }
+
+        listDiv.innerHTML = displayStudents.map(s => {
+            const record = dateRecords[s.id];
+            const currentStatus = record ? record.status : null;
+            
+            return `
+            <div class="student-item">
+                <div>
+                    <strong>${s.name}</strong>
+                    <span class="tag ${s.type === 'fixed' ? 'fixed' : 'temp'}">${s.type === 'fixed' ? '固定' : '临时'}</span>
+                </div>
+                <div class="status-options">
+                    <button class="status-btn ${currentStatus === 'present' ? 'active' : ''}" data-status="present" onclick="setAttendance('${s.id}', '${classId}', 'present')">出勤</button>
+                    <button class="status-btn ${currentStatus === 'absent' ? 'active' : ''}" data-status="absent" onclick="setAttendance('${s.id}', '${classId}', 'absent')">未出勤</button>
+                    <button class="status-btn ${currentStatus === 'leave' ? 'active' : ''}" data-status="leave" onclick="setAttendance('${s.id}', '${classId}', 'leave')">固定不来</button>
+                </div>
+            </div>
+            `;
+        }).join('');
+    }
+
+    // === 数据导入导出 ===
+    function exportData() {
+        if (!appData.students || appData.students.length === 0) {
+            alert("目前还没有任何数据可下载！");
+            return;
+        }
+        const dataStr = JSON.stringify(appData);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `学生考勤数据备份_${formatDateStr(new Date())}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const imported = JSON.parse(e.target.result);
+                // 验证导入的JSON是否符合当前数据结构
+                if (imported.classes && imported.students && imported.records) {
+                    appData = imported;
+                    saveData();
+                    updateClassDropdowns();
+                    renderCalendar();
+                    renderManageView();
+                    alert("✅ 数据恢复成功！");
+                } else { 
+                    alert("❌ 文件格式不匹配，请确保上传的是学生考勤备份文件。"); 
+                }
+            } catch (err) { 
+                alert("❌ 读取文件失败或格式错误。"); 
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = ''; // 允许重复选择同一个文件
+    }
+
+    // === 初始化执行 ===
+    initYearSelect();
+    selectDate(selectedDateStr); 
+    updateClassDropdowns();
+</script>
+</body>
+</html>
