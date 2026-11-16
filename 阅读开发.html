@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 阅读训练网页自动生成器</title>
+    <style>
+        :root {
+            --primary: #1a4a8e;
+            --primary-light: #eef4fc;
+            --accent: #f1c40f;
+            --accent-hover: #e0b408;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg); color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* 顶部导航栏 */
+        .topbar {
+            background: var(--primary); color: white;
+            padding: 16px 28px;
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
+            border-bottom: 4px solid var(--accent);
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        .topbar-title { display: flex; align-items: center; gap: 10px; }
+        .topbar-title h1 { margin: 0; font-size: 20px; }
+        .topbar-badge {
+            background: var(--accent); color: var(--primary);
+            font-weight: bold; font-size: 12px; padding: 3px 10px; border-radius: 20px;
+        }
+        .topbar-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        /* 按钮样式 */
+        .btn {
+            border: none; border-radius: 8px; padding: 8px 14px;
+            font-size: 14px; font-weight: bold; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-accent { background: var(--accent); color: var(--primary); }
+        .btn-accent:hover { background: var(--accent-hover); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #143a70; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #15803d; }
+        .btn-outline { background: white; color: var(--primary); border: 1px solid var(--border); }
+        .btn-outline:hover { background: var(--primary-light); }
+        .btn-ghost { background: rgba(255,255,255,0.14); color: white; }
+        .btn-ghost:hover { background: rgba(255,255,255,0.24); }
+        .btn-danger-outline { background: white; color: var(--danger); border: 1px solid #fecaca; }
+        .btn-danger-outline:hover { background: #fef2f2; }
+        .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 6px; }
+
+        /* 主容器 */
+        .container { max-width: 1120px; margin: 24px auto; padding: 0 20px 60px; }
+
+        /* 卡片 */
+        .panel {
+            background: var(--card); border-radius: 14px;
+            padding: 20px 24px; margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .panel-header {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f1f5f9;
+        }
+        .panel-header h2 { margin: 0; font-size: 17px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+
+        /* 表单网格 */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+        .field { display: flex; flex-direction: column; gap: 5px; }
+        .field label { font-size: 13px; font-weight: bold; color: #475569; }
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%; padding: 9px 12px;
+            border: 1px solid var(--border); border-radius: 8px;
+            font-size: 14px; font-family: inherit; color: var(--text);
+            background: #fff; transition: border-color 0.2s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 74, 142, 0.12);
+        }
+        textarea { resize: vertical; min-height: 76px; line-height: 1.6; }
+
+        /* 年级预设按钮组 */
+        .preset-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+        .preset-bar span { font-size: 13px; color: var(--muted); font-weight: bold; }
+
+        /* 顶部课程药丸标签栏（支持直接点击内联编辑） */
+        .lesson-tabs-wrapper {
+            background: var(--card); border-radius: 16px; padding: 14px 18px;
+            margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .lesson-tabs-tip {
+            font-size: 12px; color: var(--muted); margin-bottom: 10px;
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px;
+        }
+        .lesson-tabs {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+        }
+        .lesson-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 14px; border-radius: 999px;
+            border: 1.5px solid #cbd5e1; background: #ffffff;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .lesson-pill:hover { border-color: var(--primary); }
+        .lesson-pill.active {
+            background: var(--primary); border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(26, 74, 142, 0.22);
+        }
+        .pill-input-num, .pill-input-title {
+            border: none !important; background: transparent !important;
+            padding: 2px 4px !important; border-radius: 4px !important;
+            font-family: inherit; box-shadow: none !important;
+        }
+        .pill-input-num {
+            font-weight: bold; font-size: 14px; color: #1e293b;
+            min-width: 48px; text-align: center;
+        }
+        .pill-input-title {
+            font-size: 14px; color: #64748b;
+            min-width: 76px;
+        }
+        .lesson-pill.active .pill-input-num { color: #ffffff; }
+        .lesson-pill.active .pill-input-title { color: #fde047; }
+        .pill-input-num:focus, .pill-input-title:focus {
+            background: rgba(255,255,255,0.18) !important;
+            outline: 1px dashed rgba(255,255,255,0.6) !important;
+        }
+        .lesson-pill:not(.active) .pill-input-num:focus,
+        .lesson-pill:not(.active) .pill-input-title:focus {
+            background: #f1f5f9 !important;
+            outline: 1px dashed var(--primary) !important;
+        }
+        .add-lesson-pill {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 9px 16px; border-radius: 999px;
+            border: 1.5px dashed #86efac; background: #f0fdf4;
+            color: #15803d; font-weight: bold; font-size: 14px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .add-lesson-pill:hover { background: #dcfce7; border-color: #22c55e; }
+
+        /* 动态列表项 */
+        .item-card {
+            background: #f8fafc; border: 1px solid #e2e8f0;
+            border-radius: 10px; padding: 14px; margin-bottom: 12px;
+        }
+        .item-card-top {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            gap: 8px; margin-bottom: 8px;
+        }
+        .item-badge {
+            background: var(--primary-light); color: var(--primary);
+            font-weight: bold; font-size: 12px; padding: 2px 9px; border-radius: 6px;
+        }
+        .item-controls { display: flex; align-items: center; gap: 6px; }
+        .style-select { width: auto; padding: 4px 8px; font-size: 12px; }
+
+        /* 词汇表格 */
+        .vocab-editor-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        }
+        .vocab-row {
+            display: flex; align-items: center; gap: 6px;
+            background: #f8fafc; padding: 6px 10px; border-radius: 8px; border: 1px solid #e2e8f0;
+        }
+        .vocab-num { font-weight: bold; color: var(--primary); font-size: 13px; min-width: 24px; }
+        .vocab-row input { padding: 6px 8px; font-size: 13px; }
+
+        /* 批量工具抽屉 */
+        .batch-box {
+            background: #fffbeb; border: 1px dashed #f59e0b;
+            border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;
+        }
+        .batch-box-title { font-size: 13px; font-weight: bold; color: #b45309; margin-bottom: 6px; }
+
+        /* 预览模态框 */
+        .modal-backdrop {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65);
+            display: none; align-items: center; justify-content: center;
+            z-index: 999; padding: 20px;
+        }
+        .modal-backdrop.open { display: flex; }
+        .modal-window {
+            background: white; width: 100%; max-width: 1050px; height: 90vh;
+            border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .modal-bar {
+            background: var(--primary); color: white; padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-iframe { flex: 1; width: 100%; border: none; background: #f5f7fa; }
+
+        /* 提示条 */
+        .toast {
+            position: fixed; bottom: 24px; right: 24px;
+            background: #1e293b; color: white; padding: 12px 20px;
+            border-radius: 10px; font-size: 14px; font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            opacity: 0; transform: translateY(15px); pointer-events: none;
+            transition: all 0.25s ease; z-index: 1200;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .vocab-editor-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="topbar-title">
+        <h1>EMSI 阅读训练网页生成器</h1>
+        <span class="topbar-badge">西汉双语 · 含默写模式</span>
+    </div>
+    <div class="topbar-actions">
+        <button type="button" class="btn btn-ghost" onclick="loadSampleData()">✨ 填充示例</button>
+        <label class="btn btn-ghost" style="cursor:pointer;">
+            📥 导入已有HTML修改
+            <input type="file" id="importHtmlInput" accept=".html,.htm" style="display:none;" onchange="importExistingHtml(event)">
+        </label>
+        <button type="button" class="btn btn-ghost" onclick="resetAll()">🗑️ 清空重置</button>
+        <button type="button" class="btn btn-outline" onclick="openPreview()">👁️ 实时预览</button>
+        <button type="button" class="btn btn-outline" onclick="copyGeneratedCode()">📋 复制代码</button>
+        <button type="button" class="btn btn-accent" onclick="downloadHtml()">💾 下载网页 (.html)</button>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- 1. 网页全局与年级设置 -->
+    <section class="panel">
+        <div class="panel-header">
+            <h2>🏫 网页全局与年级设置</h2>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:13px; color:#64748b;">批量设置起始课次：</span>
+                <input type="number" id="batchStartNum" value="1" min="1" style="width:70px; padding:5px 8px;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="batchNumberLessons()">批量生成课次</button>
+            </div>
+        </div>
+
+        <div class="preset-bar">
+            <span>年级快捷切换：</span>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyGradePreset('一二年级阅读训练', '一二年级阅读目录.html')">一二年级</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyGradePreset('三四年级阅读训练', '三四年级阅读目录.html')">三四年级</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyGradePreset('五六年级阅读训练', '五六年级阅读目录.html')">五六年级</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyGradePreset('初中阅读训练', '初中阅读目录.html')">初中/其他</button>
+        </div>
+
+        <div class="grid-3">
+            <div class="field">
+                <label>页面副标题（年级显示）</label>
+                <input type="text" id="cfgSubtitle" value="三四年级阅读训练" oninput="syncTitleFromSubtitle()">
+            </div>
+            <div class="field">
+                <label>浏览器标签页标题</label>
+                <input type="text" id="cfgPageTitle" value="三四年级阅读训练 | EMSI 马德里国际中文学校">
+            </div>
+            <div class="field">
+                <label>学校主标题（HTML可含 span）</label>
+                <input type="text" id="cfgMainTitle" value="<span>EMSI</span> 马德里国际中文学校">
+            </div>
+            <div class="field">
+                <label>返回按钮文字</label>
+                <input type="text" id="cfgBackText" value="返回目录">
+            </div>
+            <div class="field">
+                <label>返回目录链接地址</label>
+                <input type="text" id="cfgBackHref" value="三四年级阅读目录.html">
+            </div>
+            <div class="field">
+                <label>页脚版权文字</label>
+                <input type="text" id="cfgFooter" value="© 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor">
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 顶部自由命名课程标签栏 -->
+    <div class="lesson-tabs-wrapper">
+        <div class="lesson-tabs-tip">
+            <span>💡 <strong>直接点击下方标签框内的文字</strong>，即可自由修改课次（如“第七课”“第十课”）和课文标题；点击卡片切换编辑内容。</span>
+            <span id="lessonCountBadge" style="font-weight:bold; color:var(--primary);">当前共 5 课</span>
+        </div>
+        <div class="lesson-tabs" id="lessonTabs"></div>
+    </div>
+
+    <!-- 3. 当前选中课程编辑器 -->
+    <div id="lessonEditorArea"></div>
+
+</div>
+
+<!-- 实时预览弹窗 -->
+<div class="modal-backdrop" id="previewModal" onclick="if(event.target===this) closePreview()">
+    <div class="modal-window">
+        <div class="modal-bar">
+            <strong>👁️ 学生端网页实时预览（可直接点击测试折叠面板与“🙈 默写模式”）</strong>
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="btn btn-accent btn-sm" onclick="downloadHtml()">💾 下载此网页</button>
+                <button type="button" class="btn btn-ghost btn-sm" onclick="closePreview()">✕ 关闭预览</button>
+            </div>
+        </div>
+        <iframe id="previewFrame" class="modal-iframe"></iframe>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'emsi_reading_generator_v3';
+
+const CN_NUMS = ['零','一','二','三','四','五','六','七','八','九','十'];
+function numToChineseLesson(n) {
+    n = parseInt(n, 10);
+    if (isNaN(n) || n <= 0) return '';
+    if (n <= 10) return '第' + CN_NUMS[n] + '课';
+    if (n < 20) return '第十' + (n % 10 === 0 ? '' : CN_NUMS[n % 10]) + '课';
+    if (n < 100) {
+        const tens = Math.floor(n / 10);
+        const ones = n % 10;
+        return '第' + CN_NUMS[tens] + '十' + (ones === 0 ? '' : CN_NUMS[ones]) + '课';
+    }
+    return '第' + n + '课';
+}
+
+function chineseLessonToNumber(str) {
+    if (!str) return null;
+    const arabic = str.match(/\d+/);
+    if (arabic) return parseInt(arabic[0], 10);
+    const m = str.match(/第([一二三四五六七八九十百]+)课/);
+    if (!m) return null;
+    const s = m[1];
+    const map = {'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9};
+    if (s === '十') return 10;
+    if (s.startsWith('十')) return 10 + (map[s[1]] || 0);
+    if (s.includes('十')) {
+        const parts = s.split('十');
+        return (map[parts[0]] || 1) * 10 + (map[parts[1]] || 0);
+    }
+    return map[s] || null;
+}
+
+function createEmptyLesson(index) {
+    const num = index + 1;
+    return {
+        lessonNumZh: numToChineseLesson(num),
+        lessonNumEs: 'LECCIÓN ' + num,
+        titleZh: '',
+        titleEs: '',
+        author: '',
+        preQuestions: [
+            { q: '', a: '', ansLabel: '👉 Respuesta posible' }
+        ],
+        paragraphs: [
+            { text: '', style: 'normal' }
+        ],
+        vocab: Array.from({ length: 6 }, () => ({ es: '', zh: '' })),
+        questions: [
+            { q: '', a: '', ansLabel: '👉 Respuesta' }
+        ]
+    };
+}
+
+let state = {
+    activeIndex: 0,
+    lessons: Array.from({ length: 5 }, (_, i) => createEmptyLesson(i))
+};
+
+// 自动分离双语文本（支持直接粘贴西汉对照内容）
+function splitBilingualText(raw) {
+    if (!raw || !raw.trim()) return { es: '', zh: '' };
+    const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const esLines = [];
+    const zhLines = [];
+
+    lines.forEach(line => {
+        const zhChars = (line.match(/[\u4e00-\u9fff]/g) || []).length;
+        const esLetters = (line.match(/[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]/g) || []).length;
+        if (zhChars > 0 && zhChars >= esLetters * 0.4) {
+            zhLines.push(line);
+        } else {
+            esLines.push(line);
+        }
+    });
+
+    return {
+        es: esLines.join('<br>'),
+        zh: zhLines.join('<br>')
+    };
+}
+
+function escapeHtml(str) {
+    return (str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function formatTextWithBreaks(str) {
+    return escapeHtml(str).replace(/\r?\n/g, '<br>');
+}
+
+function formatSplitResult(obj) {
+    const esHtml = escapeHtml(obj.es).replace(/&lt;br&gt;/g, '<br>');
+    const zhHtml = escapeHtml(obj.zh).replace(/&lt;br&gt;/g, '<br>');
+    return { es: esHtml, zh: zhHtml };
+}
+
+function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+}
+
+function saveDraft() {
+    try {
+        const payload = {
+            cfg: {
+                subtitle: document.getElementById('cfgSubtitle').value,
+                pageTitle: document.getElementById('cfgPageTitle').value,
+                mainTitle: document.getElementById('cfgMainTitle').value,
+                backText: document.getElementById('cfgBackText').value,
+                backHref: document.getElementById('cfgBackHref').value,
+                footer: document.getElementById('cfgFooter').value
+            },
+            state
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch (e) {}
+}
+
+function loadDraft() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const payload = JSON.parse(raw);
+        if (payload.cfg) {
+            document.getElementById('cfgSubtitle').value = payload.cfg.subtitle || '';
+            document.getElementById('cfgPageTitle').value = payload.cfg.pageTitle || '';
+            document.getElementById('cfgMainTitle').value = payload.cfg.mainTitle || '';
+            document.getElementById('cfgBackText').value = payload.cfg.backText || '';
+            document.getElementById('cfgBackHref').value = payload.cfg.backHref || '';
+            document.getElementById('cfgFooter').value = payload.cfg.footer || '';
+        }
+        if (payload.state && Array.isArray(payload.state.lessons) && payload.state.lessons.length > 0) {
+            state = payload.state;
+        }
+    } catch (e) {}
+}
+
+function applyGradePreset(subtitle, href) {
+    document.getElementById('cfgSubtitle').value = subtitle;
+    document.getElementById('cfgPageTitle').value = subtitle + ' | EMSI 马德里国际中文学校';
+    document.getElementById('cfgBackHref').value = href;
+    saveDraft();
+    showToast('已切换为：' + subtitle);
+}
+
+function syncTitleFromSubtitle() {
+    const sub = document.getElementById('cfgSubtitle').value.trim();
+    document.getElementById('cfgPageTitle').value = (sub ? sub + ' | ' : '') + 'EMSI 马德里国际中文学校';
+    saveDraft();
+}
+
+function batchNumberLessons() {
+    const start = parseInt(document.getElementById('batchStartNum').value, 10) || 1;
+    state.lessons.forEach((l, idx) => {
+        const n = start + idx;
+        l.lessonNumZh = numToChineseLesson(n);
+        l.lessonNumEs = 'LECCIÓN ' + n;
+    });
+    renderAll();
+    saveDraft();
+    showToast(`已从第 ${start} 课开始批量编号`);
+}
+
+function autoResizeInput(input, minPx) {
+    const len = (input.value || input.placeholder || '').length;
+    input.style.width = Math.max(minPx, len * 13 + 16) + 'px';
+}
+
+function renderTabs() {
+    const container = document.getElementById('lessonTabs');
+    container.innerHTML = '';
+    document.getElementById('lessonCountBadge').textContent = `当前共 ${state.lessons.length} 课`;
+
+    state.lessons.forEach((lesson, idx) => {
+        const pill = document.createElement('div');
+        pill.className = 'lesson-pill' + (idx === state.activeIndex ? ' active' : '');
+        pill.onclick = (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            state.activeIndex = idx;
+            renderAll();
+        };
+
+        const numInput = document.createElement('input');
+        numInput.type = 'text';
+        numInput.className = 'pill-input-num';
+        numInput.value = lesson.lessonNumZh;
+        numInput.placeholder = '课次';
+        numInput.title = '直接点击修改课次（如：第七课、第十课）';
+        autoResizeInput(numInput, 54);
+        numInput.onfocus = () => {
+            if (state.activeIndex !== idx) {
+                state.activeIndex = idx;
+                renderAll();
+                setTimeout(() => {
+                    const el = document.querySelectorAll('.pill-input-num')[idx];
+                    if (el) el.focus();
+                }, 0);
+            }
+        };
+        numInput.oninput = (e) => {
+            lesson.lessonNumZh = e.target.value;
+            autoResizeInput(e.target, 54);
+            const parsedN = chineseLessonToNumber(e.target.value);
+            if (parsedN) {
+                lesson.lessonNumEs = 'LECCIÓN ' + parsedN;
+                const esField = document.getElementById('edLessonNumEs');
+                if (esField) esField.value = lesson.lessonNumEs;
+            }
+            const zhField = document.getElementById('edLessonNumZh');
+            if (zhField) zhField.value = lesson.lessonNumZh;
+            saveDraft();
+        };
+
+        const titleInput = document.createElement('input');
+        titleInput.type = 'text';
+        titleInput.className = 'pill-input-title';
+        titleInput.value = lesson.titleZh;
+        titleInput.placeholder = '未命名课文';
+        titleInput.title = '直接点击输入课文标题';
+        autoResizeInput(titleInput, 82);
+        titleInput.onfocus = () => {
+            if (state.activeIndex !== idx) {
+                state.activeIndex = idx;
+                renderAll();
+                setTimeout(() => {
+                    const el = document.querySelectorAll('.pill-input-title')[idx];
+                    if (el) el.focus();
+                }, 0);
+            }
+        };
+        titleInput.oninput = (e) => {
+            lesson.titleZh = e.target.value;
+            autoResizeInput(e.target, 82);
+            const titleField = document.getElementById('edTitleZh');
+            if (titleField) titleField.value = lesson.titleZh;
+            saveDraft();
+        };
+
+        pill.appendChild(numInput);
+        pill.appendChild(titleInput);
+        container.appendChild(pill);
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'add-lesson-pill';
+    addBtn.innerHTML = '+ 添加新课';
+    addBtn.onclick = () => {
+        const last = state.lessons[state.lessons.length - 1];
+        const lastN = last ? chineseLessonToNumber(last.lessonNumZh) : state.lessons.length;
+        const nextN = (lastN || state.lessons.length) + 1;
+        const newLesson = createEmptyLesson(nextN - 1);
+        state.lessons.push(newLesson);
+        state.activeIndex = state.lessons.length - 1;
+        renderAll();
+        saveDraft();
+        showToast('已添加新课');
+    };
+    container.appendChild(addBtn);
+}
+
+function renderEditor() {
+    const area = document.getElementById('lessonEditorArea');
+    const idx = state.activeIndex;
+    const lesson = state.lessons[idx];
+    if (!lesson) return;
+
+    area.innerHTML = `
+        <!-- 课程基本标题信息 -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2>📖 课程标题与出处（当前编辑：第 ${idx + 1} 个标签）</h2>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="moveLesson(-1)" ${idx === 0 ? 'disabled' : ''}>← 前移</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="moveLesson(1)" ${idx === state.lessons.length - 1 ? 'disabled' : ''}>后移 →</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="duplicateLesson()">📑 复制本课</button>
+                    <button type="button" class="btn btn-danger-outline btn-sm" onclick="deleteLesson()">🗑️ 删除本课</button>
+                </div>
+            </div>
+
+            <div class="grid-3" style="margin-bottom:12px;">
+                <div class="field">
+                    <label>中文课次（与上方标签同步，可留空）</label>
+                    <input type="text" id="edLessonNumZh" value="${escapeHtml(lesson.lessonNumZh)}" placeholder="如：第一课、第十课" oninput="updateLessonField('lessonNumZh', this.value, true)">
+                </div>
+                <div class="field">
+                    <label>西语课次标记（如 LECCIÓN 1）</label>
+                    <input type="text" id="edLessonNumEs" value="${escapeHtml(lesson.lessonNumEs)}" placeholder="如：LECCIÓN 1" oninput="updateLessonField('lessonNumEs', this.value, false)">
+                </div>
+                <div class="field">
+                    <label>作者 / 作品出处（可选，留空不显示）</label>
+                    <input type="text" value="${escapeHtml(lesson.author)}" placeholder="如：Federico García Lorca" oninput="updateLessonField('author', this.value, false)">
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="field">
+                    <label>课文中文标题（与上方标签同步）</label>
+                    <input type="text" id="edTitleZh" value="${escapeHtml(lesson.titleZh)}" placeholder="如：粮仓里的老鼠" oninput="updateLessonField('titleZh', this.value, true)">
+                </div>
+                <div class="field">
+                    <label>课文西语标题（显示在折叠栏括号内）</label>
+                    <input type="text" value="${escapeHtml(lesson.titleEs)}" placeholder="如：El ratón del granero" oninput="updateLessonField('titleEs', this.value, false)">
+                </div>
+            </div>
+        </section>
+
+        <!-- 读前思考 -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2>💭 读前思考 (Antes de comenzar la lectura)</h2>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addPreQuestion()">+ 添加读前问题</button>
+            </div>
+            <div id="preQuestionsList"></div>
+        </section>
+
+        <!-- 课文阅读 -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2>📄 课文正文 (Lectura / 课文阅读)</h2>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addParagraph()">+ 添加段落</button>
+            </div>
+
+            <div class="batch-box">
+                <div class="batch-box-title">⚡ 整篇双语课文一键拆分（直接粘贴排好版的西汉对照课文，段落之间用“空行”隔开）</div>
+                <textarea id="batchStoryInput" style="min-height:80px; margin-bottom:8px;" placeholder="示例：&#10;Érase una vez un ratón que vivía debajo de un granero.&#10;从前，有一只老鼠住在一个粮仓下面。&#10;&#10;De ese modo vivía el ratón espléndidamente.&#10;就这样，这只老鼠生活得非常富足。"></textarea>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn btn-accent btn-sm" onclick="splitStoryBatch(true)">覆盖替换为拆分段落</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="splitStoryBatch(false)">追加到现有段落后</button>
+                </div>
+            </div>
+
+            <div id="paragraphsList"></div>
+        </section>
+
+        <!-- 重点词汇 -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2>🔤 重点词汇 (Vocabulario · 自动带“🙈 默写模式”按钮)</h2>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addVocab()">+ 添加词汇</button>
+            </div>
+
+            <div class="batch-box">
+                <div class="batch-box-title">⚡ 批量粘贴词汇（每行一个词，支持 “西语 - 中文”、“西语：中文” 或从 Excel 复制粘贴，自动重新编号）</div>
+                <textarea id="batchVocabInput" style="min-height:74px; margin-bottom:8px;" placeholder="示例：&#10;Granero - 粮仓&#10;Ratón - 老鼠&#10;Agujero：洞口"></textarea>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn btn-accent btn-sm" onclick="parseVocabBatch(true)">覆盖替换词汇表</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="parseVocabBatch(false)">追加到现有词汇</button>
+                </div>
+            </div>
+
+            <div class="vocab-editor-grid" id="vocabList"></div>
+        </section>
+
+        <!-- 阅读理解 -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2>❓ 阅读理解 (Comprensión / 阅读理解)</h2>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addQuestion()">+ 添加理解题</button>
+            </div>
+            <div id="questionsList"></div>
+        </section>
+    `;
+
+    renderPreQuestions();
+    renderParagraphs();
+    renderVocab();
+    renderQuestions();
+}
+
+function updateLessonField(field, val, refreshTabs) {
+    const lesson = state.lessons[state.activeIndex];
+    lesson[field] = val;
+    if (field === 'lessonNumZh') {
+        const parsedN = chineseLessonToNumber(val);
+        if (parsedN) {
+            lesson.lessonNumEs = 'LECCIÓN ' + parsedN;
+            const esField = document.getElementById('edLessonNumEs');
+            if (esField) esField.value = lesson.lessonNumEs;
+        }
+    }
+    if (refreshTabs) renderTabs();
+    saveDraft();
+}
+
+function moveLesson(dir) {
+    const i = state.activeIndex;
+    const target = i + dir;
+    if (target < 0 || target >= state.lessons.length) return;
+    const temp = state.lessons[i];
+    state.lessons[i] = state.lessons[target];
+    state.lessons[target] = temp;
+    state.activeIndex = target;
+    renderAll();
+    saveDraft();
+}
+
+function duplicateLesson() {
+    const copy = JSON.parse(JSON.stringify(state.lessons[state.activeIndex]));
+    copy.titleZh = copy.titleZh ? copy.titleZh + ' (副本)' : '';
+    state.lessons.splice(state.activeIndex + 1, 0, copy);
+    state.activeIndex += 1;
+    renderAll();
+    saveDraft();
+    showToast('已复制当前课程');
+}
+
+function deleteLesson() {
+    if (state.lessons.length <= 1) {
+        showToast('至少需要保留 1 课');
+        return;
+    }
+    if (!confirm('确定要删除当前这一课吗？')) return;
+    state.lessons.splice(state.activeIndex, 1);
+    if (state.activeIndex >= state.lessons.length) {
+        state.activeIndex = state.lessons.length - 1;
+    }
+    renderAll();
+    saveDraft();
+    showToast('已删除该课');
+}
+
+// 读前思考渲染与操作
+function renderPreQuestions() {
+    const lesson = state.lessons[state.activeIndex];
+    const list = document.getElementById('preQuestionsList');
+    list.innerHTML = '';
+    lesson.preQuestions.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'item-card';
+        div.innerHTML = `
+            <div class="item-card-top">
+                <span class="item-badge">读前问题 ${i + 1}</span>
+                <div class="item-controls">
+                    <button type="button" class="btn btn-danger-outline btn-sm" onclick="removePreQuestion(${i})">删除</button>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="field">
+                    <label>问题（直接粘贴西语+中文双语）</label>
+                    <textarea placeholder="¿Habéis visto alguna vez un zorro?&#10;你们见过狐狸吗？" oninput="state.lessons[state.activeIndex].preQuestions[${i}].q = this.value; saveDraft();">${escapeHtml(item.q)}</textarea>
+                </div>
+                <div class="field">
+                    <label>参考回答（可选，留空则不显示答案折叠框）</label>
+                    <textarea placeholder="Sí, he visto un zorro. (是的，我见过狐狸。)" oninput="state.lessons[state.activeIndex].preQuestions[${i}].a = this.value; saveDraft();">${escapeHtml(item.a)}</textarea>
+                </div>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function addPreQuestion() {
+    state.lessons[state.activeIndex].preQuestions.push({ q: '', a: '', ansLabel: '👉 Respuesta posible' });
+    renderPreQuestions();
+    saveDraft();
+}
+
+function removePreQuestion(i) {
+    state.lessons[state.activeIndex].preQuestions.splice(i, 1);
+    renderPreQuestions();
+    saveDraft();
+}
+
+// 课文段落渲染与操作
+function renderParagraphs() {
+    const lesson = state.lessons[state.activeIndex];
+    const list = document.getElementById('paragraphsList');
+    list.innerHTML = '';
+    lesson.paragraphs.forEach((p, i) => {
+        const div = document.createElement('div');
+        div.className = 'item-card';
+        div.innerHTML = `
+            <div class="item-card-top">
+                <span class="item-badge">第 ${i + 1} 段</span>
+                <div class="item-controls">
+                    <select class="style-select" onchange="state.lessons[state.activeIndex].paragraphs[${i}].style = this.value; saveDraft();">
+                        <option value="normal" ${p.style === 'normal' ? 'selected' : ''}>普通段落</option>
+                        <option value="yellow" ${p.style === 'yellow' ? 'selected' : ''}>黄色高亮寓意/重点框</option>
+                        <option value="red" ${p.style === 'red' ? 'selected' : ''}>红色高亮关键情节框</option>
+                        <option value="quote" ${p.style === 'quote' ? 'selected' : ''}>诗歌/引文缩进框</option>
+                    </select>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="moveParagraph(${i}, -1)" ${i === 0 ? 'disabled' : ''}>↑</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="moveParagraph(${i}, 1)" ${i === lesson.paragraphs.length - 1 ? 'disabled' : ''}>↓</button>
+                    <button type="button" class="btn btn-danger-outline btn-sm" onclick="removeParagraph(${i})">删除</button>
+                </div>
+            </div>
+            <textarea placeholder="直接粘贴本段西语和中文内容（自动识别西汉双色排版）" oninput="state.lessons[state.activeIndex].paragraphs[${i}].text = this.value; saveDraft();">${escapeHtml(p.text)}</textarea>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function addParagraph() {
+    state.lessons[state.activeIndex].paragraphs.push({ text: '', style: 'normal' });
+    renderParagraphs();
+    saveDraft();
+}
+
+function removeParagraph(i) {
+    state.lessons[state.activeIndex].paragraphs.splice(i, 1);
+    renderParagraphs();
+    saveDraft();
+}
+
+function moveParagraph(i, dir) {
+    const arr = state.lessons[state.activeIndex].paragraphs;
+    const t = i + dir;
+    if (t < 0 || t >= arr.length) return;
+    [arr[i], arr[t]] = [arr[t], arr[i]];
+    renderParagraphs();
+    saveDraft();
+}
+
+function splitStoryBatch(replace) {
+    const raw = document.getElementById('batchStoryInput').value.trim();
+    if (!raw) {
+        showToast('请先在文本框内粘贴课文内容');
+        return;
+    }
+    const blocks = raw.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+    const newParas = blocks.map(b => ({ text: b, style: 'normal' }));
+    if (replace) {
+        state.lessons[state.activeIndex].paragraphs = newParas;
+    } else {
+        state.lessons[state.activeIndex].paragraphs.push(...newParas);
+    }
+    document.getElementById('batchStoryInput').value = '';
+    renderParagraphs();
+    saveDraft();
+    showToast(`已成功拆分 ${newParas.length} 个双语段落`);
+}
+
+// 词汇渲染与操作
+function renderVocab() {
+    const lesson = state.lessons[state.activeIndex];
+    const list = document.getElementById('vocabList');
+    list.innerHTML = '';
+    lesson.vocab.forEach((v, i) => {
+        const row = document.createElement('div');
+        row.className = 'vocab-row';
+        row.innerHTML = `
+            <span class="vocab-num">${i + 1}.</span>
+            <input type="text" value="${escapeHtml(v.es)}" placeholder="西语单词" oninput="state.lessons[state.activeIndex].vocab[${i}].es = this.value; saveDraft();">
+            <input type="text" value="${escapeHtml(v.zh)}" placeholder="中文释义" oninput="state.lessons[state.activeIndex].vocab[${i}].zh = this.value; saveDraft();">
+            <button type="button" class="btn btn-danger-outline btn-sm" style="padding:4px 7px;" onclick="removeVocab(${i})">✕</button>
+        `;
+        list.appendChild(row);
+    });
+}
+
+function addVocab() {
+    state.lessons[state.activeIndex].vocab.push({ es: '', zh: '' });
+    renderVocab();
+    saveDraft();
+}
+
+function removeVocab(i) {
+    state.lessons[state.activeIndex].vocab.splice(i, 1);
+    renderVocab();
+    saveDraft();
+}
+
+function parseVocabBatch(replace) {
+    const raw = document.getElementById('batchVocabInput').value.trim();
+    if (!raw) {
+        showToast('请先粘贴词汇列表');
+        return;
+    }
+    const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const parsed = lines.map(line => {
+        const cleaned = line.replace(/^\d+[\.\、\)\s]+/, '').trim();
+        const parts = cleaned.split(/\s*(?:\t| - | – | — |:|：|\/)\s*/);
+        if (parts.length >= 2) {
+            return { es: parts[0].trim(), zh: parts.slice(1).join(' / ').trim() };
+        }
+        const matchZh = cleaned.match(/^(.*?)([\u4e00-\u9fff].*)$/);
+        if (matchZh) {
+            return { es: matchZh[1].trim(), zh: matchZh[2].trim() };
+        }
+        return { es: cleaned, zh: '' };
+    });
+
+    if (replace) {
+        state.lessons[state.activeIndex].vocab = parsed;
+    } else {
+        state.lessons[state.activeIndex].vocab.push(...parsed);
+    }
+    document.getElementById('batchVocabInput').value = '';
+    renderVocab();
+    saveDraft();
+    showToast(`已导入 ${parsed.length} 个词汇`);
+}
+
+// 阅读理解题渲染与操作
+function renderQuestions() {
+    const lesson = state.lessons[state.activeIndex];
+    const list = document.getElementById('questionsList');
+    list.innerHTML = '';
+    lesson.questions.forEach((qItem, i) => {
+        const div = document.createElement('div');
+        div.className = 'item-card';
+        div.innerHTML = `
+            <div class="item-card-top">
+                <span class="item-badge">第 ${i + 1} 题</span>
+                <div class="item-controls">
+                    <select class="style-select" onchange="state.lessons[state.activeIndex].questions[${i}].ansLabel = this.value; saveDraft();">
+                        <option value="👉 Respuesta" ${qItem.ansLabel === '👉 Respuesta' ? 'selected' : ''}>👉 Respuesta</option>
+                        <option value="👉 Respuesta posible" ${qItem.ansLabel === '👉 Respuesta posible' ? 'selected' : ''}>👉 Respuesta posible</option>
+                        <option value="👉 Respuesta correcta" ${qItem.ansLabel === '👉 Respuesta correcta' ? 'selected' : ''}>👉 Respuesta correcta</option>
+                        <option value="👉 Explicación" ${qItem.ansLabel === '👉 Explicación' ? 'selected' : ''}>👉 Explicación</option>
+                    </select>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="moveQuestion(${i}, -1)" ${i === 0 ? 'disabled' : ''}>↑</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="moveQuestion(${i}, 1)" ${i === lesson.questions.length - 1 ? 'disabled' : ''}>↓</button>
+                    <button type="button" class="btn btn-danger-outline btn-sm" onclick="removeQuestion(${i})">删除</button>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="field">
+                    <label>题目内容（直接粘贴西语+中文问题，自动加题号）</label>
+                    <textarea placeholder="¿Qué trajo uno de los niños?&#10;一个孩子带来了什么？" oninput="state.lessons[state.activeIndex].questions[${i}].q = this.value; saveDraft();">${escapeHtml(qItem.q)}</textarea>
+                </div>
+                <div class="field">
+                    <label>参考答案（直接粘贴西语+中文答案）</label>
+                    <textarea placeholder="Trajo un trompo. (他带来了一个陀螺。)" oninput="state.lessons[state.activeIndex].questions[${i}].a = this.value; saveDraft();">${escapeHtml(qItem.a)}</textarea>
+                </div>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function addQuestion() {
+    state.lessons[state.activeIndex].questions.push({ q: '', a: '', ansLabel: '👉 Respuesta' });
+    renderQuestions();
+    saveDraft();
+}
+
+function removeQuestion(i) {
+    state.lessons[state.activeIndex].questions.splice(i, 1);
+    renderQuestions();
+    saveDraft();
+}
+
+function moveQuestion(i, dir) {
+    const arr = state.lessons[state.activeIndex].questions;
+    const t = i + dir;
+    if (t < 0 || t >= arr.length) return;
+    [arr[i], arr[t]] = [arr[t], arr[i]];
+    renderQuestions();
+    saveDraft();
+}
+
+// 生成最终学生端 HTML 源码（100% 保持原版视觉、折叠与默写脚本）
+function buildFinalHtml() {
+    const pageTitle = escapeHtml(document.getElementById('cfgPageTitle').value.trim() || '阅读训练 | EMSI 马德里国际中文学校');
+    const mainTitle = document.getElementById('cfgMainTitle').value.trim() || '<span>EMSI</span> 马德里国际中文学校';
+    const subtitle = escapeHtml(document.getElementById('cfgSubtitle').value.trim());
+    const backText = escapeHtml(document.getElementById('cfgBackText').value.trim() || '返回目录');
+    const backHref = escapeHtml(document.getElementById('cfgBackHref').value.trim() || '三四年级阅读目录.html');
+    const footerText = escapeHtml(document.getElementById('cfgFooter').value.trim());
+
+    const lessonsHtml = state.lessons.map((lesson, idx) => {
+        const numZh = lesson.lessonNumZh.trim();
+        const tZh = lesson.titleZh.trim() || '未命名课文';
+        const tEs = lesson.titleEs.trim();
+        const summaryHeading = (numZh ? numZh + '：' : '') + tZh + (tEs ? ` (${tEs})` : '');
+
+        // 读前思考
+        const validPre = lesson.preQuestions.filter(item => item.q.trim());
+        const preHtml = validPre.length > 0 ? `
+            <div class="quiz-title" style="text-align:left; font-size:20px;">Antes de comenzar la lectura / 开始阅读之前</div>
+            ${validPre.map((item, qIdx) => {
+                const cleanQ = item.q.trim().replace(/^\d+[\.\、\)\s]+/, '');
+                const splitQ = formatSplitResult(splitBilingualText(cleanQ));
+                const ansHtml = item.a.trim() ? `
+                    <details class="answer-details">
+                        <summary>${escapeHtml(item.ansLabel || '👉 Respuesta posible')}</summary>
+                        <div class="answer-content">${formatTextWithBreaks(item.a.trim())}</div>
+                    </details>` : '';
+                return `
+                <div class="question-box">
+                    <span class="question-text">${qIdx + 1}. ${splitQ.es || escapeHtml(cleanQ)}</span>
+                    ${splitQ.zh ? `<span class="question-zh">${splitQ.zh}</span>` : ''}
+                    ${ansHtml}
+                </div>`;
+            }).join('')}
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+        ` : '';
+
+        // 课文段落
+        const validParas = lesson.paragraphs.filter(p => p.text.trim());
+        const parasHtml = validParas.map(p => {
+            const splitP = formatSplitResult(splitBilingualText(p.text));
+            let inlineStyle = '';
+            if (p.style === 'yellow') {
+                inlineStyle = ' style="background: #fff9db; padding: 15px; border-radius: 8px; border-left: 5px solid #f1c40f;"';
+            } else if (p.style === 'red') {
+                inlineStyle = ' style="background: #fff5f5; padding: 15px; border-radius: 8px; border-left: 5px solid #e74c3c;"';
+            } else if (p.style === 'quote') {
+                inlineStyle = ' style="border-left: 3px solid #ddd; padding-left: 15px; color: #666; margin-left: 20px; font-style: italic;"';
+            }
+            return `
+                <div class="para-block"${inlineStyle}>
+                    ${splitP.es ? `<span class="text-es">${splitP.es}</span>` : ''}
+                    ${splitP.zh ? `<span class="text-zh">${splitP.zh}</span>` : ''}
+                </div>`;
+        }).join('');
+
+        // 重点词汇
+        const validVocab = lesson.vocab.filter(v => v.es.trim() || v.zh.trim());
+        const vocabHtml = validVocab.length > 0 ? `
+            <div class="quiz-section">
+                <div class="quiz-title">Vocabulario / ${validVocab.length}个重点词汇</div>
+                <div class="vocab-grid">
+                    ${validVocab.map((v, vIdx) => `
+                    <div class="vocab-item"><span>${vIdx + 1}. ${escapeHtml(v.es.trim())}</span><span>${escapeHtml(v.zh.trim())}</span></div>`).join('')}
+                </div>
+            </div>` : '';
+
+        // 阅读理解
+        const validQuestions = lesson.questions.filter(q => q.q.trim());
+        const questionsHtml = validQuestions.length > 0 ? `
+            <div class="quiz-section">
+                <div class="quiz-title">Comprensión / 阅读理解</div>
+                ${validQuestions.map((qItem, qIdx) => {
+                    const cleanQ = qItem.q.trim().replace(/^\d+[\.\、\)\s]+/, '');
+                    const splitQ = formatSplitResult(splitBilingualText(cleanQ));
+                    const ansBlock = qItem.a.trim() ? `
+                    <details class="answer-details"><summary>${escapeHtml(qItem.ansLabel || '👉 Respuesta')}</summary><div class="answer-content">${formatTextWithBreaks(qItem.a.trim())}</div></details>` : '';
+                    return `
+                <div class="question-box">
+                    <span class="question-text">${qIdx + 1}. ${splitQ.es || escapeHtml(cleanQ)}</span>
+                    ${splitQ.zh ? `<span class="question-zh">${splitQ.zh}</span>` : ''}
+                    ${ansBlock}
+                </div>`;
+                }).join('')}
+            </div>` : '';
+
+        return `
+    <details class="lesson-container" id="lesson${idx + 1}">
+        <summary>
+            <h3>${escapeHtml(summaryHeading)}</h3>
+        </summary>
+        
+        <article class="lesson-card">
+            <div class="lesson-title">
+                ${lesson.lessonNumEs.trim() ? `<div class="es-title">${escapeHtml(lesson.lessonNumEs.trim())}</div>` : ''}
+                <h2>${escapeHtml(tZh)}</h2>
+                ${lesson.author.trim() ? `<div style="color: #666; font-size: 14px; margin-top: 5px;">${escapeHtml(lesson.author.trim())}</div>` : ''}
+            </div>
+
+            ${preHtml}
+
+            <div class="quiz-title" style="text-align:left; font-size:20px;">Lectura / 课文阅读</div>
+            <section class="story-body">
+                ${parasHtml}
+            </section>
+
+            ${vocabHtml}
+            ${questionsHtml}
+        </article>
+    </details>`;
+    }).join('\n');
+
+    return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${pageTitle}</title>
+    <style>
+        /* 核心样式 */
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+            background-color: #f5f7fa;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* 页眉 */
+        .header {
+            background-color: white; text-align: center;
+            padding: 40px 20px 0 20px; border-bottom: 5px solid #f1c40f;
+            position: relative;
+        }
+        .header h1 { color: #1a4a8e; font-size: 36px; margin: 0; }
+        .header .subtitle { color: #6b7280; font-size: 20px; margin: 10px 0 25px; font-weight: bold; }
+
+        /* 返回首页按钮 */
+        .back-home {
+            position: absolute; top: 35px; left: 40px;
+            text-decoration: none; display: inline-flex; align-items: center;
+            background: white; padding: 10px 25px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: #1a4a8e;
+            font-weight: bold; font-size: 18px; transition: all 0.3s ease;
+        }
+        .back-home:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .back-home svg { margin-right: 10px; width: 24px; height: 24px; }
+
+        /* 内容区 */
+        .main-content { flex: 1; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+
+        /* 折叠组件 (课程级别) */
+        .lesson-container { width: 100%; max-width: 900px; background: white; margin-bottom: 20px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        summary { padding: 25px 40px; list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; border-left: 8px solid #1a4a8e; }
+        summary::-webkit-details-marker { display: none; }
+        summary h3 { margin: 0; color: #1a4a8e; font-size: 22px; }
+        summary::after { content: "展开内容 +"; color: #f1c40f; font-weight: bold; font-size: 14px; }
+        details[open] summary::after { content: "点击折叠 -"; }
+
+        .lesson-card { padding: 20px 50px 50px 50px; line-height: 1.8; border-top: 1px solid #eee; }
+
+        /* 内部排版 */
+        .lesson-title { border-left: 6px solid #f1c40f; padding-left: 15px; margin-bottom: 30px; margin-top: 20px; }
+        .lesson-title h2 { color: #1a4a8e; margin: 0; font-size: 28px; }
+        .lesson-title .es-title { color: #6b7280; font-size: 18px; font-weight: bold; }
+        .para-block { margin-bottom: 25px; }
+        .text-es { color: #2c3e50; font-size: 18px; display: block; }
+        .text-zh { color: #7f8c8d; font-size: 16px; display: block; margin-top: 5px; }
+
+        /* 词汇网格 */
+        .vocab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px; }
+        .vocab-item { display: flex; justify-content: space-between; padding: 8px 15px; border-bottom: 1px solid #eee; font-size: 15px; }
+        .vocab-item span:first-child { color: #1a4a8e; font-weight: bold; }
+        .vocab-item span:last-child { color: #666; }
+
+        /* 练习题样式 */
+        .quiz-section { margin-top: 40px; border-top: 2px dashed #eee; padding-top: 30px; }
+        .quiz-title { color: #1a4a8e; font-weight: bold; font-size: 24px; margin-bottom: 20px; text-align: center; }
+        .question-box { background: #f9f9f9; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #edf2f7; }
+        .question-text { color: #1a4a8e; font-weight: bold; font-size: 18px; display: block; margin-bottom: 5px; }
+        .question-zh { color: #6b7280; font-size: 15px; display: block; margin-bottom: 15px; }
+        
+        /* 答案折叠样式 */
+        .answer-details { margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+        .answer-details summary { 
+            padding: 5px 0; border: none; background: transparent; color: #e67e22; 
+            font-size: 16px; font-weight: bold; justify-content: flex-start;
+        }
+        .answer-details summary::after { content: " (点击查看答案)"; font-size: 12px; margin-left: 10px; color: #aaa; }
+        .answer-content { background: #fff3e0; padding: 10px 15px; border-radius: 8px; color: #d35400; margin-top: 5px; }
+
+        .footer { background-color: #1a4a8e; color: white; text-align: center; padding: 20px; font-size: 14px; }
+
+        @media (max-width: 600px) {
+            .back-home { position: static; margin-bottom: 20px; }
+            .vocab-grid { grid-template-columns: 1fr; }
+            .lesson-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="${backHref}" class="back-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        ${backText}
+    </a>
+    <h1>${mainTitle}</h1>
+    ${subtitle ? `<div class="subtitle">${subtitle}</div>` : ''}
+</header>
+
+<main class="main-content">
+${lessonsHtml}
+</main>
+
+<footer class="footer">
+    ${footerText}
+</footer>
+
+<style>
+    /* 默写按钮样式 */
+    .dictation-btn {
+        background-color: #f1c40f;
+        color: #1a4a8e;
+        border: none;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 15px;
+        vertical-align: middle;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .dictation-btn:hover {
+        background-color: #f39c12;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .dictation-btn.active {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    /* 默写模式下的单词遮挡 */
+    .vocab-grid.dictation-mode .vocab-item span:first-child {
+        background-color: #e2e8f0;
+        color: transparent !important;
+        border-radius: 4px;
+        user-select: none;
+        cursor: pointer;
+        position: relative;
+        min-width: 80px;
+    }
+
+    /* 遮挡时的提示文字 */
+    .vocab-grid.dictation-mode .vocab-item span:first-child::after {
+        content: "点击查看";
+        position: absolute;
+        left: 0; top: 0; width: 100%; height: 100%;
+        color: #999;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 偷看模式 */
+    .vocab-grid.dictation-mode .vocab-item span:first-child.peek {
+        background-color: #fff3cd !important;
+        color: #1a4a8e !important;
+    }
+    .vocab-grid.dictation-mode .vocab-item span:first-child.peek::after {
+        content: "";
+    }
+</style>
+
+<script>
+    (function() {
+        var grids = document.querySelectorAll('.vocab-grid');
+        if (grids.length === 0) return;
+
+        grids.forEach(function(grid) {
+            var title = grid.previousElementSibling;
+            if (!title || !title.classList.contains('quiz-title') || title.querySelector('.dictation-btn')) {
+                return;
+            }
+
+            var btn = document.createElement('button');
+            btn.className = 'dictation-btn';
+            btn.innerHTML = '🙈 默写模式';
+            btn.type = 'button';
+
+            btn.onclick = function(e) {
+                e.stopPropagation();
+                grid.classList.toggle('dictation-mode');
+                
+                if (grid.classList.contains('dictation-mode')) {
+                    this.innerHTML = '👁️ 显示答案';
+                    this.classList.add('active');
+                } else {
+                    this.innerHTML = '🙈 默写模式';
+                    this.classList.remove('active');
+                    var peeks = grid.querySelectorAll('.peek');
+                    peeks.forEach(function(p) { p.classList.remove('peek'); });
+                }
+            };
+
+            title.appendChild(btn);
+        });
+
+        document.body.addEventListener('click', function(e) {
+            var target = e.target;
+            if (target.matches('.vocab-grid.dictation-mode .vocab-item span:first-child')) {
+                target.classList.toggle('peek');
+            }
+        });
+    })();
+<\/script>
+</body>
+</html>`;
+}
+
+// 预览、复制、下载
+function openPreview() {
+    const html = buildFinalHtml();
+    const frame = document.getElementById('previewFrame');
+    frame.srcdoc = html;
+    document.getElementById('previewModal').classList.add('open');
+}
+
+function closePreview() {
+    document.getElementById('previewModal').classList.remove('open');
+}
+
+function copyGeneratedCode() {
+    const html = buildFinalHtml();
+    navigator.clipboard.writeText(html).then(() => {
+        showToast('✅ 完整 HTML 代码已复制到剪贴板');
+    }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = html;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('✅ 完整 HTML 代码已复制到剪贴板');
+    });
+}
+
+function downloadHtml() {
+    const html = buildFinalHtml();
+    const sub = document.getElementById('cfgSubtitle').value.trim() || '阅读训练';
+    const filename = sub.replace(/[\\/:*?"<>|]/g, '_') + '.html';
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('💾 已下载文件：' + filename);
+}
+
+// 反向导入已有 HTML 文件进行二次编辑
+function importExistingHtml(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(e.target.result, 'text/html');
+
+            const titleEl = doc.querySelector('title');
+            if (titleEl) document.getElementById('cfgPageTitle').value = titleEl.textContent.trim();
+
+            const h1El = doc.querySelector('.header h1');
+            if (h1El) document.getElementById('cfgMainTitle').value = h1El.innerHTML.trim();
+
+            const subEl = doc.querySelector('.header .subtitle');
+            if (subEl) document.getElementById('cfgSubtitle').value = subEl.textContent.trim();
+
+            const backEl = doc.querySelector('.back-home');
+            if (backEl) {
+                document.getElementById('cfgBackHref').value = backEl.getAttribute('href') || '';
+                document.getElementById('cfgBackText').value = backEl.textContent.trim();
+            }
+
+            const footerEl = doc.querySelector('.footer');
+            if (footerEl) document.getElementById('cfgFooter').value = footerEl.textContent.trim();
+
+            const containers = doc.querySelectorAll('.lesson-container');
+            if (containers.length === 0) {
+                showToast('⚠️ 未在该文件中识别到课程模块');
+                return;
+            }
+
+            const importedLessons = Array.from(containers).map((box, idx) => {
+                const summaryText = (box.querySelector('summary h3')?.textContent || '').trim();
+                let lessonNumZh = '';
+                let titleZh = '';
+                let titleEs = '';
+
+                const esMatch = summaryText.match(/\(([^()]+)\)\s*$/);
+                let mainPart = summaryText;
+                if (esMatch) {
+                    titleEs = esMatch[1].trim();
+                    mainPart = summaryText.slice(0, esMatch.index).trim();
+                }
+                const colonIdx = mainPart.search(/[:：]/);
+                if (colonIdx !== -1) {
+                    lessonNumZh = mainPart.slice(0, colonIdx).trim();
+                    titleZh = mainPart.slice(colonIdx + 1).trim();
+                } else {
+                    titleZh = mainPart;
+                }
+
+                const lessonNumEs = (box.querySelector('.lesson-title .es-title')?.textContent || `LECCIÓN ${idx + 1}`).trim();
+                const h2Text = (box.querySelector('.lesson-title h2')?.textContent || '').trim();
+                if (h2Text) titleZh = h2Text;
+
+                const authorDiv = box.querySelector('.lesson-title div:not(.es-title), .lesson-title p');
+                const author = authorDiv ? authorDiv.textContent.trim() : '';
+
+                // 段落
+                const paraBlocks = box.querySelectorAll('.story-body .para-block');
+                const paragraphs = Array.from(paraBlocks).map(pb => {
+                    const es = (pb.querySelector('.text-es')?.innerText || '').trim();
+                    const zh = (pb.querySelector('.text-zh')?.innerText || '').trim();
+                    const st = pb.getAttribute('style') || '';
+                    let style = 'normal';
+                    if (st.includes('#fff9db') || st.includes('#f1c40f')) style = 'yellow';
+                    else if (st.includes('#fff5f5') || st.includes('#e74c3c')) style = 'red';
+                    else if (st.includes('italic')) style = 'quote';
+                    return {
+                        text: [es, zh].filter(Boolean).join('\n'),
+                        style
+                    };
+                });
+
+                // 词汇
+                const vocabItems = box.querySelectorAll('.vocab-grid .vocab-item');
+                const vocab = Array.from(vocabItems).map(vi => {
+                    const spans = vi.querySelectorAll('span');
+                    const rawEs = (spans[0]?.textContent || '').trim().replace(/^\d+[\.\、\)\s]+/, '');
+                    const rawZh = (spans[1]?.textContent || '').trim();
+                    return { es: rawEs, zh: rawZh };
+                });
+
+                // 理解题与读前题
+                const sections = box.querySelectorAll('.quiz-section');
+                let questions = [];
+                sections.forEach(sec => {
+                    if (sec.querySelector('.vocab-grid')) return;
+                    const qBoxes = sec.querySelectorAll('.question-box');
+                    questions = Array.from(qBoxes).map(qb => {
+                        const qEs = (qb.querySelector('.question-text')?.textContent || '').trim().replace(/^\d+[\.\、\)\s]+/, '');
+                        const qZh = (qb.querySelector('.question-zh')?.textContent || '').trim();
+                        const ansLabel = (qb.querySelector('.answer-details summary')?.textContent || '👉 Respuesta').trim();
+                        const ansText = (qb.querySelector('.answer-content')?.innerText || '').trim();
+                        return {
+                            q: [qEs, qZh].filter(Boolean).join('\n'),
+                            a: ansText,
+                            ansLabel
+                        };
+                    });
+                });
+
+                // 读前题（位于 story-body 之前）
+                const preBoxes = Array.from(box.querySelectorAll('.lesson-card > .question-box'));
+                const preQuestions = preBoxes.map(qb => {
+                    const qEs = (qb.querySelector('.question-text')?.textContent || '').trim().replace(/^\d+[\.\、\)\s]+/, '');
+                    const qZh = (qb.querySelector('.question-zh')?.textContent || '').trim();
+                    const ansLabel = (qb.querySelector('.answer-details summary')?.textContent || '👉 Respuesta posible').trim();
+                    const ansText = (qb.querySelector('.answer-content')?.innerText || '').trim();
+                    return {
+                        q: [qEs, qZh].filter(Boolean).join('\n'),
+                        a: ansText,
+                        ansLabel
+                    };
+                });
+
+                return {
+                    lessonNumZh,
+                    lessonNumEs,
+                    titleZh,
+                    titleEs,
+                    author,
+                    preQuestions: preQuestions.length ? preQuestions : [{ q: '', a: '', ansLabel: '👉 Respuesta posible' }],
+                    paragraphs: paragraphs.length ? paragraphs : [{ text: '', style: 'normal' }],
+                    vocab: vocab.length ? vocab : [{ es: '', zh: '' }],
+                    questions: questions.length ? questions : [{ q: '', a: '', ansLabel: '👉 Respuesta' }]
+                };
+            });
+
+            state.lessons = importedLessons;
+            state.activeIndex = 0;
+            renderAll();
+            saveDraft();
+            showToast(`📥 成功导入 ${importedLessons.length} 课内容，可直接修改`);
+        } catch (err) {
+            showToast('❌ 文件解析失败，请确认是有效的阅读网页HTML');
+        }
+        event.target.value = '';
+    };
+    reader.readAsText(file, 'utf-8');
+}
+
+function loadSampleData() {
+    if (!confirm('填充示例将覆盖当前正在编辑的内容，是否继续？')) return;
+    state.activeIndex = 0;
+    state.lessons = [
+        {
+            lessonNumZh: '第六课',
+            lessonNumEs: 'LECCIÓN 6',
+            titleZh: '粮仓里的老鼠',
+            titleEs: 'El ratón del granero',
+            author: '',
+            preQuestions: [
+                {
+                    q: '¿Habéis oído alguna vez decir: “la avaricia rompe el saco”?\n你们有没有听过这样一句话：“贪心会把袋子撑破”？',
+                    a: 'Sí, significa que por querer demasiado podemos perderlo todo. (是的，意思是太贪心反而会失去一切。)',
+                    ansLabel: '👉 Respuesta posible'
+                }
+            ],
+            paragraphs: [
+                {
+                    text: 'Érase una vez un ratón que vivía debajo de un granero. Las tablas que formaban el suelo del granero tenían un agujerito, por el que los granos de trigo caían poco a poco a la madriguera.\n从前，有一只老鼠住在一个粮仓下面。组成粮仓地面的木板上有一个小洞，麦粒一颗接一颗地慢慢掉进老鼠的洞穴里。',
+                    style: 'normal'
+                },
+                {
+                    text: 'El gran tamaño del agujero que el ratón había abierto en el suelo del granero llamó la atención del granjero. Y éste lo había tapado, clavándole una tabla.\n老鼠在粮仓地面上咬出的那个大洞，引起了农夫的注意。于是农夫用一块木板把洞钉住封了起来。',
+                    style: 'yellow'
+                }
+            ],
+            vocab: [
+                { es: 'Granero', zh: '粮仓' },
+                { es: 'Ratón', zh: '老鼠' },
+                { es: 'Agujero', zh: '洞口' },
+                { es: 'Trigo', zh: '小麦' },
+                { es: 'Granjero', zh: '农夫' },
+                { es: 'Avaricia', zh: '贪婪' }
+            ],
+            questions: [
+                {
+                    q: '¿Qué hizo el ratón con el agujero para que cayera más grano?\n老鼠对洞做了什么，让更多粮食掉下来？',
+                    a: 'El ratón agrandó el agujero, para que cayeran más granos. (老鼠把洞弄大了，这样就能掉下更多麦粒。)',
+                    ansLabel: '👉 Respuesta'
+                },
+                {
+                    q: '¿Qué nos enseña este cuento?\n这个故事教会了我们什么？',
+                    a: 'Nos enseña que no debemos ser avariciosos. (教会我们不要贪心。)',
+                    ansLabel: '👉 Respuesta'
+                }
+            ]
+        },
+        createEmptyLesson(6),
+        createEmptyLesson(7),
+        createEmptyLesson(8),
+        createEmptyLesson(9)
+    ];
+    renderAll();
+    saveDraft();
+    showToast('✨ 已填充示例数据（第六课至第十课）');
+}
+
+function resetAll() {
+    if (!confirm('确定清空所有内容并恢复为 5 课空白模板吗？')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    state = {
+        activeIndex: 0,
+        lessons: Array.from({ length: 5 }, (_, i) => createEmptyLesson(i))
+    };
+    renderAll();
+    showToast('已重置为空白模板');
+}
+
+function renderAll() {
+    renderTabs();
+    renderEditor();
+}
+
+loadDraft();
+renderAll();
+</script>
+</body>
+</html>
