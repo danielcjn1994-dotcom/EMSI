@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 英语随堂在线听写系统</title>
+    <style>
+        :root {
+            --emsi-blue: #1a4a8e;
+            --emsi-gold: #f1c40f;
+            --emsi-gray: #f5f7fa;
+            --success: #10b981;
+            --error: #ef4444;
+            --text-main: #1e293b;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
+            background-color: var(--emsi-gray);
+            color: var(--text-main);
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        .header { background-color: white; text-align: center; padding: 20px 10px; border-bottom: 5px solid var(--emsi-gold); }
+        .header h1 { color: var(--emsi-blue); margin: 0; font-size: 28px; }
+
+        .main-content { flex: 1; padding: 20px; max-width: 1100px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+
+        /* --- 导航按钮 --- */
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 20px;
+            background-color: white;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 50px;
+            color: var(--emsi-blue);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-back:hover {
+            border-color: var(--emsi-blue);
+            background-color: #f8fafc;
+            transform: translateX(-3px);
+        }
+        .btn-back::before {
+            content: '〈'; 
+            margin-right: 5px;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px;
+            cursor: pointer; transition: 0.2s; border: none; display: flex; align-items: center; gap: 8px;
+        }
+        .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .btn-pill {
+            padding: 8px 15px; border-radius: 50px; border: 2px solid var(--emsi-blue);
+            background: white; color: var(--emsi-blue); font-weight: bold; cursor: pointer;
+            text-decoration: none; font-size: 14px; transition: 0.2s;
+        }
+        .btn-pill:hover { background: var(--emsi-blue); color: white; }
+        .btn-gold { background: var(--emsi-gold); color: #1e293b; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; border:none; }
+        .btn-blue { background: var(--emsi-blue); color: white; }
+        .btn-danger-pill {
+            padding: 6px 14px; border-radius: 50px; border: 1.5px solid #fecaca;
+            background: #fef2f2; color: var(--error); font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s;
+        }
+        .btn-danger-pill:hover { background: var(--error); color: white; border-color: var(--error); }
+
+        .screen { display: none; }
+        .active { display: block; }
+
+        /* --- 多板块标签栏（支持直接点击改名） --- */
+        .board-tabs-bar {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+            background: #f8fafc; padding: 12px 15px; border-radius: 14px;
+            border: 1px solid #e2e8f0; margin-bottom: 18px;
+        }
+        .board-tab {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 7px 14px; border-radius: 50px;
+            background: white; border: 2px solid #cbd5e1;
+            cursor: pointer; transition: 0.2s;
+        }
+        .board-tab:hover { border-color: var(--emsi-blue); }
+        .board-tab.active {
+            background: var(--emsi-blue); border-color: var(--emsi-blue); color: white;
+            box-shadow: 0 4px 10px rgba(26, 74, 142, 0.2);
+        }
+        .board-name-input {
+            border: none; background: transparent; font-family: inherit;
+            font-size: 14px; font-weight: bold; color: inherit;
+            outline: none; padding: 2px 4px; border-radius: 4px;
+            min-width: 72px; text-align: center;
+        }
+        .board-tab.active .board-name-input:focus { background: rgba(255,255,255,0.2); }
+        .board-tab:not(.active) .board-name-input:focus { background: #eef2ff; }
+        .board-count-badge {
+            font-size: 12px; padding: 1px 7px; border-radius: 20px;
+            background: #e2e8f0; color: #475569; font-weight: bold;
+        }
+        .board-tab.active .board-count-badge {
+            background: var(--emsi-gold); color: #1e293b;
+        }
+        .board-close {
+            font-size: 13px; opacity: 0.7; margin-left: 2px; padding: 0 4px; border-radius: 50%;
+        }
+        .board-close:hover { opacity: 1; background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .btn-add-board {
+            padding: 7px 15px; border-radius: 50px; border: 1.5px dashed var(--emsi-blue);
+            background: #eff6ff; color: var(--emsi-blue); font-weight: bold; font-size: 13px;
+            cursor: pointer; transition: 0.2s;
+        }
+        .btn-add-board:hover { background: var(--emsi-blue); color: white; }
+
+        /* --- 单词输入区 --- */
+        .input-panel {
+            background: #fffbeb; border: 1.5px dashed #f59e0b;
+            border-radius: 14px; padding: 15px 18px; margin-bottom: 22px;
+        }
+        .input-panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
+        }
+        .input-panel-title { font-weight: bold; color: #92400e; font-size: 14px; }
+        .word-textarea {
+            width: 100%; box-sizing: border-box; min-height: 95px; padding: 12px;
+            border: 1.5px solid #cbd5e1; border-radius: 10px; font-family: inherit;
+            font-size: 14px; line-height: 1.6; resize: vertical; background: white;
+        }
+        .word-textarea:focus { outline: none; border-color: var(--emsi-blue); }
+        .input-actions {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px; margin-top: 10px;
+        }
+
+        /* --- 单词展示表样式 --- */
+        .word-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+        .word-item { 
+            display: flex; align-items: center; padding: 10px; background: #fff; 
+            border-radius: 8px; border: 1px solid #eef2f7; transition: 0.2s;
+            position: relative;
+        }
+        .word-num { color: #94a3b8; font-weight: bold; margin-right: 8px; min-width: 24px; }
+        .word-en { font-weight: 700; color: var(--emsi-blue); margin-right: 8px; border-radius: 4px; padding: 0 4px; }
+        .word-cn { color: #475569; font-size: 14px; flex: 1; }
+        .word-speak-btn {
+            background: none; border: none; color: #0284c7; font-size: 14px;
+            cursor: pointer; padding: 2px 5px; border-radius: 4px; opacity: 0.75;
+        }
+        .word-speak-btn:hover { opacity: 1; background: #e0f2fe; }
+        .word-del-btn {
+            background: none; border: none; color: #cbd5e1; font-size: 15px;
+            cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: 0.2s;
+        }
+        .word-item:hover .word-del-btn { color: #94a3b8; }
+        .word-del-btn:hover { color: var(--error) !important; background: #fef2f2; }
+
+        .dictation-mode .word-en { color: transparent; background: #dbeafe; cursor: pointer; user-select: none; }
+        .dictation-mode .word-en.show { color: var(--emsi-blue); background: transparent; }
+
+        .empty-tip {
+            grid-column: 1 / -1; text-align: center; padding: 40px 20px;
+            color: #94a3b8; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;
+        }
+
+        /* --- 练习系统样式 --- */
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+        #progress-fill { height: 100%; background: var(--emsi-blue); width: 0%; transition: 0.3s; }
+        .word-display { text-align: center; font-size: 2.5rem; font-weight: 800; color: var(--emsi-blue); margin: 25px 0; }
+        .options-grid { display: grid; gap: 12px; }
+        .option-btn {
+            padding: 18px; border: 2px solid #f1f5f9; border-radius: 12px;
+            background: white; font-size: 1.1rem; cursor: pointer; transition: 0.2s; text-align: left;
+        }
+        .option-btn:hover { border-color: var(--emsi-blue); background: #f0f7ff; }
+        .correct { background: var(--success) !important; color: white; border-color: var(--success); }
+        .wrong { background: var(--error) !important; color: white; border-color: var(--error); }
+
+        .spell-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
+        .letter-box {
+            width: 40px; height: 50px; border: 2px solid #e2e8f0; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;
+        }
+        .letter-box.blank { border-color: var(--emsi-blue); background: #f0f4ff; cursor: pointer; }
+        .letter-box.active-blank { border-color: var(--emsi-gold); box-shadow: 0 0 8px rgba(241, 196, 15, 0.5); }
+        .keyboard { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .key-btn { padding: 12px 0; border: none; background: #e2e8f0; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .key-btn:hover { background: #cbd5e1; }
+
+        @media (max-width: 900px) { .word-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .word-grid { grid-template-columns: 1fr; } .keyboard { grid-template-columns: repeat(6, 1fr); } }
+
+        .footer { background: var(--emsi-blue); color: white; text-align: center; padding: 15px; font-size: 14px; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>EMSI 英语随堂听写</h1>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            
+            <div id="menu-screen" class="screen active">
+                <div class="nav-bar">
+                    <a href="index.html" class="btn-back">返回</a>
+                    
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn-pill" onclick="toggleDictation()" id="dictBtn">✍️ 听写模式</button>
+                        <button class="btn-pill" onclick="downloadCSV()">📥 下载表</button>
+                    </div>
+                </div>
+
+                <!-- 多板块标签区（直接点击板块名称即可自由编辑） -->
+                <div class="board-tabs-bar" id="boardTabsBar"></div>
+
+                <!-- 当天单词快捷录入框 -->
+                <div class="input-panel">
+                    <div class="input-panel-header">
+                        <span class="input-panel-title">📋 粘贴当天英语单词（每行一个，支持 “英语 - 中文”、“英语：中文” 或直接粘贴词库两列内容）</span>
+                        <span style="font-size: 12px; color: #b45309;">提示：点击上方板块名称可直接改名（如学生姓名）</span>
+                    </div>
+                    <textarea id="wordPasteInput" class="word-textarea" placeholder="直接从词库文档复制粘贴到这里，例如：&#10;Elephant - 大象&#10;Library：图书馆&#10;Adventure 冒险"></textarea>
+                    <div class="input-actions">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-blue" style="padding: 8px 18px; border-radius: 10px;" onclick="importWords(true)">✨ 替换当前单词表</button>
+                            <button class="btn btn-gold" style="padding: 8px 16px;" onclick="importWords(false)">➕ 追加到当前表</button>
+                        </div>
+                        <button class="btn-danger-pill" onclick="clearCurrentBoardWords()">🗑️ 清空本板块单词</button>
+                    </div>
+                </div>
+
+                <!-- 三大练习模式按钮 -->
+                <div style="display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;">
+                    <button class="btn btn-blue" style="flex:1; min-width: 140px; justify-content:center;" onclick="startQuiz('en-cn')">英译汉练习</button>
+                    <button class="btn btn-blue" style="flex:1; min-width: 140px; justify-content:center;" onclick="startQuiz('cn-en')">汉译英练习</button>
+                    <button class="btn btn-gold" style="flex:1; min-width: 140px; justify-content:center;" onclick="startQuiz('fill')">拼写挑战</button>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <h3 id="tableHeading" style="border-left: 5px solid var(--emsi-gold); padding-left: 10px; margin: 0;">📖 今日英语单词表 (0)</h3>
+                    <span style="font-size: 13px; color: #64748b;">听写模式下点击蓝色色块可单独偷看拼写 · 点击 🔊 可听英语发音</span>
+                </div>
+                <div class="word-grid" id="mainWordTable"></div>
+            </div>
+
+            <div id="quiz-screen" class="screen">
+                <div class="nav-bar">
+                    <button type="button" class="btn-back" onclick="backToMenu()">退出</button>
+                    <span id="quiz-counter" style="font-weight:bold;">1 / 1</span>
+                    <button class="btn btn-gold" onclick="showResults()">交卷</button>
+                </div>
+                <div class="progress-bar"><div id="progress-fill"></div></div>
+                <div style="text-align: center; color: #64748b; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                    <span id="quiz-prompt"></span>
+                    <button type="button" class="word-speak-btn" style="font-size: 16px;" onclick="speakCurrentQuizWord()" title="听发音">🔊 发音</button>
+                </div>
+                <div id="quiz-display" class="word-display"></div>
+                
+                <div id="spell-area" class="spell-container"></div>
+                <div id="mcq-area" class="options-grid"></div>
+                <div id="keyboard-area" class="keyboard"></div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                    <button class="btn-pill" id="prev-btn" onclick="changeStep(-1)">上一题</button>
+                    <button class="btn-pill" style="background:var(--emsi-blue); color:white;" id="next-btn" onclick="changeStep(1)">下一题</button>
+                </div>
+            </div>
+
+            <div id="result-screen" class="screen">
+                <h2 style="text-align: center; color: var(--emsi-blue);">英语练习结果报告</h2>
+                <div id="final-score" style="text-align: center; font-size: 4rem; font-weight: 800; color: var(--emsi-gold);">0%</div>
+                <div id="result-summary" style="text-align: center; line-height: 2; margin-bottom: 20px;"></div>
+                <button class="btn btn-blue" style="width:100%; justify-content:center; margin-bottom:10px; border:none; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer;" onclick="backToMenu()">回到单词表</button>
+                <a href="英语随堂听写目录.html" class="btn-back" style="width:100%; justify-content:center; box-sizing:border-box;">返回词汇中心</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2026 EMSI 马德里国际中文学校
+    </footer>
+
+    <script>
+        const STORAGE_KEY = 'emsi_english_dictation_boards_v1';
+
+        // 默认英语示例词库（首次打开展示，随时可替换或清空）
+        const defaultSampleWords = [
+            {en: "Elephant", cn: "大象"},
+            {en: "Library", cn: "图书馆"},
+            {en: "Adventure", cn: "冒险；奇遇"},
+            {en: "Butterfly", cn: "蝴蝶"},
+            {en: "Mountain", cn: "山；山脉"},
+            {en: "Notebook", cn: "笔记本"}
+        ];
+
+        let appState = {
+            activeBoardId: 'en_board_1',
+            boards: [
+                { id: 'en_board_1', name: '英语板块 1', words: [...defaultSampleWords] }
+            ]
+        };
+
+        let currentMode = '', quizList = [], currentIndex = 0, userAnswers = {};
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && Array.isArray(parsed.boards) && parsed.boards.length > 0) {
+                        appState = parsed;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {}
+        }
+
+        function getActiveBoard() {
+            let board = appState.boards.find(b => b.id === appState.activeBoardId);
+            if (!board) {
+                board = appState.boards[0];
+                appState.activeBoardId = board.id;
+            }
+            return board;
+        }
+
+        function autoResizeInput(input) {
+            const len = (input.value || input.placeholder || '').length;
+            input.style.width = Math.max(72, len * 14 + 14) + 'px';
+        }
+
+        function renderBoardTabs() {
+            const bar = document.getElementById('boardTabsBar');
+            bar.innerHTML = '';
+
+            appState.boards.forEach(board => {
+                const isActive = board.id === appState.activeBoardId;
+                const tab = document.createElement('div');
+                tab.className = 'board-tab' + (isActive ? ' active' : '');
+                tab.onclick = (e) => {
+                    if (e.target.tagName === 'INPUT' || e.target.classList.contains('board-close')) return;
+                    appState.activeBoardId = board.id;
+                    saveState();
+                    renderAll();
+                };
+
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.className = 'board-name-input';
+                nameInput.value = board.name;
+                nameInput.placeholder = '输入板块名';
+                nameInput.title = '直接点击修改板块名称（如孩子姓名）';
+                autoResizeInput(nameInput);
+
+                nameInput.onfocus = () => {
+                    if (appState.activeBoardId !== board.id) {
+                        appState.activeBoardId = board.id;
+                        saveState();
+                        renderBoardTabs();
+                        initMainTable();
+                        setTimeout(() => {
+                            const inputs = document.querySelectorAll('.board-name-input');
+                            const idx = appState.boards.findIndex(b => b.id === board.id);
+                            if (inputs[idx]) inputs[idx].focus();
+                        }, 0);
+                    }
+                };
+
+                nameInput.oninput = (e) => {
+                    board.name = e.target.value;
+                    autoResizeInput(e.target);
+                    updateHeading();
+                    saveState();
+                };
+
+                const countBadge = document.createElement('span');
+                countBadge.className = 'board-count-badge';
+                countBadge.innerText = board.words.length + '词';
+
+                tab.appendChild(nameInput);
+                tab.appendChild(countBadge);
+
+                if (appState.boards.length > 1) {
+                    const closeBtn = document.createElement('span');
+                    closeBtn.className = 'board-close';
+                    closeBtn.innerText = '✕';
+                    closeBtn.title = '删除此板块';
+                    closeBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        deleteBoard(board.id);
+                    };
+                    tab.appendChild(closeBtn);
+                }
+
+                bar.appendChild(tab);
+            });
+
+            const addBtn = document.createElement('button');
+            addBtn.type = 'button';
+            addBtn.className = 'btn-add-board';
+            addBtn.innerText = '+ 添加板块';
+            addBtn.onclick = addNewBoard;
+            bar.appendChild(addBtn);
+        }
+
+        function addNewBoard() {
+            const newId = 'en_board_' + Date.now();
+            const nextNum = appState.boards.length + 1;
+            appState.boards.push({
+                id: newId,
+                name: '英语板块 ' + nextNum,
+                words: []
+            });
+            appState.activeBoardId = newId;
+            saveState();
+            renderAll();
+        }
+
+        function deleteBoard(id) {
+            if (appState.boards.length <= 1) return;
+            const target = appState.boards.find(b => b.id === id);
+            if (!confirm(`确定删除「${target ? target.name : '该板块'}」吗？`)) return;
+            appState.boards = appState.boards.filter(b => b.id !== id);
+            if (appState.activeBoardId === id) {
+                appState.activeBoardId = appState.boards[0].id;
+            }
+            saveState();
+            renderAll();
+        }
+
+        // 解析粘贴的英语和汉语文本
+        function parseWordLines(rawText) {
+            const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+            const result = [];
+
+            lines.forEach(line => {
+                // 去掉行首序号，如 "1. "、"12、"
+                const cleaned = line.replace(/^\d+[\.\、\)\s]+/, '').trim();
+                if (!cleaned) return;
+
+                // 1. 优先按制表符、横杠、冒号、斜杠拆分
+                const sepParts = cleaned.split(/\s*(?:\t| - | – | — |:|：|\/)\s*/);
+                if (sepParts.length >= 2 && sepParts[0].trim()) {
+                    result.push({
+                        en: sepParts[0].trim(),
+                        cn: sepParts.slice(1).join(' / ').trim()
+                    });
+                    return;
+                }
+
+                // 2. 自动识别第一个汉字或音标括号出现的位置拆分英语和中文（如 "Apple 苹果"）
+                const zhMatch = cleaned.match(/^(.*?)([\u4e00-\u9fff].*)$/);
+                if (zhMatch && zhMatch[1].trim()) {
+                    result.push({
+                        en: zhMatch[1].trim(),
+                        cn: zhMatch[2].trim()
+                    });
+                    return;
+                }
+
+                // 3. 只有单边内容时也保留
+                result.push({ en: cleaned, cn: '' });
+            });
+
+            return result;
+        }
+
+        function importWords(replaceMode) {
+            const textarea = document.getElementById('wordPasteInput');
+            const raw = textarea.value.trim();
+            if (!raw) {
+                alert('请先在输入框中粘贴当天的英语和中文单词！');
+                return;
+            }
+            const parsed = parseWordLines(raw);
+            if (parsed.length === 0) return;
+
+            const board = getActiveBoard();
+            if (replaceMode) {
+                board.words = parsed;
+            } else {
+                board.words.push(...parsed);
+            }
+            textarea.value = '';
+            saveState();
+            renderAll();
+        }
+
+        function removeSingleWord(index) {
+            const board = getActiveBoard();
+            board.words.splice(index, 1);
+            saveState();
+            renderAll();
+        }
+
+        function clearCurrentBoardWords() {
+            const board = getActiveBoard();
+            if (board.words.length === 0) return;
+            if (!confirm(`确定清空「${board.name}」的所有单词吗？`)) return;
+            board.words = [];
+            saveState();
+            renderAll();
+        }
+
+        function speakEnglish(text) {
+            if (!('speechSynthesis' in window) || !text) return;
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'en-US';
+            utter.rate = 0.9;
+            window.speechSynthesis.speak(utter);
+        }
+
+        function speakCurrentQuizWord() {
+            const item = quizList[currentIndex];
+            if (item && item.en) speakEnglish(item.en);
+        }
+
+        function updateHeading() {
+            const board = getActiveBoard();
+            const count = board.words.length;
+            const label = board.name.trim() || '当前板块';
+            document.getElementById('tableHeading').innerText =
+                count > 0 ? `📖 ${label} · 单词表 (1-${count})` : `📖 ${label} · 单词表 (0)`;
+        }
+
+        function initMainTable() {
+            const board = getActiveBoard();
+            const dictionary = board.words;
+            const container = document.getElementById('mainWordTable');
+            updateHeading();
+
+            if (dictionary.length === 0) {
+                container.innerHTML = `<div class="empty-tip">当前板块还没有单词，请在上方输入框粘贴当天的英语和中文单词后点击「替换当前单词表」</div>`;
+                return;
+            }
+
+            container.innerHTML = dictionary.map((item, i) => `
+                <div class="word-item">
+                    <span class="word-num">${i + 1}.</span>
+                    <span class="word-en" onclick="this.classList.toggle('show')">${escapeHtml(item.en)}</span>
+                    <span class="word-cn">${escapeHtml(item.cn)}</span>
+                    <button type="button" class="word-speak-btn" title="朗读发音" onclick="speakEnglish('${escapeJs(item.en)}')">🔊</button>
+                    <button type="button" class="word-del-btn" title="删除该词" onclick="removeSingleWord(${i})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            return (str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function escapeJs(str) {
+            return (str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        }
+
+        function toggleDictation() {
+            const grid = document.getElementById('mainWordTable');
+            const btn = document.getElementById('dictBtn');
+            grid.classList.toggle('dictation-mode');
+            btn.innerText = grid.classList.contains('dictation-mode') ? "👀 显示英语" : "✍️ 听写模式";
+        }
+
+        function startQuiz(mode) {
+            const dictionary = getActiveBoard().words;
+            if (dictionary.length === 0) {
+                alert('当前板块没有单词，请先粘贴导入当天单词后再开始练习！');
+                return;
+            }
+            if ((mode === 'en-cn' || mode === 'cn-en') && dictionary.length < 2) {
+                alert('选择题练习至少需要 2 个单词，当前只有 1 个词，可以直接使用「拼写挑战」或「听写模式」哦！');
+                return;
+            }
+
+            currentMode = mode;
+            quizList = [...dictionary].sort(() => Math.random() - 0.5).map(item => ({
+                ...item, gaps: makeGaps(item.en)
+            }));
+            currentIndex = 0;
+            userAnswers = {};
+            if (mode === 'fill') initKeyboard();
+            showScreen('quiz-screen');
+            renderQuestion();
+        }
+
+        function makeGaps(word) {
+            let indices = [];
+            let gapCount = Math.max(1, Math.floor(word.length * 0.4));
+            while (indices.length < gapCount && indices.length < word.length) {
+                let r = Math.floor(Math.random() * word.length);
+                if (!indices.includes(r)) indices.push(r);
+            }
+            return indices;
+        }
+
+        function renderQuestion() {
+            const item = quizList[currentIndex];
+            const display = document.getElementById('quiz-display');
+            const spellArea = document.getElementById('spell-area');
+            const mcqArea = document.getElementById('mcq-area');
+            const kbArea = document.getElementById('keyboard-area');
+            
+            document.getElementById('quiz-counter').innerText = `${currentIndex + 1} / ${quizList.length}`;
+            document.getElementById('progress-fill').style.width = ((currentIndex + 1) / quizList.length * 100) + '%';
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+
+            spellArea.style.display = 'none'; mcqArea.style.display = 'none'; kbArea.style.display = 'none';
+            display.style.display = 'block';
+
+            if (currentMode === 'fill') {
+                display.style.display = 'none';
+                spellArea.style.display = 'flex'; kbArea.style.display = 'grid';
+                document.getElementById('quiz-prompt').innerText = `根据中文补全英语单词：${item.cn}`;
+                renderSpellBoxes(item);
+            } else {
+                mcqArea.style.display = 'grid';
+                document.getElementById('quiz-prompt').innerText = currentMode === 'en-cn' ? '选择中文翻译' : '选择英语单词';
+                display.innerText = currentMode === 'en-cn' ? item.en : item.cn;
+                renderMCQ(item);
+            }
+        }
+
+        function renderMCQ(item) {
+            const dictionary = getActiveBoard().words;
+            const mcqArea = document.getElementById('mcq-area');
+            mcqArea.innerHTML = '';
+            const correct = currentMode === 'en-cn' ? item.cn : item.en;
+            if (!item.options) {
+                let distractors = dictionary.map(d => currentMode === 'en-cn' ? d.cn : d.en)
+                    .filter(v => v && v !== correct).sort(() => Math.random() - 0.5).slice(0, 3);
+                item.options = [correct, ...distractors].sort(() => Math.random() - 0.5);
+            }
+            item.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                if (userAnswers[currentIndex] === opt) btn.classList.add(opt === correct ? 'correct' : 'wrong');
+                btn.onclick = () => {
+                    userAnswers[currentIndex] = opt;
+                    renderQuestion();
+                    if (opt === correct) setTimeout(() => changeStep(1), 600);
+                };
+                mcqArea.appendChild(btn);
+            });
+        }
+
+        function renderSpellBoxes(item) {
+            const spellArea = document.getElementById('spell-area');
+            spellArea.innerHTML = '';
+            if (!userAnswers[currentIndex]) {
+                userAnswers[currentIndex] = item.en.split('').map((char, i) => item.gaps.includes(i) ? '' : char);
+            }
+            userAnswers[currentIndex].forEach((char, i) => {
+                const box = document.createElement('div');
+                box.className = 'letter-box' + (item.gaps.includes(i) ? ' blank' : '');
+                box.innerText = char;
+                if (item.gaps.includes(i)) {
+                    box.onclick = () => {
+                        document.querySelectorAll('.letter-box').forEach(b => b.classList.remove('active-blank'));
+                        box.classList.add('active-blank');
+                        box.dataset.index = i;
+                    };
+                }
+                spellArea.appendChild(box);
+            });
+            const firstBlank = spellArea.querySelector('.blank');
+            if (firstBlank) firstBlank.click();
+        }
+
+        function initKeyboard() {
+            const kb = document.getElementById('keyboard-area');
+            kb.innerHTML = '';
+            "abcdefghijklmnopqrstuvwxyz".split('').forEach(key => {
+                const btn = document.createElement('button');
+                btn.className = 'key-btn'; btn.innerText = key.toUpperCase();
+                btn.onclick = () => {
+                    const active = document.querySelector('.active-blank');
+                    if (!active) return;
+                    const idx = active.dataset.index;
+                    userAnswers[currentIndex][idx] = key;
+                    renderSpellBoxes(quizList[currentIndex]);
+                };
+                kb.appendChild(btn);
+            });
+        }
+
+        function changeStep(s) {
+            currentIndex += s;
+            if (currentIndex >= quizList.length) { showResults(); return; }
+            if (currentIndex < 0) currentIndex = 0;
+            renderQuestion();
+        }
+
+        function showResults() {
+            showScreen('result-screen');
+            let correct = 0;
+            quizList.forEach((item, i) => {
+                const ans = userAnswers[i];
+                if (currentMode === 'fill') {
+                    if (ans && ans.join('').toLowerCase() === item.en.toLowerCase()) correct++;
+                } else {
+                    const target = currentMode === 'en-cn' ? item.cn : item.en;
+                    if (ans === target) correct++;
+                }
+            });
+            const score = Math.round((correct / quizList.length) * 100);
+            document.getElementById('final-score').innerText = score + "%";
+            document.getElementById('result-summary').innerHTML = `答对: ${correct} / ${quizList.length}`;
+        }
+
+        function downloadCSV() {
+            const board = getActiveBoard();
+            const dictionary = board.words;
+            if (dictionary.length === 0) {
+                alert('当前板块没有可下载的单词！');
+                return;
+            }
+            let csv = "\uFEFF序号,英语,中文\n";
+            dictionary.forEach((item, i) => csv += `${i+1},"${item.en.replace(/"/g, '""')}","${item.cn.replace(/"/g, '""')}"\n`);
+            const blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            const fileName = (board.name.trim() || 'EMSI英语单词表').replace(/[\\/:*?"<>|]/g, '_');
+            link.download = `${fileName}.csv`;
+            link.click();
+        }
+
+        function backToMenu() {
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            showScreen('menu-screen');
+            renderAll();
+        }
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function renderAll() {
+            renderBoardTabs();
+            initMainTable();
+        }
+
+        loadState();
+        renderAll();
+    </script>
+</body>
+</html>

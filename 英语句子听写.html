@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 英语句段随堂听写系统</title>
+    <style>
+        :root {
+            --emsi-blue: #1a4a8e;
+            --emsi-gold: #f1c40f;
+            --emsi-gray: #f5f7fa;
+            --success: #10b981;
+            --error: #ef4444;
+            --text-main: #1e293b;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+            background-color: var(--emsi-gray);
+            color: var(--text-main);
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        .header {
+            background-color: white; text-align: center;
+            padding: 20px 10px; border-bottom: 5px solid var(--emsi-gold);
+        }
+        .header h1 { color: var(--emsi-blue); margin: 0; font-size: 28px; }
+        .header p { color: #64748b; margin: 6px 0 0; font-size: 14px; }
+
+        .main-content {
+            flex: 1; padding: 20px; max-width: 1100px; margin: 0 auto; width: 100%;
+        }
+        .card {
+            background: white; border-radius: 20px; padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        /* --- 导航按钮 --- */
+        .nav-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 18px; flex-wrap: wrap; gap: 10px;
+        }
+        .btn-back {
+            display: inline-flex; align-items: center;
+            padding: 8px 20px; background-color: white;
+            border: 1.5px solid #e2e8f0; border-radius: 50px;
+            color: var(--emsi-blue); text-decoration: none;
+            font-size: 15px; font-weight: 600; transition: all 0.2s; cursor: pointer;
+        }
+        .btn-back:hover {
+            border-color: var(--emsi-blue); background-color: #f8fafc;
+            transform: translateX(-3px);
+        }
+        .btn-back::before { content: '〈'; margin-right: 5px; font-weight: bold; }
+
+        .btn {
+            padding: 10px 18px; border-radius: 12px; text-decoration: none;
+            font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s;
+            border: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .btn-pill {
+            padding: 8px 15px; border-radius: 50px; border: 2px solid var(--emsi-blue);
+            background: white; color: var(--emsi-blue); font-weight: bold; cursor: pointer;
+            font-size: 14px; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px;
+        }
+        .btn-pill:hover, .btn-pill.active-pill { background: var(--emsi-blue); color: white; }
+        .btn-gold { background: var(--emsi-gold); color: #1e293b; }
+        .btn-blue { background: var(--emsi-blue); color: white; }
+        .btn-green { background: var(--success); color: white; }
+        .btn-danger-pill {
+            padding: 6px 14px; border-radius: 50px; border: 1.5px solid #fecaca;
+            background: #fef2f2; color: var(--error); font-weight: bold;
+            cursor: pointer; font-size: 13px; transition: 0.2s;
+        }
+        .btn-danger-pill:hover { background: var(--error); color: white; border-color: var(--error); }
+
+        .screen { display: none; }
+        .active { display: block; }
+
+        /* --- 多板块标签栏 --- */
+        .board-tabs-bar {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+            background: #f8fafc; padding: 12px 15px; border-radius: 14px;
+            border: 1px solid #e2e8f0; margin-bottom: 18px;
+        }
+        .board-tab {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 7px 14px; border-radius: 50px;
+            background: white; border: 2px solid #cbd5e1;
+            cursor: pointer; transition: 0.2s;
+        }
+        .board-tab:hover { border-color: var(--emsi-blue); }
+        .board-tab.active {
+            background: var(--emsi-blue); border-color: var(--emsi-blue); color: white;
+            box-shadow: 0 4px 10px rgba(26, 74, 142, 0.2);
+        }
+        .board-name-input {
+            border: none; background: transparent; font-family: inherit;
+            font-size: 14px; font-weight: bold; color: inherit;
+            outline: none; padding: 2px 4px; border-radius: 4px;
+            min-width: 72px; text-align: center;
+        }
+        .board-tab.active .board-name-input:focus { background: rgba(255,255,255,0.2); }
+        .board-tab:not(.active) .board-name-input:focus { background: #eef2ff; }
+        .board-count-badge {
+            font-size: 12px; padding: 1px 7px; border-radius: 20px;
+            background: #e2e8f0; color: #475569; font-weight: bold;
+        }
+        .board-tab.active .board-count-badge { background: var(--emsi-gold); color: #1e293b; }
+        .board-close {
+            font-size: 13px; opacity: 0.7; margin-left: 2px; padding: 0 4px; border-radius: 50%;
+        }
+        .board-close:hover { opacity: 1; background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .btn-add-board {
+            padding: 7px 15px; border-radius: 50px; border: 1.5px dashed var(--emsi-blue);
+            background: #eff6ff; color: var(--emsi-blue); font-weight: bold; font-size: 13px;
+            cursor: pointer; transition: 0.2s;
+        }
+        .btn-add-board:hover { background: var(--emsi-blue); color: white; }
+
+        /* --- 粘贴录入区 --- */
+        .input-panel {
+            background: #fffbeb; border: 1.5px dashed #f59e0b;
+            border-radius: 14px; padding: 15px 18px; margin-bottom: 22px;
+        }
+        .input-panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
+        }
+        .input-panel-title { font-weight: bold; color: #92400e; font-size: 14px; }
+        .split-mode-bar {
+            display: flex; align-items: center; gap: 12px; font-size: 13px; color: #78350f;
+        }
+        .split-mode-bar label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; font-weight: 600; }
+        .word-textarea {
+            width: 100%; min-height: 110px; padding: 12px;
+            border: 1.5px solid #cbd5e1; border-radius: 10px; font-family: inherit;
+            font-size: 15px; line-height: 1.65; resize: vertical; background: white;
+        }
+        .word-textarea:focus { outline: none; border-color: var(--emsi-blue); }
+        .input-actions {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px; margin-top: 10px;
+        }
+
+        /* --- 句段展示卡片列表 --- */
+        .toolbar-row {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px; margin-bottom: 15px;
+            padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;
+        }
+        .mask-options {
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: #475569;
+        }
+        .sentence-list { display: flex; flex-direction: column; gap: 14px; }
+        .sentence-card {
+            background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px;
+            padding: 16px 20px; transition: 0.2s; position: relative;
+        }
+        .sentence-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .sentence-card-top {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px; gap: 8px;
+        }
+        .sentence-badge {
+            background: #eef2ff; color: var(--emsi-blue); font-weight: 800;
+            font-size: 13px; padding: 3px 10px; border-radius: 8px;
+        }
+        .sentence-tools { display: flex; align-items: center; gap: 8px; }
+        .btn-speak {
+            background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd;
+            padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: bold;
+            cursor: pointer; transition: 0.2s;
+        }
+        .btn-speak:hover { background: #0284c7; color: white; }
+        .btn-del-item {
+            background: none; border: none; color: #94a3b8; font-size: 15px;
+            cursor: pointer; padding: 3px 7px; border-radius: 6px;
+        }
+        .btn-del-item:hover { background: #fef2f2; color: var(--error); }
+
+        .text-en {
+            font-size: 19px; font-weight: 600; color: var(--emsi-blue);
+            line-height: 1.75; margin-bottom: 6px;
+        }
+        .text-zh {
+            font-size: 15px; color: #64748b; line-height: 1.6;
+        }
+
+        /* 听写遮挡模式（整句遮挡 & 逐词点看） */
+        .dictation-whole .text-en {
+            background: #dbeafe; color: transparent; border-radius: 8px;
+            padding: 6px 12px; cursor: pointer; user-select: none; position: relative;
+        }
+        .dictation-whole .text-en::after {
+            content: "🙈 已隐藏英语（点击此处可单独查看）";
+            position: absolute; inset: 0; display: flex; align-items: center;
+            padding-left: 14px; color: #1e40af; font-size: 14px; font-weight: normal;
+        }
+        .dictation-whole .text-en.revealed {
+            background: #fffbeb; color: var(--emsi-blue);
+        }
+        .dictation-whole .text-en.revealed::after { display: none; }
+
+        .word-token {
+            display: inline-block; margin-right: 4px; border-radius: 5px;
+            padding: 0 3px; transition: 0.15s;
+        }
+        .dictation-word .word-token {
+            background: #dbeafe; color: transparent; cursor: pointer; user-select: none;
+            min-width: 24px; text-align: center;
+        }
+        .dictation-word .word-token.revealed {
+            background: #fef3c7; color: var(--emsi-blue);
+        }
+
+        .empty-tip {
+            text-align: center; padding: 45px 20px; color: #94a3b8;
+            background: #f8fafc; border-radius: 14px; border: 1.5px dashed #cbd5e1;
+        }
+
+        /* --- 练习模式公共样式 --- */
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; overflow: hidden; margin: 16px 0; }
+        #progress-fill { height: 100%; background: var(--emsi-blue); width: 0%; transition: 0.3s; }
+        .quiz-prompt-box {
+            background: #f8fafc; border-left: 5px solid var(--emsi-gold);
+            padding: 16px 20px; border-radius: 12px; margin-bottom: 20px;
+        }
+        .quiz-zh-target { font-size: 20px; font-weight: bold; color: #1e293b; margin-top: 6px; }
+
+        /* 连词成句区 */
+        .build-answer-zone {
+            min-height: 68px; padding: 14px; border: 2px dashed var(--emsi-blue);
+            border-radius: 14px; background: #f8fafc;
+            display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+            margin-bottom: 18px;
+        }
+        .build-pool-zone {
+            min-height: 68px; padding: 14px; border: 1.5px solid #e2e8f0;
+            border-radius: 14px; background: #ffffff;
+            display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+            margin-bottom: 18px;
+        }
+        .chunk-chip {
+            padding: 8px 14px; border-radius: 10px; font-size: 16px; font-weight: 600;
+            cursor: pointer; transition: 0.15s; user-select: none;
+            border: 1.5px solid #cbd5e1; background: white; color: var(--emsi-blue);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .chunk-chip:hover { border-color: var(--emsi-blue); transform: translateY(-1px); }
+        .chunk-chip.in-answer { background: var(--emsi-blue); color: white; border-color: var(--emsi-blue); }
+        .chunk-chip.used { opacity: 0.28; pointer-events: none; }
+
+        /* 手写默写输入区 */
+        .dictation-textarea {
+            width: 100%; min-height: 95px; padding: 14px; font-size: 18px;
+            font-family: inherit; border: 2px solid #cbd5e1; border-radius: 12px;
+            line-height: 1.6; margin-bottom: 14px;
+        }
+        .dictation-textarea:focus { outline: none; border-color: var(--emsi-blue); }
+
+        .feedback-box {
+            padding: 16px; border-radius: 12px; margin-top: 15px; display: none; line-height: 1.7;
+        }
+        .feedback-box.ok { background: #ecfdf5; border: 1.5px solid #10b981; color: #065f46; display: block; }
+        .feedback-box.err { background: #fef2f2; border: 1.5px solid #ef4444; color: #991b1b; display: block; }
+
+        .diff-ok { color: #059669; font-weight: bold; }
+        .diff-err { color: #dc2626; font-weight: bold; text-decoration: underline wavy #dc2626; }
+
+        .footer { background: var(--emsi-blue); color: white; text-align: center; padding: 15px; font-size: 14px; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>EMSI 英语句段随堂听写</h1>
+        <p>支持排好版的英汉双语粘贴 · 分孩子多板块管理 · 语音朗读与互动默写</p>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+
+            <!-- 主界面 -->
+            <div id="menu-screen" class="screen active">
+                <div class="nav-bar">
+                    <a href="index.html" class="btn-back">返回</a>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                        <label style="font-size: 13px; color: #475569; font-weight: bold;">
+                            朗读语速：
+                            <select id="speechRate" style="padding: 6px 10px; border-radius: 20px; border: 1.5px solid #cbd5e1; font-weight: bold; color: var(--emsi-blue);">
+                                <option value="0.6">0.6x 慢速</option>
+                                <option value="0.85" selected>0.85x 适中</option>
+                                <option value="1.0">1.0x 正常</option>
+                            </select>
+                        </label>
+                        <button class="btn-pill" onclick="downloadTXT()">📥 导出听写稿</button>
+                    </div>
+                </div>
+
+                <!-- 多板块标签区（直接点击板块名称自由改名） -->
+                <div class="board-tabs-bar" id="boardTabsBar"></div>
+
+                <!-- 当天句子/段落粘贴录入框 -->
+                <div class="input-panel">
+                    <div class="input-panel-header">
+                        <span class="input-panel-title">📋 粘贴当天要默写的英语句子或段落（直接粘贴排好版的英汉双语即可）</span>
+                        <div class="split-mode-bar">
+                            <span>拆分方式：</span>
+                            <label><input type="radio" name="splitMode" value="auto" checked> 智能按句/空行拆分</label>
+                            <label><input type="radio" name="splitMode" value="blankline"> 仅按空行拆分段落</label>
+                        </div>
+                    </div>
+                    <textarea id="pasteInput" class="word-textarea" placeholder="直接复制词库或课文中的双语内容粘贴到这里，例如：&#10;Once upon a time, a little mouse lived under a barn.&#10;从前，有一只小老鼠住在一个粮仓下面。&#10;&#10;On weekends, we usually visit our grandparents in the countryside.&#10;周末我们通常去乡下看望祖父母。"></textarea>
+                    <div class="input-actions">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-blue" onclick="importContent(true)">✨ 替换当前内容</button>
+                            <button class="btn btn-gold" onclick="importContent(false)">➕ 追加到当前列表</button>
+                        </div>
+                        <button class="btn-danger-pill" onclick="clearCurrentBoard()">🗑️ 清空本板块</button>
+                    </div>
+                </div>
+
+                <!-- 三大句段练习入口 -->
+                <div style="display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;">
+                    <button class="btn btn-blue" style="flex:1; min-width: 160px;" onclick="toggleDictationMode()" id="mainDictBtn">✍️ 开启听写遮挡模式</button>
+                    <button class="btn btn-blue" style="flex:1; min-width: 160px;" onclick="startQuiz('order')">🧩 连词成句练习</button>
+                    <button class="btn btn-gold" style="flex:1; min-width: 160px;" onclick="startQuiz('write')">⌨️ 看中文默写英语</button>
+                </div>
+
+                <!-- 列表标题与遮挡方式切换 -->
+                <div class="toolbar-row">
+                    <h3 id="listHeading" style="border-left: 5px solid var(--emsi-gold); padding-left: 10px; margin: 0;">📖 今日英语句段 (0)</h3>
+                    <div class="mask-options" id="maskOptionsBar" style="display: none;">
+                        <span>遮挡方式：</span>
+                        <button type="button" class="btn-pill active-pill" style="padding: 4px 12px; font-size: 12px;" id="maskWordBtn" onclick="setMaskStyle('word')">逐词遮挡（可点单个词偷看）</button>
+                        <button type="button" class="btn-pill" style="padding: 4px 12px; font-size: 12px;" id="maskWholeBtn" onclick="setMaskStyle('whole')">整句/整段遮挡</button>
+                    </div>
+                </div>
+
+                <div class="sentence-list" id="sentenceList"></div>
+            </div>
+
+            <!-- 互动练习界面（连词成句 / 默写自测） -->
+            <div id="quiz-screen" class="screen">
+                <div class="nav-bar">
+                    <button type="button" class="btn-back" onclick="backToMenu()">退出练习</button>
+                    <span id="quiz-counter" style="font-weight:bold;">1 / 1</span>
+                    <button class="btn btn-gold" onclick="showResults()">结束查看统计</button>
+                </div>
+                <div class="progress-bar"><div id="progress-fill"></div></div>
+
+                <div class="quiz-prompt-box">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                        <span id="quiz-mode-label" style="font-size: 13px; color: #64748b; font-weight: bold;">请根据中文拼出英语句子：</span>
+                        <button type="button" class="btn-speak" onclick="speakCurrentQuiz()">🔊 听英语朗读</button>
+                    </div>
+                    <div class="quiz-zh-target" id="quiz-zh-display"></div>
+                </div>
+
+                <!-- 模式 A：连词成句 -->
+                <div id="order-area" style="display: none;">
+                    <div style="font-size: 13px; color: #64748b; margin-bottom: 6px;">已选顺序（点击已选单词可退回）：</div>
+                    <div class="build-answer-zone" id="answer-zone"></div>
+                    <div style="font-size: 13px; color: #64748b; margin-bottom: 6px;">备选词块（点击按顺序组成句子）：</div>
+                    <div class="build-pool-zone" id="pool-zone"></div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn btn-blue" onclick="checkOrderAnswer()">✅ 检查语序</button>
+                        <button type="button" class="btn-pill" onclick="resetOrderCurrent()">↺ 重排本句</button>
+                    </div>
+                </div>
+
+                <!-- 模式 B：看中文打字/默写英语 -->
+                <div id="write-area" style="display: none;">
+                    <textarea id="writeInput" class="dictation-textarea" placeholder="在此输入完整的英语句子（注意句首大写与标点符号）..."></textarea>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn btn-blue" onclick="checkWriteAnswer()">✅ 提交核对</button>
+                        <button type="button" class="btn-pill" onclick="revealWriteAnswer()">👀 显示原句</button>
+                    </div>
+                </div>
+
+                <div class="feedback-box" id="quizFeedback"></div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 28px; border-top: 1px solid #eee; padding-top: 18px;">
+                    <button class="btn-pill" id="prev-btn" onclick="changeStep(-1)">上一题</button>
+                    <button class="btn-pill" style="background:var(--emsi-blue); color:white;" id="next-btn" onclick="changeStep(1)">下一题</button>
+                </div>
+            </div>
+
+            <!-- 结果报告界面 -->
+            <div id="result-screen" class="screen">
+                <h2 style="text-align: center; color: var(--emsi-blue);">英语句段默写练习报告</h2>
+                <div id="final-score" style="text-align: center; font-size: 4rem; font-weight: 800; color: var(--emsi-gold);">0%</div>
+                <div id="result-summary" style="text-align: center; line-height: 2; margin-bottom: 20px; font-size: 16px;"></div>
+                <button class="btn btn-blue" style="width:100%; padding:15px; font-size:16px;" onclick="backToMenu()">回到句段列表</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2026 EMSI 马德里国际中文学校
+    </footer>
+
+    <script>
+        const STORAGE_KEY = 'emsi_english_sentence_dictation_v1';
+
+        const sampleItems = [
+            {
+                en: "Once upon a time, a little mouse lived under a barn.",
+                zh: "从前，有一只小老鼠住在一个粮仓下面。"
+            },
+            {
+                en: "On weekends, we usually visit our grandparents in the countryside.",
+                zh: "周末我们通常去乡下看望祖父母。"
+            },
+            {
+                en: "Reading good books helps us learn more about the world around us.",
+                zh: "阅读好书能帮助我们更多地了解周围的世界。"
+            }
+        ];
+
+        let appState = {
+            activeBoardId: 'en_sboard_1',
+            boards: [
+                { id: 'en_sboard_1', name: '英语板块 1', items: [...sampleItems] }
+            ]
+        };
+
+        let dictationActive = false;
+        let maskStyle = 'word'; // 'word' | 'whole'
+
+        // 练习状态
+        let quizMode = '';
+        let quizList = [];
+        let currentIndex = 0;
+        let quizResults = {};
+        let currentOrderSelected = [];
+        let currentOrderPool = [];
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && Array.isArray(parsed.boards) && parsed.boards.length > 0) {
+                        appState = parsed;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {}
+        }
+
+        function getActiveBoard() {
+            let b = appState.boards.find(x => x.id === appState.activeBoardId);
+            if (!b) {
+                b = appState.boards[0];
+                appState.activeBoardId = b.id;
+            }
+            return b;
+        }
+
+        function autoResizeInput(input) {
+            const len = (input.value || input.placeholder || '').length;
+            input.style.width = Math.max(72, len * 14 + 14) + 'px';
+        }
+
+        function renderBoardTabs() {
+            const bar = document.getElementById('boardTabsBar');
+            bar.innerHTML = '';
+
+            appState.boards.forEach(board => {
+                const isActive = board.id === appState.activeBoardId;
+                const tab = document.createElement('div');
+                tab.className = 'board-tab' + (isActive ? ' active' : '');
+                tab.onclick = (e) => {
+                    if (e.target.tagName === 'INPUT' || e.target.classList.contains('board-close')) return;
+                    appState.activeBoardId = board.id;
+                    saveState();
+                    renderAll();
+                };
+
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.className = 'board-name-input';
+                nameInput.value = board.name;
+                nameInput.placeholder = '板块名称';
+                nameInput.title = '直接点击修改板块名称（如孩子名字）';
+                autoResizeInput(nameInput);
+
+                nameInput.onfocus = () => {
+                    if (appState.activeBoardId !== board.id) {
+                        appState.activeBoardId = board.id;
+                        saveState();
+                        renderBoardTabs();
+                        renderSentenceList();
+                        setTimeout(() => {
+                            const inputs = document.querySelectorAll('.board-name-input');
+                            const idx = appState.boards.findIndex(x => x.id === board.id);
+                            if (inputs[idx]) inputs[idx].focus();
+                        }, 0);
+                    }
+                };
+
+                nameInput.oninput = (e) => {
+                    board.name = e.target.value;
+                    autoResizeInput(e.target);
+                    updateHeading();
+                    saveState();
+                };
+
+                const badge = document.createElement('span');
+                badge.className = 'board-count-badge';
+                badge.innerText = board.items.length + '条';
+
+                tab.appendChild(nameInput);
+                tab.appendChild(badge);
+
+                if (appState.boards.length > 1) {
+                    const closeBtn = document.createElement('span');
+                    closeBtn.className = 'board-close';
+                    closeBtn.innerText = '✕';
+                    closeBtn.title = '删除此板块';
+                    closeBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        deleteBoard(board.id);
+                    };
+                    tab.appendChild(closeBtn);
+                }
+
+                bar.appendChild(tab);
+            });
+
+            const addBtn = document.createElement('button');
+            addBtn.type = 'button';
+            addBtn.className = 'btn-add-board';
+            addBtn.innerText = '+ 添加板块';
+            addBtn.onclick = addNewBoard;
+            bar.appendChild(addBtn);
+        }
+
+        function addNewBoard() {
+            const newId = 'en_sboard_' + Date.now();
+            appState.boards.push({
+                id: newId,
+                name: '英语板块 ' + (appState.boards.length + 1),
+                items: []
+            });
+            appState.activeBoardId = newId;
+            saveState();
+            renderAll();
+        }
+
+        function deleteBoard(id) {
+            if (appState.boards.length <= 1) return;
+            const target = appState.boards.find(b => b.id === id);
+            if (!confirm(`确定删除「${target ? target.name : '该板块'}」吗？`)) return;
+            appState.boards = appState.boards.filter(b => b.id !== id);
+            if (appState.activeBoardId === id) {
+                appState.activeBoardId = appState.boards[0].id;
+            }
+            saveState();
+            renderAll();
+        }
+
+        function isChineseLine(line) {
+            const zhCount = (line.match(/[\u4e00-\u9fff]/g) || []).length;
+            const enCount = (line.match(/[a-zA-Z]/g) || []).length;
+            return zhCount > 0 && zhCount >= enCount * 0.35;
+        }
+
+        // 智能解析排好版的英汉双语句子或段落
+        function parseBilingualBlocks(rawText, mode) {
+            const trimmed = rawText.trim();
+            if (!trimmed) return [];
+
+            // 模式1：仅按空行拆分段落（适合整段课文默写）
+            if (mode === 'blankline') {
+                const blocks = trimmed.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+                return blocks.map(block => {
+                    const lines = block.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+                    const enArr = [], zhArr = [];
+                    lines.forEach(l => {
+                        if (isChineseLine(l)) zhArr.push(l);
+                        else enArr.push(l);
+                    });
+                    return {
+                        en: enArr.join(' ') || block,
+                        zh: zhArr.join(' ')
+                    };
+                });
+            }
+
+            // 模式2：智能按句/双语配对拆分
+            const lines = trimmed.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+            const items = [];
+            let pendingEn = null;
+
+            lines.forEach(line => {
+                // 去掉行首题号如 "1. "
+                const clean = line.replace(/^\d+[\.\、\)\s]+/, '').trim();
+                if (!clean) return;
+
+                if (isChineseLine(clean)) {
+                    if (pendingEn) {
+                        items.push({ en: pendingEn, zh: clean });
+                        pendingEn = null;
+                    } else if (items.length > 0 && !items[items.length - 1].zh) {
+                        items[items.length - 1].zh = clean;
+                    } else {
+                        items.push({ en: clean, zh: '' });
+                    }
+                } else {
+                    if (pendingEn) {
+                        items.push({ en: pendingEn, zh: '' });
+                    }
+                    pendingEn = clean;
+                }
+            });
+
+            if (pendingEn) {
+                items.push({ en: pendingEn, zh: '' });
+            }
+
+            return items;
+        }
+
+        function importContent(replaceMode) {
+            const textarea = document.getElementById('pasteInput');
+            const raw = textarea.value.trim();
+            if (!raw) {
+                alert('请先粘贴要默写的英语句子或段落！');
+                return;
+            }
+            const mode = document.querySelector('input[name="splitMode"]:checked').value;
+            const parsed = parseBilingualBlocks(raw, mode);
+            if (parsed.length === 0) return;
+
+            const board = getActiveBoard();
+            if (replaceMode) {
+                board.items = parsed;
+            } else {
+                board.items.push(...parsed);
+            }
+            textarea.value = '';
+            saveState();
+            renderAll();
+        }
+
+        function removeItem(idx) {
+            const board = getActiveBoard();
+            board.items.splice(idx, 1);
+            saveState();
+            renderAll();
+        }
+
+        function clearCurrentBoard() {
+            const board = getActiveBoard();
+            if (board.items.length === 0) return;
+            if (!confirm(`确定清空「${board.name}」中的所有句段吗？`)) return;
+            board.items = [];
+            saveState();
+            renderAll();
+        }
+
+        function toggleDictationMode() {
+            dictationActive = !dictationActive;
+            const btn = document.getElementById('mainDictBtn');
+            const maskBar = document.getElementById('maskOptionsBar');
+            if (dictationActive) {
+                btn.innerText = '👀 退出听写（显示全部原文）';
+                btn.classList.remove('btn-blue');
+                btn.classList.add('btn-green');
+                maskBar.style.display = 'flex';
+            } else {
+                btn.innerText = '✍️ 开启听写遮挡模式';
+                btn.classList.remove('btn-green');
+                btn.classList.add('btn-blue');
+                maskBar.style.display = 'none';
+            }
+            renderSentenceList();
+        }
+
+        function setMaskStyle(style) {
+            maskStyle = style;
+            document.getElementById('maskWordBtn').classList.toggle('active-pill', style === 'word');
+            document.getElementById('maskWholeBtn').classList.toggle('active-pill', style === 'whole');
+            renderSentenceList();
+        }
+
+        function escapeHtml(str) {
+            return (str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // 把英语句子拆成可单独点击偷看的词块
+        function renderTokenizedEnglish(enText) {
+            const parts = enText.split(/(\s+)/);
+            return parts.map(part => {
+                if (/^\s+$/.test(part)) return part;
+                return `<span class="word-token" onclick="this.classList.toggle('revealed')">${escapeHtml(part)}</span>`;
+            }).join('');
+        }
+
+        function updateHeading() {
+            const board = getActiveBoard();
+            const label = board.name.trim() || '当前板块';
+            document.getElementById('listHeading').innerText = `📖 ${label} · 英语句段 (${board.items.length})`;
+        }
+
+        function renderSentenceList() {
+            const board = getActiveBoard();
+            const container = document.getElementById('sentenceList');
+            updateHeading();
+
+            if (board.items.length === 0) {
+                container.innerHTML = `<div class="empty-tip">当前板块还没有句子或段落，请在上方粘贴排好版的英汉双语内容后点击「替换当前内容」</div>`;
+                return;
+            }
+
+            let modeClass = '';
+            if (dictationActive) {
+                modeClass = maskStyle === 'word' ? 'dictation-word' : 'dictation-whole';
+            }
+
+            container.innerHTML = board.items.map((item, idx) => {
+                const enContent = (dictationActive && maskStyle === 'word')
+                    ? renderTokenizedEnglish(item.en)
+                    : escapeHtml(item.en);
+
+                const wholeClick = (dictationActive && maskStyle === 'whole')
+                    ? `onclick="this.classList.toggle('revealed')"`
+                    : '';
+
+                return `
+                <div class="sentence-card ${modeClass}">
+                    <div class="sentence-card-top">
+                        <span class="sentence-badge">第 ${idx + 1} 句/段</span>
+                        <div class="sentence-tools">
+                            <button type="button" class="btn-speak" onclick="speakText(${idx})">🔊 朗读英语</button>
+                            <button type="button" class="btn-del-item" title="删除此条" onclick="removeItem(${idx})">✕</button>
+                        </div>
+                    </div>
+                    <div class="text-en" ${wholeClick}>${enContent}</div>
+                    ${item.zh ? `<div class="text-zh">${escapeHtml(item.zh)}</div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        // 语音合成朗读英语
+        function speakEnglishString(text) {
+            if (!('speechSynthesis' in window)) {
+                alert('当前浏览器不支持语音朗读功能，建议使用 Chrome 或 Edge 浏览器。');
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'en-US';
+            utter.rate = parseFloat(document.getElementById('speechRate').value) || 0.85;
+            window.speechSynthesis.speak(utter);
+        }
+
+        function speakText(idx) {
+            const item = getActiveBoard().items[idx];
+            if (item && item.en) speakEnglishString(item.en);
+        }
+
+        function speakCurrentQuiz() {
+            const item = quizList[currentIndex];
+            if (item && item.en) speakEnglishString(item.en);
+        }
+
+        // --- 互动练习系统（连词成句 & 看中文默写） ---
+        function startQuiz(mode) {
+            const items = getActiveBoard().items;
+            if (items.length === 0) {
+                alert('当前板块没有句子或段落，请先导入内容后再开始练习！');
+                return;
+            }
+            quizMode = mode;
+            quizList = [...items];
+            currentIndex = 0;
+            quizResults = {};
+
+            showScreen('quiz-screen');
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const item = quizList[currentIndex];
+            document.getElementById('quiz-counter').innerText = `${currentIndex + 1} / ${quizList.length}`;
+            document.getElementById('progress-fill').style.width = ((currentIndex + 1) / quizList.length * 100) + '%';
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+
+            const fb = document.getElementById('quizFeedback');
+            fb.className = 'feedback-box';
+            fb.innerHTML = '';
+
+            document.getElementById('quiz-zh-display').innerText =
+                item.zh ? item.zh : '（本句未填中文，请点击右上角「🔊 听英语朗读」进行听写）';
+
+            if (quizMode === 'order') {
+                document.getElementById('quiz-mode-label').innerText = '🧩 连词成句：点击下方单词按正确语序拼出句子';
+                document.getElementById('order-area').style.display = 'block';
+                document.getElementById('write-area').style.display = 'none';
+                setupOrderQuestion(item);
+            } else {
+                document.getElementById('quiz-mode-label').innerText = '⌨️ 看中文默写英语：在下方默写完整的英语句子';
+                document.getElementById('order-area').style.display = 'none';
+                document.getElementById('write-area').style.display = 'block';
+                document.getElementById('writeInput').value = '';
+            }
+        }
+
+        function setupOrderQuestion(item) {
+            const tokens = item.en.trim().split(/\s+/);
+            currentOrderPool = tokens.map((word, idx) => ({ id: idx, word }))
+                .sort(() => Math.random() - 0.5);
+            currentOrderSelected = [];
+            renderOrderZones();
+        }
+
+        function renderOrderZones() {
+            const ansZone = document.getElementById('answer-zone');
+            const poolZone = document.getElementById('pool-zone');
+
+            ansZone.innerHTML = currentOrderSelected.length === 0
+                ? '<span style="color:#94a3b8; font-size:14px;">请点击下方词块组成句子...</span>'
+                : currentOrderSelected.map((tok, idx) =>
+                    `<span class="chunk-chip in-answer" onclick="removeOrderToken(${idx})">${escapeHtml(tok.word)}</span>`
+                ).join('');
+
+            const usedIds = new Set(currentOrderSelected.map(t => t.id));
+            poolZone.innerHTML = currentOrderPool.map(tok => {
+                const isUsed = usedIds.has(tok.id);
+                return `<span class="chunk-chip ${isUsed ? 'used' : ''}" onclick="pickOrderToken(${tok.id})">${escapeHtml(tok.word)}</span>`;
+            }).join('');
+        }
+
+        function pickOrderToken(id) {
+            const tok = currentOrderPool.find(t => t.id === id);
+            if (!tok) return;
+            currentOrderSelected.push(tok);
+            renderOrderZones();
+        }
+
+        function removeOrderToken(idx) {
+            currentOrderSelected.splice(idx, 1);
+            renderOrderZones();
+        }
+
+        function resetOrderCurrent() {
+            currentOrderSelected = [];
+            const fb = document.getElementById('quizFeedback');
+            fb.className = 'feedback-box';
+            renderOrderZones();
+        }
+
+        function checkOrderAnswer() {
+            const item = quizList[currentIndex];
+            const userStr = currentOrderSelected.map(t => t.word).join(' ').trim();
+            const targetStr = item.en.trim().replace(/\s+/g, ' ');
+            const fb = document.getElementById('quizFeedback');
+
+            if (userStr === targetStr) {
+                quizResults[currentIndex] = true;
+                fb.className = 'feedback-box ok';
+                fb.innerHTML = `🎉 <strong>完全正确！</strong><br>${escapeHtml(targetStr)}`;
+            } else {
+                quizResults[currentIndex] = false;
+                fb.className = 'feedback-box err';
+                fb.innerHTML = `❌ <strong>语序还有一点小偏差哦</strong><br>正确原句：<strong>${escapeHtml(targetStr)}</strong>`;
+            }
+        }
+
+        function normalizeSentence(s) {
+            return s.trim().replace(/\s+/g, ' ');
+        }
+
+        function checkWriteAnswer() {
+            const item = quizList[currentIndex];
+            const userRaw = normalizeSentence(document.getElementById('writeInput').value);
+            const targetRaw = normalizeSentence(item.en);
+            const fb = document.getElementById('quizFeedback');
+
+            if (!userRaw) {
+                alert('请先输入你默写的英语句子再提交核对！');
+                return;
+            }
+
+            if (userRaw === targetRaw) {
+                quizResults[currentIndex] = true;
+                fb.className = 'feedback-box ok';
+                fb.innerHTML = `🎉 <strong>一字不差，完全正确！</strong><br>${escapeHtml(targetRaw)}`;
+                return;
+            }
+
+            // 逐词对比提示
+            const targetWords = targetRaw.split(' ');
+            const userWords = userRaw.split(' ');
+            let allMatch = true;
+
+            const diffHtml = targetWords.map((tw, i) => {
+                const uw = userWords[i] || '';
+                if (uw === tw) {
+                    return `<span class="diff-ok">${escapeHtml(tw)}</span>`;
+                } else {
+                    allMatch = false;
+                    return `<span class="diff-err" title="你写的是：${escapeHtml(uw || '漏写')}">${escapeHtml(tw)}</span>`;
+                }
+            }).join(' ');
+
+            quizResults[currentIndex] = allMatch;
+            fb.className = 'feedback-box err';
+            fb.innerHTML = `
+                <div><strong>核对结果（绿色为正确，红色波浪线为拼错/漏写/大小写或标点差异）：</strong></div>
+                <div style="font-size: 18px; margin: 6px 0;">${diffHtml}</div>
+                <div style="font-size: 13px; color: #64748b;">你的默写：${escapeHtml(userRaw)}</div>
+            `;
+        }
+
+        function revealWriteAnswer() {
+            const item = quizList[currentIndex];
+            const fb = document.getElementById('quizFeedback');
+            fb.className = 'feedback-box ok';
+            fb.innerHTML = `📖 <strong>参考原句：</strong><br><span style="font-size:18px;">${escapeHtml(item.en)}</span>`;
+        }
+
+        function changeStep(step) {
+            currentIndex += step;
+            if (currentIndex >= quizList.length) {
+                showResults();
+                return;
+            }
+            if (currentIndex < 0) currentIndex = 0;
+            renderQuizQuestion();
+        }
+
+        function showResults() {
+            showScreen('result-screen');
+            const total = quizList.length;
+            const correct = Object.values(quizResults).filter(Boolean).length;
+            const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+            document.getElementById('final-score').innerText = pct + '%';
+            document.getElementById('result-summary').innerHTML = `完成并完全答对：<strong>${correct} / ${total}</strong> 句`;
+        }
+
+        function downloadTXT() {
+            const board = getActiveBoard();
+            if (board.items.length === 0) {
+                alert('当前板块没有可导出的内容！');
+                return;
+            }
+            const lines = board.items.map((item, i) =>
+                `${i + 1}. ${item.en}${item.zh ? '\n   ' + item.zh : ''}`
+            ).join('\n\n');
+            const blob = new Blob([lines], { type: 'text/plain;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            const name = (board.name.trim() || 'EMSI英语句段听写').replace(/[\\/:*?"<>|]/g, '_');
+            a.download = `${name}.txt`;
+            a.click();
+        }
+
+        function backToMenu() {
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            showScreen('menu-screen');
+            renderAll();
+        }
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function renderAll() {
+            renderBoardTabs();
+            renderSentenceList();
+        }
+
+        loadState();
+        renderAll();
+    </script>
+</body>
+</html>
