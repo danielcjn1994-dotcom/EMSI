@@ -100,11 +100,29 @@
             color: #2c3e50;
             background-color: #fdfdfd;
             border: 1px solid transparent;
+            position: relative;
         }
 
         .day:hover:not(.empty) { background-color: #f1f2f6; border-color: #ced4da; }
         .day.empty { cursor: default; background: transparent; }
         .day.today { border: 2px solid #00b894; color: #00b894; font-weight: bold; }
+
+        /* 新增：日历节假日标记样式 */
+        .day.holiday {
+            background-color: #fff3cd;
+            color: #d35400;
+            border-color: #ffeaa7;
+            font-weight: bold;
+        }
+        .day.holiday::after {
+            content: "休";
+            font-size: 10px;
+            position: absolute;
+            top: 2px;
+            right: 3px;
+            color: #e67e22;
+            line-height: 1;
+        }
         
         .day.selected {
             background-color: #00b894;
@@ -112,6 +130,15 @@
             font-weight: bold;
             box-shadow: 0 3px 8px rgba(0, 184, 148, 0.3);
             border-color: #00b894;
+        }
+        .day.holiday.selected {
+            background-color: #e67e22;
+            color: white;
+            border-color: #e67e22;
+            box-shadow: 0 3px 8px rgba(230, 126, 34, 0.3);
+        }
+        .day.holiday.selected::after {
+            color: #fff3cd;
         }
 
         /* ==== 右侧：操作区域 ==== */
@@ -179,6 +206,76 @@
         .btn-primary:hover { background: #00a884; }
         .btn-danger { background: #ff7675; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;}
 
+        /* 新增：节假日按钮与提示横幅样式 */
+        .btn-holiday {
+            margin-left: auto;
+            background: #fff3cd;
+            color: #d35400;
+            border: 1px solid #f6d365;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .btn-holiday:hover {
+            background: #ffeaa7;
+        }
+        .btn-holiday.is-holiday {
+            background: #e67e22;
+            color: white;
+            border-color: #e67e22;
+        }
+        .btn-holiday.is-holiday:hover {
+            background: #d35400;
+        }
+
+        .holiday-banner {
+            background: #fff9e6;
+            border: 1.5px dashed #f39c12;
+            border-radius: 12px;
+            padding: 35px 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* 新增：学生改名按钮与行内编辑样式 */
+        .btn-edit-name {
+            background: #eef2f7;
+            color: #495057;
+            border: 1px solid #ced4da;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .btn-edit-name:hover {
+            background: #00b894;
+            color: white;
+            border-color: #00b894;
+        }
+        .btn-save-sm {
+            background: #00b894;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .btn-cancel-sm {
+            background: #e2e6ea;
+            color: #495057;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
         .student-item {
             background: white;
             padding: 12px 15px;
@@ -207,7 +304,7 @@
         .status-btn.active[data-status="transfer_out"] { background: #636e72; color: white; border-color: #636e72; }
 
         .manage-list { background: white; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-        .manage-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f2f6; }
+        .manage-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f2f6; gap: 8px; }
         .manage-item:last-child { border-bottom: none; }
         .tag { font-size: 12px; padding: 2px 6px; border-radius: 4px; background: #e9ecef; margin-left: 10px;}
         .tag.fixed { background: #74b9ff; color: white;}
@@ -259,6 +356,8 @@
             <div class="control-group">
                 <label>选择班级: </label>
                 <select id="attendanceClassSelect" onchange="renderAttendanceList()"></select>
+                <!-- 新增：节假日学校放假开关按钮 -->
+                <button type="button" id="holidayToggleBtn" class="btn-holiday" onclick="toggleHoliday()">🏖️ 设为学校放假</button>
             </div>
             <div id="attendanceList" style="margin-top: 15px;">
                 <!-- 签到列表动态生成 -->
@@ -307,11 +406,22 @@
     let appData = JSON.parse(localStorage.getItem('studentAttendanceData')) || {
         classes: [], 
         students: [], 
-        records: {} 
+        records: {},
+        holidays: {}
     };
+    if (!appData.holidays) appData.holidays = {};
 
     let displayDate = new Date(); 
     let selectedDateStr = formatDateStr(displayDate);
+    let editingStudentId = null; // 当前正在改名的学生ID
+
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
 
     // === 日历与日期功能 ===
     function initYearSelect() {
@@ -360,6 +470,7 @@
             let classes = 'day';
             
             if (dateStr === todayStr) classes += ' today';
+            if (appData.holidays && appData.holidays[dateStr]) classes += ' holiday';
             if (dateStr === selectedDateStr) classes += ' selected';
             
             dayDiv.className = classes;
@@ -371,7 +482,10 @@
 
     function selectDate(dateStr) {
         selectedDateStr = dateStr;
-        document.getElementById('currentDateDisplay').innerText = `当前打卡日期: ${dateStr}`;
+        const isHoliday = Boolean(appData.holidays && appData.holidays[dateStr]);
+        document.getElementById('currentDateDisplay').innerText = isHoliday
+            ? `当前打卡日期: ${dateStr}（节假日放假）`
+            : `当前打卡日期: ${dateStr}`;
         renderCalendar();
         renderAttendanceList();
     }
@@ -387,6 +501,18 @@
         renderCalendar();
     }
 
+    // === 节假日放假切换 ===
+    function toggleHoliday() {
+        if (!appData.holidays) appData.holidays = {};
+        if (appData.holidays[selectedDateStr]) {
+            delete appData.holidays[selectedDateStr];
+        } else {
+            appData.holidays[selectedDateStr] = true;
+        }
+        saveData();
+        selectDate(selectedDateStr);
+    }
+
     // === UI 切换 ===
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -395,7 +521,10 @@
         event.target.classList.add('active');
         document.getElementById(`tab-${tabId}`).classList.add('active');
 
-        if(tabId === 'manage') renderManageView();
+        if(tabId === 'manage') {
+            editingStudentId = null;
+            renderManageView();
+        }
     }
 
     function saveData() {
@@ -441,6 +570,51 @@
     function deleteStudent(id) {
         if (confirm('确定彻底删除该学生吗？\n删除后如果TA曾经签过到，历史记录会显示“XX学生已不在该班级”；未来日期将不再显示。')) {
             appData.students = appData.students.filter(s => s.id !== id);
+            if (editingStudentId === id) editingStudentId = null;
+            saveData();
+            renderManageView();
+            renderAttendanceList();
+        }
+    }
+
+    // 新增：学生改名功能
+    function startEditStudentName(studentId) {
+        editingStudentId = studentId;
+        renderManageView();
+        setTimeout(() => {
+            const input = document.getElementById(`editStudentNameInput_${studentId}`);
+            if (input) {
+                input.focus();
+                input.select();
+            }
+        }, 0);
+    }
+
+    function cancelEditStudentName() {
+        editingStudentId = null;
+        renderManageView();
+    }
+
+    function saveStudentName(studentId) {
+        const input = document.getElementById(`editStudentNameInput_${studentId}`);
+        if (!input) return;
+        const newName = input.value.trim();
+        if (!newName) {
+            alert('学生姓名不能为空');
+            input.focus();
+            return;
+        }
+
+        const stu = appData.students.find(s => s.id === studentId);
+        if (stu) {
+            stu.name = newName;
+            // 同步更新历史打卡记录中的姓名快照，防止以后删除时显示旧名字
+            for (let d in appData.records) {
+                if (appData.records[d] && appData.records[d][studentId]) {
+                    appData.records[d][studentId].name = newName;
+                }
+            }
+            editingStudentId = null;
             saveData();
             renderManageView();
             renderAttendanceList();
@@ -468,7 +642,7 @@
     }
 
     function updateClassDropdowns() {
-        const html = appData.classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        const html = appData.classes.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
         document.getElementById('newStudentClass').innerHTML = html;
         
         const attSelect = document.getElementById('attendanceClassSelect');
@@ -482,18 +656,31 @@
     function renderManageView() {
         document.getElementById('classList').innerHTML = appData.classes.map(c => `
             <div class="manage-item">
-                <span>${c.name}</span>
+                <span>${escapeHtml(c.name)}</span>
                 <button class="btn-danger" onclick="deleteClass('${c.id}')">删除</button>
             </div>
         `).join('') || '<p style="color:#999; font-size:14px;">暂无班级</p>';
         
-        document.getElementById('studentList').innerHTML = appData.students.map(s => `
+        document.getElementById('studentList').innerHTML = appData.students.map(s => {
+            const isEditing = editingStudentId === s.id;
+            const nameSection = isEditing
+                ? `<div style="display:flex; align-items:center; gap:5px;">
+                        <input type="text" id="editStudentNameInput_${s.id}" value="${escapeHtml(s.name)}" style="padding:4px 8px; font-size:13px; width:110px;" onkeydown="if(event.key==='Enter') saveStudentName('${s.id}'); if(event.key==='Escape') cancelEditStudentName();">
+                        <button type="button" class="btn-save-sm" onclick="saveStudentName('${s.id}')">保存</button>
+                        <button type="button" class="btn-cancel-sm" onclick="cancelEditStudentName()">取消</button>
+                   </div>`
+                : `<div style="display:flex; align-items:center; gap:6px;">
+                        <strong style="min-width: 60px;">${escapeHtml(s.name)}</strong>
+                        <button type="button" class="btn-edit-name" onclick="startEditStudentName('${s.id}')">✏️ 改名</button>
+                   </div>`;
+
+            return `
             <div class="manage-item">
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                    <strong style="min-width: 60px;">${s.name}</strong> 
+                    ${nameSection}
                     <select onchange="updateStudentClass('${s.id}', this.value)" style="padding:4px; font-size:13px;">
                         <option value="">--移出班级--</option>
-                        ${appData.classes.map(c => `<option value="${c.id}" ${s.classId === c.id ? 'selected' : ''}>${c.name}</option>`).join('')}
+                        ${appData.classes.map(c => `<option value="${c.id}" ${s.classId === c.id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}
                     </select>
                     <select onchange="updateStudentType('${s.id}', this.value)" style="padding:4px; font-size:13px;">
                         <option value="fixed" ${s.type === 'fixed' ? 'selected' : ''}>固定</option>
@@ -502,7 +689,8 @@
                 </div>
                 <button class="btn-danger" onclick="deleteStudent('${s.id}')">彻底删除</button>
             </div>
-        `).join('') || '<p style="color:#999; font-size:14px;">暂无学生</p>';
+            `;
+        }).join('') || '<p style="color:#999; font-size:14px;">暂无学生</p>';
     }
 
     // === 签到核心逻辑 ===
@@ -575,7 +763,7 @@
         return `
         <div class="student-item">
             <div>
-                <strong>${displayName}</strong>
+                <strong>${escapeHtml(displayName)}</strong>
                 ${tagHtml}
             </div>
             <div class="status-options">
@@ -588,6 +776,29 @@
     function renderAttendanceList() {
         const classId = document.getElementById('attendanceClassSelect').value;
         const listDiv = document.getElementById('attendanceList');
+        const holidayBtn = document.getElementById('holidayToggleBtn');
+        const isHoliday = Boolean(appData.holidays && appData.holidays[selectedDateStr]);
+
+        if (holidayBtn) {
+            if (isHoliday) {
+                holidayBtn.innerText = '✅ 取消放假（恢复上课）';
+                holidayBtn.classList.add('is-holiday');
+            } else {
+                holidayBtn.innerText = '🏖️ 设为学校放假';
+                holidayBtn.classList.remove('is-holiday');
+            }
+        }
+
+        if (isHoliday) {
+            listDiv.innerHTML = `
+                <div class="holiday-banner">
+                    <div style="font-size: 32px; margin-bottom: 8px;">🏖️</div>
+                    <div style="font-size: 17px; font-weight: bold; color: #d35400; margin-bottom: 6px;">当天为节假日（学校放假）</div>
+                    <div style="font-size: 13px; color: #7f8c8d;">本日全校放假休息，无需进行学生签到。如需恢复正常考勤，请点击上方「取消放假」按钮。</div>
+                </div>
+            `;
+            return;
+        }
         
         if (!classId) {
             listDiv.innerHTML = '<p>请先在管理页面添加班级</p>';
@@ -693,9 +904,10 @@
                 const imported = JSON.parse(e.target.result);
                 if (imported.classes && imported.students && imported.records) {
                     appData = imported;
+                    if (!appData.holidays) appData.holidays = {};
                     saveData();
                     updateClassDropdowns();
-                    renderCalendar();
+                    selectDate(selectedDateStr);
                     renderManageView();
                     alert("✅ 数据恢复成功！");
                 } else { 
