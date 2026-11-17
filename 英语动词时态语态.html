@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语动词时态与语态三语精讲 | EMSI 马德里国际中文学校</title>
+    <style>
+        :root {
+            --emsi-blue: #1a4a8e;
+            --emsi-blue-light: #eef4fc;
+            --emsi-gold: #f1c40f;
+            --emsi-gray: #f5f7fa;
+            --verb-red: #e11d48;
+            --es-teal: #0f766e;
+            --es-bg: #f0fdfa;
+            --zh-gray: #475569;
+            --text-main: #1e293b;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--emsi-gray);
+            color: var(--text-main);
+            display: flex; flex-direction: column; min-height: 100vh;
+            line-height: 1.75;
+        }
+
+        /* --- 三语显示滤镜控制类 --- */
+        body.hide-es .lang-es { display: none !important; }
+        body.hide-zh .lang-zh { display: none !important; }
+
+        /* --- 页眉（沿用 EMSI 统一风格） --- */
+        .header {
+            background-color: white; text-align: center;
+            padding: 36px 20px 26px 20px; border-bottom: 5px solid var(--emsi-gold);
+            position: relative;
+        }
+        .header h1 { color: var(--emsi-blue); font-size: 32px; margin: 0; }
+        .header .subtitle { color: #6b7280; font-size: 18px; margin: 8px 0 0; font-weight: bold; }
+
+        .back-home {
+            position: absolute; top: 32px; left: 36px;
+            text-decoration: none; display: inline-flex; align-items: center;
+            background: white; padding: 9px 22px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: var(--emsi-blue);
+            font-weight: bold; font-size: 16px; transition: all 0.3s ease;
+        }
+        .back-home:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .back-home svg { margin-right: 8px; width: 20px; height: 20px; }
+
+        .practice-link {
+            position: absolute; top: 32px; right: 36px;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+            background: var(--emsi-gold); padding: 9px 22px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(241, 196, 15, 0.35); color: var(--emsi-blue);
+            font-weight: bold; font-size: 16px; transition: all 0.3s ease;
+        }
+        .practice-link:hover { transform: translateY(-2px); background: #e5b80b; }
+
+        /* --- 主内容区 --- */
+        .main-content {
+            flex: 1; padding: 28px 20px 60px;
+            max-width: 1040px; width: 100%; margin: 0 auto;
+        }
+
+        /* --- 顶部工具栏（语言切换 + 章节筛选） --- */
+        .toolbar-panel {
+            background: white; border-radius: 16px; padding: 16px 20px;
+            margin-bottom: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .toolbar-row {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;
+        }
+        .toolbar-group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .toolbar-label { font-size: 13px; font-weight: bold; color: #64748b; }
+
+        .pill-btn {
+            padding: 6px 15px; border-radius: 50px; border: 1.5px solid #cbd5e1;
+            background: white; color: var(--emsi-blue); font-weight: bold; font-size: 14px;
+            cursor: pointer; transition: 0.2s;
+        }
+        .pill-btn:hover { border-color: var(--emsi-blue); background: var(--emsi-blue-light); }
+        .pill-btn.active { background: var(--emsi-blue); color: white; border-color: var(--emsi-blue); }
+
+        .lang-btn {
+            padding: 5px 13px; border-radius: 8px; border: 1.5px solid #cbd5e1;
+            background: #f8fafc; color: #334155; font-weight: bold; font-size: 13px;
+            cursor: pointer; transition: 0.2s;
+        }
+        .lang-btn.active { background: var(--es-teal); color: white; border-color: var(--es-teal); }
+
+        .mini-action-btn {
+            padding: 5px 12px; border-radius: 8px; border: 1px solid #e2e8f0;
+            background: #f8fafc; color: #475569; font-size: 13px; font-weight: bold; cursor: pointer;
+        }
+        .mini-action-btn:hover { border-color: var(--emsi-blue); color: var(--emsi-blue); }
+
+        /* --- 折叠讲座卡片 --- */
+        .lesson-container {
+            width: 100%; background: white; margin-bottom: 22px;
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .lesson-container.hidden-section { display: none; }
+
+        .lesson-container > summary {
+            padding: 22px 32px; list-style: none; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            background: #fff; border-left: 8px solid var(--emsi-blue);
+            transition: background 0.2s;
+        }
+        .lesson-container > summary:hover { background: #fafcff; }
+        .lesson-container > summary::-webkit-details-marker { display: none; }
+        .lesson-container > summary h3 { margin: 0; color: var(--emsi-blue); font-size: 20px; }
+        .lesson-container > summary::after {
+            content: "展开讲解 +"; color: #d97706; background: #fef3c7;
+            padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 13px; white-space: nowrap;
+        }
+        .lesson-container[open] > summary::after { content: "收起讲解 -"; background: #e2e8f0; color: #475569; }
+
+        .lesson-card { padding: 24px 36px 40px 36px; border-top: 1px solid #eee; }
+
+        .lesson-title {
+            border-left: 6px solid var(--emsi-gold); padding-left: 15px; margin-bottom: 22px;
+        }
+        .lesson-title .trilingual-sub { color: #6b7280; font-size: 14px; font-weight: bold; }
+        .lesson-title h2 { color: var(--emsi-blue); margin: 2px 0 0; font-size: 24px; }
+
+        .sub-heading {
+            color: var(--emsi-blue); font-size: 18px; font-weight: 800;
+            margin: 26px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9;
+        }
+
+        /* --- 三语例句卡片与标签 --- */
+        .trilingual-box {
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+            padding: 14px 18px; margin-bottom: 12px;
+        }
+        .tri-line { display: flex; align-items: baseline; gap: 10px; margin: 4px 0; }
+        .tag-badge {
+            display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px;
+            border-radius: 5px; flex-shrink: 0; letter-spacing: 0.5px;
+        }
+        .tag-en { background: #dbeafe; color: #1e40af; }
+        .tag-es { background: #ccfbf1; color: #0f766e; }
+        .tag-zh { background: #e2e8f0; color: #334155; }
+
+        .txt-en { font-size: 17px; font-weight: 700; color: #0f172a; }
+        .txt-en b, .hl-verb { color: var(--verb-red); font-weight: 800; background: #ffe4e6; padding: 1px 5px; border-radius: 4px; }
+        .txt-es { font-size: 15.5px; font-weight: 600; color: var(--es-teal); }
+        .txt-zh { font-size: 15px; color: var(--zh-gray); }
+
+        /* --- 提示框与公式横幅 --- */
+        .tip-yellow {
+            background: #fff9db; padding: 15px 18px; border-radius: 10px;
+            border-left: 5px solid var(--emsi-gold); margin: 16px 0; font-size: 15px;
+        }
+        .tip-red {
+            background: #fff5f5; padding: 15px 18px; border-radius: 10px;
+            border-left: 5px solid #e74c3c; margin: 16px 0; font-size: 15px;
+        }
+        .tip-blue {
+            background: var(--emsi-blue-light); padding: 15px 18px; border-radius: 10px;
+            border-left: 5px solid var(--emsi-blue); margin: 16px 0; font-size: 15px;
+        }
+        .formula-banner {
+            background: linear-gradient(135deg, #1a4a8e 0%, #2563eb 100%);
+            color: white; padding: 16px 22px; border-radius: 14px;
+            text-align: center; font-size: 18px; font-weight: bold; margin: 16px 0;
+            box-shadow: 0 6px 16px rgba(26, 74, 142, 0.18);
+        }
+        .formula-banner span.gold { color: var(--emsi-gold); }
+
+        /* --- 表格样式 --- */
+        .table-wrap { overflow-x: auto; margin: 14px 0 20px; }
+        .guide-table {
+            width: 100%; border-collapse: collapse; background: white;
+            border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0;
+        }
+        .guide-table th {
+            background: var(--emsi-blue); color: white; padding: 11px 14px;
+            text-align: left; font-size: 14px;
+        }
+        .guide-table td {
+            padding: 10px 14px; border-bottom: 1px solid #f1f5f9; font-size: 15px; vertical-align: top;
+        }
+        .guide-table tr:nth-child(even) td { background: #fafbfd; }
+
+        /* --- 信号词标签 --- */
+        .signal-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 16px; align-items: center; }
+        .signal-label { font-size: 13px; font-weight: bold; color: #475569; }
+        .signal-pill {
+            background: #f1f5f9; color: var(--emsi-blue); border: 1px solid #cbd5e1;
+            padding: 3px 11px; border-radius: 20px; font-size: 13px; font-weight: bold;
+        }
+
+        /* --- 双栏对比网格 --- */
+        .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+        .compare-col {
+            background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 16px 18px;
+        }
+        .compare-col h4 { margin: 0 0 10px; color: var(--emsi-blue); font-size: 16.5px; border-bottom: 2px solid var(--emsi-gold); padding-bottom: 6px; }
+
+        /* --- 互动被动语态转换演示器 --- */
+        .passive-widget {
+            background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 16px;
+            padding: 20px; margin: 16px 0;
+        }
+        .widget-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+        .w-tab-btn {
+            padding: 6px 14px; border-radius: 10px; border: 1.5px solid var(--emsi-blue);
+            background: white; color: var(--emsi-blue); font-weight: bold; cursor: pointer; font-size: 13.5px;
+        }
+        .w-tab-btn.active { background: var(--emsi-blue); color: white; }
+        .step-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+        .step-btn {
+            padding: 7px 14px; border-radius: 8px; border: 1px solid #94a3b8;
+            background: white; font-weight: bold; font-size: 13px; cursor: pointer; color: #334155;
+        }
+        .step-btn.active { background: var(--emsi-gold); color: var(--emsi-blue); border-color: #d97706; }
+        .stage-display {
+            background: white; border: 1.5px solid #e2e8f0; border-radius: 12px;
+            padding: 18px; text-align: center;
+        }
+        .stage-sentence { font-size: 21px; font-weight: 800; color: var(--emsi-blue); margin-bottom: 8px; }
+        .stage-note { font-size: 14.5px; color: #475569; }
+
+        /* --- 不规则动词搜索区 --- */
+        .irreg-search-bar {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; align-items: center;
+        }
+        .irreg-input {
+            padding: 8px 14px; border-radius: 10px; border: 1.5px solid #cbd5e1;
+            font-size: 14px; min-width: 240px;
+        }
+
+        /* --- 随堂小测验（折叠解析） --- */
+        .quiz-section { margin-top: 28px; border-top: 2px dashed #e2e8f0; padding-top: 20px; }
+        .quiz-title { color: var(--emsi-blue); font-weight: bold; font-size: 18px; margin-bottom: 14px; }
+        .question-box {
+            background: #f9fafb; padding: 15px 18px; border-radius: 12px;
+            margin-bottom: 12px; border: 1px solid #edf2f7;
+        }
+        .answer-details { margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 8px; }
+        .answer-details summary {
+            padding: 4px 0; color: #e67e22; font-size: 14.5px; font-weight: bold;
+            cursor: pointer; list-style: none;
+        }
+        .answer-details summary::-webkit-details-marker { display: none; }
+        .answer-details summary::after { content: " (点击查看三语解析)"; font-size: 12px; color: #94a3b8; font-weight: normal; }
+        .answer-content {
+            background: #fff3e0; padding: 10px 14px; border-radius: 8px;
+            color: #9a3412; margin-top: 6px; font-size: 14.5px;
+        }
+
+        .footer { background-color: var(--emsi-blue); color: white; text-align: center; padding: 18px; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .back-home, .practice-link { position: static; margin: 6px; }
+            .compare-grid { grid-template-columns: 1fr; }
+            .lesson-card { padding: 18px; }
+            .lesson-container > summary { padding: 18px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <!-- ✏️ 1. 修改返回目录的链接文件名 -->
+    <a href="index.html" class="back-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        返回目录
+    </a>
+
+    <!-- ✏️ 2. 预留随堂练习网页入口：后面做好练习网页后，直接把这里的 href 改成对应文件名即可 -->
+    <a href="英语时态语态训练.html" class="practice-link" title="预留练习链接，后续可修改 href 文件名">⚡ 进入随堂练习</a>
+
+    <h1><span>EMSI</span> 马德里国际中文学校</h1>
+    <div class="subtitle">英语动词时态与语态三语精讲 · English · Español · 中文</div>
+</header>
+
+<main class="main-content">
+
+    <!-- 顶部工具栏：三语显示滤镜 + 章节筛选 -->
+    <div class="toolbar-panel">
+        <div class="toolbar-row">
+            <div class="toolbar-group">
+                <span class="toolbar-label">🌐 课堂语言显示：</span>
+                <button type="button" class="lang-btn active" onclick="setLangMode('all', this)">三语全显 (EN + ES + 中)</button>
+                <button type="button" class="lang-btn" onclick="setLangMode('en-zh', this)">英 + 中 (隐藏西语)</button>
+                <button type="button" class="lang-btn" onclick="setLangMode('en-es', this)">英 + 西 (隐藏中文)</button>
+                <button type="button" class="lang-btn" onclick="setLangMode('en-only', this)">纯英语模式 (课堂抽查)</button>
+            </div>
+            <div class="toolbar-group">
+                <button type="button" class="mini-action-btn" onclick="toggleAllDetails(true)">全部展开</button>
+                <button type="button" class="mini-action-btn" onclick="toggleAllDetails(false)">全部折叠</button>
+            </div>
+        </div>
+
+        <div class="toolbar-row" style="border-top:1px solid #f1f5f9; padding-top:10px;">
+            <div class="toolbar-group">
+                <span class="toolbar-label">📚 章节导航：</span>
+                <button type="button" class="pill-btn active" onclick="filterCategory('all', this)">全部讲义 (6讲)</button>
+                <button type="button" class="pill-btn" onclick="filterCategory('matrix', this)">全景矩阵</button>
+                <button type="button" class="pill-btn" onclick="filterCategory('present', this)">现在时态</button>
+                <button type="button" class="pill-btn" onclick="filterCategory('past', this)">过去时态</button>
+                <button type="button" class="pill-btn" onclick="filterCategory('future', this)">将来时态</button>
+                <button type="button" class="pill-btn" onclick="filterCategory('passive', this)">被动语态</button>
+                <button type="button" class="pill-btn" onclick="filterCategory('irregular', this)">不规则动词表</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 第一讲：全景矩阵 ==================== -->
+    <details class="lesson-container" data-cat="matrix" open>
+        <summary>
+            <h3>第一讲：英语时态“时间 × 状态”全景矩阵（助动词乐高法）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div class="trilingual-sub">LESSON 1 · PANORAMA DE LOS TIEMPOS VERBALES · 时态总览</div>
+                <h2>别死背 16 个名称：用“助动词 + 动词形态”拼出所有时态</h2>
+            </div>
+
+            <div class="tip-blue">
+                <strong>💡 核心秘密（英语 vs. 西语最大区别）：</strong><br>
+                西班牙语靠改变动词词尾（<em>hablo, hablé, hablaré</em>）区分人称和时态；而英语动词本身变化很少，主要靠前面的<strong>四大助动词（do / be / have / will）</strong>来表达时间，后面的实义动词只有<strong>原形 (do) / 现在分词 (-ing) / 过去分词 (done)</strong> 三种固定形态！
+            </div>
+
+            <div class="table-wrap">
+                <table class="guide-table">
+                    <thead>
+                        <tr>
+                            <th style="width:16%;">状态 \ 时间</th>
+                            <th>现在 (Present)</th>
+                            <th>过去 (Past)</th>
+                            <th>将来 (Future)</th>
+                            <th>过去将来 (Past Future)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>一般 (Simple)</strong><br><span style="font-size:12px;color:#64748b;">事实 / 习惯</span></td>
+                            <td><strong>do / does</strong><br><span class="lang-es txt-es" style="font-size:13px;">Presente (estudio)</span><br><span class="lang-zh txt-zh" style="font-size:13px;">我学习</span></td>
+                            <td><strong>did (过去式)</strong><br><span class="lang-es txt-es" style="font-size:13px;">Indefinido (estudié)</span><br><span class="lang-zh txt-zh" style="font-size:13px;">我学过/学了</span></td>
+                            <td><strong>will + do</strong><br><span class="lang-es txt-es" style="font-size:13px;">Futuro (estudiaré)</span><br><span class="lang-zh txt-zh" style="font-size:13px;">我将要学习</span></td>
+                            <td><strong>would + do</strong><br><span class="lang-es txt-es" style="font-size:13px;">Condicional (estudiaría)</span><br><span class="lang-zh txt-zh" style="font-size:13px;">(过去说)将会学习</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>进行 (Continuous)</strong><br><span style="font-size:12px;color:#64748b;">be + doing</span></td>
+                            <td><strong>am/is/are + doing</strong><br><span class="lang-es txt-es" style="font-size:13px;">estoy estudiando</span><br><span class="lang-zh txt-zh" style="font-size:13px;">我正在学习</span></td>
+                            <td><strong>was/were + doing</strong><br><span class="lang-es txt-es" style="font-size:13px;">estaba estudiando</span><br><span class="lang-zh txt-zh" style="font-size:13px;">(那时)我正在学习</span></td>
+                            <td><strong>will be + doing</strong><br><span class="lang-es txt-es" style="font-size:13px;">estaré estudiando</span><br><span class="lang-zh txt-zh" style="font-size:13px;">(将来那时)正在学</span></td>
+                            <td><strong>would be + doing</strong><br><span class="lang-es txt-es" style="font-size:13px;">estaría estudiando</span><br><span class="lang-zh txt-zh" style="font-size:13px;">(过去说)那时正在学</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>完成 (Perfect)</strong><br><span style="font-size:12px;color:#64748b;">have + done</span></td>
+                            <td><strong>have/has + done</strong><br><span class="lang-es txt-es" style="font-size:13px;">he estudiado</span><br><span class="lang-zh txt-zh" style="font-size:13px;">我已经学了</span></td>
+                            <td><strong>had + done</strong><br><span class="lang-es txt-es" style="font-size:13px;">había estudiado</span><br><span class="lang-zh txt-zh" style="font-size:13px;">(在那之前)已学过</span></td>
+                            <td><strong>will have + done</strong><br><span class="lang-es txt-es" style="font-size:13px;">habré estudiado</span><br><span class="lang-zh txt-zh" style="font-size:13px;">(到那时)将已学完</span></td>
+                            <td><strong>would have + done</strong><br><span class="lang-es txt-es" style="font-size:13px;">habría estudiado</span><br><span class="lang-zh txt-zh" style="font-size:13px;">本已经学完了</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>完成进行</strong><br><span style="font-size:12px;color:#64748b;">have been + doing</span></td>
+                            <td><strong>have/has been doing</strong><br><span class="lang-es txt-es" style="font-size:13px;">llevo estudiando...</span><br><span class="lang-zh txt-zh" style="font-size:13px;">一直在学(仍继续)</span></td>
+                            <td><strong>had been doing</strong><br><span class="lang-es txt-es" style="font-size:13px;">llevaba estudiando...</span><br><span class="lang-zh txt-zh" style="font-size:13px;">(之前)一直在学</span></td>
+                            <td><strong>will have been doing</strong><br><span class="lang-es txt-es" style="font-size:13px;">llevaré estudiando...</span><br><span class="lang-zh txt-zh" style="font-size:13px;">将一直学满…</span></td>
+                            <td><strong>would have been doing</strong><br><span class="lang-es txt-es" style="font-size:13px;">habría estado estudiando</span><br><span class="lang-zh txt-zh" style="font-size:13px;">本一直在学习</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第二讲：现在时态家族 ==================== -->
+    <details class="lesson-container" data-cat="present">
+        <summary>
+            <h3>第二讲：现在时态家族（一般现在 / 现在进行 / 现在完成 / 现在完成进行）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div class="trilingual-sub">LESSON 2 · TIEMPOS DEL PRESENTE · 现在时态辨析</div>
+                <h2>日常习惯 vs. 此刻正在 vs. 已经完成</h2>
+            </div>
+
+            <div class="compare-grid">
+                <div class="compare-col">
+                    <h4>1. 一般现在时 (Present Simple)</h4>
+                    <p style="font-size:14px; margin:0 0 8px;"><strong>公式：</strong>主语 + 动词原形（第三人称单数 <code>he/she/it</code> 动词加 <strong>-s / -es</strong>）。<br><strong>注意：</strong>西语说 <em>Estudio</em> 即可，英语疑问和否定必须请出助动词 <strong>do / does</strong>！</p>
+                    <div class="signal-tags">
+                        <span class="signal-pill">every day</span>
+                        <span class="signal-pill">always / usually</span>
+                        <span class="signal-pill">on Mondays</span>
+                    </div>
+                </div>
+                <div class="compare-col">
+                    <h4>2. 现在进行时 (Present Continuous)</h4>
+                    <p style="font-size:14px; margin:0 0 8px;"><strong>公式：</strong><code>am / is / are</code> + <strong>动词-ing</strong>。<br><strong>西语搭桥：</strong>完全对应西语的 <em>estar + gerundio</em>（如 <em>estoy leyendo</em>）。</p>
+                    <div class="signal-tags">
+                        <span class="signal-pill">now</span>
+                        <span class="signal-pill">at the moment</span>
+                        <span class="signal-pill">Look! / Listen!</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trilingual-box">
+                <div class="tri-line"><span class="tag-badge tag-en">EN</span><span class="txt-en">She usually <b>reads</b> books, but right now she <b>is watching</b> TV.</span></div>
+                <div class="tri-line lang-es"><span class="tag-badge tag-es">ES</span><span class="txt-es">Normalmente lee libros, pero ahora mismo está viendo la tele.</span></div>
+                <div class="tri-line lang-zh"><span class="tag-badge tag-zh">中</span><span class="txt-zh">她通常看书（一般现在时：习惯），但此刻她正在看电视（现在进行时：此刻动作）。</span></div>
+            </div>
+
+            <div class="sub-heading">3. 现在完成时 (Present Perfect: have / has + 过去分词 done)</div>
+            <div class="signal-tags">
+                <span class="signal-label">信号词：</span>
+                <span class="signal-pill">already (已经)</span>
+                <span class="signal-pill">yet (还/已经)</span>
+                <span class="signal-pill">just (刚刚)</span>
+                <span class="signal-pill">ever / never (曾经/从未)</span>
+                <span class="signal-pill">for + 时间段 / since + 时间点</span>
+            </div>
+
+            <div class="trilingual-box">
+                <div class="tri-line"><span class="tag-badge tag-en">EN</span><span class="txt-en">We <b>have lived</b> in Madrid <b>for</b> five years.</span></div>
+                <div class="tri-line lang-es"><span class="tag-badge tag-es">ES</span><span class="txt-es">Vivimos / Hemos vivido en Madrid desde hace cinco años.</span></div>
+                <div class="tri-line lang-zh"><span class="tag-badge tag-zh">中</span><span class="txt-zh">我们在马德里住了五年了（从过去持续到现在）。</span></div>
+            </div>
+
+            <div class="tip-red">
+                <strong>⚠️ 西班牙学生第一大易错坑（Present Perfect vs. Past Simple）：</strong><br>
+                西班牙语部分地区口语可以说 <em>"Ayer he comido paella"</em>，但<strong>英语绝对不允许</strong>！只要句子里出现明确的过去时间词（<strong>yesterday, last week, in 2022, two hours ago</strong>），英语必须用<strong>一般过去时（ate）</strong>，绝对不能用 <code>have eaten</code>！
+            </div>
+
+            <div class="quiz-section">
+                <div class="quiz-title">❓ 随堂微测验 / Quick Check</div>
+                <div class="question-box">
+                    <div class="tri-line"><span class="tag-badge tag-en">EN</span><span class="txt-en">1. I _______ (see) that movie yesterday, so I don't want to watch it again.</span></div>
+                    <div class="tri-line lang-es"><span class="tag-badge tag-es">ES</span><span class="txt-es">Vi esa película ayer, así que no quiero volver a verla.</span></div>
+                    <div class="tri-line lang-zh"><span class="tag-badge tag-zh">中</span><span class="txt-zh">我昨天看过那部电影了，所以我不想再看一遍。</span></div>
+                    <details class="answer-details">
+                        <summary>👉 查看解析</summary>
+                        <div class="answer-content">
+                            <strong>saw</strong>（一般过去时）。虽然中文翻译成“看过了”，但句中有明确的过去时间词 <code>yesterday</code>（昨天），英语必须用一般过去时 <code>saw</code>，不能用 <code>have seen</code>。
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第三讲：过去时态家族 ==================== -->
+    <details class="lesson-container" data-cat="past">
+        <summary>
+            <h3>第三讲：过去时态家族（一般过去 / 过去进行 / 过去完成）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div class="trilingual-sub">LESSON 3 · TIEMPOS DEL PASADO · 过去时态三剑客</div>
+                <h2>用西语过去时直觉，秒懂英语三大过去时</h2>
+            </div>
+
+            <div class="table-wrap">
+                <table class="guide-table">
+                    <thead>
+                        <tr>
+                            <th>英语时态与公式</th>
+                            <th>对应西语时态</th>
+                            <th>中文核心语感</th>
+                            <th>典型三语例句</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>一般过去时</strong><br><code>did / 动词过去式</code></td>
+                            <td><span class="txt-es">Pretérito Indefinido</span><br>(ayer fui / comí)</td>
+                            <td>过去某时间<strong>发生并结束</strong>的动作</td>
+                            <td>
+                                <span class="txt-en">He <b>arrived</b> at 8:00.</span><br>
+                                <span class="lang-es txt-es">Llegó a las 8:00.</span><br>
+                                <span class="lang-zh txt-zh">他八点到的。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>过去进行时</strong><br><code>was / were + doing</code></td>
+                            <td><span class="txt-es">Pretérito Imperfecto</span><br>(estaba leyendo / leía)</td>
+                            <td>过去某个时刻<strong>正在进行</strong>的背景动作</td>
+                            <td>
+                                <span class="txt-en">I <b>was reading</b> when he called.</span><br>
+                                <span class="lang-es txt-es">Estaba leyendo cuando llamó.</span><br>
+                                <span class="lang-zh txt-zh">他打电话时我正在看书。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>过去完成时</strong><br><code>had + 过去分词 (done)</code></td>
+                            <td><span class="txt-es">Pluscuamperfecto</span><br>(había salido)</td>
+                            <td><strong>“过去的过去”</strong>（在另一过去动作前已完成）</td>
+                            <td>
+                                <span class="txt-en">The train <b>had left</b> before I arrived.</span><br>
+                                <span class="lang-es txt-es">El tren había salido antes de que llegara.</span><br>
+                                <span class="lang-zh txt-zh">我到达之前火车就已经开走了。</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip-yellow">
+                <strong>🌟 过去习惯表达小贴士：</strong><br>
+                西班牙语里“我小时候每天踢足球”用未完成过去时（<em>Cuando era niño, jugaba al fútbol</em>）；英语里既可以用一般过去时（<em>I played football</em>），也可以用专门的习惯结构 <strong><code>used to + 动词原形</code></strong>（<em>I <b>used to play</b> football when I was a child</em>）。
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第四讲：将来时态家族 ==================== -->
+    <details class="lesson-container" data-cat="future">
+        <summary>
+            <h3>第四讲：将来时态家族（will vs. be going to / 将来进行 / 将来完成）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div class="trilingual-sub">LESSON 4 · TIEMPOS DEL FUTURO · 将来表达方式</div>
+                <h2>临时决定用 will，提前计划用 be going to</h2>
+            </div>
+
+            <div class="compare-grid">
+                <div class="compare-col">
+                    <h4>1. will + 动词原形</h4>
+                    <p style="font-size:14px; margin:0 0 8px;"><strong>场景：</strong>说话瞬间<strong>临时决定</strong>、主观猜测、承诺或请求。<br><span class="lang-es txt-es" style="font-size:13.5px;">对应西语：Futuro simple (Abriré la puerta.)</span></p>
+                    <div class="trilingual-box" style="margin:0;">
+                        <div class="tri-line"><span class="tag-badge tag-en">EN</span><span class="txt-en">The phone is ringing. I <b>will answer</b> it!</span></div>
+                        <div class="tri-line lang-es"><span class="tag-badge tag-es">ES</span><span class="txt-es">Suena el teléfono. ¡Lo cojo yo / Lo cogeré yo!</span></div>
+                        <div class="tri-line lang-zh"><span class="tag-badge tag-zh">中</span><span class="txt-zh">电话响了，我去接！（临时反应）</span></div>
+                    </div>
+                </div>
+
+                <div class="compare-col">
+                    <h4>2. am / is / are going to + 动词原形</h4>
+                    <p style="font-size:14px; margin:0 0 8px;"><strong>场景：</strong>说话前<strong>早已打算好的计划</strong>，或根据明显迹象预测。<br><span class="lang-es txt-es" style="font-size:13.5px;">对应西语：ir a + infinitivo (Voy a estudiar.)</span></p>
+                    <div class="trilingual-box" style="margin:0;">
+                        <div class="tri-line"><span class="tag-badge tag-en">EN</span><span class="txt-en">Look at those dark clouds! It <b>is going to rain</b>.</span></div>
+                        <div class="tri-line lang-es"><span class="tag-badge tag-es">ES</span><span class="txt-es">¡Mira esas nubes negras! Va a llover.</span></div>
+                        <div class="tri-line lang-zh"><span class="tag-badge tag-zh">中</span><span class="txt-zh">看那些乌云！要下雨了。（有明显迹象）</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-heading">3. 进阶将来时态：将来进行时 &amp; 将来完成时</div>
+            <div class="trilingual-box">
+                <div class="tri-line"><span class="tag-badge tag-en">EN</span><span class="txt-en">At 9 p.m. tomorrow, I <b>will be sleeping</b>. (将来进行时: will be + doing)</span></div>
+                <div class="tri-line lang-es"><span class="tag-badge tag-es">ES</span><span class="txt-es">Mañana a las 9 de la noche estaré durmiendo.</span></div>
+                <div class="tri-line lang-zh"><span class="tag-badge tag-zh">中</span><span class="txt-zh">明天晚上9点的时候，我正在睡觉。</span></div>
+            </div>
+            <div class="trilingual-box">
+                <div class="tri-line"><span class="tag-badge tag-en">EN</span><span class="txt-en">By next June, we <b>will have finished</b> the book. (将来完成时: will have + done)</span></div>
+                <div class="tri-line lang-es"><span class="tag-badge tag-es">ES</span><span class="txt-es">Para el próximo junio, habremos terminado el libro.</span></div>
+                <div class="tri-line lang-zh"><span class="tag-badge tag-zh">中</span><span class="txt-zh">到明年六月为止，我们将已经学完这本书了。</span></div>
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第五讲：被动语态专题 ==================== -->
+    <details class="lesson-container" data-cat="passive">
+        <summary>
+            <h3>第五讲：被动语态专题（Passive Voice · 万能公式与三步转换演示）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div class="trilingual-sub">LESSON 5 · LA VOZ PASIVA · 被动语态</div>
+                <h2>掌握一个核心结构：be（变时态） + 过去分词 done（表动作）</h2>
+            </div>
+
+            <div class="formula-banner">
+                被动语态万能公式：<span class="gold">be</span>（随主语人称和时态变化） + 实义动词的<span class="gold">过去分词 (done)</span> + (by 执行者)
+            </div>
+
+            <div class="tip-red">
+                <strong>🚨 英西语态防坑提示：</strong><br>
+                西班牙语日常极少用 <em>ser + participio</em>，而是习惯用<strong>自复被动 <code>se</code></strong>（例如：<em>Se habla español aquí</em> / <em>Se vendió la casa</em>）。因此很多孩子写英语时容易漏掉 <code>be</code> 动词！请牢记：<strong>英语被动语态绝对不能没有 <code>be</code> 动词！</strong>
+            </div>
+
+            <div class="sub-heading">5.1 互动演示器：主动句变被动句三步曲</div>
+            <p style="font-size:14.5px; color:#475569;">选择一句例句，点击下方步骤按钮，观察句子如何一步步从主动变成被动：</p>
+
+            <div class="passive-widget">
+                <div class="widget-tabs">
+                    <button type="button" class="w-tab-btn active" onclick="selectPassiveCase(0, this)">例1：一般现在时 (writes)</button>
+                    <button type="button" class="w-tab-btn" onclick="selectPassiveCase(1, this)">例2：一般过去时 (ate)</button>
+                    <button type="button" class="w-tab-btn" onclick="selectPassiveCase(2, this)">例3：现在完成时 (has cleaned)</button>
+                    <button type="button" class="w-tab-btn" onclick="selectPassiveCase(3, this)">例4：含情态动词 (must finish)</button>
+                </div>
+                <div class="step-controls">
+                    <button type="button" class="step-btn active" onclick="setPassiveStep(0, this)">原句：主动语态</button>
+                    <button type="button" class="step-btn" onclick="setPassiveStep(1, this)">第①步：宾语提前变新主语</button>
+                    <button type="button" class="step-btn" onclick="setPassiveStep(2, this)">第②步：动词变 be + done</button>
+                    <button type="button" class="step-btn" onclick="setPassiveStep(3, this)">第③步：原主语加 by 后置（完成）</button>
+                </div>
+                <div class="stage-display" id="passiveStage"></div>
+            </div>
+
+            <div class="sub-heading">5.2 常见时态被动语态全表（三语对照）</div>
+            <div class="table-wrap">
+                <table class="guide-table">
+                    <thead>
+                        <tr>
+                            <th>时态 / 结构</th>
+                            <th>被动语态公式</th>
+                            <th>三语对照例句</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>一般现在时</strong></td>
+                            <td><code>am / is / are + done</code></td>
+                            <td>
+                                <span class="txt-en">English <b>is spoken</b> in many countries.</span><br>
+                                <span class="lang-es txt-es">Se habla inglés en muchos países.</span><br>
+                                <span class="lang-zh txt-zh">许多国家都说英语。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>一般过去时</strong></td>
+                            <td><code>was / were + done</code></td>
+                            <td>
+                                <span class="txt-en">The window <b>was broken</b> yesterday.</span><br>
+                                <span class="lang-es txt-es">La ventana fue rota / se rompió ayer.</span><br>
+                                <span class="lang-zh txt-zh">窗户昨天被打碎了。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>一般将来时</strong></td>
+                            <td><code>will be + done</code></td>
+                            <td>
+                                <span class="txt-en">A new school <b>will be built</b> next year.</span><br>
+                                <span class="lang-es txt-es">Se construirá una nueva escuela el próximo año.</span><br>
+                                <span class="lang-zh txt-zh">明年将建一所新学校。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>现在进行时</strong></td>
+                            <td><code>am/is/are being + done</code></td>
+                            <td>
+                                <span class="txt-en">The car <b>is being repaired</b> now.</span><br>
+                                <span class="lang-es txt-es">El coche está siendo reparado ahora.</span><br>
+                                <span class="lang-zh txt-zh">汽车现在正在被修理。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>现在完成时</strong></td>
+                            <td><code>have / has been + done</code></td>
+                            <td>
+                                <span class="txt-en">The homework <b>has been finished</b>.</span><br>
+                                <span class="lang-es txt-es">Los deberes han sido terminados.</span><br>
+                                <span class="lang-zh txt-zh">作业已经被完成了。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>含情态动词</strong></td>
+                            <td><code>can/must/should be + done</code></td>
+                            <td>
+                                <span class="txt-en">Rules <b>must be followed</b> by everyone.</span><br>
+                                <span class="lang-es txt-es">Las reglas deben ser seguidas por todos.</span><br>
+                                <span class="lang-zh txt-zh">每个人都必须遵守规则。</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="quiz-section">
+                <div class="quiz-title">❓ 随堂微测验 / Passive Practice</div>
+                <div class="question-box">
+                    <div class="tri-line"><span class="tag-badge tag-en">EN</span><span class="txt-en">1. 把主动句改写为被动句：<em>Cervantes wrote Don Quixote in 1605.</em></span></div>
+                    <div class="tri-line lang-es"><span class="tag-badge tag-es">ES</span><span class="txt-es">Cervantes escribió Don Quijote en 1605.</span></div>
+                    <div class="tri-line lang-zh"><span class="tag-badge tag-zh">中</span><span class="txt-zh">塞万提斯于1605年写了《堂吉诃德》。</span></div>
+                    <details class="answer-details">
+                        <summary>👉 查看解析</summary>
+                        <div class="answer-content">
+                            <strong>Don Quixote was written by Cervantes in 1605.</strong><br>
+                            解析：原句是一般过去时 <code>wrote</code>，新主语 <em>Don Quixote</em> 为单数，因此 <code>be</code> 动词用 <strong>was</strong>，<code>write</code> 的过去分词为 <strong>written</strong>。
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第六讲：高频不规则动词三态速查表 ==================== -->
+    <details class="lesson-container" data-cat="irregular">
+        <summary>
+            <h3>第六讲：高频不规则动词三态速查表（AAA / ABB / ABC 分类记忆）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div class="trilingual-sub">LESSON 6 · IRREGULAR VERBS · 不规则动词三态表</div>
+                <h2>完成时和被动语态的基石：按规律记忆“原形 - 过去式 - 过去分词”</h2>
+            </div>
+
+            <div class="irreg-search-bar">
+                <input type="text" id="irregSearchInput" class="irreg-input" placeholder="🔍 搜索英文、西语或中文（如 write / escribir / 写）..." oninput="renderIrregTable()">
+                <button type="button" class="pill-btn active" onclick="filterIrregType('ALL', this)">全部 (24词)</button>
+                <button type="button" class="pill-btn" onclick="filterIrregType('AAA', this)">AAA型 (三态同形)</button>
+                <button type="button" class="pill-btn" onclick="filterIrregType('ABB', this)">ABB型 (后两态同形)</button>
+                <button type="button" class="pill-btn" onclick="filterIrregType('ABC', this)">ABC型 (三态各异)</button>
+            </div>
+
+            <div class="table-wrap">
+                <table class="guide-table">
+                    <thead>
+                        <tr>
+                            <th>记忆规律</th>
+                            <th>原形 (Infinitive)</th>
+                            <th>过去式 (Past Simple)</th>
+                            <th>过去分词 (Past Participle)</th>
+                            <th class="lang-es">西语原形 (Español)</th>
+                            <th class="lang-zh">中文释义</th>
+                        </tr>
+                    </thead>
+                    <tbody id="irregTableBody"></tbody>
+                </table>
+            </div>
+        </article>
+    </details>
+
+</main>
+
+<footer class="footer">
+    © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+</footer>
+
+<script>
+    // 1. 三语显示模式切换
+    function setLangMode(mode, btn) {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.body.classList.remove('hide-es', 'hide-zh');
+        if (mode === 'en-zh') {
+            document.body.classList.add('hide-es');
+        } else if (mode === 'en-es') {
+            document.body.classList.add('hide-zh');
+        } else if (mode === 'en-only') {
+            document.body.classList.add('hide-es', 'hide-zh');
+        }
+    }
+
+    // 2. 顶部章节筛选
+    function filterCategory(cat, btn) {
+        document.querySelectorAll('.toolbar-row:last-child .pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.querySelectorAll('.lesson-container').forEach(card => {
+            if (cat === 'all' || card.dataset.cat === cat) {
+                card.classList.remove('hidden-section');
+                if (cat !== 'all') card.setAttribute('open', '');
+            } else {
+                card.classList.add('hidden-section');
+            }
+        });
+    }
+
+    // 3. 全部展开/折叠
+    function toggleAllDetails(openState) {
+        document.querySelectorAll('.lesson-container:not(.hidden-section)').forEach(d => {
+            if (openState) d.setAttribute('open', '');
+            else d.removeAttribute('open');
+        });
+    }
+
+    // 4. 被动语态三步转换演示数据
+    const PASSIVE_CASES = [
+        {
+            steps: [
+                {
+                    html: 'Tom <span class="hl-verb">writes</span> <u>a letter</u> every week.',
+                    note: '【原句·一般现在时】主语 Tom + 谓语 writes + 宾语 a letter'
+                },
+                {
+                    html: '<u>A letter</u> + (writes) + (Tom) every week.',
+                    note: '【第①步】把原句宾语 <b>A letter</b> 提到句首作新主语（单数）。'
+                },
+                {
+                    html: 'A letter <span class="hl-verb">is written</span> + (Tom) every week.',
+                    note: '【第②步】一般现在时单数用 <b>is</b>，加上 write 的过去分词 <b>written</b>。'
+                },
+                {
+                    html: 'A letter <span class="hl-verb">is written</span> <b>by Tom</b> every week.',
+                    note: '【完成】原主语 Tom 加 <b>by</b> 放在动作后（若执行者不重要可省略）。'
+                }
+            ]
+        },
+        {
+            steps: [
+                {
+                    html: 'The cat <span class="hl-verb">ate</span> <u>the fish</u>.',
+                    note: '【原句·一般过去时】主语 The cat + 谓语 ate + 宾语 the fish'
+                },
+                {
+                    html: '<u>The fish</u> + (ate) + (the cat).',
+                    note: '【第①步】把原句宾语 <b>The fish</b> 提到句首作新主语（单数）。'
+                },
+                {
+                    html: 'The fish <span class="hl-verb">was eaten</span> + (the cat).',
+                    note: '【第②步】一般过去时单数用 <b>was</b>，加上 eat 的过去分词 <b>eaten</b>。'
+                },
+                {
+                    html: 'The fish <span class="hl-verb">was eaten</span> <b>by the cat</b>.',
+                    note: '【完成】这条鱼被猫吃掉了。（西语：El pescado fue comido por el gato.）'
+                }
+            ]
+        },
+        {
+            steps: [
+                {
+                    html: 'The students <span class="hl-verb">have cleaned</span> <u>the classroom</u>.',
+                    note: '【原句·现在完成时】主语 The students + 谓语 have cleaned + 宾语 the classroom'
+                },
+                {
+                    html: '<u>The classroom</u> + (have cleaned) + (the students).',
+                    note: '【第①步】把宾语 <b>The classroom</b> 提到句首（注意变成单数主语了！）。'
+                },
+                {
+                    html: 'The classroom <span class="hl-verb">has been cleaned</span> + (the students).',
+                    note: '【第②步】新主语为单数，助动词变为 <b>has</b>，加上被动核心 <b>been cleaned</b>。'
+                },
+                {
+                    html: 'The classroom <span class="hl-verb">has been cleaned</span> <b>by the students</b>.',
+                    note: '【完成】教室已经被学生们打扫干净了。'
+                }
+            ]
+        },
+        {
+            steps: [
+                {
+                    html: 'You <span class="hl-verb">must finish</span> <u>the project</u> today.',
+                    note: '【原句·含情态动词】主语 You + must finish + 宾语 the project'
+                },
+                {
+                    html: '<u>The project</u> + (must finish) + (you) today.',
+                    note: '【第①步】把宾语 <b>The project</b> 提到句首作新主语。'
+                },
+                {
+                    html: 'The project <span class="hl-verb">must be finished</span> + (you) today.',
+                    note: '【第②步】情态动词 <b>must</b> 后直接加原形 <b>be</b> + 过去分词 <b>finished</b>。'
+                },
+                {
+                    html: 'The project <span class="hl-verb">must be finished</span> (<b>by you</b>) today.',
+                    note: '【完成】这个项目今天必须被完成（by you 通常可省略）。'
+                }
+            ]
+        }
+    ];
+
+    let curPassiveCase = 0;
+    let curPassiveStep = 0;
+
+    function selectPassiveCase(idx, btn) {
+        curPassiveCase = idx;
+        curPassiveStep = 0;
+        document.querySelectorAll('.w-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.step-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+        renderPassiveStage();
+    }
+
+    function setPassiveStep(stepIdx, btn) {
+        curPassiveStep = stepIdx;
+        document.querySelectorAll('.step-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPassiveStage();
+    }
+
+    function renderPassiveStage() {
+        const data = PASSIVE_CASES[curPassiveCase].steps[curPassiveStep];
+        document.getElementById('passiveStage').innerHTML = `
+            <div class="stage-sentence">${data.html}</div>
+            <div class="stage-note">${data.note}</div>
+        `;
+    }
+
+    // 5. 高频不规则动词三态速查表
+    const IRREG_VERBS = [
+        { type: 'AAA', base: 'cut', past: 'cut', pp: 'cut', es: 'cortar', zh: '切；剪' },
+        { type: 'AAA', base: 'put', past: 'put', pp: 'put', es: 'poner', zh: '放；放置' },
+        { type: 'AAA', base: 'read', past: 'read (/red/)', pp: 'read (/red/)', es: 'leer', zh: '阅读（注意读音变化）' },
+        { type: 'AAA', base: 'cost', past: 'cost', pp: 'cost', es: 'costar', zh: '花费' },
+        { type: 'ABB', base: 'buy', past: 'bought', pp: 'bought', es: 'comprar', zh: '买' },
+        { type: 'ABB', base: 'bring', past: 'brought', pp: 'brought', es: 'traer', zh: '带来' },
+        { type: 'ABB', base: 'teach', past: 'taught', pp: 'taught', es: 'enseñar', zh: '教' },
+        { type: 'ABB', base: 'catch', past: 'caught', pp: 'caught', es: 'atrapar / coger', zh: '抓住；赶上' },
+        { type: 'ABB', base: 'make', past: 'made', pp: 'made', es: 'hacer', zh: '制作；使' },
+        { type: 'ABB', base: 'find', past: 'found', pp: 'found', es: 'encontrar', zh: '找到；发现' },
+        { type: 'ABB', base: 'have', past: 'had', pp: 'had', es: 'tener / haber', zh: '有；吃' },
+        { type: 'ABB', base: 'build', past: 'built', pp: 'built', es: 'construir', zh: '建造' },
+        { type: 'ABB', base: 'send', past: 'sent', pp: 'sent', es: 'enviar', zh: '发送；寄' },
+        { type: 'ABB', base: 'tell', past: 'told', pp: 'told', es: 'contar / decir', zh: '告诉' },
+        { type: 'ABC', base: 'be (am/is/are)', past: 'was / were', pp: 'been', es: 'ser / estar', zh: '是；在' },
+        { type: 'ABC', base: 'go', past: 'went', pp: 'gone', es: 'ir', zh: '去' },
+        { type: 'ABC', base: 'do', past: 'did', pp: 'done', es: 'hacer', zh: '做' },
+        { type: 'ABC', base: 'see', past: 'saw', pp: 'seen', es: 'ver', zh: '看见' },
+        { type: 'ABC', base: 'eat', past: 'ate', pp: 'eaten', es: 'comer', zh: '吃' },
+        { type: 'ABC', base: 'write', past: 'wrote', pp: 'written', es: 'escribir', zh: '写' },
+        { type: 'ABC', base: 'speak', past: 'spoke', pp: 'spoken', es: 'hablar', zh: '说（语言）' },
+        { type: 'ABC', base: 'break', past: 'broke', pp: 'broken', es: 'romper', zh: '打破' },
+        { type: 'ABC', base: 'take', past: 'took', pp: 'taken', es: 'tomar / llevar', zh: '拿；带走' },
+        { type: 'ABC', base: 'give', past: 'gave', pp: 'given', es: 'dar', zh: '给' }
+    ];
+
+    let curIrregType = 'ALL';
+
+    function filterIrregType(type, btn) {
+        curIrregType = type;
+        document.querySelectorAll('.irreg-search-bar .pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderIrregTable();
+    }
+
+    function renderIrregTable() {
+        const kw = (document.getElementById('irregSearchInput').value || '').trim().toLowerCase();
+        const filtered = IRREG_VERBS.filter(v => {
+            const matchType = curIrregType === 'ALL' || v.type === curIrregType;
+            const matchKw = !kw ||
+                v.base.toLowerCase().includes(kw) ||
+                v.past.toLowerCase().includes(kw) ||
+                v.pp.toLowerCase().includes(kw) ||
+                v.es.toLowerCase().includes(kw) ||
+                v.zh.includes(kw);
+            return matchType && matchKw;
+        });
+
+        const tbody = document.getElementById('irregTableBody');
+        tbody.innerHTML = filtered.map(v => `
+            <tr>
+                <td><span class="signal-pill">${v.type}</span></td>
+                <td><strong>${v.base}</strong></td>
+                <td><span style="color:#1e40af; font-weight:bold;">${v.past}</span></td>
+                <td><span class="hl-verb">${v.pp}</span></td>
+                <td class="lang-es txt-es">${v.es}</td>
+                <td class="lang-zh txt-zh">${v.zh}</td>
+            </tr>
+        `).join('');
+    }
+
+    renderPassiveStage();
+    renderIrregTable();
+</script>
+</body>
+</html>

@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语动词时态与语态随堂训练 | EMSI 马德里国际中文学校</title>
+    <style>
+        :root {
+            --emsi-blue: #1a4a8e;
+            --emsi-blue-light: #eef4fc;
+            --emsi-gold: #f1c40f;
+            --emsi-gold-hover: #e0b408;
+            --emsi-gray: #f5f7fa;
+            --es-teal: #0f766e;
+            --zh-gray: #475569;
+            --success: #16a34a;
+            --success-bg: #f0fdf4;
+            --danger: #dc2626;
+            --danger-bg: #fef2f2;
+            --text-main: #1e293b;
+            --border: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--emsi-gray);
+            color: var(--text-main);
+            display: flex; flex-direction: column; min-height: 100vh;
+            line-height: 1.65;
+        }
+
+        /* --- 三语显示滤镜控制类 --- */
+        body.hide-es .lang-es { display: none !important; }
+        body.hide-zh .lang-zh { display: none !important; }
+
+        /* --- 页眉（沿用 EMSI 统一风格） --- */
+        .header {
+            background-color: white; text-align: center;
+            padding: 36px 20px 26px 20px; border-bottom: 5px solid var(--emsi-gold);
+            position: relative;
+        }
+        .header h1 { color: var(--emsi-blue); font-size: 32px; margin: 0; }
+        .header .subtitle { color: #6b7280; font-size: 18px; margin: 8px 0 0; font-weight: bold; }
+
+        .back-home {
+            position: absolute; top: 32px; left: 36px;
+            text-decoration: none; display: inline-flex; align-items: center;
+            background: white; padding: 9px 22px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: var(--emsi-blue);
+            font-weight: bold; font-size: 16px; transition: all 0.3s ease;
+        }
+        .back-home:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .back-home svg { margin-right: 8px; width: 20px; height: 20px; }
+
+        .guide-link {
+            position: absolute; top: 32px; right: 36px;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+            background: var(--emsi-blue-light); border: 1.5px solid #bfdbfe;
+            padding: 9px 20px; border-radius: 50px;
+            color: var(--emsi-blue); font-weight: bold; font-size: 15px; transition: all 0.25s ease;
+        }
+        .guide-link:hover { background: var(--emsi-blue); color: white; transform: translateY(-2px); }
+
+        /* --- 主内容区 --- */
+        .main-content {
+            flex: 1; padding: 26px 20px 60px;
+            max-width: 1040px; width: 100%; margin: 0 auto;
+        }
+
+        /* --- 分学生 / 分组多板块标签栏 --- */
+        .profile-bar {
+            background: white; border-radius: 16px; padding: 14px 18px;
+            margin-bottom: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;
+        }
+        .profile-tabs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .profile-tab {
+            padding: 7px 16px; border-radius: 999px; border: 1.5px solid var(--border);
+            background: white; color: var(--text-main); font-weight: bold; font-size: 14px;
+            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .profile-tab:hover { border-color: var(--emsi-blue); }
+        .profile-tab.active {
+            background: var(--emsi-blue); color: white; border-color: var(--emsi-blue);
+            box-shadow: 0 3px 10px rgba(26, 74, 142, 0.2);
+        }
+        .add-profile-btn {
+            padding: 7px 14px; border-radius: 999px; border: 1.5px dashed #22c55e;
+            background: #f0fdf4; color: #15803d; font-weight: bold; font-size: 13.5px; cursor: pointer;
+        }
+        .add-profile-btn:hover { background: #dcfce7; }
+
+        .profile-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+        .mini-btn {
+            padding: 5px 11px; border-radius: 8px; border: 1px solid #cbd5e1;
+            background: #f8fafc; color: #475569; font-size: 12.5px; font-weight: bold; cursor: pointer;
+        }
+        .mini-btn:hover { border-color: var(--emsi-blue); color: var(--emsi-blue); }
+        .mini-btn.danger:hover { border-color: var(--danger); color: var(--danger); background: #fef2f2; }
+
+        /* --- 控制面板 --- */
+        .control-panel {
+            background: white; border-radius: 16px; padding: 18px 22px;
+            margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; gap: 14px;
+        }
+        .control-row {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;
+        }
+        .control-group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .group-label { font-size: 13.5px; font-weight: bold; color: #64748b; }
+
+        .lang-btn {
+            padding: 5px 13px; border-radius: 8px; border: 1.5px solid #cbd5e1;
+            background: #f8fafc; color: #334155; font-weight: bold; font-size: 13px; cursor: pointer;
+        }
+        .lang-btn.active { background: var(--es-teal); color: white; border-color: var(--es-teal); }
+
+        .topic-pill {
+            padding: 6px 14px; border-radius: 50px; border: 1.5px solid #cbd5e1;
+            background: #f8fafc; color: #475569; font-weight: bold; font-size: 13.5px;
+            cursor: pointer; transition: 0.2s; user-select: none;
+        }
+        .topic-pill.selected {
+            background: var(--emsi-blue-light); color: var(--emsi-blue);
+            border-color: var(--emsi-blue);
+        }
+        .topic-pill.selected::before { content: "✓ "; font-weight: 900; }
+
+        select.ctrl-select {
+            padding: 6px 12px; border-radius: 8px; border: 1.5px solid #cbd5e1;
+            font-size: 13.5px; font-weight: bold; color: var(--emsi-blue); background: white;
+        }
+
+        .btn-primary {
+            background: var(--emsi-blue); color: white; border: none;
+            padding: 8px 18px; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer;
+        }
+        .btn-primary:hover { background: #143a70; }
+        .btn-gold {
+            background: var(--emsi-gold); color: var(--emsi-blue); border: none;
+            padding: 8px 18px; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer;
+        }
+        .btn-gold:hover { background: var(--emsi-gold-hover); }
+
+        /* --- 老师批量出题抽屉 --- */
+        .teacher-drawer {
+            display: none; background: #fffbeb; border: 2px dashed #f59e0b;
+            border-radius: 14px; padding: 18px 20px; margin-top: 6px;
+        }
+        .teacher-drawer.open { display: block; }
+        .teacher-drawer h4 { margin: 0 0 8px; color: #b45309; font-size: 16px; }
+        .teacher-drawer textarea {
+            width: 100%; min-height: 115px; padding: 10px 12px; border-radius: 10px;
+            border: 1.5px solid #fcd34d; font-family: inherit; font-size: 13.5px; line-height: 1.6;
+        }
+        .drawer-tools {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            gap: 10px; margin-top: 10px;
+        }
+
+        /* --- 实时成绩进度条 --- */
+        .score-banner {
+            background: white; border-radius: 14px; padding: 14px 22px;
+            margin-bottom: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--emsi-gold);
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
+        }
+        .score-stats { display: flex; flex-wrap: wrap; gap: 18px; font-size: 15px; font-weight: bold; }
+        .stat-num { color: var(--emsi-blue); font-size: 18px; }
+        .stat-ok { color: var(--success); font-size: 18px; }
+        .stat-err { color: var(--danger); font-size: 18px; }
+
+        /* --- 练习题卡片 --- */
+        .q-card {
+            background: white; border-radius: 16px; padding: 22px 26px;
+            margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 2px solid transparent; transition: all 0.2s ease;
+        }
+        .q-card.correct { border-color: #86efac; background: #fcfffd; }
+        .q-card.wrong { border-color: #fca5a5; background: #fffcfc; }
+
+        .q-card-top {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            gap: 8px; margin-bottom: 12px;
+        }
+        .q-badge-group { display: flex; align-items: center; gap: 8px; }
+        .q-num {
+            background: var(--emsi-blue); color: white; font-weight: bold;
+            font-size: 13px; padding: 2px 10px; border-radius: 20px;
+        }
+        .q-cat-tag {
+            background: var(--emsi-blue-light); color: var(--emsi-blue);
+            font-weight: bold; font-size: 12.5px; padding: 2px 10px; border-radius: 6px;
+        }
+        .q-hint-btn {
+            background: #fef9c3; color: #854d0e; border: 1px solid #fde047;
+            padding: 4px 11px; border-radius: 20px; font-size: 12.5px; font-weight: bold; cursor: pointer;
+        }
+        .q-hint-btn:hover { background: #fef08a; }
+
+        .q-prompt-en {
+            font-size: 19px; font-weight: 700; color: #0f172a; margin-bottom: 10px;
+            line-height: 1.8;
+        }
+        .blank-input {
+            display: inline-block; width: 190px; max-width: 100%;
+            padding: 5px 12px; margin: 0 6px;
+            border: none; border-bottom: 2.5px solid var(--emsi-blue);
+            background: #f8fafc; border-radius: 6px 6px 0 0;
+            font-size: 18px; font-weight: 800; color: var(--emsi-blue);
+            text-align: center; font-family: inherit; transition: 0.2s;
+        }
+        .blank-input:focus {
+            outline: none; background: #eef4fc; border-bottom-color: #d97706;
+        }
+        .blank-input.rewrite-input {
+            display: block; width: 100%; margin: 10px 0 4px;
+            text-align: left; padding: 10px 14px;
+            border: 1.5px solid #cbd5e1; border-radius: 10px;
+        }
+        .q-card.correct .blank-input {
+            background: var(--success-bg); border-color: var(--success); color: var(--success);
+        }
+        .q-card.wrong .blank-input {
+            background: var(--danger-bg); border-color: var(--danger); color: var(--danger);
+        }
+
+        .tri-sub-line { display: flex; align-items: baseline; gap: 8px; margin: 4px 0; font-size: 15px; }
+        .tag-es { background: #ccfbf1; color: #0f766e; font-size: 11px; font-weight: 800; padding: 1px 6px; border-radius: 4px; }
+        .tag-zh { background: #e2e8f0; color: #334155; font-size: 11px; font-weight: 800; padding: 1px 6px; border-radius: 4px; }
+        .txt-es { color: var(--es-teal); font-weight: 600; }
+        .txt-zh { color: var(--zh-gray); }
+
+        .formula-hint-box {
+            display: none; margin-top: 10px; padding: 8px 14px; border-radius: 8px;
+            background: #fffbeb; border-left: 4px solid var(--emsi-gold);
+            color: #92400e; font-size: 14px; font-weight: bold;
+        }
+        .formula-hint-box.show { display: block; }
+
+        .q-card-footer {
+            margin-top: 12px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;
+        }
+        .check-one-btn {
+            background: #f1f5f9; color: var(--emsi-blue); border: 1.5px solid #cbd5e1;
+            padding: 5px 14px; border-radius: 8px; font-weight: bold; font-size: 13.5px; cursor: pointer;
+        }
+        .check-one-btn:hover { background: var(--emsi-blue); color: white; border-color: var(--emsi-blue); }
+
+        .feedback-box {
+            display: none; width: 100%; margin-top: 10px; padding: 12px 16px;
+            border-radius: 10px; font-size: 14.5px;
+        }
+        .feedback-box.show { display: block; }
+        .feedback-box.ok { background: var(--success-bg); border: 1px solid #bbf7d0; color: #166534; }
+        .feedback-box.err { background: var(--danger-bg); border: 1px solid #fecaca; color: #991b1b; }
+
+        /* --- 底部批量操作栏 --- */
+        .bottom-actions {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 14px;
+            margin-top: 26px;
+        }
+        .btn-lg { padding: 12px 28px; font-size: 16px; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn-retry {
+            background: #fee2e2; color: #b91c1c; border: 1.5px solid #fca5a5;
+            padding: 12px 24px; font-size: 15px; border-radius: 50px; font-weight: bold; cursor: pointer;
+        }
+        .btn-retry:hover { background: #fecaca; }
+
+        .footer { background-color: var(--emsi-blue); color: white; text-align: center; padding: 18px; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .back-home, .guide-link { position: static; margin: 6px; }
+            .q-card { padding: 18px; }
+            .blank-input { width: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <!-- 按要求返回主页 index.html -->
+    <a href="index.html" class="back-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        返回主页
+    </a>
+    <a href="英语时态与语态讲解.html" class="guide-link">📖 查看精讲课堂</a>
+    <h1><span>EMSI</span> 马德里国际中文学校</h1>
+    <div class="subtitle">英语动词时态与语态随堂训练 · English · Español · 中文</div>
+</header>
+
+<main class="main-content">
+
+    <!-- 1. 分学生 / 分组多板块标签栏 -->
+    <div class="profile-bar">
+        <div class="profile-tabs" id="profileTabs"></div>
+        <div class="profile-actions">
+            <button type="button" class="mini-btn" onclick="renameCurrentProfile()">✏️ 改名</button>
+            <button type="button" class="mini-btn danger" onclick="deleteCurrentProfile()">🗑️ 删除当前组</button>
+        </div>
+    </div>
+
+    <!-- 2. 课堂控制面板 -->
+    <div class="control-panel">
+        <div class="control-row">
+            <div class="control-group">
+                <span class="group-label">🌐 提示语言：</span>
+                <button type="button" class="lang-btn active" onclick="setLangMode('all', this)">三语全显 (EN+ES+中)</button>
+                <button type="button" class="lang-btn" onclick="setLangMode('en-zh', this)">英 + 中</button>
+                <button type="button" class="lang-btn" onclick="setLangMode('en-es', this)">英 + 西</button>
+                <button type="button" class="lang-btn" onclick="setLangMode('en-only', this)">纯英语 (盲测)</button>
+            </div>
+
+            <div class="control-group">
+                <select id="countSelect" class="ctrl-select" onchange="saveProfilePrefs(); generateQuiz();">
+                    <option value="8">每次 8 题</option>
+                    <option value="12" selected>每次 12 题</option>
+                    <option value="20">每次 20 题</option>
+                    <option value="999">全部匹配题目</option>
+                </select>
+                <button type="button" class="btn-gold" onclick="generateQuiz()">🔄 重新抽题</button>
+                <button type="button" class="btn-primary" onclick="toggleTeacherDrawer()">➕ 批量出题 / 题库管理</button>
+            </div>
+        </div>
+
+        <div class="control-row" style="border-top: 1px solid #f1f5f9; padding-top: 12px;">
+            <div class="control-group" id="topicPillsContainer">
+                <span class="group-label">🎯 训练范围（可多选）：</span>
+            </div>
+        </div>
+
+        <!-- 老师“复制即用”批量出题抽屉 -->
+        <div class="teacher-drawer" id="teacherDrawer">
+            <h4>⚡ 老师“复制即用”批量加题（每行一题，用竖线 | 分隔）</h4>
+            <p style="margin:0 0 8px; font-size:13px; color:#78350f;">
+                格式：<code>英文题干(用 ___ 留空，整句改写则不写 ___) | 正确答案(多个可接受答案用 / 隔开) | 西语对照或提示 | 中文对照或提示 | 语法解析</code>
+            </p>
+            <textarea id="batchQuestionsInput" placeholder="示例1（填空）：She ___ (go) to school by bus every day. | goes | Ella va al colegio en autobús todos los días. | 她每天坐公交车去上学。 | 第三人称单数一般现在时加 -es。&#10;示例2（主动改被动）：Shakespeare wrote Hamlet. | Hamlet was written by Shakespeare | Shakespeare escribió Hamlet. | 莎士比亚写了《哈姆雷特》。 | 一般过去时单数被动：was + written。"></textarea>
+            <div class="drawer-tools">
+                <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                    <button type="button" class="btn-gold" onclick="importBatchQuestions()">📥 添加到当前学生自定义题库</button>
+                    <button type="button" class="mini-btn danger" onclick="clearCustomQuestions()">清空当前组自定义题 (<span id="customCountSpan">0</span>题)</button>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <button type="button" class="mini-btn" onclick="exportAllData()">💾 导出备份 (.json)</button>
+                    <label class="mini-btn" style="cursor:pointer;">
+                        📤 导入恢复
+                        <input type="file" accept=".json" style="display:none;" onchange="importAllData(event)">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 实时成绩横幅 -->
+    <div class="score-banner">
+        <div class="score-stats">
+            <span>当前组：<strong style="color:var(--emsi-blue);" id="curProfileNameDisplay">公共题库</strong></span>
+            <span>本轮题数：<span class="stat-num" id="statTotal">0</span></span>
+            <span>已批改：<span class="stat-num" id="statChecked">0</span></span>
+            <span>正确：<span class="stat-ok" id="statCorrect">0</span></span>
+            <span>待订正：<span class="stat-err" id="statWrong">0</span></span>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <button type="button" class="btn-primary" onclick="checkAllQuestions()">✅ 一键批改全部</button>
+        </div>
+    </div>
+
+    <!-- 4. 练习题卡片容器 -->
+    <div id="quizContainer"></div>
+
+    <!-- 5. 底部操作按钮 -->
+    <div class="bottom-actions">
+        <button type="button" class="btn-primary btn-lg" onclick="checkAllQuestions()">✅ 提交并批改全部</button>
+        <button type="button" class="btn-retry" id="retryWrongBtn" style="display:none;" onclick="retryWrongQuestions()">🔁 仅重练错题 (<span id="wrongRetryCount">0</span>题)</button>
+        <button type="button" class="btn-gold btn-lg" onclick="generateQuiz()">🎲 再练一组新题</button>
+    </div>
+
+</main>
+
+<footer class="footer">
+    © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+</footer>
+
+<script>
+// ==================== 1. 内置精选三语题库（36题，覆盖全部核心语法点） ====================
+const TOPICS = [
+    { id: 'present', label: '一般现在 / 现在进行' },
+    { id: 'perf_past', label: '现在完成 vs 一般过去' },
+    { id: 'past_adv', label: '过去进行 / 过去完成' },
+    { id: 'future', label: '将来时态 (will / going to)' },
+    { id: 'passive_fill', label: '被动语态填空 (be+done)' },
+    { id: 'passive_rewrite', label: '主动改被动句型转换' },
+    { id: 'custom', label: '⭐ 老师自定义题库' }
+];
+
+const BUILTIN_BANK = [
+    // --- 1. 一般现在 / 现在进行 ---
+    {
+        topic: 'present',
+        type: 'fill',
+        en: 'My brother usually ___ (play) football on Saturdays.',
+        ans: ['plays'],
+        hint: '一般现在时 · 第三人称单数 (he/she/it) 动词加 -s',
+        es: 'Mi hermano normalmente juega al fútbol los sábados.',
+        zh: '我哥哥通常周六踢足球。',
+        exp: '句中有频率副词 usually（通常），用一般现在时；主语 My brother 是第三人称单数，所以 play 加 -s 变为 plays。'
+    },
+    {
+        topic: 'present',
+        type: 'fill',
+        en: 'Be quiet! The baby ___ (sleep) in the bedroom right now.',
+        ans: ['is sleeping'],
+        hint: '现在进行时 · am / is / are + 动词-ing',
+        es: '¡Silencio! El bebé está durmiendo en el dormitorio ahora mismo.',
+        zh: '安静点！宝宝此刻正在卧室里睡觉。',
+        exp: 'Be quiet! 和 right now 提示动作正在进行，主语 The baby 是单数，用 is sleeping（对应西语 está durmiendo）。'
+    },
+    {
+        topic: 'present',
+        type: 'fill',
+        en: '___ your parents ___ (speak) Chinese at home? (填助动词和动词，用空格隔开)',
+        ans: ['do speak'],
+        hint: '一般现在时复数疑问句 · Do + 主语 + 动词原形',
+        es: '¿Tus padres hablan chino en casa?',
+        zh: '你父母在家说中文吗？',
+        exp: '西语直接把陈述句变调，但英语一般现在时疑问句必须借助助动词 Do（主语 parents 为复数）+ 动词原形 speak。'
+    },
+    {
+        topic: 'present',
+        type: 'fill',
+        en: 'Look! It ___ (rain) outside, so take an umbrella.',
+        ans: ['is raining'],
+        hint: '现在进行时 · Look! 提示此刻正在发生',
+        es: '¡Mira! Está lloviendo fuera, así que lleva un paraguas.',
+        zh: '看！外面正在下雨，所以带把伞吧。',
+        exp: 'Look! 提示说话瞬间正在发生的动作，用现在进行时 is raining。'
+    },
+    {
+        topic: 'present',
+        type: 'fill',
+        en: 'Water ___ (boil) at 100 degrees Celsius.',
+        ans: ['boils'],
+        hint: '一般现在时 · 客观真理与自然规律',
+        es: 'El agua hierve a 100 grados centígrados.',
+        zh: '水在100摄氏度时沸腾。',
+        exp: '科学事实和客观真理永远用一般现在时，不可数名词 Water 视为单数，动词加 -s 变为 boils。'
+    },
+    {
+        topic: 'present',
+        type: 'fill',
+        en: 'She ___ (not / like) coffee; she prefers tea.',
+        ans: ["doesn't like", "does not like"],
+        hint: '一般现在时第三人称单数否定 · doesn\'t + 动词原形',
+        es: 'A ella no le gusta el café; prefiere el té.',
+        zh: '她不喜欢咖啡，她更喜欢茶。',
+        exp: '第三人称单数否定必须用 doesn\'t，后面的实义动词 like 恢复原形。'
+    },
+
+    // --- 2. 现在完成 vs 一般过去 ---
+    {
+        topic: 'perf_past',
+        type: 'fill',
+        en: 'We ___ (visit) the Prado Museum yesterday afternoon.',
+        ans: ['visited'],
+        hint: '注意时间词 yesterday · 明确过去时间用一般过去时！',
+        es: 'Visitamos el Museo del Prado ayer por la tarde.',
+        zh: '我们昨天下午参观了普拉多博物馆。',
+        exp: '【西语学生易错点】句中有明确的过去时间 yesterday（昨天），英语绝对不能用 have visited，必须用一般过去时 visited！'
+    },
+    {
+        topic: 'perf_past',
+        type: 'fill',
+        en: 'I ___ (live) in Madrid since 2019.',
+        ans: ['have lived', "'ve lived"],
+        hint: '现在完成时 · have / has + 过去分词 (since + 时间点)',
+        es: 'Vivo / He vivido en Madrid desde 2019.',
+        zh: '我从2019年起就一直住在马德里。',
+        exp: 'since 2019 表示动作从过去持续到现在，英语用现在完成时 have lived。'
+    },
+    {
+        topic: 'perf_past',
+        type: 'fill',
+        en: '___ you ever ___ (eat) Peking Duck? (填助动词和动词，空格隔开)',
+        ans: ['have eaten'],
+        hint: '现在完成时疑问句 · Have + 主语 + ever + 过去分词',
+        es: '¿Has comido alguna vez pato laqueado?',
+        zh: '你曾经吃过北京烤鸭吗？',
+        exp: '询问“曾经是否做过某事”（ever）用现在完成时，eat 的过去分词是不规则变化 eaten。'
+    },
+    {
+        topic: 'perf_past',
+        type: 'fill',
+        en: 'Tom ___ (finish) his homework just now, so he can play now.',
+        ans: ['finished'],
+        hint: '注意 just now（刚才）相当于 ago，用一般过去时；just（刚刚）才用完成时',
+        es: 'Tom terminó sus deberes hace un momento, así que ya puede jugar.',
+        zh: '汤姆刚才做完作业了，所以他现在可以玩了。',
+        exp: 'just now 意为“刚才”（明确过去时间点），因此用一般过去时 finished。'
+    },
+    {
+        topic: 'perf_past',
+        type: 'fill',
+        en: 'She ___ already ___ (read) this book twice. (填助动词和过去分词，空格隔开)',
+        ans: ['has read'],
+        hint: '现在完成时 · 主语 She 为单数，already 搭配完成时',
+        es: 'Ella ya ha leído este libro dos veces.',
+        zh: '她已经把这本书读过两遍了。',
+        exp: 'already 和 twice 表示截至目前的经历，主语 She 用 has，read 的过去分词拼写仍为 read（读 /red/）。'
+    },
+    {
+        topic: 'perf_past',
+        type: 'fill',
+        en: 'My grandparents ___ (move) to Spain twenty years ago.',
+        ans: ['moved'],
+        hint: '看到 ... ago（……以前），立刻用一般过去时',
+        es: 'Mis abuelos se mudaron a España hace veinte años.',
+        zh: '我的祖父母二十年前搬到了西班牙。',
+        exp: 'twenty years ago 是明确的过去时间，用一般过去时 moved。'
+    },
+    {
+        topic: 'perf_past',
+        type: 'fill',
+        en: 'They ___ (not / arrive) at the airport yet.',
+        ans: ["haven't arrived", "have not arrived"],
+        hint: '现在完成时否定 · yet（还/尚未）常用于完成时否定句末',
+        es: 'Todavía no han llegado al aeropuerto.',
+        zh: '他们还没有到达机场。',
+        exp: 'yet（尚未）是现在完成时否定句的典型信号词，主语 They 用 haven\'t arrived。'
+    },
+
+    // --- 3. 过去进行 / 过去完成 ---
+    {
+        topic: 'past_adv',
+        type: 'fill',
+        en: 'I ___ (do) my homework when my friend called me.',
+        ans: ['was doing'],
+        hint: '过去进行时 · was / were + doing（过去某刻正在进行的背景）',
+        es: 'Estaba haciendo mis deberes cuando mi amigo me llamó.',
+        zh: '我朋友给我打电话时，我正在做作业。',
+        exp: '对应西语的 Imperfecto（estaba haciendo），表示过去某个动作发生时正在进行的背景，主语 I 用 was doing。'
+    },
+    {
+        topic: 'past_adv',
+        type: 'fill',
+        en: 'When we got to the station, the train ___ already ___ (leave). (空格隔开)',
+        ans: ['had left'],
+        hint: '过去完成时 · had + 过去分词（“过去的过去”）',
+        es: 'Cuando llegamos a la estación, el tren ya había salido.',
+        zh: '当我们到达车站时，火车已经开走了。',
+        exp: '对应西语 Pluscuamperfecto（había salido），火车开走发生在“到达车站（got）”之前，即过去的过去，用 had left。'
+    },
+    {
+        topic: 'past_adv',
+        type: 'fill',
+        en: 'At 8 o’clock last night, they ___ (watch) a football match.',
+        ans: ['were watching'],
+        hint: '过去进行时 · 过去具体时间点正在做的事',
+        es: 'Anoche a las 8 estaban viendo un partido de fútbol.',
+        zh: '昨晚八点钟，他们正在看一场足球比赛。',
+        exp: 'At 8 o’clock last night 是过去具体时间点，主语 they 为复数，用 were watching。'
+    },
+    {
+        topic: 'past_adv',
+        type: 'fill',
+        en: 'She told me that she ___ (lose) her keys.',
+        ans: ['had lost'],
+        hint: '过去完成时 · 丢钥匙发生在 told（过去）之前',
+        es: 'Me dijo que había perdido sus llaves.',
+        zh: '她告诉我她把钥匙弄丢了。',
+        exp: '丢钥匙发生在“告诉我”之前，用过去完成时 had lost（lose 的过去分词为 lost）。'
+    },
+    {
+        topic: 'past_adv',
+        type: 'fill',
+        en: 'While my mother ___ (cook), my father was reading the newspaper.',
+        ans: ['was cooking'],
+        hint: '过去进行时 · while 连接两个同时进行的过去动作',
+        es: 'Mientras mi madre cocinaba, mi padre leía el periódico.',
+        zh: '我妈妈在做饭的时候，我爸爸正在看报纸。',
+        exp: 'while（正当……时）引导持续性动作，与主句 was reading 呼应，用 was cooking。'
+    },
+
+    // --- 4. 将来时态 ---
+    {
+        topic: 'future',
+        type: 'fill',
+        en: 'Look at those black clouds! It ___ (rain) soon.',
+        ans: ['is going to rain', "'s going to rain"],
+        hint: 'be going to + 动词原形 · 根据眼前明显迹象预测（西语 va a llover）',
+        es: '¡Mira esas nubes negras! Va a llover pronto.',
+        zh: '看那些乌云！很快就要下雨了。',
+        exp: '有乌云这一明显迹象的预测，英语首选 be going to + 动词原形，对应西语 ir a + infinitivo。'
+    },
+    {
+        topic: 'future',
+        type: 'fill',
+        en: '— It’s very hot in here. — I ___ (open) the window for you.',
+        ans: ['will open', "'ll open"],
+        hint: 'will + 动词原形 · 说话瞬间临时决定帮忙',
+        es: '— Hace mucho calor aquí. — Te abriré la ventana.',
+        zh: '——这里面好热。——我给你把窗户打开吧。',
+        exp: '听到对方说热才临时决定去开窗，英语用 will open。'
+    },
+    {
+        topic: 'future',
+        type: 'fill',
+        en: 'We ___ (fly) to Beijing next summer; we have already bought the tickets.',
+        ans: ['are going to fly', 'are flying'],
+        hint: '提前买好票的计划 · are going to fly 或现在进行时表计划 are flying',
+        es: 'Vamos a volar a Pekín el próximo verano; ya hemos comprado los billetes.',
+        zh: '我们明年夏天要去北京，我们已经买好机票了。',
+        exp: '已经买好票说明是说话前早已定好的计划，用 are going to fly（或 are flying）。'
+    },
+    {
+        topic: 'future',
+        type: 'fill',
+        en: 'By the end of this year, I ___ (learn) 1,000 English words. (将来完成时)',
+        ans: ['will have learned', 'will have learnt'],
+        hint: '将来完成时 · will have + 过去分词（到将来某时为止已做完）',
+        es: 'Para finales de este año, habré aprendido 1.000 palabras en inglés.',
+        zh: '到今年年底为止，我将已经学会1000个英语单词了。',
+        exp: 'By the end of this year（到今年年底前）是将来完成时的标志，结构为 will have + 过去分词。'
+    },
+    {
+        topic: 'future',
+        type: 'fill',
+        en: 'I promise I ___ (not / tell) anyone your secret.',
+        ans: ["won't tell", "will not tell"],
+        hint: 'will 否定式 won\'t + 动词原形 · 表达承诺',
+        es: 'Prometo que no le contaré tu secreto a nadie.',
+        zh: '我保证我不会把你的秘密告诉任何人。',
+        exp: '表达承诺（promise）用 will / won\'t + 动词原形。'
+    },
+
+    // --- 5. 被动语态填空 ---
+    {
+        topic: 'passive_fill',
+        type: 'fill',
+        en: 'Spanish ___ (speak) in Spain and most of Latin America.',
+        ans: ['is spoken'],
+        hint: '一般现在时被动语态 · am / is / are + 过去分词 (不要漏掉 be 动词！)',
+        es: 'Se habla español en España y en la mayor parte de Latinoamérica.',
+        zh: '西班牙和拉丁美洲大部分地区都说西班牙语。',
+        exp: '【西语对比】西语用自复被动 Se habla，但英语必须用 be + 过去分词：Spanish 为单数，用 is spoken。'
+    },
+    {
+        topic: 'passive_fill',
+        type: 'fill',
+        en: 'The Mona Lisa ___ (paint) by Leonardo da Vinci.',
+        ans: ['was painted'],
+        hint: '一般过去时被动语态 · was / were + 过去分词',
+        es: 'La Mona Lisa fue pintada por Leonardo da Vinci.',
+        zh: '《蒙娜丽莎》是由列奥纳多·达·芬奇画的。',
+        exp: '画作是在过去完成的，主语 The Mona Lisa 为单数，用 was painted。'
+    },
+    {
+        topic: 'passive_fill',
+        type: 'fill',
+        en: 'A new library ___ (build) in our school next year.',
+        ans: ['will be built', 'is going to be built'],
+        hint: '一般将来时被动语态 · will be + 过去分词 (build → built)',
+        es: 'Se construirá una nueva biblioteca en nuestra escuela el próximo año.',
+        zh: '明年我们学校将建一座新图书馆。',
+        exp: 'next year 表示将来，图书馆是“被建造”，用 will be built。'
+    },
+    {
+        topic: 'passive_fill',
+        type: 'fill',
+        en: 'All the classroom windows ___ (clean) yesterday.',
+        ans: ['were cleaned'],
+        hint: '一般过去时复数被动 · windows 为复数，用 were + done',
+        es: 'Todas las ventanas del aula fueron limpiadas ayer.',
+        zh: '昨天教室所有的窗户都被擦干净了。',
+        exp: 'yesterday 用过去时，主语 windows 是复数，所以 be 动词用 were，加上 cleaned。'
+    },
+    {
+        topic: 'passive_fill',
+        type: 'fill',
+        en: 'The homework must ___ (finish) before Friday.',
+        ans: ['be finished'],
+        hint: '含情态动词的被动语态 · must + be + 过去分词',
+        es: 'Los deberes deben ser terminados antes del viernes.',
+        zh: '作业必须在周五之前完成。',
+        exp: '情态动词 must 后面必须跟动词原形 be，再加过去分词 finished。'
+    },
+    {
+        topic: 'passive_fill',
+        type: 'fill',
+        en: 'Look! The bridge ___ (repair) by the workers right now.',
+        ans: ['is being repaired'],
+        hint: '现在进行时被动语态 · am/is/are + being + 过去分词',
+        es: '¡Mira! El puente está siendo reparado por los trabajadores ahora mismo.',
+        zh: '看！工人们此刻正在修理这座桥（桥正在被修理）。',
+        exp: '“正在被……”的结构是 am/is/are + being + 过去分词，桥是单数，用 is being repaired。'
+    },
+    {
+        topic: 'passive_fill',
+        type: 'fill',
+        en: 'The letter ___ already ___ (send). (填助动词和过去分词，空格隔开)',
+        ans: ['has been sent'],
+        hint: '现在完成时被动语态 · have/has + been + 过去分词 (send → sent)',
+        es: 'La carta ya ha sido enviada.',
+        zh: '这封信已经被寄出去了。',
+        exp: '现在完成时被动语态公式为 have/has been + 过去分词，主语 The letter 为单数，用 has been sent。'
+    },
+
+    // --- 6. 主动改被动句型转换 ---
+    {
+        topic: 'passive_rewrite',
+        type: 'rewrite',
+        en: '改写为被动语态：Tom writes a letter every week.',
+        ans: ['a letter is written by tom every week', 'a letter is written every week by tom'],
+        hint: '三步法：① 宾语 A letter 提前 → ② 一般现在单数 is written → ③ by Tom',
+        es: 'Tom escribe una carta cada semana. → Una carta es escrita por Tom cada semana.',
+        zh: '汤姆每周写一封信。→ 一封信每周由汤姆来写。',
+        exp: '宾语 A letter 提前作新主语，原句是一般现在时 writes，变为 is written，原主语加 by Tom 放在后面。'
+    },
+    {
+        topic: 'passive_rewrite',
+        type: 'rewrite',
+        en: '改写为被动语态：Cervantes wrote Don Quixote.',
+        ans: ['don quixote was written by cervantes'],
+        hint: '三步法：① Don Quixote 提前 → ② 一般过去单数 was written → ③ by Cervantes',
+        es: 'Cervantes escribió Don Quijote. → Don Quijote fue escrito por Cervantes.',
+        zh: '塞万提斯写了《堂吉诃德》。→ 《堂吉诃德》是由塞万提斯写的。',
+        exp: '原句是一般过去时 wrote，新主语 Don Quixote 为单数，因此变为 was written by Cervantes。'
+    },
+    {
+        topic: 'passive_rewrite',
+        type: 'rewrite',
+        en: '改写为被动语态：The cat ate the fish.',
+        ans: ['the fish was eaten by the cat'],
+        hint: '注意 eat 的过去分词是 eaten，一般过去时单数用 was',
+        es: 'El gato se comió el pescado. → El pescado fue comido por el gato.',
+        zh: '猫把鱼吃了。→ 鱼被猫吃掉了。',
+        exp: '宾语 The fish 提前，ate 变为被动结构 was eaten，加上 by the cat。'
+    },
+    {
+        topic: 'passive_rewrite',
+        type: 'rewrite',
+        en: '改写为被动语态：People speak English all over the world.',
+        ans: ['english is spoken all over the world', 'english is spoken all over the world by people'],
+        hint: '注意：泛指的 people 作主语时，变被动通常可省略 by people',
+        es: 'La gente habla inglés en todo el mundo. → Se habla inglés en todo el mundo.',
+        zh: '全世界的人都说英语。→ 全世界都说英语。',
+        exp: 'English 提前作主语，一般现在时单数用 is spoken，泛指的 by people 可省略。'
+    },
+    {
+        topic: 'passive_rewrite',
+        type: 'rewrite',
+        en: '改写为被动语态：The students have cleaned the classroom.',
+        ans: ['the classroom has been cleaned by the students'],
+        hint: '注意新主语 The classroom 变成单数了，have 要改成 has！',
+        es: 'Los estudiantes han limpiado el aula. → El aula ha sido limpiada por los estudiantes.',
+        zh: '学生们已经打扫了教室。→ 教室已经被学生们打扫干净了。',
+        exp: '原主语 students 是复数用 have，但新主语 The classroom 是单数，必须改成 has been cleaned by the students。'
+    },
+    {
+        topic: 'passive_rewrite',
+        type: 'rewrite',
+        en: '改写为被动语态：We will plant many trees tomorrow.',
+        ans: ['many trees will be planted tomorrow', 'many trees will be planted by us tomorrow', 'many trees will be planted tomorrow by us'],
+        hint: '将来时被动：will + be + planted',
+        es: 'Plantaremos muchos árboles mañana. → Muchos árboles serán plantados mañana.',
+        zh: '我们明天将种很多树。→ 明天将会种下很多树。',
+        exp: 'Many trees 提前，将来时被动结构为 will be planted，tomorrow 放在句末。'
+    }
+];
+
+// ==================== 2. 分学生/分组档案存储状态 ====================
+const STORAGE_KEY = 'emsi_en_tense_trainer_v1';
+
+function createDefaultProfile(name, selectedTopics) {
+    return {
+        id: 'prof_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        name: name,
+        topics: selectedTopics || ['present', 'perf_past', 'past_adv', 'future', 'passive_fill', 'passive_rewrite'],
+        count: 12,
+        customQuestions: []
+    };
+}
+
+let appState = {
+    activeProfileId: '',
+    profiles: []
+};
+
+let currentQuiz = []; // 当前页面正在做的题目列表
+
+function loadState() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && Array.isArray(parsed.profiles) && parsed.profiles.length > 0) {
+                appState = parsed;
+                return;
+            }
+        }
+    } catch (e) {}
+
+    // 默认初始化三个常用分组
+    const p1 = createDefaultProfile('公共题库 (全套)', ['present', 'perf_past', 'past_adv', 'future', 'passive_fill', 'passive_rewrite', 'custom']);
+    const p2 = createDefaultProfile('学生A (基础巩固)', ['present', 'perf_past', 'future', 'custom']);
+    const p3 = createDefaultProfile('学生B (进阶语态)', ['perf_past', 'past_adv', 'passive_fill', 'passive_rewrite', 'custom']);
+    appState.profiles = [p1, p2, p3];
+    appState.activeProfileId = p1.id;
+    saveState();
+}
+
+function saveState() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    } catch (e) {}
+}
+
+function getActiveProfile() {
+    let prof = appState.profiles.find(p => p.id === appState.activeProfileId);
+    if (!prof) {
+        prof = appState.profiles[0];
+        appState.activeProfileId = prof.id;
+    }
+    return prof;
+}
+
+// ==================== 3. 渲染档案标签与选题面板 ====================
+function renderProfiles() {
+    const container = document.getElementById('profileTabs');
+    const active = getActiveProfile();
+    container.innerHTML = '';
+
+    appState.profiles.forEach(p => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'profile-tab' + (p.id === active.id ? ' active' : '');
+        const customTag = p.customQuestions.length > 0 ? ` (${p.customQuestions.length}自建)` : '';
+        btn.textContent = p.name + customTag;
+        btn.onclick = () => {
+            appState.activeProfileId = p.id;
+            saveState();
+            syncUIFromProfile();
+            generateQuiz();
+        };
+        container.appendChild(btn);
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'add-profile-btn';
+    addBtn.textContent = '+ 添加学生/分组';
+    addBtn.onclick = () => {
+        const name = prompt('请输入新学生或班级名称（例如：学生C、周六上午班）：');
+        if (!name || !name.trim()) return;
+        const np = createDefaultProfile(name.trim());
+        appState.profiles.push(np);
+        appState.activeProfileId = np.id;
+        saveState();
+        syncUIFromProfile();
+        generateQuiz();
+    };
+    container.appendChild(addBtn);
+
+    document.getElementById('curProfileNameDisplay').textContent = active.name;
+    document.getElementById('customCountSpan').textContent = active.customQuestions.length;
+}
+
+function renameCurrentProfile() {
+    const active = getActiveProfile();
+    const newName = prompt('请输入新的分组/学生名称：', active.name);
+    if (!newName || !newName.trim()) return;
+    active.name = newName.trim();
+    saveState();
+    renderProfiles();
+}
+
+function deleteCurrentProfile() {
+    if (appState.profiles.length <= 1) {
+        alert('至少需要保留一个分组标签！');
+        return;
+    }
+    const active = getActiveProfile();
+    if (!confirm(`确定要删除「${active.name}」及其自定义题目吗？`)) return;
+    appState.profiles = appState.profiles.filter(p => p.id !== active.id);
+    appState.activeProfileId = appState.profiles[0].id;
+    saveState();
+    syncUIFromProfile();
+    generateQuiz();
+}
+
+function renderTopicPills() {
+    const active = getActiveProfile();
+    const container = document.getElementById('topicPillsContainer');
+    container.innerHTML = '<span class="group-label">🎯 训练范围（可多选）：</span>';
+
+    TOPICS.forEach(t => {
+        const pill = document.createElement('span');
+        const isSelected = active.topics.includes(t.id);
+        pill.className = 'topic-pill' + (isSelected ? ' selected' : '');
+        pill.textContent = t.label;
+        pill.onclick = () => {
+            if (active.topics.includes(t.id)) {
+                if (active.topics.length === 1) {
+                    alert('请至少保留一个训练范围！');
+                    return;
+                }
+                active.topics = active.topics.filter(id => id !== t.id);
+            } else {
+                active.topics.push(t.id);
+            }
+            saveState();
+            renderTopicPills();
+            generateQuiz();
+        };
+        container.appendChild(pill);
+    });
+}
+
+function syncUIFromProfile() {
+    const active = getActiveProfile();
+    renderProfiles();
+    renderTopicPills();
+    document.getElementById('countSelect').value = String(active.count || 12);
+}
+
+function saveProfilePrefs() {
+    const active = getActiveProfile();
+    active.count = parseInt(document.getElementById('countSelect').value, 10) || 12;
+    saveState();
+}
+
+// ==================== 4. 语言显示切换 & 老师批量出题 ====================
+function setLangMode(mode, btn) {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.body.classList.remove('hide-es', 'hide-zh');
+    if (mode === 'en-zh') document.body.classList.add('hide-es');
+    else if (mode === 'en-es') document.body.classList.add('hide-zh');
+    else if (mode === 'en-only') document.body.classList.add('hide-es', 'hide-zh');
+}
+
+function toggleTeacherDrawer() {
+    document.getElementById('teacherDrawer').classList.toggle('open');
+}
+
+function importBatchQuestions() {
+    const raw = document.getElementById('batchQuestionsInput').value.trim();
+    if (!raw) {
+        alert('请先在文本框内粘贴题目！');
+        return;
+    }
+    const active = getActiveProfile();
+    const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    let added = 0;
+
+    lines.forEach(line => {
+        const parts = line.split('|').map(s => s.trim());
+        if (parts.length < 2 || !parts[0] || !parts[1]) return;
+        const enText = parts[0];
+        const ansList = parts[1].split('/').map(a => a.trim()).filter(Boolean);
+        const esText = parts[2] || '';
+        const zhText = parts[3] || '';
+        const expText = parts[4] || ('正确答案：' + ansList.join(' / '));
+        const isFill = enText.includes('___');
+
+        active.customQuestions.push({
+            topic: 'custom',
+            type: isFill ? 'fill' : 'rewrite',
+            en: enText,
+            ans: ansList,
+            hint: '老师随堂自编题',
+            es: esText,
+            zh: zhText,
+            exp: expText
+        });
+        added++;
+    });
+
+    if (added === 0) {
+        alert('未识别到有效格式，请确保每行至少包含：英文题干 | 正确答案');
+        return;
+    }
+
+    if (!active.topics.includes('custom')) {
+        active.topics.push('custom');
+    }
+    document.getElementById('batchQuestionsInput').value = '';
+    saveState();
+    syncUIFromProfile();
+    generateQuiz();
+    alert(`✅ 成功添加 ${added} 道自定义题目到「${active.name}」！`);
+}
+
+function clearCustomQuestions() {
+    const active = getActiveProfile();
+    if (active.customQuestions.length === 0) return;
+    if (!confirm(`确定清空「${active.name}」下的全部自定义题目吗？`)) return;
+    active.customQuestions = [];
+    saveState();
+    syncUIFromProfile();
+    generateQuiz();
+}
+
+function exportAllData() {
+    const blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'EMSI_英语时态语态题库备份.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function importAllData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (data && Array.isArray(data.profiles) && data.profiles.length > 0) {
+                appState = data;
+                saveState();
+                syncUIFromProfile();
+                generateQuiz();
+                alert('✅ 成功导入备份数据！');
+            } else {
+                alert('❌ 备份文件格式不正确');
+            }
+        } catch (err) {
+            alert('❌ 文件读取失败');
+        }
+        event.target.value = '';
+    };
+    reader.readAsText(file, 'utf-8');
+}
+
+// ==================== 5. 抽题、渲染与智能批改 ====================
+function shuffleArray(arr) {
+    const copy = arr.slice();
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+}
+
+function generateQuiz(specificList) {
+    const active = getActiveProfile();
+    if (Array.isArray(specificList)) {
+        currentQuiz = specificList.map(q => ({ ...q, userVal: '', status: 'pending' }));
+    } else {
+        const allPool = BUILTIN_BANK.concat(active.customQuestions);
+        const filtered = allPool.filter(q => active.topics.includes(q.topic));
+        const shuffled = shuffleArray(filtered);
+        const limit = parseInt(document.getElementById('countSelect').value, 10) || 12;
+        currentQuiz = shuffled.slice(0, limit).map(q => ({ ...q, userVal: '', status: 'pending' }));
+    }
+    renderQuizCards();
+    updateScoreBanner();
+}
+
+function escapeHtml(str) {
+    return (str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function getTopicLabel(topicId) {
+    const found = TOPICS.find(t => t.id === topicId);
+    return found ? found.label : '综合练习';
+}
+
+function renderQuizCards() {
+    const container = document.getElementById('quizContainer');
+    if (currentQuiz.length === 0) {
+        container.innerHTML = `<div class="q-card" style="text-align:center; color:#64748b;">当前勾选的范围内暂无题目，请勾选其他语法板块或添加自定义题目。</div>`;
+        return;
+    }
+
+    container.innerHTML = currentQuiz.map((q, idx) => {
+        let promptHtml = '';
+        if (q.type === 'fill' && q.en.includes('___')) {
+            const safeEn = escapeHtml(q.en);
+            const inputTag = `<input type="text" class="blank-input" id="inp_${idx}" value="${escapeHtml(q.userVal)}" placeholder="输入动词形式" autocomplete="off" onkeydown="handleInputKey(event, ${idx})">`;
+            promptHtml = safeEn.replace('___', inputTag);
+        } else {
+            promptHtml = `${escapeHtml(q.en)}<input type="text" class="blank-input rewrite-input" id="inp_${idx}" value="${escapeHtml(q.userVal)}" placeholder="在此输入改写后的完整英文句子..." autocomplete="off" onkeydown="handleInputKey(event, ${idx})">`;
+        }
+
+        return `
+        <div class="q-card" id="qcard_${idx}">
+            <div class="q-card-top">
+                <div class="q-badge-group">
+                    <span class="q-num">第 ${idx + 1} 题</span>
+                    <span class="q-cat-tag">${escapeHtml(getTopicLabel(q.topic))}</span>
+                </div>
+                <button type="button" class="q-hint-btn" onclick="toggleHint(${idx})">💡 语法公式提示</button>
+            </div>
+
+            <div class="q-prompt-en">${promptHtml}</div>
+
+            ${q.es ? `<div class="tri-sub-line lang-es"><span class="tag-es">ES</span><span class="txt-es">${escapeHtml(q.es)}</span></div>` : ''}
+            ${q.zh ? `<div class="tri-sub-line lang-zh"><span class="tag-zh">中</span><span class="txt-zh">${escapeHtml(q.zh)}</span></div>` : ''}
+
+            <div class="formula-hint-box" id="hint_${idx}">🔑 提示：${escapeHtml(q.hint || '注意时态时间词与主语单复数')}</div>
+
+            <div class="q-card-footer">
+                <button type="button" class="check-one-btn" onclick="checkSingleQuestion(${idx})">核对本题 ↵</button>
+            </div>
+
+            <div class="feedback-box" id="fb_${idx}"></div>
+        </div>`;
+    }).join('');
+}
+
+function toggleHint(idx) {
+    document.getElementById(`hint_${idx}`).classList.toggle('show');
+}
+
+function handleInputKey(event, idx) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        checkSingleQuestion(idx);
+        const nextInput = document.getElementById(`inp_${idx + 1}`);
+        if (nextInput) nextInput.focus();
+    }
+}
+
+// 智能标准化对比（忽略大小写、首尾空格、多余空格、句末标点）
+function normalizeText(str) {
+    return (str || '')
+        .toLowerCase()
+        .replace(/[’‘]/g, "'")
+        .replace(/[.!?。！？]+$/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function checkSingleQuestion(idx) {
+    const q = currentQuiz[idx];
+    const inp = document.getElementById(`inp_${idx}`);
+    const card = document.getElementById(`qcard_${idx}`);
+    const fb = document.getElementById(`fb_${idx}`);
+    if (!q || !inp) return;
+
+    const rawVal = inp.value;
+    q.userVal = rawVal;
+    const normUser = normalizeText(rawVal);
+
+    if (!normUser) {
+        q.status = 'wrong';
+        card.classList.remove('correct');
+        card.classList.add('wrong');
+        fb.className = 'feedback-box show err';
+        fb.innerHTML = `<strong>⚠️ 尚未作答</strong> · 参考答案：<strong>${escapeHtml(q.ans.join(' / '))}</strong><br>${escapeHtml(q.exp)}`;
+        updateScoreBanner();
+        return;
+    }
+
+    const isRight = q.ans.some(validAns => normalizeText(validAns) === normUser);
+    if (isRight) {
+        q.status = 'correct';
+        card.classList.remove('wrong');
+        card.classList.add('correct');
+        fb.className = 'feedback-box show ok';
+        fb.innerHTML = `<strong>✅ 回答正确！</strong> ${escapeHtml(q.exp)}`;
+    } else {
+        q.status = 'wrong';
+        card.classList.remove('correct');
+        card.classList.add('wrong');
+        fb.className = 'feedback-box show err';
+        fb.innerHTML = `<strong>❌ 回答有误</strong> · 正确答案：<strong>${escapeHtml(q.ans.join(' / '))}</strong><br>${escapeHtml(q.exp)}`;
+    }
+    updateScoreBanner();
+}
+
+function checkAllQuestions() {
+    currentQuiz.forEach((_, idx) => checkSingleQuestion(idx));
+}
+
+function updateScoreBanner() {
+    const total = currentQuiz.length;
+    const correct = currentQuiz.filter(q => q.status === 'correct').length;
+    const wrong = currentQuiz.filter(q => q.status === 'wrong').length;
+    const checked = correct + wrong;
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statChecked').textContent = checked;
+    document.getElementById('statCorrect').textContent = correct;
+    document.getElementById('statWrong').textContent = wrong;
+
+    const retryBtn = document.getElementById('retryWrongBtn');
+    if (wrong > 0) {
+        retryBtn.style.display = 'inline-block';
+        document.getElementById('wrongRetryCount').textContent = wrong;
+    } else {
+        retryBtn.style.display = 'none';
+    }
+}
+
+function retryWrongQuestions() {
+    const wrongList = currentQuiz.filter(q => q.status === 'wrong');
+    if (wrongList.length === 0) return;
+    generateQuiz(wrongList);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 初始化启动
+loadState();
+syncUIFromProfile();
+generateQuiz();
+</script>
+</body>
+</html>
