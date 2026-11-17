@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>西语动词变位精讲课堂 | EMSI 马德里国际中文学校</title>
+    <style>
+        :root {
+            --emsi-blue: #1a4a8e;
+            --emsi-blue-light: #eef4fc;
+            --emsi-gold: #f1c40f;
+            --emsi-gray: #f5f7fa;
+            --ending-red: #e11d48;
+            --success: #10b981;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--emsi-gray);
+            color: var(--text-main);
+            display: flex; flex-direction: column; min-height: 100vh;
+            line-height: 1.75;
+        }
+
+        /* --- 页眉（与阅读训练网页保持统一风格） --- */
+        .header {
+            background-color: white; text-align: center;
+            padding: 36px 20px 26px 20px; border-bottom: 5px solid var(--emsi-gold);
+            position: relative;
+        }
+        .header h1 { color: var(--emsi-blue); font-size: 32px; margin: 0; }
+        .header .subtitle { color: #6b7280; font-size: 18px; margin: 8px 0 0; font-weight: bold; }
+
+        .back-home {
+            position: absolute; top: 32px; left: 36px;
+            text-decoration: none; display: inline-flex; align-items: center;
+            background: white; padding: 9px 22px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: var(--emsi-blue);
+            font-weight: bold; font-size: 16px; transition: all 0.3s ease;
+        }
+        .back-home:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .back-home svg { margin-right: 8px; width: 20px; height: 20px; }
+
+        .practice-link {
+            position: absolute; top: 32px; right: 36px;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+            background: var(--emsi-gold); padding: 9px 22px; border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(241, 196, 15, 0.35); color: var(--emsi-blue);
+            font-weight: bold; font-size: 16px; transition: all 0.3s ease;
+        }
+        .practice-link:hover { transform: translateY(-2px); background: #e5b80b; }
+
+        /* --- 主内容区 --- */
+        .main-content {
+            flex: 1; padding: 30px 20px 60px;
+            max-width: 1000px; width: 100%; margin: 0 auto;
+        }
+
+        /* --- 顶部导航筛选工具条 --- */
+        .filter-toolbar {
+            background: white; border-radius: 16px; padding: 16px 20px;
+            margin-bottom: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
+        }
+        .filter-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+        .filter-btn {
+            padding: 7px 16px; border-radius: 50px; border: 1.5px solid #cbd5e1;
+            background: white; color: var(--emsi-blue); font-weight: bold; font-size: 14px;
+            cursor: pointer; transition: 0.2s;
+        }
+        .filter-btn:hover { border-color: var(--emsi-blue); background: var(--emsi-blue-light); }
+        .filter-btn.active { background: var(--emsi-blue); color: white; border-color: var(--emsi-blue); }
+
+        .expand-actions { display: flex; gap: 8px; }
+        .mini-action-btn {
+            padding: 6px 12px; border-radius: 8px; border: 1px solid #e2e8f0;
+            background: #f8fafc; color: #475569; font-size: 13px; font-weight: bold; cursor: pointer;
+        }
+        .mini-action-btn:hover { border-color: var(--emsi-blue); color: var(--emsi-blue); }
+
+        /* --- 折叠讲座卡片（复刻阅读训练结构） --- */
+        .lesson-container {
+            width: 100%; background: white; margin-bottom: 22px;
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .lesson-container.hidden-section { display: none; }
+
+        .lesson-container > summary {
+            padding: 22px 32px; list-style: none; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            background: #fff; border-left: 8px solid var(--emsi-blue);
+            transition: background 0.2s;
+        }
+        .lesson-container > summary:hover { background: #fafcff; }
+        .lesson-container > summary::-webkit-details-marker { display: none; }
+        .lesson-container > summary h3 { margin: 0; color: var(--emsi-blue); font-size: 21px; }
+        .lesson-container > summary::after {
+            content: "展开讲解 +"; color: #d97706; background: #fef3c7;
+            padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 13px; white-space: nowrap;
+        }
+        .lesson-container[open] > summary::after { content: "收起讲解 -"; background: #e2e8f0; color: #475569; }
+
+        .lesson-card { padding: 24px 36px 40px 36px; border-top: 1px solid #eee; }
+
+        .lesson-title {
+            border-left: 6px solid var(--emsi-gold); padding-left: 15px;
+            margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .lesson-title .es-title { color: #6b7280; font-size: 15px; font-weight: bold; text-transform: uppercase; }
+        .lesson-title h2 { color: var(--emsi-blue); margin: 2px 0 0; font-size: 25px; }
+
+        .sub-heading {
+            color: var(--emsi-blue); font-size: 19px; font-weight: 800;
+            margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* --- 提示框与公式框 --- */
+        .tip-yellow {
+            background: #fff9db; padding: 15px 18px; border-radius: 10px;
+            border-left: 5px solid var(--emsi-gold); margin: 16px 0;
+        }
+        .tip-red {
+            background: #fff5f5; padding: 15px 18px; border-radius: 10px;
+            border-left: 5px solid #e74c3c; margin: 16px 0;
+        }
+        .tip-blue {
+            background: var(--emsi-blue-light); padding: 15px 18px; border-radius: 10px;
+            border-left: 5px solid var(--emsi-blue); margin: 16px 0;
+        }
+        .formula-banner {
+            background: linear-gradient(135deg, #1a4a8e 0%, #2563eb 100%);
+            color: white; padding: 18px 22px; border-radius: 14px;
+            text-align: center; font-size: 19px; font-weight: bold; margin: 16px 0;
+            box-shadow: 0 6px 16px rgba(26, 74, 142, 0.2);
+        }
+        .formula-banner span.gold { color: var(--emsi-gold); }
+
+        /* --- 变位规律表格（双色词根+词尾） --- */
+        .table-wrap { overflow-x: auto; margin: 14px 0 20px; }
+        .conj-guide-table {
+            width: 100%; border-collapse: collapse; background: white;
+            border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0;
+        }
+        .conj-guide-table th {
+            background: var(--emsi-blue); color: white; padding: 11px 14px;
+            text-align: left; font-size: 15px;
+        }
+        .conj-guide-table td {
+            padding: 10px 14px; border-bottom: 1px solid #f1f5f9; font-size: 16px;
+        }
+        .conj-guide-table tr:nth-child(even) td { background: #fafbfd; }
+        .pronoun-col { color: #64748b; font-weight: bold; font-size: 14px; width: 22%; }
+        .stem { color: var(--emsi-blue); font-weight: 700; }
+        .ending { color: var(--ending-red); font-weight: 800; background: #ffe4e6; padding: 1px 4px; border-radius: 4px; }
+
+        /* --- 信号词徽章 & 例句卡片 --- */
+        .signal-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 16px; align-items: center; }
+        .signal-label { font-size: 13px; font-weight: bold; color: #475569; }
+        .signal-pill {
+            background: #f1f5f9; color: var(--emsi-blue); border: 1px solid #cbd5e1;
+            padding: 3px 11px; border-radius: 20px; font-size: 13px; font-weight: bold;
+        }
+
+        .example-box {
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+            padding: 14px 18px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+        }
+        .text-es { color: #1e293b; font-size: 17px; font-weight: 600; display: block; }
+        .text-es b { color: var(--ending-red); }
+        .text-zh { color: #64748b; font-size: 15px; display: block; margin-top: 3px; }
+        .speak-btn {
+            background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd;
+            padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold;
+            cursor: pointer; white-space: nowrap; transition: 0.2s;
+        }
+        .speak-btn:hover { background: #0284c7; color: white; }
+
+        /* --- 双栏对比网格 --- */
+        .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+        .compare-col {
+            background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 16px 18px;
+        }
+        .compare-col h4 { margin: 0 0 10px; color: var(--emsi-blue); font-size: 17px; border-bottom: 2px solid var(--emsi-gold); padding-bottom: 6px; }
+
+        /* --- 互动靴子动词图解 widget --- */
+        .boot-widget {
+            background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 16px;
+            padding: 20px; margin: 16px 0;
+        }
+        .boot-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .boot-tab-btn {
+            padding: 7px 15px; border-radius: 10px; border: 1.5px solid var(--emsi-blue);
+            background: white; color: var(--emsi-blue); font-weight: bold; cursor: pointer; font-size: 14px;
+        }
+        .boot-tab-btn.active { background: var(--emsi-blue); color: white; }
+        .boot-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        }
+        .boot-cell {
+            padding: 12px 16px; border-radius: 10px; background: white;
+            border: 1.5px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;
+        }
+        .boot-cell.in-boot {
+            background: #fef9c3; border-color: #eab308; box-shadow: 0 2px 6px rgba(234, 179, 8, 0.15);
+        }
+        .boot-cell .b-pron { color: #64748b; font-size: 14px; font-weight: bold; }
+        .boot-cell .b-form { font-size: 18px; font-weight: 800; color: var(--emsi-blue); }
+
+        /* --- 随堂小测验（折叠解析） --- */
+        .quiz-section { margin-top: 30px; border-top: 2px dashed #e2e8f0; padding-top: 22px; }
+        .quiz-title { color: var(--emsi-blue); font-weight: bold; font-size: 19px; margin-bottom: 14px; }
+        .question-box {
+            background: #f9fafb; padding: 16px 20px; border-radius: 12px;
+            margin-bottom: 14px; border: 1px solid #edf2f7;
+        }
+        .question-text { color: var(--emsi-blue); font-weight: bold; font-size: 16px; display: block; }
+        .question-zh { color: #6b7280; font-size: 14px; display: block; margin-top: 2px; }
+        .answer-details { margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 8px; }
+        .answer-details summary {
+            padding: 4px 0; color: #e67e22; font-size: 15px; font-weight: bold;
+            cursor: pointer; list-style: none;
+        }
+        .answer-details summary::-webkit-details-marker { display: none; }
+        .answer-details summary::after { content: " (点击查看解析)"; font-size: 12px; color: #94a3b8; font-weight: normal; }
+        .answer-content {
+            background: #fff3e0; padding: 10px 14px; border-radius: 8px;
+            color: #9a3412; margin-top: 6px; font-size: 15px;
+        }
+
+        .footer { background-color: var(--emsi-blue); color: white; text-align: center; padding: 18px; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .back-home, .practice-link { position: static; margin: 6px; }
+            .compare-grid, .boot-grid { grid-template-columns: 1fr; }
+            .lesson-card { padding: 18px; }
+            .lesson-container > summary { padding: 18px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="西语随堂听写目录.html" class="back-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        返回目录
+    </a>
+    <a href="西语动词变位练习.html" class="practice-link">⚡ 进入变位训练器</a>
+    <h1><span>EMSI</span> 马德里国际中文学校</h1>
+    <div class="subtitle">西语动词变位精讲课堂 · 全时态规律与场景图解</div>
+</header>
+
+<main class="main-content">
+
+    <!-- 顶部语式筛选与控制栏 -->
+    <div class="filter-toolbar">
+        <div class="filter-pills">
+            <button type="button" class="filter-btn active" onclick="filterCategory('all', this)">全部讲义 (6讲)</button>
+            <button type="button" class="filter-btn" onclick="filterCategory('overview', this)">全景地图</button>
+            <button type="button" class="filter-btn" onclick="filterCategory('indicativo', this)">陈述式 (全部时态)</button>
+            <button type="button" class="filter-btn" onclick="filterCategory('imperativo', this)">命令式</button>
+            <button type="button" class="filter-btn" onclick="filterCategory('subjuntivo', this)">虚拟式</button>
+            <button type="button" class="filter-btn" onclick="filterCategory('irregulares', this)">不规则记忆法</button>
+        </div>
+        <div class="expand-actions">
+            <button type="button" class="mini-action-btn" onclick="toggleAllDetails(true)">全部展开</button>
+            <button type="button" class="mini-action-btn" onclick="toggleAllDetails(false)">全部折叠</button>
+        </div>
+    </div>
+
+    <!-- ==================== 第一讲：全景地图 ==================== -->
+    <details class="lesson-container" data-cat="overview" open>
+        <summary>
+            <h3>第一讲：西语动词全景地图——三大语式与变位逻辑</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div>
+                    <div class="es-title">LECCIÓN 1 · PANORAMA GENERAL</div>
+                    <h2>为什么西语动词要变位？三大语式怎么分？</h2>
+                </div>
+            </div>
+
+            <div class="tip-blue">
+                <strong>💡 核心概念：</strong>西班牙语通过改变动词词尾（有时也改变词干），一次性把<strong>“是谁做的（6个人称）”</strong>和<strong>“什么时候/什么态度做的（时态与语式）”</strong>合并在一个词里，所以日常说话经常省略主语代词（如直接说 <em>Hablo español</em>）。
+            </div>
+
+            <div class="compare-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+                <div class="compare-col">
+                    <h4>1. 陈述式 (Modo Indicativo)</h4>
+                    <p style="margin:0; font-size:15px;"><strong>关键词：客观事实</strong><br>用来描述真实发生过、正在发生、将要发生或客观存在的事实，包含 <strong>5个简单时态 + 5个复合时态</strong>。</p>
+                </div>
+                <div class="compare-col">
+                    <h4>2. 命令式 (Modo Imperativo)</h4>
+                    <p style="margin:0; font-size:15px;"><strong>关键词：指令、请求与禁止</strong><br>直接对听话人发出命令、建议或禁止，分为<strong>肯定命令式</strong>和<strong>否定命令式</strong>（注意没有第一人称单数 <em>yo</em>）。</p>
+                </div>
+                <div class="compare-col">
+                    <h4>3. 虚拟式 (Modo Subjuntivo)</h4>
+                    <p style="margin:0; font-size:15px;"><strong>关键词：主观情感、愿望与假设</strong><br>表达“希望、怀疑、开心、建议、目的”等主观态度，通常躲在 <strong>que</strong> 引导的从句里。</p>
+                </div>
+            </div>
+
+            <div class="sub-heading">📌 认识动词原形的三大变位组（词根 + 词尾）</div>
+            <p>所有西班牙语动词原形（Infinitivo）都以 <strong>-ar</strong>（第一变位）、<strong>-er</strong>（第二变位）、<strong>-ir</strong>（第三变位）结尾。去掉这两个字母剩下的部分叫<strong>词根（Raíz）</strong>：</p>
+            <div class="table-wrap">
+                <table class="conj-guide-table">
+                    <thead>
+                        <tr>
+                            <th>变位分组</th>
+                            <th>原形 (Infinitivo)</th>
+                            <th>词根 (Raíz)</th>
+                            <th>词尾 (Terminación)</th>
+                            <th>中文词义</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>第一变位 (-ar)</td>
+                            <td><strong>hablar</strong></td>
+                            <td><span class="stem">habl-</span></td>
+                            <td><span class="ending">-ar</span></td>
+                            <td>说话；讲</td>
+                        </tr>
+                        <tr>
+                            <td>第二变位 (-er)</td>
+                            <td><strong>comer</strong></td>
+                            <td><span class="stem">com-</span></td>
+                            <td><span class="ending">-er</span></td>
+                            <td>吃</td>
+                        </tr>
+                        <tr>
+                            <td>第三变位 (-ir)</td>
+                            <td><strong>vivir</strong></td>
+                            <td><span class="stem">viv-</span></td>
+                            <td><span class="ending">-ir</span></td>
+                            <td>居住；生活</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第二讲：陈述式简单时态 ==================== -->
+    <details class="lesson-container" data-cat="indicativo">
+        <summary>
+            <h3>第二讲：陈述式简单时态（现在、简单过去、未完成过去、将来与条件）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div>
+                    <div class="es-title">LECCIÓN 2 · INDICATIVO SIMPLE</div>
+                    <h2>陈述式五大简单时态规则与核心对比</h2>
+                </div>
+            </div>
+
+            <!-- 2.1 陈述式现在时 -->
+            <div class="sub-heading">2.1 陈述式现在时 (Presente de Indicativo)</div>
+            <div class="signal-tags">
+                <span class="signal-label">常见信号词：</span>
+                <span class="signal-pill">ahora (现在)</span>
+                <span class="signal-pill">siempre (总是)</span>
+                <span class="signal-pill">todos los días (每天)</span>
+                <span class="signal-pill">a veces (有时候)</span>
+            </div>
+            <div class="table-wrap">
+                <table class="conj-guide-table">
+                    <thead>
+                        <tr>
+                            <th>人称</th>
+                            <th>-ar (hablar 说话)</th>
+                            <th>-er (comer 吃)</th>
+                            <th>-ir (vivir 居住)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="pronoun-col">yo</td><td><span class="stem">habl</span><span class="ending">o</span></td><td><span class="stem">com</span><span class="ending">o</span></td><td><span class="stem">viv</span><span class="ending">o</span></td></tr>
+                        <tr><td class="pronoun-col">tú</td><td><span class="stem">habl</span><span class="ending">as</span></td><td><span class="stem">com</span><span class="ending">es</span></td><td><span class="stem">viv</span><span class="ending">es</span></td></tr>
+                        <tr><td class="pronoun-col">él / ella / Ud.</td><td><span class="stem">habl</span><span class="ending">a</span></td><td><span class="stem">com</span><span class="ending">e</span></td><td><span class="stem">viv</span><span class="ending">e</span></td></tr>
+                        <tr><td class="pronoun-col">nosotros / as</td><td><span class="stem">habl</span><span class="ending">amos</span></td><td><span class="stem">com</span><span class="ending">emos</span></td><td><span class="stem">viv</span><span class="ending">imos</span></td></tr>
+                        <tr><td class="pronoun-col">vosotros / as</td><td><span class="stem">habl</span><span class="ending">áis</span></td><td><span class="stem">com</span><span class="ending">éis</span></td><td><span class="stem">viv</span><span class="ending">ís</span></td></tr>
+                        <tr><td class="pronoun-col">ellos / ellas / Uds.</td><td><span class="stem">habl</span><span class="ending">an</span></td><td><span class="stem">com</span><span class="ending">en</span></td><td><span class="stem">viv</span><span class="ending">en</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 2.2 简单过去时 vs 未完成过去时 -->
+            <div class="sub-heading">2.2 难点突破：简单过去时 (Indefinido) vs. 未完成过去时 (Imperfecto)</div>
+            <div class="compare-grid">
+                <div class="compare-col">
+                    <h4>🎬 简单过去时 (Pretérito Indefinido)</h4>
+                    <p style="font-size:14px; margin:0 0 10px;"><strong>用法：</strong>过去某个明确时间点<strong>已经做完的动作</strong>（像电影里的具体事件推进）。</p>
+                    <div class="signal-tags">
+                        <span class="signal-pill">ayer (昨天)</span>
+                        <span class="signal-pill">anoche (昨晚)</span>
+                        <span class="signal-pill">el año pasado (去年)</span>
+                    </div>
+                    <table class="conj-guide-table">
+                        <thead><tr><th>人称</th><th>-ar (hablar)</th><th>-er / -ir (comer / vivir)</th></tr></thead>
+                        <tbody>
+                            <tr><td class="pronoun-col">yo</td><td><span class="stem">habl</span><span class="ending">é</span></td><td><span class="stem">com / viv</span><span class="ending">í</span></td></tr>
+                            <tr><td class="pronoun-col">tú</td><td><span class="stem">habl</span><span class="ending">aste</span></td><td><span class="stem">com / viv</span><span class="ending">iste</span></td></tr>
+                            <tr><td class="pronoun-col">él / ella / Ud.</td><td><span class="stem">habl</span><span class="ending">ó</span></td><td><span class="stem">com / viv</span><span class="ending">ió</span></td></tr>
+                            <tr><td class="pronoun-col">nosotros / as</td><td><span class="stem">habl</span><span class="ending">amos</span></td><td><span class="stem">com / viv</span><span class="ending">imos</span></td></tr>
+                            <tr><td class="pronoun-col">vosotros / as</td><td><span class="stem">habl</span><span class="ending">asteis</span></td><td><span class="stem">com / viv</span><span class="ending">isteis</span></td></tr>
+                            <tr><td class="pronoun-col">ellos / Uds.</td><td><span class="stem">habl</span><span class="ending">aron</span></td><td><span class="stem">com / viv</span><span class="ending">ieron</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="compare-col">
+                    <h4>🖼️ 未完成过去时 (Pretérito Imperfecto)</h4>
+                    <p style="font-size:14px; margin:0 0 10px;"><strong>用法：</strong>过去的<strong>习惯性动作</strong>、年龄时间、天气环境或<strong>背景描写</strong>（全西语仅 <em>ser, ir, ver</em> 三个不规则！）。</p>
+                    <div class="signal-tags">
+                        <span class="signal-pill">cuando era niño (小时候)</span>
+                        <span class="signal-pill">siempre (过去总是)</span>
+                        <span class="signal-pill">mientras (正当…时)</span>
+                    </div>
+                    <table class="conj-guide-table">
+                        <thead><tr><th>人称</th><th>-ar (hablar)</th><th>-er / -ir (comer / vivir)</th></tr></thead>
+                        <tbody>
+                            <tr><td class="pronoun-col">yo</td><td><span class="stem">habl</span><span class="ending">aba</span></td><td><span class="stem">com / viv</span><span class="ending">ía</span></td></tr>
+                            <tr><td class="pronoun-col">tú</td><td><span class="stem">habl</span><span class="ending">abas</span></td><td><span class="stem">com / viv</span><span class="ending">ías</span></td></tr>
+                            <tr><td class="pronoun-col">él / ella / Ud.</td><td><span class="stem">habl</span><span class="ending">aba</span></td><td><span class="stem">com / viv</span><span class="ending">ía</span></td></tr>
+                            <tr><td class="pronoun-col">nosotros / as</td><td><span class="stem">habl</span><span class="ending">ábamos</span></td><td><span class="stem">com / viv</span><span class="ending">íamos</span></td></tr>
+                            <tr><td class="pronoun-col">vosotros / as</td><td><span class="stem">habl</span><span class="ending">abais</span></td><td><span class="stem">com / viv</span><span class="ending">íais</span></td></tr>
+                            <tr><td class="pronoun-col">ellos / Uds.</td><td><span class="stem">habl</span><span class="ending">aban</span></td><td><span class="stem">com / viv</span><span class="ending">ían</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <div>
+                    <span class="text-es">Ayer <b>fui</b> al parque, pero cuando <b>era</b> pequeño <b>iba</b> todos los días.</span>
+                    <span class="text-zh">昨天我去了一次公园（简单过去时：单次完成），但小时候我每天都去（未完成过去时：过去习惯）。</span>
+                </div>
+                <button type="button" class="speak-btn" onclick="speakEs('Ayer fui al parque, pero cuando era pequeño iba todos los días.')">🔊 朗读</button>
+            </div>
+
+            <!-- 2.3 将来未完成时与条件式 -->
+            <div class="sub-heading">2.3 将来未完成时 (Futuro Simple) &amp; 简单条件式 (Condicional Simple)</div>
+            <div class="tip-yellow">
+                <strong>🌟 超省力记忆法：</strong>这两个时态<strong>不需要去掉词尾</strong>！无论动词以 <code>-ar</code>、<code>-er</code> 还是 <code>-ir</code> 结尾，都直接把<strong>整套词尾加在动词原形（Infinitivo）后面</strong>即可。
+            </div>
+            <div class="table-wrap">
+                <table class="conj-guide-table">
+                    <thead>
+                        <tr>
+                            <th>人称</th>
+                            <th>将来未完成时 (原形 + 词尾)</th>
+                            <th>简单条件式 (原形 + 词尾)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="pronoun-col">yo</td><td><span class="stem">hablar</span><span class="ending">é</span></td><td><span class="stem">hablar</span><span class="ending">ía</span></td></tr>
+                        <tr><td class="pronoun-col">tú</td><td><span class="stem">hablar</span><span class="ending">ás</span></td><td><span class="stem">hablar</span><span class="ending">ías</span></td></tr>
+                        <tr><td class="pronoun-col">él / ella / Ud.</td><td><span class="stem">hablar</span><span class="ending">á</span></td><td><span class="stem">hablar</span><span class="ending">ía</span></td></tr>
+                        <tr><td class="pronoun-col">nosotros / as</td><td><span class="stem">hablar</span><span class="ending">emos</span></td><td><span class="stem">hablar</span><span class="ending">íamos</span></td></tr>
+                        <tr><td class="pronoun-col">vosotros / as</td><td><span class="stem">hablar</span><span class="ending">éis</span></td><td><span class="stem">hablar</span><span class="ending">íais</span></td></tr>
+                        <tr><td class="pronoun-col">ellos / ellas / Uds.</td><td><span class="stem">hablar</span><span class="ending">án</span></td><td><span class="stem">hablar</span><span class="ending">ían</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size:14px; color:#475569;"><strong>共用不规则词干（12个常见词）：</strong><em>tener → tendr-</em>，<em>poner → pondr-</em>，<em>salir → saldr-</em>，<em>venir → vendr-</em>，<em>poder → podr-</em>，<em>saber → sabr-</em>，<em>querer → querr-</em>，<em>decir → dir-</em>，<em>hacer → har-</em>。</p>
+
+            <!-- 随堂小测验 -->
+            <div class="quiz-section">
+                <div class="quiz-title">❓ 随堂微测验 / Comprueba lo aprendido</div>
+                <div class="question-box">
+                    <span class="question-text">1. Mientras yo _______ (estudiar), mi hermano _______ (entrar) en la habitación.</span>
+                    <span class="question-zh">当我正在学习的时候，我弟弟走进了房间。（填入正确过去时态）</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">
+                            <strong>estudiaba</strong> (未完成过去时，表示背景持续动作) / <strong>entró</strong> (简单过去时，表示突然插入并完成的动作)。
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第三讲：陈述式复合时态 ==================== -->
+    <details class="lesson-container" data-cat="indicativo">
+        <summary>
+            <h3>第三讲：陈述式复合时态（万能公式：haber + 过去分词）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div>
+                    <div class="es-title">LECCIÓN 3 · INDICATIVO COMPUESTO</div>
+                    <h2>学会一个公式，打通陈述式全部 5 个复合时态</h2>
+                </div>
+            </div>
+
+            <div class="formula-banner">
+                助动词 <span class="gold">haber</span>（按人称变位） + 实义动词的<span class="gold">过去分词</span>（-ado / -ido，词尾永不变！）
+            </div>
+
+            <div class="table-wrap">
+                <table class="conj-guide-table">
+                    <thead>
+                        <tr>
+                            <th>复合时态名称</th>
+                            <th>助动词 haber 六人称变位</th>
+                            <th>搭配过去分词示例</th>
+                            <th>核心时间含义</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>现在完成时</strong><br><span style="font-size:12px;color:#64748b;">Pretérito Perfecto</span></td>
+                            <td><span class="ending">he, has, ha, hemos, habéis, han</span></td>
+                            <td><span class="stem">he hablado / comido</span></td>
+                            <td>今天、本周等未结束时间段内已完成的动作（<em>hoy, esta semana</em>）</td>
+                        </tr>
+                        <tr>
+                            <td><strong>过去完成时</strong><br><span style="font-size:12px;color:#64748b;">Pluscuamperfecto</span></td>
+                            <td><span class="ending">había, habías, había, habíamos, habíais, habían</span></td>
+                            <td><span class="stem">había hablado / comido</span></td>
+                            <td>“过去的过去”（在过去某件事之前就已经发生了）</td>
+                        </tr>
+                        <tr>
+                            <td><strong>先过去时</strong><br><span style="font-size:12px;color:#64748b;">Pretérito Anterior</span></td>
+                            <td><span class="ending">hube, hubiste, hubo, hubimos, hubisteis, hubieron</span></td>
+                            <td><span class="stem">hube hablado / comido</span></td>
+                            <td>紧接在另一过去动作之前（现代口语极少用，多见于文学作品）</td>
+                        </tr>
+                        <tr>
+                            <td><strong>将来完成时</strong><br><span style="font-size:12px;color:#64748b;">Futuro Perfecto</span></td>
+                            <td><span class="ending">habré, habrás, habrá, habremos, habréis, habrán</span></td>
+                            <td><span class="stem">habré hablado / comido</span></td>
+                            <td>到将来某个时间点之前将会已经做完的事</td>
+                        </tr>
+                        <tr>
+                            <td><strong>复合条件式</strong><br><span style="font-size:12px;color:#64748b;">Condicional Perfecto</span></td>
+                            <td><span class="ending">habría, habrías, habría, habríamos, habríais, habrían</span></td>
+                            <td><span class="stem">habría hablado / comido</span></td>
+                            <td>过去本可以/本应该做某事（与虚拟式过去完成时连用）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip-red">
+                <strong>🔥 必背十大不规则过去分词（复合时态高频考点）：</strong><br>
+                abrir → <strong>abierto</strong>（打开） · decir → <strong>dicho</strong>（说） · escribir → <strong>escrito</strong>（写） · hacer → <strong>hecho</strong>（做） · morir → <strong>muerto</strong>（死） · poner → <strong>puesto</strong>（放） · romper → <strong>roto</strong>（打破） · ver → <strong>visto</strong>（看） · volver → <strong>vuelto</strong>（回来） · resolver → <strong>resuelto</strong>（解决）。
+            </div>
+
+            <div class="example-box">
+                <div>
+                    <span class="text-es">Hoy <b>hemos hecho</b> todos los deberes antes de cenar.</span>
+                    <span class="text-zh">今天晚饭前我们已经把所有作业都做完了。（hoy 搭配现在完成时 + 不规则分词 hecho）</span>
+                </div>
+                <button type="button" class="speak-btn" onclick="speakEs('Hoy hemos hecho todos los deberes antes de cenar.')">🔊 朗读</button>
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第四讲：命令式 ==================== -->
+    <details class="lesson-container" data-cat="imperativo">
+        <summary>
+            <h3>第四讲：命令式（肯定命令式 vs. 否定命令式与代词位置）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div>
+                    <div class="es-title">LECCIÓN 4 · MODO IMPERATIVO</div>
+                    <h2>命令式变位规则与代词“前否定、后肯定”口诀</h2>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="conj-guide-table">
+                    <thead>
+                        <tr>
+                            <th>人称</th>
+                            <th>肯定命令式规则</th>
+                            <th>示例 (hablar / comer / vivir)</th>
+                            <th>否定命令式规则（全部借用虚拟式现在时）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="pronoun-col">tú (你)</td>
+                            <td>陈述式现在时<strong>第三人称单数</strong><br><span style="font-size:12px;color:#e11d48;">8个不规则：ten, ven, pon, sal, haz, di, ve, sé</span></td>
+                            <td><span class="stem">habl</span><span class="ending">a</span> / <span class="stem">com</span><span class="ending">e</span> / <span class="stem">viv</span><span class="ending">e</span></td>
+                            <td>no <span class="stem">habl</span><span class="ending">es</span> / no <span class="stem">com</span><span class="ending">as</span> / no <span class="stem">viv</span><span class="ending">as</span></td>
+                        </tr>
+                        <tr>
+                            <td class="pronoun-col">usted (您)</td>
+                            <td>借用虚拟式现在时第三人称单数</td>
+                            <td><span class="stem">habl</span><span class="ending">e</span> / <span class="stem">com</span><span class="ending">a</span> / <span class="stem">viv</span><span class="ending">a</span></td>
+                            <td>no <span class="stem">habl</span><span class="ending">e</span> / no <span class="stem">com</span><span class="ending">a</span> / no <span class="stem">viv</span><span class="ending">a</span></td>
+                        </tr>
+                        <tr>
+                            <td class="pronoun-col">nosotros / as</td>
+                            <td>借用虚拟式现在时第一人称复数</td>
+                            <td><span class="stem">habl</span><span class="ending">emos</span> / <span class="stem">com</span><span class="ending">amos</span> / <span class="stem">viv</span><span class="ending">amos</span></td>
+                            <td>no <span class="stem">habl</span><span class="ending">emos</span> / no <span class="stem">com</span><span class="ending">amos</span> / no <span class="stem">viv</span><span class="ending">amos</span></td>
+                        </tr>
+                        <tr>
+                            <td class="pronoun-col">vosotros / as</td>
+                            <td>原形去掉 <code>-r</code> 改为 <span class="ending">-d</span></td>
+                            <td><span class="stem">habla</span><span class="ending">d</span> / <span class="stem">come</span><span class="ending">d</span> / <span class="stem">vivi</span><span class="ending">d</span></td>
+                            <td>no <span class="stem">habl</span><span class="ending">éis</span> / no <span class="stem">com</span><span class="ending">áis</span> / no <span class="stem">viv</span><span class="ending">áis</span></td>
+                        </tr>
+                        <tr>
+                            <td class="pronoun-col">ustedes (诸位)</td>
+                            <td>借用虚拟式现在时第三人称复数</td>
+                            <td><span class="stem">habl</span><span class="ending">en</span> / <span class="stem">com</span><span class="ending">an</span> / <span class="stem">viv</span><span class="ending">an</span></td>
+                            <td>no <span class="stem">habl</span><span class="ending">en</span> / no <span class="stem">com</span><span class="ending">an</span> / no <span class="stem">viv</span><span class="ending">an</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip-yellow">
+                <strong>⚡ 黄金口诀：肯定后置连写（常需补重音符号），否定前置分开写！</strong><br>
+                • 自复动词 <em>levantarse</em>（起床）：肯定命令式 <strong>¡Levántate!</strong>（去掉 <code>-os</code> 前的 <code>-d</code>：<em>¡Levantaos!</em>） vs. 否定命令式 <strong>¡No te levantes!</strong><br>
+                • 带宾格/与格代词：肯定命令式 <strong>¡Dímelo!</strong>（告诉我吧！） vs. 否定命令式 <strong>¡No me lo digas!</strong>（别告诉我！）
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第五讲：虚拟式 ==================== -->
+    <details class="lesson-container" data-cat="subjuntivo">
+        <summary>
+            <h3>第五讲：虚拟式（Presente, Imperfecto, 复合虚拟式与高频触发器）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div>
+                    <div class="es-title">LECCIÓN 5 · MODO SUBJUNTIVO</div>
+                    <h2>虚拟式变位“三步转换法”与常见触发句型</h2>
+                </div>
+            </div>
+
+            <div class="sub-heading">5.1 虚拟式现在时 (Presente de Subjuntivo) —— 元音互换法</div>
+            <div class="tip-blue">
+                <strong>🔑 变位三步走：</strong><br>
+                ① 先写出<strong>陈述式现在时 <code>yo</code></strong> 的形式（如 <em>hablo, como, tengo, conozco</em>）；<br>
+                ② 去掉词尾 <code>-o</code> 得到专属词根（<em>habl-, com-, teng-, conozc-</em>）；<br>
+                ③ <strong>交换元音词尾</strong>：<code>-ar</code> 动词全部用 <strong>-e</strong> 系列，<code>-er / -ir</code> 动词全部用 <strong>-a</strong> 系列！
+            </div>
+
+            <div class="table-wrap">
+                <table class="conj-guide-table">
+                    <thead>
+                        <tr>
+                            <th>人称</th>
+                            <th>-ar 动词 (用 -e 词尾)</th>
+                            <th>-er / -ir 动词 (用 -a 词尾)</th>
+                            <th>不规则词根示例 (tener → teng-)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="pronoun-col">yo</td><td><span class="stem">habl</span><span class="ending">e</span></td><td><span class="stem">com / viv</span><span class="ending">a</span></td><td><span class="stem">teng</span><span class="ending">a</span></td></tr>
+                        <tr><td class="pronoun-col">tú</td><td><span class="stem">habl</span><span class="ending">es</span></td><td><span class="stem">com / viv</span><span class="ending">as</span></td><td><span class="stem">teng</span><span class="ending">as</span></td></tr>
+                        <tr><td class="pronoun-col">él / ella / Ud.</td><td><span class="stem">habl</span><span class="ending">e</span></td><td><span class="stem">com / viv</span><span class="ending">a</span></td><td><span class="stem">teng</span><span class="ending">a</span></td></tr>
+                        <tr><td class="pronoun-col">nosotros / as</td><td><span class="stem">habl</span><span class="ending">emos</span></td><td><span class="stem">com / viv</span><span class="ending">amos</span></td><td><span class="stem">teng</span><span class="ending">amos</span></td></tr>
+                        <tr><td class="pronoun-col">vosotros / as</td><td><span class="stem">habl</span><span class="ending">éis</span></td><td><span class="stem">com / viv</span><span class="ending">áis</span></td><td><span class="stem">teng</span><span class="ending">áis</span></td></tr>
+                        <tr><td class="pronoun-col">ellos / Uds.</td><td><span class="stem">habl</span><span class="ending">en</span></td><td><span class="stem">com / viv</span><span class="ending">an</span></td><td><span class="stem">teng</span><span class="ending">an</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size:14px; color:#475569;"><strong>六大完全不规则词（首字母口诀 DISHES）：</strong><strong>D</strong>ar (<em>dé</em>) · <strong>I</strong>r (<em>vaya</em>) · <strong>S</strong>aber (<em>sepa</em>) · <strong>H</strong>aber (<em>haya</em>) · <strong>E</strong>star (<em>esté</em>) · <strong>S</strong>er (<em>sea</em>)。</p>
+
+            <div class="sub-heading">5.2 虚拟式未完成过去时 &amp; 复合虚拟式</div>
+            <div class="compare-grid">
+                <div class="compare-col">
+                    <h4>虚拟式未完成过去时 (Imperfecto Subj.)</h4>
+                    <p style="font-size:14px;"><strong>零例外万能规律：</strong>找到<strong>简单过去时 <code>ellos</code></strong>（如 <em>hablaron, tuvieron, dijeron</em>），去掉 <code>-ron</code>，加上：<br>
+                    <span class="ending">-ra, -ras, -ra, -ramos, -rais, -ran</span>（<em>nosotros</em> 倒数第三个音节加重音符号，如 <em>habláramos, tuviéramos</em>）。</p>
+                </div>
+                <div class="compare-col">
+                    <h4>虚拟式复合时态 (Perfecto / Pluscuamperf.)</h4>
+                    <p style="font-size:14px;">• <strong>现在完成虚拟式：</strong><span class="ending">haya / hayas / haya...</span> + 过去分词（如 <em>Espero que hayas llegado bien.</em> 希望你已经平安到了。）<br>
+                    • <strong>过去完成虚拟式：</strong><span class="ending">hubiera / hubieras...</span> + 过去分词（常用于与过去事实相反的假设：<em>Si hubiera estudiado...</em>）</p>
+                </div>
+            </div>
+
+            <div class="sub-heading">5.3 看到这些“触发器”，从句立刻用虚拟式！</div>
+            <div class="signal-tags">
+                <span class="signal-pill">querer que (想要…)</span>
+                <span class="signal-pill">esperar que (希望…)</span>
+                <span class="signal-pill">ojalá (que) (但愿…)</span>
+                <span class="signal-pill">es importante / necesario que (很重要/有必要…)</span>
+                <span class="signal-pill">me alegra que (令我开心的是…)</span>
+                <span class="signal-pill">para que (为了…)</span>
+                <span class="signal-pill">antes de que (在…之前)</span>
+                <span class="signal-pill">cuando + 将来未发生动作</span>
+            </div>
+
+            <div class="example-box">
+                <div>
+                    <span class="text-es">Quiero que <b>practiques</b> los verbos todos los días.</span>
+                    <span class="text-zh">我希望你每天都练习动词变位。（主句表达主观愿望 quiero que，从句 practicar 用虚拟式现在时）</span>
+                </div>
+                <button type="button" class="speak-btn" onclick="speakEs('Quiero que practiques los verbos todos los días.')">🔊 朗读</button>
+            </div>
+        </article>
+    </details>
+
+    <!-- ==================== 第六讲：不规则动词家族图解 ==================== -->
+    <details class="lesson-container" data-cat="irregulares">
+        <summary>
+            <h3>第六讲：不规则动词“家族记忆法”（互动靴子动词图解）</h3>
+        </summary>
+        <article class="lesson-card">
+            <div class="lesson-title">
+                <div>
+                    <div class="es-title">LECCIÓN 6 · VERBOS IRREGULARES</div>
+                    <h2>把零散的不规则动词归类成三大“家族”</h2>
+                </div>
+            </div>
+
+            <div class="sub-heading">6.1 靴子动词 (Verbos Bota) —— 词干元音变化互动图</div>
+            <p style="font-size:15px;">在陈述式现在时（以及虚拟式现在时）中，很多动词的词干元音会在 <strong>yo, tú, él/ella, ellos/ellas</strong> 四个重读音节人称里分裂变化，连起来刚好像一只<strong>靴子</strong>，而靴子外面的 <strong>nosotros</strong> 和 <strong>vosotros</strong> 保持原形不变！点击下方按钮切换观察：</p>
+
+            <div class="boot-widget">
+                <div class="boot-tabs">
+                    <button type="button" class="boot-tab-btn active" onclick="renderBootDemo('e_ie', this)">e → ie (pensar 思考)</button>
+                    <button type="button" class="boot-tab-btn" onclick="renderBootDemo('o_ue', this)">o → ue (poder 能够)</button>
+                    <button type="button" class="boot-tab-btn" onclick="renderBootDemo('e_i', this)">e → i (pedir 请求)</button>
+                    <button type="button" class="boot-tab-btn" onclick="renderBootDemo('u_ue', this)">u → ue (jugar 玩耍)</button>
+                </div>
+                <div class="boot-grid" id="bootGrid"></div>
+            </div>
+
+            <div class="sub-heading">6.2 第一人称单数 (yo) 特殊变形家族</div>
+            <div class="compare-grid">
+                <div class="compare-col">
+                    <h4><code>-go</code> 结尾家族</h4>
+                    <p style="font-size:14px; margin:0;">
+                        tener → <strong>tengo</strong> · poner → <strong>pongo</strong><br>
+                        salir → <strong>salgo</strong> · venir → <strong>vengo</strong><br>
+                        hacer → <strong>hago</strong> · decir → <strong>digo</strong><br>
+                        oír → <strong>oigo</strong> · traer → <strong>traigo</strong>
+                    </p>
+                </div>
+                <div class="compare-col">
+                    <h4><code>-zco</code> 结尾家族（-acer / -ecer / -ocer / -ucir）</h4>
+                    <p style="font-size:14px; margin:0;">
+                        conocer → <strong>conozco</strong>（认识）<br>
+                        parecer → <strong>parezco</strong>（看起来）<br>
+                        conducir → <strong>conduzco</strong>（驾驶）<br>
+                        traducir → <strong>traduzco</strong>（翻译）
+                    </p>
+                </div>
+            </div>
+
+            <div class="tip-yellow">
+                <strong>✍️ 正字法“保音微调”（为了读音不变而改字母）：</strong><br>
+                以 <code>-car</code>、<code>-gar</code>、<code>-zar</code> 结尾的动词，遇到 <code>e</code> 开头词尾时（如简单过去时 <code>yo</code> 和虚拟式现在时），需要微调拼写：<br>
+                • <strong>-car → -qué：</strong>buscar → <em>busqué</em>（为了保持 /k/ 音，否则 ce 会读成 /θ/）<br>
+                • <strong>-gar → -gué：</strong>jugar → <em>jugué</em>（为了保持 /g/ 音，否则 ge 会读成 /x/）<br>
+                • <strong>-zar → -cé：</strong>empezar → <em>empecé</em>（西语拼写习惯 z 在 e/i 前改写为 c）
+            </div>
+
+            <!-- 随堂小测验 -->
+            <div class="quiz-section">
+                <div class="quiz-title">❓ 随堂微测验 / Comprueba lo aprendido</div>
+                <div class="question-box">
+                    <span class="question-text">1. 为什么 nosotros <em>podemos</em>（我们能）不变成 *puedemos，而 ellos 变成 <em>pueden</em>？</span>
+                    <details class="answer-details">
+                        <summary>👉 Respuesta</summary>
+                        <div class="answer-content">
+                            因为 <strong>podemos</strong> 的重音落在词尾 <code>-de-</code> 上，词干 <code>po-</code> 不是重读音节；而 <strong>pueden</strong> 的重音正好落在词干元音上，处于“靴子”区域内，所以 <code>o</code> 裂变为 <code>ue</code>。
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </article>
+    </details>
+
+</main>
+
+<footer class="footer">
+    © 2026 EMSI 马德里国际中文学校 | Educación para un futuro mejor
+</footer>
+
+<script>
+    // 语音朗读功能
+    function speakEs(text) {
+        if (!('speechSynthesis' in window)) {
+            alert('当前浏览器不支持语音朗读，建议使用 Chrome 或 Edge 浏览器。');
+            return;
+        }
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'es-ES';
+        utter.rate = 0.85;
+        window.speechSynthesis.speak(utter);
+    }
+
+    // 顶部章节筛选
+    function filterCategory(cat, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const cards = document.querySelectorAll('.lesson-container');
+        cards.forEach(card => {
+            if (cat === 'all' || card.dataset.cat === cat) {
+                card.classList.remove('hidden-section');
+                if (cat !== 'all') card.setAttribute('open', '');
+            } else {
+                card.classList.add('hidden-section');
+            }
+        });
+    }
+
+    // 全部展开/折叠
+    function toggleAllDetails(openState) {
+        document.querySelectorAll('.lesson-container:not(.hidden-section)').forEach(d => {
+            if (openState) d.setAttribute('open', '');
+            else d.removeAttribute('open');
+        });
+    }
+
+    // 靴子动词互动演示数据
+    const BOOT_DATA = {
+        e_ie: [
+            { pron: 'yo', html: 'p<span class="ending">ie</span>nso', boot: true },
+            { pron: 'nosotros / as', html: 'p<span class="stem">e</span>nsamos', boot: false },
+            { pron: 'tú', html: 'p<span class="ending">ie</span>nsas', boot: true },
+            { pron: 'vosotros / as', html: 'p<span class="stem">e</span>nsáis', boot: false },
+            { pron: 'él / ella / Ud.', html: 'p<span class="ending">ie</span>nsa', boot: true },
+            { pron: 'ellos / ellas / Uds.', html: 'p<span class="ending">ie</span>nsan', boot: true }
+        ],
+        o_ue: [
+            { pron: 'yo', html: 'p<span class="ending">ue</span>do', boot: true },
+            { pron: 'nosotros / as', html: 'p<span class="stem">o</span>demos', boot: false },
+            { pron: 'tú', html: 'p<span class="ending">ue</span>des', boot: true },
+            { pron: 'vosotros / as', html: 'p<span class="stem">o</span>déis', boot: false },
+            { pron: 'él / ella / Ud.', html: 'p<span class="ending">ue</span>de', boot: true },
+            { pron: 'ellos / ellas / Uds.', html: 'p<span class="ending">ue</span>den', boot: true }
+        ],
+        e_i: [
+            { pron: 'yo', html: 'p<span class="ending">i</span>do', boot: true },
+            { pron: 'nosotros / as', html: 'p<span class="stem">e</span>dimos', boot: false },
+            { pron: 'tú', html: 'p<span class="ending">i</span>des', boot: true },
+            { pron: 'vosotros / as', html: 'p<span class="stem">e</span>dís', boot: false },
+            { pron: 'él / ella / Ud.', html: 'p<span class="ending">i</span>de', boot: true },
+            { pron: 'ellos / ellas / Uds.', html: 'p<span class="ending">i</span>den', boot: true }
+        ],
+        u_ue: [
+            { pron: 'yo', html: 'j<span class="ending">ue</span>go', boot: true },
+            { pron: 'nosotros / as', html: 'j<span class="stem">u</span>gamos', boot: false },
+            { pron: 'tú', html: 'j<span class="ending">ue</span>gas', boot: true },
+            { pron: 'vosotros / as', html: 'j<span class="stem">u</span>gáis', boot: false },
+            { pron: 'él / ella / Ud.', html: 'j<span class="ending">ue</span>ga', boot: true },
+            { pron: 'ellos / ellas / Uds.', html: 'j<span class="ending">ue</span>gan', boot: true }
+        ]
+    };
+
+    function renderBootDemo(type, btn) {
+        if (btn) {
+            document.querySelectorAll('.boot-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        const grid = document.getElementById('bootGrid');
+        const list = BOOT_DATA[type] || BOOT_DATA.e_ie;
+        grid.innerHTML = list.map(item => `
+            <div class="boot-cell ${item.boot ? 'in-boot' : ''}">
+                <span class="b-pron">${item.pron} ${item.boot ? '👢' : ''}</span>
+                <span class="b-form">${item.html}</span>
+            </div>
+        `).join('');
+    }
+
+    renderBootDemo('e_ie');
+</script>
+</body>
+</html>

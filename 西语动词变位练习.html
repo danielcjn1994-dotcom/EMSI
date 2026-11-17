@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSI 西语动词变位随堂训练系统</title>
+    <style>
+        :root {
+            --emsi-blue: #1a4a8e;
+            --emsi-gold: #f1c40f;
+            --emsi-gray: #f5f7fa;
+            --success: #10b981;
+            --error: #ef4444;
+            --text-main: #1e293b;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+            background-color: var(--emsi-gray);
+            color: var(--text-main);
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        .header {
+            background-color: white; text-align: center;
+            padding: 20px 10px; border-bottom: 5px solid var(--emsi-gold);
+        }
+        .header h1 { color: var(--emsi-blue); margin: 0; font-size: 28px; }
+        .header p { color: #64748b; margin: 6px 0 0; font-size: 14px; }
+
+        .main-content {
+            flex: 1; padding: 20px; max-width: 1150px; margin: 0 auto; width: 100%;
+        }
+        .card {
+            background: white; border-radius: 20px; padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        /* --- 导航按钮 --- */
+        .nav-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 18px; flex-wrap: wrap; gap: 10px;
+        }
+        .btn-back {
+            display: inline-flex; align-items: center;
+            padding: 8px 20px; background-color: white;
+            border: 1.5px solid #e2e8f0; border-radius: 50px;
+            color: var(--emsi-blue); text-decoration: none;
+            font-size: 15px; font-weight: 600; transition: all 0.2s; cursor: pointer;
+        }
+        .btn-back:hover {
+            border-color: var(--emsi-blue); background-color: #f8fafc;
+            transform: translateX(-3px);
+        }
+        .btn-back::before { content: '〈'; margin-right: 5px; font-weight: bold; }
+
+        .btn {
+            padding: 10px 18px; border-radius: 12px; text-decoration: none;
+            font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s;
+            border: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .btn-pill {
+            padding: 8px 15px; border-radius: 50px; border: 2px solid var(--emsi-blue);
+            background: white; color: var(--emsi-blue); font-weight: bold; cursor: pointer;
+            font-size: 14px; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px;
+        }
+        .btn-pill:hover, .btn-pill.active-pill { background: var(--emsi-blue); color: white; }
+        .btn-gold { background: var(--emsi-gold); color: #1e293b; }
+        .btn-blue { background: var(--emsi-blue); color: white; }
+        .btn-green { background: var(--success); color: white; }
+        .btn-danger-pill {
+            padding: 6px 14px; border-radius: 50px; border: 1.5px solid #fecaca;
+            background: #fef2f2; color: var(--error); font-weight: bold;
+            cursor: pointer; font-size: 13px; transition: 0.2s;
+        }
+        .btn-danger-pill:hover { background: var(--error); color: white; border-color: var(--error); }
+
+        .screen { display: none; }
+        .active { display: block; }
+
+        /* --- 多板块标签栏 --- */
+        .board-tabs-bar {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+            background: #f8fafc; padding: 12px 15px; border-radius: 14px;
+            border: 1px solid #e2e8f0; margin-bottom: 18px;
+        }
+        .board-tab {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 7px 14px; border-radius: 50px;
+            background: white; border: 2px solid #cbd5e1;
+            cursor: pointer; transition: 0.2s;
+        }
+        .board-tab:hover { border-color: var(--emsi-blue); }
+        .board-tab.active {
+            background: var(--emsi-blue); border-color: var(--emsi-blue); color: white;
+            box-shadow: 0 4px 10px rgba(26, 74, 142, 0.2);
+        }
+        .board-name-input {
+            border: none; background: transparent; font-family: inherit;
+            font-size: 14px; font-weight: bold; color: inherit;
+            outline: none; padding: 2px 4px; border-radius: 4px;
+            min-width: 72px; text-align: center;
+        }
+        .board-tab.active .board-name-input:focus { background: rgba(255,255,255,0.2); }
+        .board-tab:not(.active) .board-name-input:focus { background: #eef2ff; }
+        .board-count-badge {
+            font-size: 12px; padding: 1px 7px; border-radius: 20px;
+            background: #e2e8f0; color: #475569; font-weight: bold;
+        }
+        .board-tab.active .board-count-badge { background: var(--emsi-gold); color: #1e293b; }
+        .board-close {
+            font-size: 13px; opacity: 0.7; margin-left: 2px; padding: 0 4px; border-radius: 50%;
+        }
+        .board-close:hover { opacity: 1; background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .btn-add-board {
+            padding: 7px 15px; border-radius: 50px; border: 1.5px dashed var(--emsi-blue);
+            background: #eff6ff; color: var(--emsi-blue); font-weight: bold; font-size: 13px;
+            cursor: pointer; transition: 0.2s;
+        }
+        .btn-add-board:hover { background: var(--emsi-blue); color: white; }
+
+        /* --- 时态选择与录入面板 --- */
+        .control-panel {
+            background: #fffbeb; border: 1.5px dashed #f59e0b;
+            border-radius: 14px; padding: 16px 18px; margin-bottom: 22px;
+        }
+        .tense-row {
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 10px; padding-bottom: 12px;
+            margin-bottom: 12px; border-bottom: 1px dashed #fcd34d;
+        }
+        .tense-select-group {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+        }
+        .tense-select {
+            padding: 9px 14px; border-radius: 10px; border: 2px solid var(--emsi-blue);
+            font-size: 14px; font-weight: bold; color: var(--emsi-blue);
+            background: white; cursor: pointer; min-width: 280px;
+        }
+        .verb-textarea {
+            width: 100%; min-height: 85px; padding: 12px;
+            border: 1.5px solid #cbd5e1; border-radius: 10px; font-family: inherit;
+            font-size: 14px; line-height: 1.6; resize: vertical; background: white;
+        }
+        .verb-textarea:focus { outline: none; border-color: var(--emsi-blue); }
+        .input-actions {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px; margin-top: 10px;
+        }
+
+        /* --- 六人称变位卡片网格 --- */
+        .verb-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 18px;
+        }
+        @media (max-width: 820px) { .verb-grid { grid-template-columns: 1fr; } }
+
+        .verb-card {
+            background: white; border: 1.5px solid #e2e8f0; border-radius: 14px;
+            padding: 16px 18px; transition: 0.2s;
+        }
+        .verb-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .verb-card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9;
+        }
+        .verb-title-wrap { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .verb-num { color: #94a3b8; font-weight: bold; font-size: 14px; }
+        .verb-inf { font-size: 20px; font-weight: 800; color: var(--emsi-blue); }
+        .verb-cn { font-size: 14px; color: #64748b; }
+        .verb-card-actions { display: flex; align-items: center; gap: 6px; }
+        .icon-btn {
+            background: #f8fafc; border: 1px solid #e2e8f0; color: #475569;
+            border-radius: 8px; padding: 4px 8px; font-size: 12px; cursor: pointer;
+        }
+        .icon-btn:hover { border-color: var(--emsi-blue); color: var(--emsi-blue); }
+        .icon-btn.del:hover { border-color: var(--error); color: var(--error); background: #fef2f2; }
+
+        .conj-table {
+            width: 100%; border-collapse: collapse;
+        }
+        .conj-table td {
+            padding: 6px 8px; border-bottom: 1px dashed #f1f5f9; font-size: 15px;
+        }
+        .conj-table tr:last-child td { border-bottom: none; }
+        .pronoun-cell {
+            width: 38%; color: #64748b; font-size: 13px; font-weight: 600;
+        }
+        .form-cell {
+            width: 62%; font-weight: 700; color: var(--emsi-blue);
+        }
+        .form-pill {
+            display: inline-block; padding: 3px 10px; border-radius: 6px;
+            transition: 0.15s; min-width: 90px;
+        }
+        .dictation-mode .form-pill.hideable {
+            background: #dbeafe; color: transparent; cursor: pointer; user-select: none;
+        }
+        .dictation-mode .form-pill.hideable.revealed {
+            background: #fef3c7; color: var(--emsi-blue);
+        }
+
+        .empty-tip {
+            grid-column: 1 / -1; text-align: center; padding: 45px 20px;
+            color: #94a3b8; background: #f8fafc; border-radius: 14px; border: 1.5px dashed #cbd5e1;
+        }
+
+        /* --- 练习模式样式 --- */
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; overflow: hidden; margin: 16px 0; }
+        #progress-fill { height: 100%; background: var(--emsi-blue); width: 0%; transition: 0.3s; }
+
+        .drill-card {
+            background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 18px;
+            padding: 30px 20px; text-align: center; margin: 18px 0;
+        }
+        .drill-tense-tag {
+            display: inline-block; background: #eef2ff; color: var(--emsi-blue);
+            font-size: 13px; font-weight: bold; padding: 4px 14px; border-radius: 20px;
+            margin-bottom: 14px;
+        }
+        .drill-verb-main {
+            font-size: 2.2rem; font-weight: 800; color: var(--emsi-blue); margin-bottom: 6px;
+        }
+        .drill-verb-cn {
+            font-size: 16px; color: #64748b; margin-bottom: 18px;
+        }
+        .drill-pronoun-badge {
+            display: inline-block; background: var(--emsi-gold); color: #1e293b;
+            font-size: 1.3rem; font-weight: 800; padding: 8px 26px; border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
+        }
+
+        .flash-answer-box {
+            margin-top: 22px; padding: 18px; background: white; border-radius: 14px;
+            border: 2px dashed var(--emsi-blue); font-size: 2rem; font-weight: 800;
+            color: var(--success); display: none;
+        }
+
+        .spell-input {
+            width: 100%; max-width: 380px; padding: 14px 18px; font-size: 1.4rem;
+            font-weight: bold; text-align: center; color: var(--emsi-blue);
+            border: 2px solid #cbd5e1; border-radius: 12px; margin: 18px auto 10px;
+            display: block; font-family: inherit;
+        }
+        .spell-input:focus { outline: none; border-color: var(--emsi-blue); }
+        .accent-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+        .accent-btn {
+            padding: 6px 13px; border: 1px solid #cbd5e1; background: white;
+            border-radius: 8px; font-size: 16px; font-weight: bold; color: var(--emsi-blue);
+            cursor: pointer;
+        }
+        .accent-btn:hover { background: var(--emsi-blue); color: white; }
+
+        .feedback-banner {
+            margin-top: 16px; padding: 14px; border-radius: 12px; font-size: 16px;
+            font-weight: bold; display: none;
+        }
+        .feedback-banner.ok { background: #ecfdf5; color: #065f46; border: 1.5px solid #10b981; display: block; }
+        .feedback-banner.err { background: #fef2f2; color: #991b1b; border: 1.5px solid #ef4444; display: block; }
+
+        .footer { background: var(--emsi-blue); color: white; text-align: center; padding: 15px; font-size: 14px; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>EMSI 西语动词变位随堂训练</h1>
+        <p>覆盖陈述式全部时态 · 命令式 · 虚拟式 | 自动生成六人称变位表</p>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+
+            <!-- 主界面 -->
+            <div id="menu-screen" class="screen active">
+                <div class="nav-bar">
+                    <a href="西语随堂听写目录.html" class="btn-back">返回</a>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn-pill" onclick="toggleDictationMode()" id="dictBtn">✍️ 遮挡背诵模式</button>
+                        <button class="btn-pill" onclick="downloadCSV()">📥 导出变位表</button>
+                    </div>
+                </div>
+
+                <!-- 多板块标签区 -->
+                <div class="board-tabs-bar" id="boardTabsBar"></div>
+
+                <!-- 时态选择 + 动词录入控制区 -->
+                <div class="control-panel">
+                    <div class="tense-row">
+                        <div class="tense-select-group">
+                            <span style="font-weight: bold; color: #92400e; font-size: 14px;">🕒 当前训练时态/语式：</span>
+                            <select id="tenseSelect" class="tense-select" onchange="onTenseChange()">
+                                <optgroup label="陈述式 · 简单时态 (Indicativo Simple)">
+                                    <option value="ind_pres">陈述式现在时 (Presente)</option>
+                                    <option value="ind_indef">陈述式简单过去时 (Pretérito Indefinido)</option>
+                                    <option value="ind_imp">陈述式未完成过去时 (Pretérito Imperfecto)</option>
+                                    <option value="ind_fut">陈述式将来未完成时 (Futuro Simple)</option>
+                                    <option value="ind_cond">陈述式简单条件式 (Condicional Simple)</option>
+                                </optgroup>
+                                <optgroup label="陈述式 · 复合时态 (Indicativo Compuesto)">
+                                    <option value="ind_perf">陈述式现在完成时 (Pretérito Perfecto)</option>
+                                    <option value="ind_plusc">陈述式过去完成时 (Pretérito Pluscuamperfecto)</option>
+                                    <option value="ind_ant">陈述式先过去时 (Pretérito Anterior)</option>
+                                    <option value="ind_fut_perf">陈述式将来完成时 (Futuro Perfecto)</option>
+                                    <option value="ind_cond_perf">陈述式复合条件式 (Condicional Perfecto)</option>
+                                </optgroup>
+                                <optgroup label="命令式 (Imperativo)">
+                                    <option value="imp_afirm">肯定命令式 (Imperativo Afirmativo)</option>
+                                    <option value="imp_neg">否定命令式 (Imperativo Negativo)</option>
+                                </optgroup>
+                                <optgroup label="虚拟式 (Subjuntivo)">
+                                    <option value="subj_pres">虚拟式现在时 (Presente de Subjuntivo)</option>
+                                    <option value="subj_imp">虚拟式未完成过去时 (Imperfecto de Subjuntivo)</option>
+                                    <option value="subj_perf">虚拟式现在完成时 (Pretérito Perfecto Subj.)</option>
+                                    <option value="subj_plusc">虚拟式过去完成时 (Pluscuamperfecto Subj.)</option>
+                                </optgroup>
+                            </select>
+                            <button type="button" class="btn btn-gold" style="padding: 8px 14px; font-size: 13px;" onclick="reconjugateAllInBoard()" title="切换时态后，一键把当前板块所有动词转换为新时态">🔄 按当前时态重新生成</button>
+                        </div>
+                        <span style="font-size: 12px; color: #b45309;">提示：点击表格里的任意变位词可直接手动微调</span>
+                    </div>
+
+                    <textarea id="verbPasteInput" class="verb-textarea" placeholder="直接输入或粘贴当天要练的动词原形（每行一个，支持附带中文释义），例如：&#10;hablar - 说话&#10;tener - 有&#10;ir - 去&#10;levantarse - 起床"></textarea>
+
+                    <div class="input-actions">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-blue" onclick="importVerbs(true)">✨ 自动生成变位（替换）</button>
+                            <button type="button" class="btn btn-gold" onclick="importVerbs(false)">➕ 追加动词</button>
+                        </div>
+                        <button type="button" class="btn-danger-pill" onclick="clearCurrentBoard()">🗑️ 清空本板块</button>
+                    </div>
+                </div>
+
+                <!-- 练习入口 -->
+                <div style="display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-blue" style="flex:1; min-width: 170px;" onclick="startQuiz('flash', 15)">⚡ 随机人称闪卡抽查</button>
+                    <button type="button" class="btn btn-blue" style="flex:1; min-width: 170px;" onclick="startQuiz('spell', 15)">⌨️ 变位拼写闯关 (随机15题)</button>
+                    <button type="button" class="btn btn-gold" style="flex:1; min-width: 170px;" onclick="startQuiz('spell', 999)">🏆 全量人称拼写测验</button>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <h3 id="tableHeading" style="border-left: 5px solid var(--emsi-gold); padding-left: 10px; margin: 0;">📖 动词六人称变位表 (0)</h3>
+                    <span style="font-size: 13px; color: #64748b;">遮挡模式下点击蓝色色块可单独偷看该人称变位</span>
+                </div>
+
+                <div class="verb-grid" id="verbGrid"></div>
+            </div>
+
+            <!-- 互动练习界面 -->
+            <div id="quiz-screen" class="screen">
+                <div class="nav-bar">
+                    <button type="button" class="btn-back" onclick="backToMenu()">退出练习</button>
+                    <span id="quiz-counter" style="font-weight:bold;">1 / 1</span>
+                    <button type="button" class="btn btn-gold" onclick="showResults()">交卷看成绩</button>
+                </div>
+                <div class="progress-bar"><div id="progress-fill"></div></div>
+
+                <div class="drill-card">
+                    <div class="drill-tense-tag" id="drillTenseLabel">陈述式现在时</div>
+                    <div class="drill-verb-main">
+                        <span id="drillVerbInf">hablar</span>
+                        <button type="button" class="icon-btn" style="font-size: 15px; vertical-align: middle;" onclick="speakCurrentDrill()" title="听发音">🔊</button>
+                    </div>
+                    <div class="drill-verb-cn" id="drillVerbCn">说话</div>
+                    <div>请给出该人称的正确变位：</div>
+                    <div style="margin-top: 10px;">
+                        <span class="drill-pronoun-badge" id="drillPronoun">nosotros / as</span>
+                    </div>
+
+                    <!-- 模式 A：闪卡抽查 -->
+                    <div id="flash-area" style="display: none;">
+                        <div class="flash-answer-box" id="flashAnswerText">hablamos</div>
+                        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-blue" id="revealFlashBtn" onclick="revealFlash()">👀 显示正确答案</button>
+                            <button type="button" class="btn btn-green" id="markRightBtn" style="display:none;" onclick="markFlash(true)">✅ 我答对了</button>
+                            <button type="button" class="btn-danger-pill" id="markWrongBtn" style="display:none; padding: 10px 18px; font-size: 14px;" onclick="markFlash(false)">❌ 再记一下</button>
+                        </div>
+                    </div>
+
+                    <!-- 模式 B：拼写闯关 -->
+                    <div id="spell-area" style="display: none;">
+                        <input type="text" id="spellInput" class="spell-input" placeholder="输入变位形式..." autocomplete="off" onkeydown="if(event.key==='Enter') checkSpell()">
+                        <div class="accent-bar" id="accentBar"></div>
+                        <button type="button" class="btn btn-blue" style="padding: 10px 28px;" onclick="checkSpell()">✅ 提交核对</button>
+                    </div>
+
+                    <div class="feedback-banner" id="drillFeedback"></div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 24px; border-top: 1px solid #eee; padding-top: 18px;">
+                    <button type="button" class="btn-pill" id="prev-btn" onclick="changeStep(-1)">上一题</button>
+                    <button type="button" class="btn-pill" style="background:var(--emsi-blue); color:white;" id="next-btn" onclick="changeStep(1)">下一题</button>
+                </div>
+            </div>
+
+            <!-- 结果界面 -->
+            <div id="result-screen" class="screen">
+                <h2 style="text-align: center; color: var(--emsi-blue);">动词变位练习报告</h2>
+                <div id="final-score" style="text-align: center; font-size: 4rem; font-weight: 800; color: var(--emsi-gold);">0%</div>
+                <div id="result-summary" style="text-align: center; line-height: 2; margin-bottom: 20px; font-size: 16px;"></div>
+                <button type="button" class="btn btn-blue" style="width:100%; padding:15px; font-size:16px;" onclick="backToMenu()">回到变位表</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2026 EMSI 马德里国际中文学校
+    </footer>
+
+    <script>
+        const STORAGE_KEY = 'emsi_spanish_verb_conjugator_v1';
+
+        const PRONOUNS = [
+            'yo',
+            'tú',
+            'él / ella / Ud.',
+            'nosotros / as',
+            'vosotros / as',
+            'ellos / ellas / Uds.'
+        ];
+
+        const TENSE_NAMES = {
+            ind_pres: '陈述式现在时 (Presente)',
+            ind_indef: '陈述式简单过去时 (Indefinido)',
+            ind_imp: '陈述式未完成过去时 (Imperfecto)',
+            ind_fut: '陈述式将来未完成时 (Futuro Simple)',
+            ind_cond: '陈述式简单条件式 (Condicional Simple)',
+            ind_perf: '陈述式现在完成时 (Pret. Perfecto)',
+            ind_plusc: '陈述式过去完成时 (Pluscuamperfecto)',
+            ind_ant: '陈述式先过去时 (Pret. Anterior)',
+            ind_fut_perf: '陈述式将来完成时 (Futuro Perfecto)',
+            ind_cond_perf: '陈述式复合条件式 (Condicional Perfecto)',
+            imp_afirm: '肯定命令式 (Imperativo Afirmativo)',
+            imp_neg: '否定命令式 (Imperativo Negativo)',
+            subj_pres: '虚拟式现在时 (Presente Subjuntivo)',
+            subj_imp: '虚拟式未完成过去时 (Imperfecto Subjuntivo)',
+            subj_perf: '虚拟式现在完成时 (Pret. Perfecto Subj.)',
+            subj_plusc: '虚拟式过去完成时 (Pluscuamperfecto Subj.)'
+        };
+
+        // --- 西语全时态变位核心数据与规则引擎 ---
+        const IRREG_PART = {
+            abrir: 'abierto', cubrir: 'cubierto', descubrir: 'descubierto',
+            decir: 'dicho', escribir: 'escrito', describir: 'descrito',
+            hacer: 'hecho', deshacer: 'deshecho', satisfacer: 'satisfecho',
+            morir: 'muerto', poner: 'puesto', suponer: 'supuesto', proponer: 'propuesto',
+            resolver: 'resuelto', volver: 'vuelto', devolver: 'devuelto',
+            romper: 'roto', ver: 'visto', prever: 'previsto',
+            leer: 'leído', creer: 'creído', oír: 'oído', traer: 'traído', caer: 'caído', reír: 'reído'
+        };
+
+        const IRREG_FUT_STEM = {
+            tener: 'tendr', mantener: 'mantendr', obtener: 'obtendr', contener: 'contendr',
+            poner: 'pondr', suponer: 'supondr', proponer: 'propondr',
+            salir: 'saldr', venir: 'vendr', valer: 'valdr',
+            poder: 'podr', saber: 'sabr', caber: 'cabr', haber: 'habr',
+            querer: 'querr', decir: 'dir', hacer: 'har', deshacer: 'deshar'
+        };
+
+        const IRREG_IMP = {
+            ser: ['era', 'eras', 'era', 'éramos', 'erais', 'eran'],
+            ir: ['iba', 'ibas', 'iba', 'íbamos', 'ibais', 'iban'],
+            ver: ['veía', 'veías', 'veía', 'veíamos', 'veíais', 'veían']
+        };
+
+        const IRREG_IMP_TU = {
+            ser: 'sé', ir: 've', tener: 'ten', poner: 'pon',
+            salir: 'sal', venir: 'ven', decir: 'di', hacer: 'haz'
+        };
+
+        // 常见不规则动词表（覆盖 Presente, Indefinido, Subjuntivo Presente）
+        const IRREG_VERBS = {
+            ser: {
+                pres: ['soy', 'eres', 'es', 'somos', 'sois', 'son'],
+                indef: ['fui', 'fuiste', 'fue', 'fuimos', 'fuisteis', 'fueron'],
+                subj: ['sea', 'seas', 'sea', 'seamos', 'seáis', 'sean']
+            },
+            estar: {
+                pres: ['estoy', 'estás', 'está', 'estamos', 'estáis', 'están'],
+                indef: ['estuve', 'estuviste', 'estuvo', 'estuvimos', 'estuvisteis', 'estuvieron'],
+                subj: ['esté', 'estés', 'esté', 'estemos', 'estéis', 'estén']
+            },
+            ir: {
+                pres: ['voy', 'vas', 'va', 'vamos', 'vais', 'van'],
+                indef: ['fui', 'fuiste', 'fue', 'fuimos', 'fuisteis', 'fueron'],
+                subj: ['vaya', 'vayas', 'vaya', 'vayamos', 'vayáis', 'vayan']
+            },
+            haber: {
+                pres: ['he', 'has', 'ha', 'hemos', 'habéis', 'han'],
+                indef: ['hube', 'hubiste', 'hubo', 'hubimos', 'hubisteis', 'hubieron'],
+                subj: ['haya', 'hayas', 'haya', 'hayamos', 'hayáis', 'hayan']
+            },
+            tener: {
+                pres: ['tengo', 'tienes', 'tiene', 'tenemos', 'tenéis', 'tienen'],
+                indef: ['tuve', 'tuviste', 'tuvo', 'tuvimos', 'tuvisteis', 'tuvieron'],
+                subj: ['tenga', 'tengas', 'tenga', 'tengamos', 'tengáis', 'tengan']
+            },
+            hacer: {
+                pres: ['hago', 'haces', 'hace', 'hacemos', 'hacéis', 'hacen'],
+                indef: ['hice', 'hiciste', 'hizo', 'hicimos', 'hicisteis', 'hicieron'],
+                subj: ['haga', 'hagas', 'haga', 'hagamos', 'hagáis', 'hagan']
+            },
+            poder: {
+                pres: ['puedo', 'puedes', 'puede', 'podemos', 'podéis', 'pueden'],
+                indef: ['pude', 'pudiste', 'pudo', 'pudimos', 'pudisteis', 'pudieron'],
+                subj: ['pueda', 'puedas', 'pueda', 'podamos', 'podáis', 'puedan']
+            },
+            poner: {
+                pres: ['pongo', 'pones', 'pone', 'ponemos', 'ponéis', 'ponen'],
+                indef: ['puse', 'pusiste', 'puso', 'pusimos', 'pusisteis', 'pusieron'],
+                subj: ['ponga', 'pongas', 'ponga', 'pongamos', 'pongáis', 'pongan']
+            },
+            saber: {
+                pres: ['sé', 'sabes', 'sabe', 'sabemos', 'sabéis', 'saben'],
+                indef: ['supe', 'supiste', 'supo', 'supimos', 'supisteis', 'supieron'],
+                subj: ['sepa', 'sepas', 'sepa', 'sepamos', 'sepáis', 'sepan']
+            },
+            querer: {
+                pres: ['quiero', 'quieres', 'quiere', 'queremos', 'queréis', 'quieren'],
+                indef: ['quise', 'quisiste', 'quiso', 'quisimos', 'quisisteis', 'quisieron'],
+                subj: ['quiera', 'quieras', 'quiera', 'queramos', 'queráis', 'quieran']
+            },
+            venir: {
+                pres: ['vengo', 'vienes', 'viene', 'venimos', 'venís', 'vienen'],
+                indef: ['vine', 'viniste', 'vino', 'vinimos', 'vinisteis', 'vinieron'],
+                subj: ['venga', 'vengas', 'venga', 'vengamos', 'vengáis', 'vengan']
+            },
+            decir: {
+                pres: ['digo', 'dices', 'dice', 'decimos', 'decís', 'dicen'],
+                indef: ['dije', 'dijiste', 'dijo', 'dijimos', 'dijisteis', 'dijeron'],
+                subj: ['diga', 'digas', 'diga', 'digamos', 'digáis', 'digan']
+            },
+            salir: {
+                pres: ['salgo', 'sales', 'sale', 'salimos', 'salís', 'salen'],
+                subj: ['salga', 'salgas', 'salga', 'salgamos', 'salgáis', 'salgan']
+            },
+            ver: {
+                pres: ['veo', 'ves', 've', 'vemos', 'veis', 'ven'],
+                indef: ['vi', 'viste', 'vio', 'vimos', 'visteis', 'vieron'],
+                subj: ['vea', 'veas', 'vea', 'veamos', 'veáis', 'vean']
+            },
+            dar: {
+                pres: ['doy', 'das', 'da', 'damos', 'dais', 'dan'],
+                indef: ['di', 'diste', 'dio', 'dimos', 'disteis', 'dieron'],
+                subj: ['dé', 'des', 'dé', 'demos', 'deis', 'den']
+            },
+            oír: {
+                pres: ['oigo', 'oyes', 'oye', 'oímos', 'oís', 'oyen'],
+                indef: ['oí', 'oíste', 'oyó', 'oímos', 'oísteis', 'oyeron'],
+                subj: ['oiga', 'oigas', 'oiga', 'oigamos', 'oigáis', 'oigan']
+            },
+            traer: {
+                pres: ['traigo', 'traes', 'trae', 'traemos', 'traéis', 'traen'],
+                indef: ['traje', 'trajiste', 'trajo', 'trajimos', 'trajisteis', 'trajeron'],
+                subj: ['traiga', 'traigas', 'traiga', 'traigamos', 'traigáis', 'traigan']
+            },
+            caer: {
+                pres: ['caigo', 'caes', 'cae', 'caemos', 'caéis', 'caen'],
+                indef: ['caí', 'caíste', 'cayó', 'caímos', 'caísteis', 'cayeron'],
+                subj: ['caiga', 'caigas', 'caiga', 'caigamos', 'caigáis', 'caigan']
+            },
+            valer: {
+                pres: ['valgo', 'vales', 'vale', 'valemos', 'valéis', 'valen'],
+                subj: ['valga', 'valgas', 'valga', 'valgamos', 'valgáis', 'valgan']
+            },
+            caber: {
+                pres: ['quepo', 'cabes', 'cabe', 'cabemos', 'cabéis', 'caben'],
+                indef: ['cupe', 'cupiste', 'cupo', 'cupimos', 'cupisteis', 'cupieron'],
+                subj: ['quepa', 'quepas', 'quepa', 'quepamos', 'quepáis', 'quepan']
+            },
+            andar: {
+                indef: ['anduve', 'anduviste', 'anduvo', 'anduvimos', 'anduvisteis', 'anduvieron']
+            },
+            conducir: {
+                pres: ['conduzco', 'conduces', 'conduce', 'conducimos', 'conducís', 'conducen'],
+                indef: ['conduje', 'condujiste', 'condujo', 'condujimos', 'condujisteis', 'condujeron'],
+                subj: ['conduzca', 'conduzcas', 'conduzca', 'conduzcamos', 'conduzcáis', 'conduzcan']
+            },
+            traducir: {
+                pres: ['traduzco', 'traduces', 'traduce', 'traducimos', 'traducís', 'traducen'],
+                indef: ['traduje', 'tradujiste', 'tradujo', 'tradujimos', 'tradujisteis', 'tradujeron'],
+                subj: ['traduzca', 'traduzcas', 'traduzca', 'traduzcamos', 'traduzcáis', 'traduzcan']
+            },
+            producir: {
+                pres: ['produzco', 'produces', 'produce', 'producimos', 'producís', 'producen'],
+                indef: ['produje', 'produjiste', 'produjo', 'produjimos', 'produjisteis', 'produjeron'],
+                subj: ['produzca', 'produzcas', 'produzca', 'produzcamos', 'produzcáis', 'produzcan']
+            },
+            conocer: {
+                pres: ['conozco', 'conoces', 'conoce', 'conocemos', 'conocéis', 'conocen'],
+                subj: ['conozca', 'conozcas', 'conozca', 'conozcamos', 'conozcáis', 'conozcan']
+            },
+            parecer: {
+                pres: ['parezco', 'pareces', 'parece', 'parecemos', 'parecéis', 'parecen'],
+                subj: ['parezca', 'parezcas', 'parezca', 'parezcamos', 'parezcáis', 'parezcan']
+            },
+            construir: {
+                pres: ['construyo', 'construyes', 'construye', 'construimos', 'construís', 'construyen'],
+                indef: ['construí', 'construiste', 'construyó', 'construimos', 'construisteis', 'construyeron'],
+                subj: ['construya', 'construyas', 'construya', 'construyamos', 'construyáis', 'construyan']
+            },
+            leer: {
+                indef: ['leí', 'leíste', 'leyó', 'leímos', 'leísteis', 'leyeron']
+            },
+            creer: {
+                indef: ['creí', 'creíste', 'creyó', 'creímos', 'creísteis', 'creyeron']
+            },
+            dormir: {
+                pres: ['duermo', 'duermes', 'duerme', 'dormimos', 'dormís', 'duermen'],
+                indef: ['dormí', 'dormiste', 'durmió', 'dormimos', 'dormisteis', 'durmieron'],
+                subj: ['duerma', 'duermas', 'duerma', 'durmamos', 'durmáis', 'duerman']
+            },
+            morir: {
+                pres: ['muero', 'mueres', 'muere', 'morimos', 'morís', 'mueren'],
+                indef: ['morí', 'moriste', 'murió', 'morimos', 'moristeis', 'murieron'],
+                subj: ['muera', 'mueras', 'muera', 'muramos', 'muráis', 'mueran']
+            },
+            pedir: {
+                pres: ['pido', 'pides', 'pide', 'pedimos', 'pedís', 'piden'],
+                indef: ['pedí', 'pediste', 'pidió', 'pedimos', 'pedisteis', 'pidieron'],
+                subj: ['pida', 'pidas', 'pida', 'pidamos', 'pidáis', 'pidan']
+            },
+            repetir: {
+                pres: ['repito', 'repites', 'repite', 'repetimos', 'repetís', 'repiten'],
+                indef: ['repetí', 'repetiste', 'repitió', 'repetimos', 'repetisteis', 'repitieron'],
+                subj: ['repita', 'repitas', 'repita', 'repitamos', 'repitáis', 'repitan']
+            },
+            servir: {
+                pres: ['sirvo', 'sirves', 'sirve', 'servimos', 'servís', 'sirven'],
+                indef: ['serví', 'serviste', 'sirvió', 'servimos', 'servisteis', 'sirvieron'],
+                subj: ['sirva', 'sirvas', 'sirva', 'sirvamos', 'sirváis', 'sirvan']
+            },
+            vestir: {
+                pres: ['visto', 'vistes', 'viste', 'vestimos', 'vestís', 'visten'],
+                indef: ['vestí', 'vestiste', 'vistió', 'vestimos', 'vestisteis', 'vistieron'],
+                subj: ['vista', 'vistas', 'vista', 'vistamos', 'vistáis', 'vistan']
+            },
+            seguir: {
+                pres: ['sigo', 'sigues', 'sigue', 'seguimos', 'seguís', 'siguen'],
+                indef: ['seguí', 'seguiste', 'siguió', 'seguimos', 'seguisteis', 'siguieron'],
+                subj: ['siga', 'sigas', 'siga', 'sigamos', 'sigáis', 'sigan']
+            },
+            sentir: {
+                pres: ['siento', 'sientes', 'siente', 'sentimos', 'sentís', 'sienten'],
+                indef: ['sentí', 'sentiste', 'sintió', 'sentimos', 'sentisteis', 'sintieron'],
+                subj: ['sienta', 'sientas', 'sienta', 'sintamos', 'sintáis', 'sientan']
+            },
+            preferir: {
+                pres: ['prefiero', 'prefieres', 'prefiere', 'preferimos', 'preferís', 'prefieren'],
+                indef: ['preferí', 'preferiste', 'prefirió', 'preferimos', 'preferisteis', 'prefirieron'],
+                subj: ['prefiera', 'prefieras', 'prefiera', 'prefiramos', 'prefiráis', 'prefieran']
+            },
+            reír: {
+                pres: ['río', 'ríes', 'ríe', 'reímos', 'reís', 'ríen'],
+                indef: ['reí', 'reíste', 'rió', 'reímos', 'reísteis', 'rieron'],
+                subj: ['ría', 'rías', 'ría', 'riamos', 'riáis', 'rían']
+            },
+            jugar: {
+                pres: ['juego', 'juegas', 'juega', 'jugamos', 'jugáis', 'juegan'],
+                indef: ['jugué', 'jugaste', 'jugó', 'jugamos', 'jugasteis', 'jugaron'],
+                subj: ['juegue', 'juegues', 'juegue', 'juguemos', 'juguéis', 'jueguen']
+            },
+            empezar: {
+                pres: ['empiezo', 'empiezas', 'empieza', 'empezamos', 'empezáis', 'empiezan'],
+                indef: ['empecé', 'empezaste', 'empezó', 'empezamos', 'empezasteis', 'empezaron'],
+                subj: ['empiece', 'empieces', 'empiece', 'empecemos', 'empecéis', 'empiecen']
+            },
+            comenzar: {
+                pres: ['comienzo', 'comienzas', 'comienza', 'comenzamos', 'comenzáis', 'comienzan'],
+                indef: ['comencé', 'comenzaste', 'comenzó', 'comenzamos', 'comenzasteis', 'comenzaron'],
+                subj: ['comience', 'comiences', 'comience', 'comencemos', 'comencéis', 'comiencen']
+            },
+            pensar: {
+                pres: ['pienso', 'piensas', 'piensa', 'pensamos', 'pensáis', 'piensan'],
+                subj: ['piense', 'pienses', 'piense', 'pensemos', 'penséis', 'piensen']
+            },
+            cerrar: {
+                pres: ['cierro', 'cierras', 'cierra', 'cerramos', 'cerráis', 'cierran'],
+                subj: ['cierre', 'cierres', 'cierre', 'cerremos', 'cerréis', 'cierren']
+            },
+            despertar: {
+                pres: ['despierto', 'despiertas', 'despierta', 'despertamos', 'despertáis', 'despiertan'],
+                subj: ['despierte', 'despiertes', 'despierte', 'despertemos', 'despertéis', 'despierten']
+            },
+            entender: {
+                pres: ['entiendo', 'entiendes', 'entiende', 'entendemos', 'entendéis', 'entienden'],
+                subj: ['entienda', 'entiendas', 'entienda', 'entendamos', 'entendáis', 'entiendan']
+            },
+            perder: {
+                pres: ['pierdo', 'pierdes', 'pierde', 'perdemos', 'perdéis', 'pierden'],
+                subj: ['pierda', 'pierdas', 'pierda', 'perdamos', 'perdáis', 'pierdan']
+            },
+            volver: {
+                pres: ['vuelvo', 'vuelves', 'vuelve', 'volvemos', 'volvéis', 'vuelven'],
+                subj: ['vuelva', 'vuelvas', 'vuelva', 'volvamos', 'volváis', 'vuelvan']
+            },
+            encontrar: {
+                pres: ['encuentro', 'encuentras', 'encuentra', 'encontramos', 'encontráis', 'encuentran'],
+                subj: ['encuentre', 'encuentres', 'encuentre', 'encontremos', 'encontréis', 'encuentren']
+            },
+            contar: {
+                pres: ['cuento', 'cuentas', 'cuenta', 'contamos', 'contáis', 'cuentan'],
+                subj: ['cuente', 'cuentes', 'cuente', 'contemos', 'contéis', 'cuenten']
+            },
+            recordar: {
+                pres: ['recuerdo', 'recuerdas', 'recuerda', 'recordamos', 'recordáis', 'recuerdan'],
+                subj: ['recuerde', 'recuerdes', 'recuerde', 'recordemos', 'recordéis', 'recuerden']
+            },
+            acostar: {
+                pres: ['acuesto', 'acuestas', 'acuesta', 'acostamos', 'acostáis', 'acuestan'],
+                subj: ['acueste', 'acuestes', 'acueste', 'acostemos', 'acostéis', 'acuesten']
+            },
+            sentar: {
+                pres: ['siento', 'sientas', 'sienta', 'sentamos', 'sentáis', 'sientan'],
+                subj: ['siente', 'sientes', 'siente', 'sentemos', 'sentéis', 'sienten']
+            }
+        };
+
+        function getStemBeforeE(stem, inf) {
+            if (inf.endsWith('car')) return stem.slice(0, -1) + 'qu';
+            if (inf.endsWith('gar')) return stem + 'u';
+            if (inf.endsWith('zar')) return stem.slice(0, -1) + 'c';
+            return stem;
+        }
+
+        function getStemBeforeOA(stem, inf) {
+            if (inf.endsWith('ger') || inf.endsWith('gir')) return stem.slice(0, -1) + 'j';
+            if (inf.endsWith('guir')) return stem.slice(0, -2) + 'g';
+            return stem;
+        }
+
+        function getParticiple(baseInf) {
+            if (IRREG_PART[baseInf]) return IRREG_PART[baseInf];
+            const stem = baseInf.slice(0, -2);
+            if (baseInf.endsWith('ar')) return stem + 'ado';
+            return stem + 'ido';
+        }
+
+        function conjugateBase(baseInf, tense) {
+            const inf = baseInf.toLowerCase().trim();
+            if (inf.length < 3 || !/(ar|er|ir|ír)$/.test(inf)) {
+                return [inf, inf, inf, inf, inf, inf];
+            }
+            const ending = inf.slice(-2); // ar, er, ir, ír
+            const stem = inf.slice(0, -2);
+            const irr = IRREG_VERBS[inf] || {};
+
+            // 1. 陈述式现在时
+            if (tense === 'ind_pres') {
+                if (irr.pres) return [...irr.pres];
+                const yoStem = getStemBeforeOA(stem, inf);
+                if (ending === 'ar') {
+                    return [yoStem + 'o', stem + 'as', stem + 'a', stem + 'amos', stem + 'áis', stem + 'an'];
+                } else if (ending === 'er') {
+                    return [yoStem + 'o', stem + 'es', stem + 'e', stem + 'emos', stem + 'éis', stem + 'en'];
+                } else {
+                    return [yoStem + 'o', stem + 'es', stem + 'e', stem + 'imos', stem + 'ís', stem + 'en'];
+                }
+            }
+
+            // 2. 陈述式简单过去时
+            if (tense === 'ind_indef') {
+                if (irr.indef) return [...irr.indef];
+                if (ending === 'ar') {
+                    const yoStem = getStemBeforeE(stem, inf);
+                    return [yoStem + 'é', stem + 'aste', stem + 'ó', stem + 'amos', stem + 'asteis', stem + 'aron'];
+                } else {
+                    return [stem + 'í', stem + 'iste', stem + 'ió', stem + 'imos', stem + 'isteis', stem + 'ieron'];
+                }
+            }
+
+            // 3. 陈述式未完成过去时
+            if (tense === 'ind_imp') {
+                if (IRREG_IMP[inf]) return [...IRREG_IMP[inf]];
+                if (ending === 'ar') {
+                    return [stem + 'aba', stem + 'abas', stem + 'aba', stem + 'ábamos', stem + 'abais', stem + 'aban'];
+                } else {
+                    return [stem + 'ía', stem + 'ías', stem + 'ía', stem + 'íamos', stem + 'íais', stem + 'ían'];
+                }
+            }
+
+            // 4. 将来未完成时 & 简单条件式
+            if (tense === 'ind_fut' || tense === 'ind_cond') {
+                const fStem = IRREG_FUT_STEM[inf] || inf;
+                const ends = tense === 'ind_fut'
+                    ? ['é', 'ás', 'á', 'emos', 'éis', 'án']
+                    : ['ía', 'ías', 'ía', 'íamos', 'íais', 'ían'];
+                return ends.map(e => fStem + e);
+            }
+
+            // 5. 复合时态（陈述式 + 虚拟式）
+            const auxMap = {
+                ind_perf: ['he', 'has', 'ha', 'hemos', 'habéis', 'han'],
+                ind_plusc: ['había', 'habías', 'había', 'habíamos', 'habíais', 'habían'],
+                ind_ant: ['hube', 'hubiste', 'hubo', 'hubimos', 'hubisteis', 'hubieron'],
+                ind_fut_perf: ['habré', 'habrás', 'habrá', 'habremos', 'habréis', 'habrán'],
+                ind_cond_perf: ['habría', 'habrías', 'habría', 'habríamos', 'habríais', 'habrían'],
+                subj_perf: ['haya', 'hayas', 'haya', 'hayamos', 'hayáis', 'hayan'],
+                subj_plusc: ['hubiera', 'hubieras', 'hubiera', 'hubiéramos', 'hubierais', 'hubieran']
+            };
+            if (auxMap[tense]) {
+                const part = getParticiple(inf);
+                return auxMap[tense].map(aux => `${aux} ${part}`);
+            }
+
+            // 6. 虚拟式现在时
+            if (tense === 'subj_pres') {
+                if (irr.subj) return [...irr.subj];
+                if (ending === 'ar') {
+                    const s = getStemBeforeE(stem, inf);
+                    return [s + 'e', s + 'es', s + 'e', s + 'emos', s + 'éis', s + 'en'];
+                } else {
+                    const s = getStemBeforeOA(stem, inf);
+                    return [s + 'a', s + 'as', s + 'a', s + 'amos', s + 'áis', s + 'an'];
+                }
+            }
+
+            // 7. 虚拟式未完成过去时（由简单过去时第三人称复数变形而来）
+            if (tense === 'subj_imp') {
+                const indefForms = conjugateBase(inf, 'ind_indef');
+                const ellosForm = indefForms[5]; // e.g. hablaron, tuvieron, dijeron
+                const root = ellosForm.slice(0, -3); // habla, tuvie, dije
+                const accentedRoot = root.slice(0, -1) + ({ a: 'á', e: 'é', i: 'í', o: 'ó', u: 'ú' }[root.slice(-1)] || root.slice(-1));
+                return [
+                    root + 'ra',
+                    root + 'ras',
+                    root + 'ra',
+                    accentedRoot + 'ramos',
+                    root + 'rais',
+                    root + 'ran'
+                ];
+            }
+
+            // 8. 肯定命令式
+            if (tense === 'imp_afirm') {
+                const presForms = conjugateBase(inf, 'ind_pres');
+                const subjForms = conjugateBase(inf, 'subj_pres');
+                const tuForm = IRREG_IMP_TU[inf] || presForms[2];
+                const nosForm = inf === 'ir' ? 'vamos' : subjForms[3];
+                const vosForm = stem + (ending === 'ar' ? 'ad' : (ending === 'er' ? 'ed' : 'id'));
+                return ['—', tuForm, subjForms[2], nosForm, vosForm, subjForms[5]];
+            }
+
+            // 9. 否定命令式
+            if (tense === 'imp_neg') {
+                const subjForms = conjugateBase(inf, 'subj_pres');
+                return ['—', 'no ' + subjForms[1], 'no ' + subjForms[2], 'no ' + subjForms[3], 'no ' + subjForms[4], 'no ' + subjForms[5]];
+            }
+
+            return [inf, inf, inf, inf, inf, inf];
+        }
+
+        // 支持自复动词 (-se) 的完整变位入口
+        function conjugateVerb(rawInf, tense) {
+            const clean = rawInf.trim();
+            const isReflexive = clean.toLowerCase().endsWith('se') && clean.length > 4;
+            const baseInf = isReflexive ? clean.slice(0, -2) : clean;
+            const forms = conjugateBase(baseInf, tense);
+
+            if (!isReflexive) return forms;
+
+            const refPronouns = ['me', 'te', 'se', 'nos', 'os', 'se'];
+            if (tense === 'imp_neg') {
+                return forms.map((f, i) => i === 0 ? '—' : f.replace(/^no\s+/, `no ${refPronouns[i]} `));
+            }
+            if (tense === 'imp_afirm') {
+                // 肯定命令式代词后置简明展示（例如 levántate / levantaos）
+                return forms.map((f, i) => {
+                    if (i === 0) return '—';
+                    if (i === 4) return f.slice(0, -1) + 'os'; // levantaos
+                    if (i === 3) return f.slice(0, -1) + 'nos'; // levantémonos
+                    return f + refPronouns[i];
+                });
+            }
+            return forms.map((f, i) => `${refPronouns[i]} ${f}`);
+        }
+
+        // --- 应用状态管理 ---
+        let appState = {
+            activeBoardId: 'vboard_1',
+            boards: [
+                {
+                    id: 'vboard_1',
+                    name: '学生板块 1',
+                    tense: 'ind_pres',
+                    verbs: [
+                        { inf: 'hablar', cn: '说话', forms: conjugateVerb('hablar', 'ind_pres') },
+                        { inf: 'tener', cn: '有', forms: conjugateVerb('tener', 'ind_pres') },
+                        { inf: 'ir', cn: '去', forms: conjugateVerb('ir', 'ind_pres') },
+                        { inf: 'vivir', cn: '居住', forms: conjugateVerb('vivir', 'ind_pres') }
+                    ]
+                }
+            ]
+        };
+
+        let dictationMode = false;
+        let quizMode = '';
+        let quizItems = [];
+        let currentIndex = 0;
+        let quizScoreMap = {};
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && Array.isArray(parsed.boards) && parsed.boards.length > 0) {
+                        appState = parsed;
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {}
+        }
+
+        function getActiveBoard() {
+            let b = appState.boards.find(x => x.id === appState.activeBoardId);
+            if (!b) {
+                b = appState.boards[0];
+                appState.activeBoardId = b.id;
+            }
+            return b;
+        }
+
+        function autoResizeInput(input) {
+            const len = (input.value || input.placeholder || '').length;
+            input.style.width = Math.max(72, len * 14 + 14) + 'px';
+        }
+
+        function renderBoardTabs() {
+            const bar = document.getElementById('boardTabsBar');
+            bar.innerHTML = '';
+
+            appState.boards.forEach(board => {
+                const isActive = board.id === appState.activeBoardId;
+                const tab = document.createElement('div');
+                tab.className = 'board-tab' + (isActive ? ' active' : '');
+                tab.onclick = (e) => {
+                    if (e.target.tagName === 'INPUT' || e.target.classList.contains('board-close')) return;
+                    appState.activeBoardId = board.id;
+                    saveState();
+                    renderAll();
+                };
+
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.className = 'board-name-input';
+                nameInput.value = board.name;
+                nameInput.placeholder = '板块名称';
+                nameInput.title = '直接点击修改板块名称（如孩子姓名）';
+                autoResizeInput(nameInput);
+
+                nameInput.onfocus = () => {
+                    if (appState.activeBoardId !== board.id) {
+                        appState.activeBoardId = board.id;
+                        saveState();
+                        renderAll();
+                        setTimeout(() => {
+                            const inputs = document.querySelectorAll('.board-name-input');
+                            const idx = appState.boards.findIndex(x => x.id === board.id);
+                            if (inputs[idx]) inputs[idx].focus();
+                        }, 0);
+                    }
+                };
+
+                nameInput.oninput = (e) => {
+                    board.name = e.target.value;
+                    autoResizeInput(e.target);
+                    updateHeading();
+                    saveState();
+                };
+
+                const badge = document.createElement('span');
+                badge.className = 'board-count-badge';
+                badge.innerText = board.verbs.length + '词';
+
+                tab.appendChild(nameInput);
+                tab.appendChild(badge);
+
+                if (appState.boards.length > 1) {
+                    const closeBtn = document.createElement('span');
+                    closeBtn.className = 'board-close';
+                    closeBtn.innerText = '✕';
+                    closeBtn.title = '删除此板块';
+                    closeBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        deleteBoard(board.id);
+                    };
+                    tab.appendChild(closeBtn);
+                }
+
+                bar.appendChild(tab);
+            });
+
+            const addBtn = document.createElement('button');
+            addBtn.type = 'button';
+            addBtn.className = 'btn-add-board';
+            addBtn.innerText = '+ 添加板块';
+            addBtn.onclick = addNewBoard;
+            bar.appendChild(addBtn);
+        }
+
+        function addNewBoard() {
+            const newId = 'vboard_' + Date.now();
+            appState.boards.push({
+                id: newId,
+                name: '学生板块 ' + (appState.boards.length + 1),
+                tense: 'ind_pres',
+                verbs: []
+            });
+            appState.activeBoardId = newId;
+            saveState();
+            renderAll();
+        }
+
+        function deleteBoard(id) {
+            if (appState.boards.length <= 1) return;
+            const target = appState.boards.find(b => b.id === id);
+            if (!confirm(`确定删除「${target ? target.name : '该板块'}」吗？`)) return;
+            appState.boards = appState.boards.filter(b => b.id !== id);
+            if (appState.activeBoardId === id) {
+                appState.activeBoardId = appState.boards[0].id;
+            }
+            saveState();
+            renderAll();
+        }
+
+        function onTenseChange() {
+            const board = getActiveBoard();
+            board.tense = document.getElementById('tenseSelect').value;
+            saveState();
+            updateHeading();
+        }
+
+        function reconjugateAllInBoard() {
+            const board = getActiveBoard();
+            board.tense = document.getElementById('tenseSelect').value;
+            if (board.verbs.length === 0) return;
+            board.verbs.forEach(v => {
+                v.forms = conjugateVerb(v.inf, board.tense);
+            });
+            saveState();
+            renderAll();
+        }
+
+        function parseVerbInput(rawText) {
+            const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+            const list = [];
+            lines.forEach(line => {
+                const cleaned = line.replace(/^\d+[\.\、\)\s]+/, '').trim();
+                if (!cleaned) return;
+
+                const parts = cleaned.split(/\s*(?:\t| - | – | — |:|：|\/)\s*/);
+                if (parts.length >= 2 && parts[0].trim()) {
+                    list.push({ inf: parts[0].trim(), cn: parts.slice(1).join(' / ').trim() });
+                    return;
+                }
+                const zhMatch = cleaned.match(/^(.*?)([\u4e00-\u9fff].*)$/);
+                if (zhMatch && zhMatch[1].trim()) {
+                    list.push({ inf: zhMatch[1].trim(), cn: zhMatch[2].trim() });
+                    return;
+                }
+                list.push({ inf: cleaned, cn: '' });
+            });
+            return list;
+        }
+
+        function importVerbs(replaceMode) {
+            const ta = document.getElementById('verbPasteInput');
+            const raw = ta.value.trim();
+            if (!raw) {
+                alert('请先在输入框中粘贴要练习的西语动词原形！');
+                return;
+            }
+            const parsed = parseVerbInput(raw);
+            if (parsed.length === 0) return;
+
+            const board = getActiveBoard();
+            board.tense = document.getElementById('tenseSelect').value;
+            const generated = parsed.map(item => ({
+                inf: item.inf,
+                cn: item.cn,
+                forms: conjugateVerb(item.inf, board.tense)
+            }));
+
+            if (replaceMode) {
+                board.verbs = generated;
+            } else {
+                board.verbs.push(...generated);
+            }
+            ta.value = '';
+            saveState();
+            renderAll();
+        }
+
+        function editSingleCell(vIdx, pIdx) {
+            if (dictationMode) return;
+            const board = getActiveBoard();
+            const verb = board.verbs[vIdx];
+            if (!verb) return;
+            const currentVal = verb.forms[pIdx];
+            const nextVal = prompt(`修改「${verb.inf}」在「${PRONOUNS[pIdx]}」人称的变位：`, currentVal);
+            if (nextVal !== null && nextVal.trim() !== '') {
+                verb.forms[pIdx] = nextVal.trim();
+                saveState();
+                renderVerbGrid();
+            }
+        }
+
+        function removeVerb(vIdx) {
+            const board = getActiveBoard();
+            board.verbs.splice(vIdx, 1);
+            saveState();
+            renderAll();
+        }
+
+        function clearCurrentBoard() {
+            const board = getActiveBoard();
+            if (board.verbs.length === 0) return;
+            if (!confirm(`确定清空「${board.name}」中的所有动词吗？`)) return;
+            board.verbs = [];
+            saveState();
+            renderAll();
+        }
+
+        function toggleDictationMode() {
+            dictationMode = !dictationMode;
+            const btn = document.getElementById('dictBtn');
+            const grid = document.getElementById('verbGrid');
+            grid.classList.toggle('dictation-mode', dictationMode);
+            if (dictationMode) {
+                btn.innerText = '👀 显示全部变位';
+                btn.classList.add('active-pill');
+            } else {
+                btn.innerText = '✍️ 遮挡背诵模式';
+                btn.classList.remove('active-pill');
+                document.querySelectorAll('.form-pill.revealed').forEach(el => el.classList.remove('revealed'));
+            }
+        }
+
+        function escapeHtml(str) {
+            return (str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function speakSpanish(text) {
+            if (!('speechSynthesis' in window) || !text || text === '—') return;
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'es-ES';
+            utter.rate = 0.85;
+            window.speechSynthesis.speak(utter);
+        }
+
+        function updateHeading() {
+            const board = getActiveBoard();
+            const label = board.name.trim() || '当前板块';
+            const tenseTitle = TENSE_NAMES[board.tense] || '';
+            document.getElementById('tableHeading').innerText =
+                `📖 ${label} · ${tenseTitle} (${board.verbs.length}个动词)`;
+        }
+
+        function renderVerbGrid() {
+            const board = getActiveBoard();
+            document.getElementById('tenseSelect').value = board.tense || 'ind_pres';
+            updateHeading();
+
+            const grid = document.getElementById('verbGrid');
+            grid.classList.toggle('dictation-mode', dictationMode);
+
+            if (board.verbs.length === 0) {
+                grid.innerHTML = `<div class="empty-tip">当前板块还没有动词，请在上方输入框粘贴动词原形（如 hablar - 说话），系统将自动生成六人称变位表</div>`;
+                return;
+            }
+
+            grid.innerHTML = board.verbs.map((v, vIdx) => {
+                const rowsHtml = PRONOUNS.map((pron, pIdx) => {
+                    const form = v.forms[pIdx] || '';
+                    const isDash = form === '—';
+                    return `
+                    <tr>
+                        <td class="pronoun-cell">${pron}</td>
+                        <td class="form-cell">
+                            <span class="form-pill ${isDash ? '' : 'hideable'}"
+                                  title="${dictationMode ? '点击偷看变位' : '点击可手动修改此变位'}"
+                                  onclick="if(dictationMode){ this.classList.toggle('revealed'); } else { editSingleCell(${vIdx}, ${pIdx}); }">
+                                ${escapeHtml(form)}
+                            </span>
+                        </td>
+                    </tr>`;
+                }).join('');
+
+                return `
+                <div class="verb-card">
+                    <div class="verb-card-header">
+                        <div class="verb-title-wrap">
+                            <span class="verb-num">${vIdx + 1}.</span>
+                            <span class="verb-inf">${escapeHtml(v.inf)}</span>
+                            ${v.cn ? `<span class="verb-cn">(${escapeHtml(v.cn)})</span>` : ''}
+                        </div>
+                        <div class="verb-card-actions">
+                            <button type="button" class="icon-btn" onclick="speakSpanish('${v.inf.replace(/'/g, "\\'")}')" title="朗读原形">🔊</button>
+                            <button type="button" class="icon-btn del" onclick="removeVerb(${vIdx})" title="删除此动词">✕</button>
+                        </div>
+                    </div>
+                    <table class="conj-table">${rowsHtml}</table>
+                </div>`;
+            }).join('');
+        }
+
+        // --- 练习系统（闪卡抽查 & 拼写变位闯关） ---
+        function startQuiz(mode, maxCount) {
+            const board = getActiveBoard();
+            if (board.verbs.length === 0) {
+                alert('当前板块没有动词，请先导入动词后再开始练习！');
+                return;
+            }
+
+            const pool = [];
+            board.verbs.forEach(v => {
+                PRONOUNS.forEach((pron, pIdx) => {
+                    const ans = v.forms[pIdx];
+                    if (ans && ans !== '—') {
+                        pool.push({
+                            inf: v.inf,
+                            cn: v.cn,
+                            pronoun: pron,
+                            answer: ans,
+                            tenseName: TENSE_NAMES[board.tense] || ''
+                        });
+                    }
+                });
+            });
+
+            if (pool.length === 0) return;
+
+            quizMode = mode;
+            quizItems = pool.sort(() => Math.random() - 0.5).slice(0, maxCount);
+            currentIndex = 0;
+            quizScoreMap = {};
+
+            if (mode === 'spell') initAccentBar();
+            showScreen('quiz-screen');
+            renderDrillQuestion();
+        }
+
+        function initAccentBar() {
+            const bar = document.getElementById('accentBar');
+            bar.innerHTML = '';
+            ['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'].forEach(ch => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'accent-btn';
+                btn.innerText = ch;
+                btn.onclick = () => {
+                    const inp = document.getElementById('spellInput');
+                    const s = inp.selectionStart;
+                    const e = inp.selectionEnd;
+                    inp.value = inp.value.slice(0, s) + ch + inp.value.slice(e);
+                    inp.focus();
+                    inp.selectionStart = inp.selectionEnd = s + 1;
+                };
+                bar.appendChild(btn);
+            });
+        }
+
+        function renderDrillQuestion() {
+            const item = quizItems[currentIndex];
+            document.getElementById('quiz-counter').innerText = `${currentIndex + 1} / ${quizItems.length}`;
+            document.getElementById('progress-fill').style.width = ((currentIndex + 1) / quizItems.length * 100) + '%';
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+
+            document.getElementById('drillTenseLabel').innerText = item.tenseName;
+            document.getElementById('drillVerbInf').innerText = item.inf;
+            document.getElementById('drillVerbCn').innerText = item.cn || '';
+            document.getElementById('drillPronoun').innerText = item.pronoun;
+
+            const fb = document.getElementById('drillFeedback');
+            fb.className = 'feedback-banner';
+            fb.innerHTML = '';
+
+            if (quizMode === 'flash') {
+                document.getElementById('flash-area').style.display = 'block';
+                document.getElementById('spell-area').style.display = 'none';
+                document.getElementById('flashAnswerText').style.display = 'none';
+                document.getElementById('flashAnswerText').innerText = item.answer;
+                document.getElementById('revealFlashBtn').style.display = 'inline-flex';
+                document.getElementById('markRightBtn').style.display = 'none';
+                document.getElementById('markWrongBtn').style.display = 'none';
+            } else {
+                document.getElementById('flash-area').style.display = 'none';
+                document.getElementById('spell-area').style.display = 'block';
+                const inp = document.getElementById('spellInput');
+                inp.value = '';
+                setTimeout(() => inp.focus(), 50);
+            }
+        }
+
+        function speakCurrentDrill() {
+            const item = quizItems[currentIndex];
+            if (item) speakSpanish(item.answer);
+        }
+
+        function revealFlash() {
+            document.getElementById('flashAnswerText').style.display = 'block';
+            document.getElementById('revealFlashBtn').style.display = 'none';
+            document.getElementById('markRightBtn').style.display = 'inline-flex';
+            document.getElementById('markWrongBtn').style.display = 'inline-flex';
+            speakCurrentDrill();
+        }
+
+        function markFlash(isCorrect) {
+            quizScoreMap[currentIndex] = isCorrect;
+            changeStep(1);
+        }
+
+        function checkSpell() {
+            const item = quizItems[currentIndex];
+            const userVal = document.getElementById('spellInput').value.trim().replace(/\s+/g, ' ').toLowerCase();
+            const targetVal = item.answer.trim().replace(/\s+/g, ' ').toLowerCase();
+            const fb = document.getElementById('drillFeedback');
+
+            if (!userVal) {
+                alert('请先输入变位形式！');
+                return;
+            }
+
+            if (userVal === targetVal) {
+                quizScoreMap[currentIndex] = true;
+                fb.className = 'feedback-banner ok';
+                fb.innerHTML = `🎉 正确！${escapeHtml(item.pronoun)} → <strong>${escapeHtml(item.answer)}</strong>`;
+                speakCurrentDrill();
+            } else {
+                quizScoreMap[currentIndex] = false;
+                fb.className = 'feedback-banner err';
+                fb.innerHTML = `❌ 拼写有误（注意词尾或重音符号）。正确答案是：<strong>${escapeHtml(item.answer)}</strong>`;
+            }
+        }
+
+        function changeStep(step) {
+            currentIndex += step;
+            if (currentIndex >= quizItems.length) {
+                showResults();
+                return;
+            }
+            if (currentIndex < 0) currentIndex = 0;
+            renderDrillQuestion();
+        }
+
+        function showResults() {
+            showScreen('result-screen');
+            const total = quizItems.length;
+            const correct = Object.values(quizScoreMap).filter(Boolean).length;
+            const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+            document.getElementById('final-score').innerText = pct + '%';
+            document.getElementById('result-summary').innerHTML = `答对题数：<strong>${correct} / ${total}</strong>`;
+        }
+
+        function downloadCSV() {
+            const board = getActiveBoard();
+            if (board.verbs.length === 0) {
+                alert('当前板块没有可导出的动词变位！');
+                return;
+            }
+            const tenseTitle = TENSE_NAMES[board.tense] || '';
+            let csv = `\uFEFF时态,${tenseTitle}\n动词原形,中文释义,${PRONOUNS.join(',')}\n`;
+            board.verbs.forEach(v => {
+                csv += `"${v.inf}","${v.cn}",${v.forms.map(f => `"${f}"`).join(',')}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            const name = (board.name.trim() || 'EMSI西语动词变位').replace(/[\\/:*?"<>|]/g, '_');
+            a.download = `${name}.csv`;
+            a.click();
+        }
+
+        function backToMenu() {
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            showScreen('menu-screen');
+            renderAll();
+        }
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function renderAll() {
+            renderBoardTabs();
+            renderVerbGrid();
+        }
+
+        loadState();
+        renderAll();
+    </script>
+</body>
+</html>
