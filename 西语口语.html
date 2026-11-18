@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>西班牙小学生活生存口语 300 句 - 互动课堂</title>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --primary: #4f7cff;
+      --primary-light: #eef3ff;
+      --accent: #ff7a59;
+      --success: #22c55e;
+      --success-light: #eafbf0;
+      --danger: #ef4444;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 6px 20px rgba(30, 41, 59, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 110px;
+    }
+
+    /* 顶部导航栏 */
+    header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--text);
+      background: #f1f5f9;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .back-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .site-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 9px 15px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #3b66e8;
+      transform: translateY(-1px);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-accent:hover {
+      background: #f06543;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .btn-danger-outline {
+      background: #fff;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+
+    .btn-danger-outline:hover {
+      background: #fef2f2;
+    }
+
+    /* 主容器 */
+    .container {
+      max-width: 1100px;
+      margin: 22px auto;
+      padding: 0 20px;
+    }
+
+    /* 模块切换栏 */
+    .tabs-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(79, 124, 255, 0.25);
+    }
+
+    .tab-badge {
+      background: rgba(0, 0, 0, 0.08);
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    .tab-btn.active .tab-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #fff;
+    }
+
+    /* 工具过滤条 */
+    .toolbar {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 220px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 9px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* 句子列表卡片 */
+    .sentence-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+      gap: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .sentence-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sentence-card {
+      background: var(--card);
+      border: 2px solid transparent;
+      border-radius: var(--radius);
+      padding: 15px 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.18s;
+      position: relative;
+    }
+
+    .sentence-card:hover {
+      transform: translateY(-2px);
+      border-color: #cbd5e1;
+    }
+
+    .sentence-card.selected {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    .check-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      border: 2px solid #cbd5e1;
+      background: #fff;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      transition: 0.15s;
+    }
+
+    .sentence-card.selected .check-circle {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .sentence-content {
+      flex: 1;
+    }
+
+    .es-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .zh-text {
+      font-size: 14.5px;
+      color: var(--muted);
+    }
+
+    .custom-tag {
+      display: inline-block;
+      font-size: 11px;
+      background: #fef3c7;
+      color: #b45309;
+      padding: 1px 7px;
+      border-radius: 6px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* 底部悬浮今日练习条 */
+    .floating-bar {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 920px;
+      background: #1e293b;
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 60;
+    }
+
+    .selected-info {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .selected-count {
+      background: var(--accent);
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 999px;
+      margin: 0 4px;
+      font-weight: 700;
+    }
+
+    .floating-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* 弹窗遮罩 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--card);
+      width: 100%;
+      max-width: 820px;
+      max-height: 90vh;
+      border-radius: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .close-modal-btn {
+      background: #e2e8f0;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .close-modal-btn:hover {
+      background: #cbd5e1;
+    }
+
+    .modal-body {
+      padding: 22px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* 练习模式一：遮住西语 */
+    .flashcard-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .speak-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .speak-item {
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 18px;
+      background: #fff;
+      transition: 0.2s;
+    }
+
+    .speak-item.mastered {
+      border-color: var(--success);
+      background: var(--success-light);
+    }
+
+    .speak-zh {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .speak-es-box {
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 48px;
+    }
+
+    .speak-es-hidden {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .speak-es-revealed {
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 17px;
+    }
+
+    .master-toggle {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* 练习模式二：连线题 */
+    .match-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+      background: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 12px;
+    }
+
+    .match-board {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      padding: 8px 4px;
+    }
+
+    @media (max-width: 600px) {
+      .match-board {
+        gap: 24px;
+      }
+    }
+
+    .match-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .match-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 2;
+    }
+
+    .match-card {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+    }
+
+    .match-card:hover:not(.matched) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .match-card.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .match-card.matched {
+      border-color: var(--success);
+      background: var(--success-light);
+      color: #15803d;
+      cursor: default;
+    }
+
+    .match-card.wrong {
+      border-color: var(--danger);
+      background: #fef2f2;
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    /* 添加新句子表单 */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--primary);
+    }
+
+    .new-module-row {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .new-module-row.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="back-btn">← 返回主页</a>
+      <div class="site-title">🎒 西班牙学校日常口语 300 句</div>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="openAddModal()">➕ 添加新句子 / 新模块</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- 模块切换标签 -->
+    <div class="tabs-bar" id="tabsBar"></div>
+
+    <!-- 搜索与批量选择工具条 -->
+    <div class="toolbar">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜索西语或中文关键词（如：厕所、铅笔、肚子疼...）" oninput="renderSentences()" />
+      </div>
+      <div class="toolbar-actions">
+        <button class="btn btn-outline" onclick="selectAllCurrent()">☑ 全选本模块</button>
+        <button class="btn btn-outline" onclick="unselectAllCurrent()">☐ 取消本模块</button>
+        <button class="btn btn-outline" onclick="showOnlySelectedToggle()" id="filterSelectedBtn">⭐ 只看今日已选</button>
+      </div>
+    </div>
+
+    <!-- 句子展示区 -->
+    <div class="sentence-grid" id="sentenceGrid"></div>
+  </div>
+
+  <!-- 底部悬浮今日练习控制台 -->
+  <div class="floating-bar">
+    <div class="selected-info">
+      今日已选 <span class="selected-count" id="selectedCount">0</span> 句
+    </div>
+    <div class="floating-btns">
+      <button class="btn btn-primary" onclick="openSpeakPractice()">🙈 练习1：遮住西语说一说</button>
+      <button class="btn btn-accent" onclick="openMatchPractice()">🔗 练习2：西汉连线题</button>
+      <button class="btn btn-danger-outline" onclick="clearAllSelected()">清空今日所选</button>
+    </div>
+  </div>
+
+  <!-- 弹窗1：遮住西语练习 -->
+  <div class="modal-overlay" id="speakModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">🙈 遮住西语说一说（共 <span id="speakTotal">0</span> 句）</div>
+        <button class="close-modal-btn" onclick="closeModal('speakModal')">✖ 关掉练习</button>
+      </div>
+      <div class="modal-body">
+        <div class="flashcard-controls">
+          <div style="color: var(--muted); font-size: 14px;">提示：让孩子看中文说出西语，点击灰色框揭晓答案。</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-outline" onclick="shuffleSpeakList()">🔀 打乱顺序</button>
+            <button class="btn btn-outline" onclick="toggleAllReveal(false)">🙈 全部遮住</button>
+            <button class="btn btn-outline" onclick="toggleAllReveal(true)">👀 全部显示</button>
+          </div>
+        </div>
+        <div class="speak-list" id="speakList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 弹窗2：西汉连线题 -->
+  <div class="modal-overlay" id="matchModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">🔗 西汉趣味连线题</div>
+        <button class="close-modal-btn" onclick="closeModal('matchModal')">✖ 关掉练习</button>
+      </div>
+      <div class="modal-body">
+        <div class="match-topbar">
+          <div>
+            <strong>第 <span id="matchRoundNum">1</span> / <span id="matchTotalRounds">1</span> 组</strong>
+            <span style="color: var(--muted); font-size: 13px; margin-left: 8px;">（先点左边西语，再点右边对应中文）</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-outline" onclick="resetCurrentMatchRound()">🔄 重玩本组</button>
+            <button class="btn btn-primary" id="nextMatchRoundBtn" onclick="nextMatchRound()" style="display:none;">下一组 ➡</button>
+          </div>
+        </div>
+        <div class="match-board" id="matchBoard">
+          <svg class="match-svg" id="matchSvg"></svg>
+          <div class="match-col" id="matchLeftCol"></div>
+          <div class="match-col" id="matchRightCol"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 弹窗3：添加新句子 / 新建模块 -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <div class="modal-title">➕ 添加新句子 / 新建模块</div>
+        <button class="close-modal-btn" onclick="closeModal('addModal')">✖ 关闭</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>选择所属模块</label>
+          <select id="moduleSelect" onchange="handleModuleSelectChange()"></select>
+          <div class="new-module-row" id="newModuleRow">
+            <input type="text" id="newModuleName" placeholder="输入新模块名称（例如：体育课与游泳 / 放学回家）" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>西班牙语句子</label>
+          <input type="text" id="newEsInput" placeholder="例如：¿Me puedes ayudar a atarme los cordones?" />
+        </div>
+        <div class="form-group">
+          <label>中文翻译</label>
+          <input type="text" id="newZhInput" placeholder="例如：你能帮我系一下鞋带吗？" />
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:18px;">
+          <input type="checkbox" id="autoSelectNew" checked style="width:18px; height:18px;" />
+          <label for="autoSelectNew" style="font-size:14px; cursor:pointer;">添加后自动加入“今日已选练习”</label>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button class="btn btn-outline" onclick="closeModal('addModal')">取消</button>
+          <button class="btn btn-primary" onclick="saveNewSentence()">保存句子</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 内置 6 大模块完整 300 句数据
+    const DEFAULT_DATA = [
+      {
+        id: "mod1",
+        name: "1. 课堂求助与指令",
+        items: [
+          { es: "¿Puedo ir al baño, por favor?", zh: "请问我可以去洗手间吗？" },
+          { es: "¿Puedo beber agua?", zh: "我可以喝口水吗？" },
+          { es: "¿Puedo tirar esto a la papelera?", zh: "我可以把这个扔进废纸篓吗？" },
+          { es: "¿Puedo sacar punta al lápiz?", zh: "我可以去削铅笔吗？" },
+          { es: "¿Puedo abrir la ventana?", zh: "我可以开一下窗户吗？" },
+          { es: "¿Puedo cerrar la puerta?", zh: "我可以关一下门吗？" },
+          { es: "¿Puedo encender la luz?", zh: "我可以开灯吗？" },
+          { es: "¿Puedo apagar la luz?", zh: "我可以关灯吗？" },
+          { es: "No entiendo.", zh: "我没听懂。" },
+          { es: "No entiendo esta pregunta.", zh: "我没看懂这个问题。" },
+          { es: "¿Me lo puedes repetir, por favor?", zh: "请问你能再重复一遍吗？" },
+          { es: "¿Me lo puedes explicar otra vez?", zh: "你能再给我讲一遍吗？" },
+          { es: "¿Puedes hablar un poco más despacio, por favor?", zh: "请问你能说得稍微慢一点吗？" },
+          { es: "No oigo bien desde aquí.", zh: "我从这里听不太清楚。" },
+          { es: "No veo bien la pizarra.", zh: "我看不清楚黑板。" },
+          { es: "¿Me puedo sentar más delante?", zh: "我可以坐到前面一点吗？" },
+          { es: "Profe, ¿qué página es?", zh: "老师，是第几页？" },
+          { es: "¿Qué ejercicio tenemos que hacer?", zh: "我们需要做哪一道练习题？" },
+          { es: "¿Qué hay que hacer aquí?", zh: "这里需要做什么？" },
+          { es: "¿Cómo se dice esto en español?", zh: "这个用西班牙语怎么说？" },
+          { es: "¿Cómo se escribe esta palabra?", zh: "这个单词怎么拼写？" },
+          { es: "¿Qué significa esta palabra?", zh: "这个单词是什么意思？" },
+          { es: "¿Tenemos que copiar esto en el cuaderno?", zh: "我们需要把这个抄在笔记本上吗？" },
+          { es: "¿Lo hacemos con lápiz o con bolígrafo?", zh: "我们用铅笔做还是用圆珠笔做？" },
+          { es: "Ya he terminado.", zh: "我已经做完了。" },
+          { es: "Ya he terminado, ¿qué hago ahora?", zh: "我已经做完了，我现在做什么？" },
+          { es: "Todavía no he terminado.", zh: "我还没有做完。" },
+          { es: "Un momento, por favor, ya casi acabo.", zh: "请等一下，我马上就做完了。" },
+          { es: "Perdón por llegar tarde.", zh: "对不起，我迟到了。" },
+          { es: "¿Puedo pasar?", zh: "我可以进来吗？" },
+          { es: "¿Puedo levantarme un momento?", zh: "我可以站起来一下吗？" },
+          { es: "¿Puedo ir a buscar mi mochila?", zh: "我可以去拿一下我的书包吗？" },
+          { es: "¿Me das otra hoja, por favor?", zh: "请问能再给我一张纸吗？" },
+          { es: "Me he equivocado, ¿puedo borrarlo?", zh: "我写错了，我可以擦掉吗？" },
+          { es: "¿Hay deberes para hoy?", zh: "今天有家庭作业吗？" },
+          { es: "¿Para cuándo son los deberes?", zh: "作业是什么时候交？" },
+          { es: "¿Tenemos examen mañana?", zh: "我们明天有考试吗？" },
+          { es: "No me ha dado tiempo a terminar.", zh: "我没来得及做完。" },
+          { es: "¿Puedo salir a la pizarra?", zh: "我可以上黑板写吗？" },
+          { es: "¿Está bien así, profe?", zh: "老师，这样做对吗？" },
+          { es: "Sacad el libro de lengua.", zh: "拿出语文书。（老师指令）" },
+          { es: "Abrid el cuaderno por una página nueva.", zh: "把笔记本翻到新的一页。（老师指令）" },
+          { es: "Cerrad los libros y guardad las cosas.", zh: "合上书并把东西收好。（老师指令）" },
+          { es: "¡Silencio, por favor!", zh: "请安静！（老师指令）" },
+          { es: "Levantad la mano antes de hablar.", zh: "说话前先举手。（老师指令）" },
+          { es: "Sentaos bien en vuestra silla.", zh: "在椅子上坐好。（老师指令）" },
+          { es: "Haced una fila delante de la puerta.", zh: "在门前排成一队。（老师指令）" },
+          { es: "Copiad la fecha en la parte de arriba.", zh: "把日期抄在最上面。（老师指令）" },
+          { es: "Subrayad el título con regla.", zh: "用尺子在标题下面画线。（老师指令）" },
+          { es: "Recoged la mesa antes de salir al patio.", zh: "去操场前把桌子收拾干净。（老师指令）" }
+        ]
+      },
+      {
+        id: "mod2",
+        name: "2. 文具与书包",
+        items: [
+          { es: "Se me ha olvidado el estuche en casa.", zh: "我把文具盒忘在家里了。" },
+          { es: "Se me ha olvidado la mochila en el coche.", zh: "我把书包忘在车里了。" },
+          { es: "Se me han olvidado los deberes en casa.", zh: "我把家庭作业忘在家里了。" },
+          { es: "Hoy no he traído el libro de lengua.", zh: "今天我没带语文书。" },
+          { es: "Hoy no he traído el cuaderno de matemáticas.", zh: "今天我没带数学笔记本。" },
+          { es: "No encuentro mi goma de borrar.", zh: "我找不到我的橡皮了。" },
+          { es: "No encuentro mi lápiz por ningún lado.", zh: "我到处都找不到我的铅笔。" },
+          { es: "¿Has visto mi regla azul?", zh: "你看见我的蓝色尺子了吗？" },
+          { es: "He perdido mi sacapuntas.", zh: "我把卷笔刀弄丢了。" },
+          { es: "¿Me dejas tu goma un momento, por favor?", zh: "请问能借我用一下你的橡皮吗？" },
+          { es: "¿Me dejas un lápiz? Es que el mío no tiene punta.", zh: "能借我一支铅笔吗？因为我的铅笔没尖了。" },
+          { es: "¿Me prestas tu bolígrafo rojo?", zh: "能借我一下你的红圆珠笔吗？" },
+          { es: "¿Me prestas el pegamento de barra?", zh: "能借我一下固体胶棒吗？" },
+          { es: "¿Me dejas las tijeras para recortar esto?", zh: "能把剪刀借我剪一下这个吗？" },
+          { es: "¿Tienes un lápiz de sobra?", zh: "你有多余的铅笔吗？" },
+          { es: "¿Tienes una hoja en blanco que me puedas dar?", zh: "你有多余的白纸可以给我一张吗？" },
+          { es: "¿Me dejas tus lápices de colores?", zh: "能借我用一下你的彩色铅笔吗？" },
+          { es: "¿Me prestas el rotulador amarillo para subrayar?", zh: "能借我一下黄色水彩笔画线吗？" },
+          { es: "¿Puedo usar tu corrector, por favor?", zh: "请问我可以用一下你的涂改带吗？" },
+          { es: "Sí, claro, toma.", zh: "当然可以，拿着。" },
+          { es: "Aquí tienes, cógelo.", zh: "给你，拿去用吧。" },
+          { es: "Espera un segundo, ahora mismo te lo doy.", zh: "等一秒钟，我马上给你。" },
+          { es: "Muchas gracias, ahora te lo devuelvo.", zh: "非常感谢，我用完马上还你。" },
+          { es: "Toma, ya he terminado de usarlo. Gracias.", zh: "拿着，我已经用完了。谢谢。" },
+          { es: "De nada, no hay de qué.", zh: "不客气，没什么。" },
+          { es: "Se me ha roto la punta del lápiz.", zh: "我的铅笔芯断了。" },
+          { es: "Se me ha roto la regla por la mitad.", zh: "我的尺子从中间断掉了。" },
+          { es: "No me funciona este bolígrafo.", zh: "这支圆珠笔写不出水了。" },
+          { es: "Este rotulador está seco, no pinta.", zh: "这支水彩笔干了，画不出颜色。" },
+          { es: "Se me ha acabado el pegamento.", zh: "我的胶棒用完了。" },
+          { es: "Esto es mío, tiene mi nombre puesto.", zh: "这是我的，上面写着我的名字。" },
+          { es: "¿De quién es este estuche que está en el suelo?", zh: "地上的这个文具盒是谁的？" },
+          { es: "Creo que este cuaderno es tuyo.", zh: "我觉得这个笔记本是你的。" },
+          { es: "No, ese libro no es mío, es de Lucas.", zh: "不，那本书不是我的，是卢卡斯的。" },
+          { es: "¿Me ayudas a meter los libros en la mochila?", zh: "你能帮我把书装进书包里吗？" },
+          { es: "Mi mochila pesa muchísimo hoy.", zh: "今天我的书包重极了。" },
+          { es: "Se me ha atascado la cremallera del estuche.", zh: "我文具盒的拉链卡住了。" },
+          { es: "Se me han caído todos los lápices al suelo.", zh: "我所有的铅笔都掉在地上了。" },
+          { es: "¿Me recoges ese boli que ha rodado debajo de tu mesa?", zh: "能帮我捡一下滚到你桌子底下的那支笔吗？" },
+          { es: "Necesito una carpeta para guardar estas fichas.", zh: "我需要一个文件夹来装这些练习纸。" },
+          { es: "¿Dónde tengo que guardar esta hoja?", zh: "我应该把这张纸收在哪里？" },
+          { es: "Mételo dentro de la carpeta azul.", zh: "把它放进蓝色文件夹里。" },
+          { es: "Saca tus pinturas para la clase de plástica.", zh: "拿出你的画笔准备上美术课。" },
+          { es: "Escribe tu nombre y la fecha en la hoja.", zh: "在纸上写下你的名字和日期。" },
+          { es: "No encuentro mi estuche de pinturas.", zh: "我找不到我的彩笔盒了。" },
+          { es: "¿Me cambias este lápiz rojo por uno verde?", zh: "你能用一支绿铅笔和我换这支红铅笔吗？" },
+          { es: "Cuidado, que se te va a caer el estuche.", zh: "小心，你的文具盒快要掉下去了。" },
+          { es: "Guarda el estuche dentro de la mochila.", zh: "把文具盒收进书包里面。" },
+          { es: "¿Llevas la agenda escolar en la mochila?", zh: "你书包里带着家校联系本吗？" },
+          { es: "Tengo que apuntar los deberes en la agenda.", zh: "我得把家庭作业记在家校联系本上。" }
+        ]
+      },
+      {
+        id: "mod3",
+        name: "3. 课间操场社交",
+        items: [
+          { es: "¡Hola! ¿Puedo jugar con vosotros?", zh: "嗨！我可以和你们一起玩吗？（对男生或男女混合说）" },
+          { es: "¡Hola! ¿Puedo jugar con vosotras?", zh: "嗨！我可以和你们一起玩吗？（只对女生说）" },
+          { es: "¿A qué estáis jugando?", zh: "你们正在玩什么呀？" },
+          { es: "¿Me explicáis las reglas del juego?", zh: "你们能给我讲一下这个游戏的规则吗？" },
+          { es: "No sé jugar muy bien a esto, ¿me enseñáis?", zh: "我不太会玩这个，你们能教教我吗？" },
+          { es: "¿Jugamos al escondite?", zh: "我们玩捉迷藏好吗？" },
+          { es: "¿Jugamos al pilla-pilla?", zh: "我们玩抓人游戏好吗？" },
+          { es: "¿Queréis saltar a la comba conmigo?", zh: "你们想和我一起跳绳吗？" },
+          { es: "¿Jugamos al fútbol en el patio?", zh: "我们在操场上踢足球好吗？" },
+          { es: "¿Jugamos a las chapas / a las canicas?", zh: "我们玩瓶盖游戏 / 弹珠好吗？" },
+          { es: "¡Me toca a mí!", zh: "轮到我了！" },
+          { es: "¡Ahora te toca a ti!", zh: "现在轮到你了！" },
+          { es: "¿A quién le toca ahora?", zh: "现在轮到谁了？" },
+          { es: "Yo voy primero, ¿vale?", zh: "我第一个来，好吗？" },
+          { es: "¡Espera, que aún no estoy lista!", zh: "等等，我还没准备好呢！" },
+          { es: "¡Ya estoy lista, empieza!", zh: "我准备好了，开始吧！" },
+          { es: "¡Vale, de acuerdo!", zh: "好，同意！" },
+          { es: "¡No vale, has hecho trampa!", zh: "不算，你作弊/犯规了！" },
+          { es: "¡Eso no es justo!", zh: "这不公平！" },
+          { es: "¡Corre, que te pillan!", zh: "快跑，要被抓到了！" },
+          { es: "¡Te pillé! Ahora la ligas tú.", zh: "抓到你了！现在轮到你抓人了。" },
+          { es: "¡Por mí y por todos mis compañeros!", zh: "我过关了，也救了所有伙伴！（捉迷藏用语）" },
+          { es: "¡Chuta el balón hacia aquí!", zh: "把球往这边踢！" },
+          { es: "¡Pásamela, estoy sola!", zh: "传给我，我这边没人防！" },
+          { es: "¡Buen tiro! ¡Gol!", zh: "好球！进球啦！" },
+          { es: "¡Qué bien juegas!", zh: "你玩得真棒！" },
+          { es: "¿Quieres ser mi pareja?", zh: "你想当我的搭档吗？" },
+          { es: "¿Nos ponemos juntas en la fila?", zh: "我们排队时站在一起好吗？" },
+          { es: "¿Te sientas conmigo en el banco?", zh: "你和我一起坐在长椅上吗？" },
+          { es: "¿Qué has traído hoy para desayunar?", zh: "你今天带了什么课间点心？" },
+          { es: "Yo he traído un bocadillo de jamón y un zumo.", zh: "我带了一个火腿三明治和一盒果汁。" },
+          { es: "¿Quieres un trozo de mi bocadillo?", zh: "你想吃一块我的三明治吗？" },
+          { es: "¿Quieres una galleta? Tengo muchas.", zh: "你要吃一块饼干吗？我带了好多。" },
+          { es: "¿Me das un poco de tus patatas?", zh: "能分我一点你的薯片吗？" },
+          { es: "¡Muchas gracias, está muy rico!", zh: "太感谢了，真好吃！" },
+          { es: "¿Vamos a beber agua a la fuente?", zh: "我们一起去饮水台喝水好吗？" },
+          { es: "¿Me acompañas al baño, por favor?", zh: "请问你能陪我一起去洗手间吗？" },
+          { es: "Mira lo que he traído hoy de casa.", zh: "你看我今天从家里带来了什么。" },
+          { es: "¿Intercambiamos cromos?", zh: "我们交换贴画/卡片好吗？" },
+          { es: "Este cromo ya lo tengo repe.", zh: "这张卡片我已经有重复的了。" },
+          { es: "¿Vamos a hablar debajo de los árboles?", zh: "我们去树底下聊天好吗？" },
+          { es: "¿Cuántos años tienes tú?", zh: "你几岁啦？" },
+          { es: "Yo tengo ocho años, ¿y tú?", zh: "我八岁了，你呢？" },
+          { es: "¿Dónde vives tú?", zh: "你住在哪里呀？" },
+          { es: "¿Tienes hermanos o hermanas?", zh: "你有兄弟姐妹吗？" },
+          { es: "¿Qué te gusta hacer los fines de semana?", zh: "周末你喜欢做什么？" },
+          { es: "Ya ha sonado el timbre del recreo.", zh: "课间休息结束的铃声响了。" },
+          { es: "¡Vámonos rápido a la fila!", zh: "我们快去排队吧！" },
+          { es: "Luego seguimos jugando en el próximo recreo.", zh: "等下个课间我们再接着玩。" },
+          { es: "¡Qué bien me lo he pasado hoy contigo!", zh: "今天和你一起玩得真开心！" }
+        ]
+      },
+      {
+        id: "mod4",
+        name: "4. 身体不适与求助",
+        items: [
+          { es: "Profe, no me encuentro bien.", zh: "老师，我感觉不舒服。" },
+          { es: "Me siento un poco mareada.", zh: "我觉得有点头晕。" },
+          { es: "Me siento muy débil.", zh: "我觉得很虚弱、没力气。" },
+          { es: "Me duele mucho la cabeza.", zh: "我头很疼。" },
+          { es: "Me duele la barriga.", zh: "我肚子疼。" },
+          { es: "Me duele la tripa.", zh: "我肚子疼。（西班牙儿童最常用口语）" },
+          { es: "Me duele el estómago.", zh: "我胃疼。" },
+          { es: "Me duele la garganta al tragar.", zh: "我咽口水时嗓子疼。" },
+          { es: "Me duele el oído izquierdo.", zh: "我左耳朵疼。" },
+          { es: "Me duele mucho una muela.", zh: "我有一颗大牙很疼。" },
+          { es: "Me duelen los dientes.", zh: "我牙疼。" },
+          { es: "Me duelen los ojos.", zh: "我眼睛疼。" },
+          { es: "Me duele el cuello.", zh: "我脖子疼。" },
+          { es: "Me duele la espalda.", zh: "我背疼。" },
+          { es: "Me duele el pecho al respirar.", zh: "我呼吸的时候胸口疼。" },
+          { es: "Tengo ganas de vomitar.", zh: "我想吐。" },
+          { es: "Tengo ganas de ir al baño urgente.", zh: "我急着要去洗手间。" },
+          { es: "Creo que tengo fiebre.", zh: "我觉得我发烧了。" },
+          { es: "Tengo mucha tos.", zh: "我咳嗽得很厉害。" },
+          { es: "Tengo la nariz tapada y no puedo respirar bien.", zh: "我鼻子塞住了，呼吸不太顺畅。" },
+          { es: "Me pica mucho el brazo.", zh: "我的胳膊好痒。" },
+          { es: "Me ha picado un mosquito / una avispa.", zh: "蚊子 / 黄蜂叮了我一下。" },
+          { es: "Me he caído en el patio.", zh: "我在操场上摔倒了。" },
+          { es: "Me he tropezado con una piedra.", zh: "我被一块石头绊倒了。" },
+          { es: "Me he dado un golpe en la cabeza.", zh: "我的头撞了一下。" },
+          { es: "Me he hecho daño en la rodilla.", zh: "我磕伤膝盖了。" },
+          { es: "Me he hecho daño en el tobillo y no puedo andar bien.", zh: "我扭伤脚踝了，走不好路。" },
+          { es: "Me he torcido la muñeca.", zh: "我扭到手腕了。" },
+          { es: "Me he cortado el dedo con un papel.", zh: "我的手指被纸割破了。" },
+          { es: "Me he clavado una astilla en la mano.", zh: "我手里扎了一根小木刺。" },
+          { es: "Me está saliendo sangre de la nariz.", zh: "我流鼻血了。" },
+          { es: "Me está sangrando la rodilla.", zh: "我的膝盖在流血。" },
+          { es: "Me he quemado el dedo.", zh: "我的手指烫伤了。" },
+          { es: "¿Me puedes poner una tirita, por favor?", zh: "请问能帮我贴一张创可贴吗？" },
+          { es: "¿Podemos ir a la enfermería?", zh: "我们可以去医务室吗？" },
+          { es: "Necesito sentarme un rato.", zh: "我需要坐下来休息一会儿。" },
+          { es: "Necesito beber un poco de agua.", zh: "我需要喝点水。" },
+          { es: "Tengo mucho frío, estoy temblando.", zh: "我觉得很冷，都在发抖了。" },
+          { es: "Tengo muchísimo calor.", zh: "我觉得热极了。" },
+          { es: "Tengo mucho sueño.", zh: "我好困。" },
+          { es: "No veo bien, lo veo todo borroso.", zh: "我看不清楚，眼前一片模糊。" },
+          { es: "Me cuesta respirar cuando corro.", zh: "我跑步的时候觉得喘不上气。" },
+          { es: "¿Me puedes tomar la temperatura?", zh: "你能帮我量一下体温吗？" },
+          { es: "Me duele aquí cuando me toco.", zh: "我一碰这里就疼。" },
+          { es: "Se me ha metido algo en el ojo.", zh: "我眼睛里进东西了。" },
+          { es: "Me he pillado el dedo con la puerta.", zh: "我的手指被门夹到了。" },
+          { es: "¿Puedes llamar a mi mamá, por favor?", zh: "请问你能给我妈妈打电话吗？" },
+          { es: "¿Puedes avisar a mi papá para que venga a recogerme?", zh: "你能通知我爸爸来接我吗？" },
+          { es: "Ya me encuentro mucho mejor, gracias.", zh: "我现在感觉好多了，谢谢。" },
+          { es: "Gracias por ayudarme y cuidarme.", zh: "谢谢你帮助我和照顾我。" }
+        ]
+      },
+      {
+        id: "mod5",
+        name: "5. 食堂与饮食",
+        items: [
+          { es: "Tengo mucha hambre.", zh: "我好饿。" },
+          { es: "Tengo mucha sed.", zh: "我好渴。" },
+          { es: "¿Qué hora es? ¿Falta mucho para comer?", zh: "几点了？离吃午饭还有很久吗？" },
+          { es: "¿Qué hay hoy de comer en el comedor?", zh: "今天食堂午饭吃什么？" },
+          { es: "¿Qué tenemos de primer plato?", zh: "我们第一道菜吃什么？" },
+          { es: "¿Qué hay de segundo plato?", zh: "第二道菜是什么？" },
+          { es: "¿Qué hay hoy de postre?", zh: "今天甜点是什么？" },
+          { es: "¡Qué bien huele la comida hoy!", zh: "今天饭菜闻起来真香！" },
+          { es: "¡Qué rico está esto!", zh: "这个真好吃！" },
+          { es: "Me encanta la paella / la tortilla de patatas.", zh: "我非常喜欢吃海鲜饭 / 土豆饼。" },
+          { es: "Me gusta mucho la sopa de fideos.", zh: "我很喜欢喝细面汤。" },
+          { es: "No me gusta el pescado.", zh: "我不喜欢吃鱼。" },
+          { es: "No me gusta nada la verdura.", zh: "我一点也不喜欢吃蔬菜。" },
+          { es: "No me gustan las lentejas / los garbanzos.", zh: "我不喜欢吃扁豆 / 鹰嘴豆。" },
+          { es: "¿Puedo probar un poquito antes?", zh: "我可以先尝一小口吗？" },
+          { es: "Esto está un poco frío.", zh: "这个有点凉了。" },
+          { es: "¡Cuidado, que la sopa quema mucho!", zh: "小心，汤非常烫！" },
+          { es: "Esto está un poco salado / picante.", zh: "这个有点咸 / 有点辣。" },
+          { es: "Soy alérgica a los frutos secos.", zh: "我对坚果过敏。（女孩用）" },
+          { es: "Soy alérgico al huevo / a la leche.", zh: "我对鸡蛋 / 牛奶过敏。（男孩用）" },
+          { es: "No puedo comer cerdo.", zh: "我不能吃猪肉。" },
+          { es: "Por favor, ¿me pones un poco menos?", zh: "请问，能给我盛少一点吗？" },
+          { es: "Solo un poquito, por favor.", zh: "只要一点点，谢谢。" },
+          { es: "¿Me pones un poco más de arroz, por favor?", zh: "请问能再给我盛一点米饭吗？" },
+          { es: "¿Me das un trozo de pan, por favor?", zh: "请问能给我一块面包吗？" },
+          { es: "¿Me echas un poco más de agua en el vaso?", zh: "能再往我杯子里倒点水吗？" },
+          { es: "¿Me pasas la jarra del agua, por favor?", zh: "请问能把水壶递给我吗？" },
+          { es: "¿Me pasas las servilletas?", zh: "能把餐巾纸递给我吗？" },
+          { es: "Me falta un tenedor / una cuchara.", zh: "我少一把叉子 / 一把勺子。" },
+          { es: "Este cuchillo no corta muy bien.", zh: "这把餐刀不太好切。" },
+          { es: "¿Me ayudas a cortar la carne, por favor?", zh: "请问能帮我把肉切开吗？" },
+          { es: "¿Me ayudas a pelar la naranja / el plátano?", zh: "你能帮我剥一下橙子 / 香蕉吗？" },
+          { es: "¿Me puedes abrir el yogur, por favor?", zh: "请问能帮我打开这盒酸奶吗？" },
+          { es: "Se me ha caído el tenedor al suelo.", zh: "我的叉子掉在地上了。" },
+          { es: "¿Me das una cuchara limpia, por favor?", zh: "请问能再给我一把干净的勺子吗？" },
+          { es: "Se me ha derramado el agua en la mesa.", zh: "我的水洒在桌子上了。" },
+          { es: "¿Dónde está la bayeta para limpiar la mesa?", zh: "擦桌子的抹布在哪里？" },
+          { es: "Ya estoy llena, no puedo comer más.", zh: "我已经吃饱了，吃不下了。（女孩用）" },
+          { es: "Ya estoy lleno, gracias.", zh: "我已经吃饱了，谢谢。（男孩用）" },
+          { es: "Ya he terminado todo el plato.", zh: "我把盘子里的都吃光了。" },
+          { es: "¿Puedo repetir, por favor?", zh: "请问我可以再来一份吗？" },
+          { es: "¿Puedo levantarme ya de la mesa?", zh: "我现在可以离开餐桌了吗？" },
+          { es: "¿Dónde hay que dejar la bandeja y los platos?", zh: "托盘和盘子应该放在哪里？" },
+          { es: "¿Puedo tirar las sobras a la basura?", zh: "我可以把剩饭剩菜倒进垃圾桶吗？" },
+          { es: "¿Puedo ir a lavarme las manos y los dientes?", zh: "我可以去洗手和刷牙了吗？" },
+          { es: "¿Puedo salir ya al patio del comedor?", zh: "我现在可以去食堂外面的操场玩了吗？" },
+          { es: "¿Nos sentamos juntas en la misma mesa?", zh: "我们一起坐在同一张桌子吃饭好吗？" },
+          { es: "Este sitio está ocupado, lo siento.", zh: "不好意思，这个座位有人了。" },
+          { es: "¿Está libre esta silla?", zh: "这把椅子有人坐吗？" },
+          { es: "¡Buen provecho!", zh: "祝你好胃口！/ 慢用！" }
+        ]
+      },
+      {
+        id: "mod6",
+        name: "6. 小矛盾与情绪表达",
+        items: [
+          { es: "¡Para ya, por favor!", zh: "快停下，拜托！" },
+          { es: "No me gusta eso que estás haciendo.", zh: "我不喜欢你正在做的这件事。" },
+          { es: "¡Déjame en paz!", zh: "别烦我！/ 让我安静一会儿！" },
+          { es: "¡Déjame tranquila, por favor!", zh: "拜托别打扰我！（女孩用）" },
+          { es: "No me toques.", zh: "别碰我。" },
+          { es: "No me empujes.", zh: "别推我。" },
+          { es: "No me grites al oído.", zh: "别对着我的耳朵大喊大叫。" },
+          { es: "No me quites mis cosas.", zh: "别拿走我的东西。" },
+          { es: "Devuélveme mi lápiz ahora mismo.", zh: "马上把我的铅笔还给我。" },
+          { es: "Eso es mío, no es tuyo.", zh: "那是我的，不是你的。" },
+          { es: "Yo estaba aquí primero.", zh: "是我先在这里的。" },
+          { es: "Yo estaba haciendo fila antes que tú.", zh: "我排在你前面。（被人插队时用）" },
+          { es: "¡No te cueles en la fila!", zh: "别插队！" },
+          { es: "Profe, él me está molestando.", zh: "老师，他一直在打扰/欺负我。" },
+          { es: "Profe, ella me ha empujado en el patio.", zh: "老师，她在操场上推了我。" },
+          { es: "Me ha quitado mi estuche y no me lo quiere dar.", zh: "他/她抢走了我的文具盒，而且不肯还给我。" },
+          { es: "Se están riendo de mí.", zh: "他们在嘲笑我。" },
+          { es: "Me han dicho una palabrota.", zh: "他们对我说了脏话/难听的话。" },
+          { es: "No me dejan jugar con ellos.", zh: "他们不让我和他们一起玩。" },
+          { es: "No ha sido culpa mía.", zh: "这不是我的错。" },
+          { es: "Yo no he hecho nada malo.", zh: "我什么坏事也没做。" },
+          { es: "Perdón, ha sido sin querer.", zh: "对不起，我不是故意的。" },
+          { es: "Lo siento mucho, ¿te has hecho daño?", zh: "非常抱歉，你弄疼/受伤了吗？" },
+          { es: "No te enfades conmigo, por favor.", zh: "请你别生我的气了。" },
+          { es: "¿Hacemos las paces?", zh: "我们和好吧？" },
+          { es: "Te perdono, no pasa nada.", zh: "我原谅你了，没关系。" },
+          { es: "Estoy muy triste hoy.", zh: "我今天很难过。" },
+          { es: "Estoy un poco enfadada.", zh: "我有点生气。（女孩用）" },
+          { es: "Estoy enfadado contigo.", zh: "我在生你的气。（男孩用）" },
+          { es: "Tengo mucho miedo de la tormenta.", zh: "我很害怕打雷暴风雨。" },
+          { es: "Estoy muy nerviosa por el examen.", zh: "我因为考试感到非常紧张。（女孩用）" },
+          { es: "Estoy muy contenta porque he sacado buena nota.", zh: "我很开心，因为我考了好成绩。（女孩用）" },
+          { es: "Me siento sola en el recreo.", zh: "课间休息时我觉得很孤单。（女孩用）" },
+          { es: "Quiero estar un rato sola.", zh: "我想自己一个人待一会儿。（女孩用）" },
+          { es: "¿Por qué estás llorando?", zh: "你为什么在哭呀？" },
+          { es: "¿Qué te pasa? ¿Te puedo ayudar?", zh: "你怎么了？我能帮你吗？" },
+          { es: "No llores, todo va a salir bien.", zh: "别哭了，一切都会好起来的。" },
+          { es: "No te preocupes, yo te ayudo.", zh: "别担心，我来帮你。" },
+          { es: "¿Quieres ser mi amiga?", zh: "你想当我的好朋友吗？" },
+          { es: "Eres mi mejor amiga en el colegio.", zh: "你是我在学校里最好的朋友。" },
+          { es: "Me cae muy bien nuestra profesora.", zh: "我非常喜欢我们的老师。" },
+          { es: "No me parece bien lo que has hecho.", zh: "我觉得你做的这件事不对。" },
+          { es: "¡Eso no es verdad, yo no lo he roto!", zh: "这不是真的，不是我弄坏的！" },
+          { es: "Quiero hablar con la profesora.", zh: "我想和老师谈谈。" },
+          { es: "Necesito que me escuches un momento.", zh: "需要你听我说一下。" },
+          { es: "No quiero jugar más a este juego.", zh: "我想再玩这个游戏了。" },
+          { es: "Prefiero jugar a otra cosa.", zh: "我更想玩点别的。" },
+          { es: "Vamos a pedir ayuda al profesor de guardia.", zh: "我们去找值班老师帮忙吧。" },
+          { es: "Gracias por defenderme y ayudarme.", zh: "谢谢你维护我和帮助我。" },
+          { es: "¡Qué alegría verte hoy!", zh: "今天见到你真开心！" }
+        ]
+      }
+    ];
+
+    const STORAGE_KEY_DATA = "survival_es_modules_v1";
+    const STORAGE_KEY_SELECTED = "survival_es_selected_v1";
+
+    let modulesData = [];
+    let selectedIds = new Set();
+    let currentTabId = "mod1";
+    let showOnlySelected = false;
+
+    // 练习状态
+    let speakItems = [];
+    let matchRounds = [];
+    let currentRoundIdx = 0;
+    let selectedLeftIdx = null;
+    let matchedPairs = [];
+
+    // 初始化数据
+    function init() {
+      const savedData = localStorage.getItem(STORAGE_KEY_DATA);
+      if (savedData) {
+        try {
+          modulesData = JSON.parse(savedData);
+        } catch (e) {
+          modulesData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+        }
+      } else {
+        modulesData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      }
+
+      // 给每条句子分配唯一 uid
+      modulesData.forEach((mod, mIdx) => {
+        mod.items.forEach((item, iIdx) => {
+          if (!item.uid) {
+            item.uid = `${mod.id}_${iIdx}`;
+          }
+        });
+      });
+
+      const savedSelected = localStorage.getItem(STORAGE_KEY_SELECTED);
+      if (savedSelected) {
+        try {
+          selectedIds = new Set(JSON.parse(savedSelected));
+        } catch (e) {
+          selectedIds = new Set();
+        }
+      }
+
+      if (modulesData.length > 0) {
+        currentTabId = modulesData[0].id;
+      }
+
+      renderTabs();
+      renderSentences();
+      updateSelectedCount();
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(modulesData));
+    }
+
+    function saveSelected() {
+      localStorage.setItem(STORAGE_KEY_SELECTED, JSON.stringify(Array.from(selectedIds)));
+      updateSelectedCount();
+    }
+
+    function updateSelectedCount() {
+      document.getElementById("selectedCount").textContent = selectedIds.size;
+    }
+
+    // 渲染模块标签
+    function renderTabs() {
+      const tabsBar = document.getElementById("tabsBar");
+      tabsBar.innerHTML = "";
+      modulesData.forEach((mod) => {
+        const btn = document.createElement("button");
+        btn.className = "tab-btn" + (mod.id === currentTabId ? " active" : "");
+        const selectedInMod = mod.items.filter(it => selectedIds.has(it.uid)).length;
+        btn.innerHTML = `${mod.name} <span class="tab-badge">${selectedInMod}/${mod.items.length}</span>`;
+        btn.onclick = () => {
+          currentTabId = mod.id;
+          showOnlySelected = false;
+          document.getElementById("filterSelectedBtn").textContent = "⭐ 只看今日已选";
+          renderTabs();
+          renderSentences();
+        };
+        tabsBar.appendChild(btn);
+      });
+    }
+
+    // 渲染句子卡片
+    function renderSentences() {
+      const grid = document.getElementById("sentenceGrid");
+      const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
+      grid.innerHTML = "";
+
+      let listToRender = [];
+      if (showOnlySelected || keyword !== "") {
+        modulesData.forEach(mod => {
+          mod.items.forEach(item => {
+            if (showOnlySelected && !selectedIds.has(item.uid)) return;
+            if (keyword && !item.es.toLowerCase().includes(keyword) && !item.zh.toLowerCase().includes(keyword)) return;
+            listToRender.push(item);
+          });
+        });
+      } else {
+        const currentMod = modulesData.find(m => m.id === currentTabId);
+        if (currentMod) {
+          listToRender = currentMod.items;
+        }
+      }
+
+      if (listToRender.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted); background:#fff; border-radius:16px;">暂无匹配的句子。</div>`;
+        return;
+      }
+
+      listToRender.forEach((item) => {
+        const isSelected = selectedIds.has(item.uid);
+        const card = document.createElement("div");
+        card.className = "sentence-card" + (isSelected ? " selected" : "");
+        card.onclick = () => toggleSelect(item.uid);
+
+        card.innerHTML = `
+          <div class="check-circle">${isSelected ? "✓" : ""}</div>
+          <div class="sentence-content">
+            <div class="es-text">
+              ${item.es}
+              ${item.custom ? '<span class="custom-tag">新增</span>' : ""}
+            </div>
+            <div class="zh-text">${item.zh}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleSelect(uid) {
+      if (selectedIds.has(uid)) {
+        selectedIds.delete(uid);
+      } else {
+        selectedIds.add(uid);
+      }
+      saveSelected();
+      renderTabs();
+      renderSentences();
+    }
+
+    function selectAllCurrent() {
+      const currentMod = modulesData.find(m => m.id === currentTabId);
+      if (!currentMod) return;
+      currentMod.items.forEach(item => selectedIds.add(item.uid));
+      saveSelected();
+      renderTabs();
+      renderSentences();
+    }
+
+    function unselectAllCurrent() {
+      const currentMod = modulesData.find(m => m.id === currentTabId);
+      if (!currentMod) return;
+      currentMod.items.forEach(item => selectedIds.delete(item.uid));
+      saveSelected();
+      renderTabs();
+      renderSentences();
+    }
+
+    function clearAllSelected() {
+      if (selectedIds.size === 0) return;
+      selectedIds.clear();
+      saveSelected();
+      renderTabs();
+      renderSentences();
+    }
+
+    function showOnlySelectedToggle() {
+      showOnlySelected = !showOnlySelected;
+      const btn = document.getElementById("filterSelectedBtn");
+      btn.textContent = showOnlySelected ? "📋 返回模块浏览" : "⭐ 只看今日已选";
+      renderSentences();
+    }
+
+    function getSelectedItemsList() {
+      const result = [];
+      modulesData.forEach(mod => {
+        mod.items.forEach(item => {
+          if (selectedIds.has(item.uid)) {
+            result.push({ ...item, revealed: false, mastered: false });
+          }
+        });
+      });
+      return result;
+    }
+
+    // ================= 练习 1：遮住西语 =================
+    function openSpeakPractice() {
+      const list = getSelectedItemsList();
+      if (list.length === 0) {
+        alert("请先点击勾选今天要练习的句子！");
+        return;
+      }
+      speakItems = list;
+      document.getElementById("speakTotal").textContent = speakItems.length;
+      renderSpeakList();
+      document.getElementById("speakModal").classList.add("open");
+    }
+
+    function renderSpeakList() {
+      const container = document.getElementById("speakList");
+      container.innerHTML = "";
+      speakItems.forEach((item, idx) => {
+        const div = document.createElement("div");
+        div.className = "speak-item" + (item.mastered ? " mastered" : "");
+        div.innerHTML = `
+          <div class="speak-zh">${idx + 1}. ${item.zh}</div>
+          <div class="speak-es-box" onclick="toggleRevealItem(${idx})">
+            ${
+              item.revealed
+                ? `<span class="speak-es-revealed">${item.es}</span><span style="font-size:12px; color:var(--muted);">点击遮住</span>`
+                : `<span class="speak-es-hidden">🙈 点击查看西语答案</span>`
+            }
+          </div>
+          <div class="master-toggle">
+            <button class="btn ${item.mastered ? "btn-primary" : "btn-outline"}" style="padding:5px 12px; font-size:13px;" onclick="toggleMasteredItem(${idx})">
+              ${item.mastered ? "✅ 已会说" : "标记为已会说"}
+            </button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function toggleRevealItem(idx) {
+      speakItems[idx].revealed = !speakItems[idx].revealed;
+      renderSpeakList();
+    }
+
+    function toggleMasteredItem(idx) {
+      speakItems[idx].mastered = !speakItems[idx].mastered;
+      renderSpeakList();
+    }
+
+    function toggleAllReveal(state) {
+      speakItems.forEach(it => it.revealed = state);
+      renderSpeakList();
+    }
+
+    function shuffleSpeakList() {
+      for (let i = speakItems.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [speakItems[i], speakItems[j]] = [speakItems[j], speakItems[i]];
+      }
+      renderSpeakList();
+    }
+
+    // ================= 练习 2：西汉连线题 =================
+    function openMatchPractice() {
+      const list = getSelectedItemsList();
+      if (list.length < 2) {
+        alert("连线题至少需要勾选 2 个句子哦！");
+        return;
+      }
+      // 打乱后按每组 5 题分组
+      const shuffled = [...list].sort(() => Math.random() - 0.5);
+      matchRounds = [];
+      for (let i = 0; i < shuffled.length; i += 5) {
+        matchRounds.push(shuffled.slice(i, i + 5));
+      }
+      currentRoundIdx = 0;
+      document.getElementById("matchTotalRounds").textContent = matchRounds.length;
+      document.getElementById("matchModal").classList.add("open");
+      setupMatchRound();
+    }
+
+    function setupMatchRound() {
+      const roundItems = matchRounds[currentRoundIdx];
+      document.getElementById("matchRoundNum").textContent = currentRoundIdx + 1;
+      document.getElementById("nextMatchRoundBtn").style.display = "none";
+      selectedLeftIdx = null;
+      matchedPairs = [];
+
+      const leftCol = document.getElementById("matchLeftCol");
+      const rightCol = document.getElementById("matchRightCol");
+      leftCol.innerHTML = "";
+      rightCol.innerHTML = "";
+
+      const leftList = roundItems.map((item, idx) => ({ ...item, origIdx: idx }));
+      const rightList = [...leftList].sort(() => Math.random() - 0.5);
+
+      leftList.forEach((item, visualIdx) => {
+        const card = document.createElement("div");
+        card.className = "match-card";
+        card.dataset.origIdx = item.origIdx;
+        card.id = `left_card_${item.origIdx}`;
+        card.textContent = item.es;
+        card.onclick = () => handleLeftClick(item.origIdx);
+        leftCol.appendChild(card);
+      });
+
+      rightList.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "match-card";
+        card.dataset.origIdx = item.origIdx;
+        card.id = `right_card_${item.origIdx}`;
+        card.textContent = item.zh;
+        card.onclick = () => handleRightClick(item.origIdx, card);
+        rightCol.appendChild(card);
+      });
+
+      drawMatchLines();
+    }
+
+    function handleLeftClick(origIdx) {
+      if (matchedPairs.includes(origIdx)) return;
+      document.querySelectorAll("#matchLeftCol .match-card").forEach(c => c.classList.remove("active"));
+      selectedLeftIdx = origIdx;
+      document.getElementById(`left_card_${origIdx}`).classList.add("active");
+    }
+
+    function handleRightClick(rightOrigIdx, rightCardEl) {
+      if (matchedPairs.includes(rightOrigIdx)) return;
+      if (selectedLeftIdx === null) {
+        rightCardEl.classList.add("wrong");
+        setTimeout(() => rightCardEl.classList.remove("wrong"), 350);
+        return;
+      }
+
+      if (selectedLeftIdx === rightOrigIdx) {
+        // 匹配成功
+        matchedPairs.push(rightOrigIdx);
+        const leftCard = document.getElementById(`left_card_${selectedLeftIdx}`);
+        leftCard.classList.remove("active");
+        leftCard.classList.add("matched");
+        rightCardEl.classList.add("matched");
+        selectedLeftIdx = null;
+        drawMatchLines();
+
+        if (matchedPairs.length === matchRounds[currentRoundIdx].length) {
+          if (currentRoundIdx < matchRounds.length - 1) {
+            document.getElementById("nextMatchRoundBtn").style.display = "inline-flex";
+          }
+        }
+      } else {
+        // 匹配错误
+        rightCardEl.classList.add("wrong");
+        setTimeout(() => rightCardEl.classList.remove("wrong"), 350);
+      }
+    }
+
+    function drawMatchLines() {
+      const svg = document.getElementById("matchSvg");
+      const board = document.getElementById("matchBoard");
+      svg.innerHTML = "";
+      if (!board) return;
+      const boardRect = board.getBoundingClientRect();
+
+      matchedPairs.forEach(origIdx => {
+        const leftEl = document.getElementById(`left_card_${origIdx}`);
+        const rightEl = document.getElementById(`right_card_${origIdx}`);
+        if (!leftEl || !rightEl) return;
+
+        const lRect = leftEl.getBoundingClientRect();
+        const rRect = rightEl.getBoundingClientRect();
+
+        const x1 = lRect.right - boardRect.left;
+        const y1 = lRect.top + lRect.height / 2 - boardRect.top;
+        const x2 = rRect.left - boardRect.left;
+        const y2 = rRect.top + rRect.height / 2 - boardRect.top;
+
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", x1);
+        line.setAttribute("y1", y1);
+        line.setAttribute("x2", x2);
+        line.setAttribute("y2", y2);
+        line.setAttribute("stroke", "#22c55e");
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("stroke-linecap", "round");
+        svg.appendChild(line);
+      });
+    }
+
+    window.addEventListener("resize", () => {
+      if (document.getElementById("matchModal").classList.contains("open")) {
+        drawMatchLines();
+      }
+    });
+
+    function resetCurrentMatchRound() {
+      setupMatchRound();
+    }
+
+    function nextMatchRound() {
+      if (currentRoundIdx < matchRounds.length - 1) {
+        currentRoundIdx++;
+        setupMatchRound();
+      }
+    }
+
+    // ================= 添加新句子 / 新建模块 =================
+    function openAddModal() {
+      const select = document.getElementById("moduleSelect");
+      select.innerHTML = "";
+      modulesData.forEach(mod => {
+        const opt = document.createElement("option");
+        opt.value = mod.id;
+        opt.textContent = mod.name;
+        if (mod.id === currentTabId) opt.selected = true;
+        select.appendChild(opt);
+      });
+      const newOpt = document.createElement("option");
+      newOpt.value = "__NEW__";
+      newOpt.textContent = "➕ 新建一个模块...";
+      select.appendChild(newOpt);
+
+      document.getElementById("newModuleRow").classList.remove("show");
+      document.getElementById("newModuleName").value = "";
+      document.getElementById("newEsInput").value = "";
+      document.getElementById("newZhInput").value = "";
+      document.getElementById("addModal").classList.add("open");
+    }
+
+    function handleModuleSelectChange() {
+      const val = document.getElementById("moduleSelect").value;
+      const row = document.getElementById("newModuleRow");
+      if (val === "__NEW__") {
+        row.classList.add("show");
+      } else {
+        row.classList.remove("show");
+      }
+    }
+
+    function saveNewSentence() {
+      const selectVal = document.getElementById("moduleSelect").value;
+      const esVal = document.getElementById("newEsInput").value.trim();
+      const zhVal = document.getElementById("newZhInput").value.trim();
+      const autoSelect = document.getElementById("autoSelectNew").checked;
+
+      if (!esVal || !zhVal) {
+        alert("请把西班牙语句子和中文翻译都填写完整！");
+        return;
+      }
+
+      let targetMod = null;
+      if (selectVal === "__NEW__") {
+        const newModName = document.getElementById("newModuleName").value.trim();
+        if (!newModName) {
+          alert("请输入新模块的名称！");
+          return;
+        }
+        const newId = "mod_" + Date.now();
+        targetMod = {
+          id: newId,
+          name: newModName,
+          items: []
+        };
+        modulesData.push(targetMod);
+        currentTabId = newId;
+      } else {
+        targetMod = modulesData.find(m => m.id === selectVal);
+        currentTabId = selectVal;
+      }
+
+      const newUid = "custom_" + Date.now();
+      targetMod.items.unshift({
+        uid: newUid,
+        es: esVal,
+        zh: zhVal,
+        custom: true
+      });
+
+      if (autoSelect) {
+        selectedIds.add(newUid);
+      }
+
+      saveData();
+      saveSelected();
+      renderTabs();
+      renderSentences();
+      closeModal("addModal");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+    }
+
+    // 启动初始化
+    init();
+  </script>
+</body>
+</html>
