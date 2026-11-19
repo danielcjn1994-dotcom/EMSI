@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMSI - Panel de Aritmética Avanzada</title>
+    <title>EMSI - Panel de Aritmética en Vertical</title>
     <style>
-        /* --- EMSI 视觉风格复刻 --- */
+        /* --- EMSI 视觉风格 --- */
         body {
             margin: 0;
             padding: 0;
@@ -14,6 +14,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            color: #1e293b;
         }
 
         .header {
@@ -25,7 +26,7 @@
 
         .header h1 {
             color: #1a4a8e;
-            font-size: 42px; 
+            font-size: 42px;
             font-weight: 900;
             margin: 0;
             letter-spacing: 2px;
@@ -35,7 +36,7 @@
 
         .header .subtitle {
             color: #6b7280;
-            font-size: 22px; 
+            font-size: 22px;
             margin: 10px 0 25px 0;
             font-weight: 400;
         }
@@ -50,7 +51,7 @@
         .card {
             background: white;
             width: 100%;
-            max-width: 1100px; 
+            max-width: 1120px;
             min-height: 500px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
@@ -59,7 +60,7 @@
             border: 1px solid #eee;
         }
 
-        /* --- 按钮样式 --- */
+        /* --- 返回按钮样式 --- */
         .btn-back-pill {
             display: inline-flex;
             align-items: center;
@@ -83,7 +84,66 @@
 
         .btn-back-pill .arrow { margin-right: 15px; line-height: 1; }
 
-        /* --- 菜单按钮 --- */
+        /* --- 数位颜色定义 (与数位表统一) --- */
+        .col-um { background-color: #eab308; color: white; } /* 千位 - 黄 */
+        .col-c  { background-color: #22c55e; color: white; } /* 百位 - 绿 */
+        .col-d  { background-color: #ef4444; color: white; } /* 十位 - 红 */
+        .col-u  { background-color: #3b82f6; color: white; } /* 个位 - 蓝 */
+
+        /* --- 折叠口诀讲解区 --- */
+        .theory-block {
+            background: #ffffff;
+            border: 2px solid #e0e7ff;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .theory-header {
+            background: #eef2ff;
+            padding: 14px 22px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #3730a3;
+            font-weight: 800;
+            font-size: 1.15rem;
+            transition: background 0.2s;
+        }
+        .theory-header:hover { background: #e0e7ff; }
+
+        .theory-content {
+            padding: 22px;
+            display: none;
+            color: #4b5563;
+        }
+
+        .rules-three-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+        }
+        .rule-mini-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #1a4a8e;
+            border-radius: 10px;
+            padding: 14px;
+        }
+        .rule-badge {
+            display: inline-block;
+            background: #1a4a8e;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 6px;
+        }
+
+        /* --- 菜单按钮 (保留原有 12 个分级入口) --- */
         .btn-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -97,7 +157,7 @@
             border-radius: 12px;
             background: #1a4a8e;
             color: white;
-            font-size: 1.15rem; 
+            font-size: 1.15rem;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
@@ -110,74 +170,372 @@
         }
 
         .btn-emsi:hover { background: #2563eb; transform: translateY(-2px); }
-        .btn-emsi.secondary { background: #3b82f6; } /* 区分三位数运算的颜色 */
+        .btn-emsi.secondary { background: #3b82f6; }
         .btn-emsi.secondary:hover { background: #2563eb; }
 
-        /* 顶部控制栏 */
+        .section-title {
+            color: #1a4a8e;
+            margin: 32px 0 18px 0;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* --- 顶部控制栏 --- */
         .quiz-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 18px;
             border-bottom: 2px solid #edf2f7;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .btn-back { background: #6b7280; }
-        .btn-refresh { background: #27ae60; } 
-        .btn-home { background: #334155; }
+        .btn-nav {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .btn-nav:hover { opacity: 0.92; transform: translateY(-1px); }
 
-        /* --- 题目网格布局 --- */
+        .btn-back { background: #6b7280; }
+        .btn-refresh { background: #27ae60; }
+        .btn-home { background: #334155; }
+        .btn-check-all { background: #f59e0b; }
+
+        /* 练习提示与显示设置栏 */
+        .quiz-toolbar {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin: 18px 0 26px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .toolbar-toggles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            font-size: 0.92rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        .toolbar-toggles label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        /* --- 题目网格布局 (10 道题双列排布) --- */
         #quiz-list {
             display: grid;
-            grid-template-columns: 1fr 1fr; 
-            column-gap: 50px; 
-            row-gap: 15px; 
+            grid-template-columns: 1fr 1fr;
+            gap: 26px;
+            align-items: start;
         }
 
         .quiz-item {
-            border-bottom: 1px solid #f0f4f8;
-            padding: 20px 0;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        .quiz-item.item-solved {
+            border-color: #86efac;
+            background: #f0fdf4;
         }
 
-        .question {
-            font-size: 2.2rem; 
-            color: #2d3748;
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-variant-numeric: tabular-nums; /* 数字等宽对齐 */
+        .quiz-item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e2e8f0;
+            flex-wrap: wrap;
+            gap: 8px;
         }
+        .q-num-badge {
+            font-weight: 800;
+            color: #64748b;
+            font-size: 1rem;
+        }
+        .q-horizontal-hint {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #1a4a8e;
+            background: #eff6ff;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 1.15rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* --- 核心列竖式网格组件 --- */
+        .vertical-board-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin: 8px 0 14px 0;
+        }
+
+        .step-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .step-badge-mini {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+        .step-arrow-mid {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #94a3b8;
+            align-self: center;
+        }
+
+        .vertical-grid {
+            display: inline-grid;
+            gap: 5px;
+            align-items: center;
+            justify-items: center;
+            background: #f8fafc;
+            padding: 12px 15px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .pv-header-pill {
+            width: 44px;
+            height: 24px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+        }
+
+        .hide-pv-headers .pv-header-row {
+            display: none;
+        }
+
+        /* 进位 / 借位辅助小圆框 */
+        .carry-input {
+            width: 30px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px dashed #f59e0b;
+            background: #fffbeb;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #b45309;
+            padding: 0;
+        }
+        .carry-input:focus {
+            outline: none;
+            border-style: solid;
+            border-color: #d97706;
+            background: #fef3c7;
+        }
+        .carry-input.carry-ok {
+            background: #dcfce7;
+            border-color: #22c55e;
+            border-style: solid;
+            color: #15803d;
+        }
+        .hide-carry-boxes .carry-row {
+            display: none;
+        }
+
+        .v-digit-cell {
+            width: 44px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: #1e293b;
+        }
+
+        /* 两步竖式第二步顶部镜像格 */
+        .v-mirror-cell {
+            width: 44px;
+            height: 42px;
+            border-radius: 8px;
+            background: #eff6ff;
+            border: 1.5px dashed #93c5fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.65rem;
+            font-weight: 900;
+            color: #2563eb;
+        }
+        .v-mirror-cell.is-empty {
+            color: #93c5fd;
+            font-size: 1.1rem;
+        }
+
+        .v-op-cell {
+            width: 30px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #e11d48;
+        }
+
+        .v-divider-line {
+            grid-column: 1 / -1;
+            width: 100%;
+            height: 4px;
+            background: #1a4a8e;
+            border-radius: 2px;
+            margin: 2px 0;
+        }
+
+        .v-ans-input {
+            width: 44px;
+            height: 48px;
+            border-radius: 10px;
+            border: 2.5px solid #cbd5e1;
+            background: white;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #1a4a8e;
+            padding: 0;
+            transition: all 0.15s;
+        }
+        .v-ans-input:focus {
+            outline: none;
+            border-color: #f59e0b;
+            background: #fffbeb;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+        }
+        .v-ans-input.is-correct {
+            border-color: #22c55e;
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .v-ans-input.is-wrong {
+            border-color: #ef4444;
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* 题目操作按钮区 */
+        .quiz-item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn-check-one {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            font-size: 0.92rem;
+            cursor: pointer;
+        }
+        .btn-check-one:hover { background: #1d4ed8; }
 
         .ans-toggle {
             background-color: #f1c40f;
             color: #1a4a8e;
             border: none;
-            padding: 10px 18px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
             font-weight: 800;
+            font-size: 0.92rem;
             cursor: pointer;
-            width: fit-content;
+        }
+        .ans-toggle:hover { background-color: #eab308; }
+
+        .feedback-msg {
+            margin-top: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            min-height: 20px;
         }
 
         .solution-box {
-            margin-top: 15px;
+            margin-top: 12px;
             padding: 15px;
-            background: #f8fafc;
+            background: #fffbeb;
             border-left: 6px solid #f1c40f;
+            border-radius: 8px;
             display: none;
-            font-size: 1.8rem;
-            color: #1a4a8e;
-            font-weight: bold;
+            font-size: 0.98rem;
+            color: #78350f;
+            line-height: 1.65;
         }
 
-        .section-title {
-            color: #1a4a8e; 
-            margin: 40px 0 20px 0; 
-            font-size: 1.5rem; 
-            border-bottom: 2px solid #eee; 
-            padding-bottom: 10px;
+        .mini-sol-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .mini-sol-grid {
+            display: inline-grid;
+            gap: 3px;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #fde68a;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.25rem;
+            color: #1e293b;
+        }
+        .mini-carry {
+            font-size: 0.82rem;
+            color: #dc2626;
+            font-weight: 900;
         }
 
         .hidden { display: none; }
@@ -193,7 +551,8 @@
         @media (max-width: 850px) {
             #quiz-list { grid-template-columns: 1fr; }
             .header h1 { font-size: 30px; }
-            .quiz-header { flex-direction: column; gap: 10px; }
+            .quiz-header { flex-direction: column; align-items: stretch; }
+            .card { padding: 24px 18px; }
         }
     </style>
 </head>
@@ -201,7 +560,7 @@
 
     <header class="header">
         <h1><span>EMSI</span> 马德里国际中文学校</h1>
-        <div class="subtitle">Aritmética: Práctica de Cálculo (数学练习)</div>
+        <div class="subtitle">Aritmética: Operaciones en Vertical (列竖式计算练习)</div>
     </header>
 
     <main class="main-content">
@@ -213,7 +572,40 @@
                     </a>
                 </div>
 
-                <div class="section-title">Nivel Básico (基础运算)</div>
+                <!-- 折叠竖式口诀卡片 -->
+                <div class="theory-block">
+                    <div class="theory-header" onclick="toggleTheory()">
+                        <span>📚 Reglas del Cálculo en Vertical (点击展开列竖式计算口诀)</span>
+                        <span id="theory-arrow">▼</span>
+                    </div>
+                    <div class="theory-content" id="theory-content">
+                        <div class="rules-three-col">
+                            <div class="rule-mini-card">
+                                <span class="rule-badge">① 相同数位对齐</span>
+                                <div style="font-weight:bold; color:#1a4a8e;">Alinea las cifras</div>
+                                <div style="font-size:0.92rem; margin-top:4px;">
+                                    <strong>个位 (U)</strong> 对个位，<strong>十位 (D)</strong> 对十位，<strong>百位 (C)</strong> 对百位。
+                                </div>
+                            </div>
+                            <div class="rule-mini-card">
+                                <span class="rule-badge">② 从个位算起</span>
+                                <div style="font-weight:bold; color:#1a4a8e;">Empieza por la derecha (U)</div>
+                                <div style="font-size:0.92rem; margin-top:4px;">
+                                    永远从最右边的<strong>个位 (U)</strong> 开始计算，再依次向左算十位、百位、千位。
+                                </div>
+                            </div>
+                            <div class="rule-mini-card">
+                                <span class="rule-badge">③ 满十进一 / 借一当十</span>
+                                <div style="font-weight:bold; color:#1a4a8e;">Llevadas y Préstamos</div>
+                                <div style="font-size:0.92rem; margin-top:4px;">
+                                    加法满 10 向前一位进 <strong>1</strong>；减法不够减，向前一位借 <strong>1</strong> 当 <strong>10</strong>。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Nivel Básico (基础运算 · 列竖式)</div>
                 <div class="btn-grid">
                     <button class="btn-emsi" onclick="startQuiz('add', 10)">Suma hasta 10</button>
                     <button class="btn-emsi" onclick="startQuiz('sub', 10)">Resta hasta 10</button>
@@ -224,7 +616,7 @@
                     <button class="btn-emsi" onclick="startQuiz('mixed', 100)">Mixto (A±B±C) hasta 100</button>
                 </div>
 
-                <div class="section-title">Nivel Avanzado (3 Cifras / 三位数运算)</div>
+                <div class="section-title">Nivel Avanzado (3 Cifras / 三位数运算 · 列竖式)</div>
                 <div class="btn-grid">
                     <button class="btn-emsi secondary" onclick="startQuiz('add3d', 0)">Suma 2 números<br>(3 Cifras)</button>
                     <button class="btn-emsi secondary" onclick="startQuiz('sub3d', 0)">Resta 2 números<br>(3 Cifras)</button>
@@ -236,13 +628,34 @@
 
             <div id="quiz-page" class="hidden">
                 <div class="quiz-header">
-                    <div style="display: flex; gap: 10px;">
-                        <a href="index.html" class="btn-emsi btn-home">🏠 Inicio (主页)</a>
-                        <button class="btn-emsi btn-back" onclick="goHome()">← Menú (菜单)</button>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <a href="index.html" class="btn-nav btn-home">🏠 Inicio (主页)</a>
+                        <button class="btn-nav btn-back" onclick="goHome()">← Menú (菜单)</button>
                     </div>
-                    <button class="btn-emsi btn-refresh" id="refresh-btn">Nuevas Preguntas (换一批)</button>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn-nav btn-check-all" onclick="checkAllQuestions()">✅ 检查全部 (Corregir Todo)</button>
+                        <button class="btn-nav btn-refresh" id="refresh-btn">🔄 Nuevas Preguntas (换一批)</button>
+                    </div>
                 </div>
-                <h2 id="quiz-title" style="color: #1a4a8e; border-bottom: 3px solid #f1c40f; display: inline-block;"></h2>
+
+                <h2 id="quiz-title" style="color: #1a4a8e; border-bottom: 3px solid #f1c40f; display: inline-block; margin-top: 0;"></h2>
+
+                <div class="quiz-toolbar">
+                    <div id="quiz-score-banner" style="font-weight:bold; color:#1e40af; font-size:0.98rem;">
+                        💡 从最右边的 <strong>个位 (U)</strong> 开始填写，输完一位会自动向左跳格！
+                    </div>
+                    <div class="toolbar-toggles">
+                        <label>
+                            <input type="checkbox" id="toggle-pv-head" checked onchange="applyBoardDisplayPrefs()">
+                            显示数位头 (UM/C/D/U)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="toggle-carry-box" checked onchange="applyBoardDisplayPrefs()">
+                            显示进位/借位辅助框
+                        </label>
+                    </div>
+                </div>
+
                 <div id="quiz-list"></div>
             </div>
         </div>
@@ -255,17 +668,29 @@
 <script>
     let currentType = '';
     let currentLimit = 20;
+    let currentProblems = [];
 
-    // 启动练习，如果是三位数运算，limit 参数会被忽略
+    function toggleTheory() {
+        const content = document.getElementById('theory-content');
+        const arrow = document.getElementById('theory-arrow');
+        if (content.style.display === 'block') {
+            content.style.display = 'none';
+            arrow.innerText = '▼';
+        } else {
+            content.style.display = 'block';
+            arrow.innerText = '▲';
+        }
+    }
+
     function startQuiz(type, limit) {
         currentType = type;
         currentLimit = limit;
         document.getElementById('home-page').classList.add('hidden');
         document.getElementById('quiz-page').classList.remove('hidden');
-        
-        const titles = { 
-            'add': 'Suma', 
-            'sub': 'Resta', 
+
+        const titles = {
+            'add': 'Suma',
+            'sub': 'Resta',
             'mixed': 'Operaciones Mixtas',
             'add3d': 'Suma de 3 Cifras (三位数加法)',
             'sub3d': 'Resta de 3 Cifras (三位数减法)',
@@ -274,136 +699,139 @@
             'mix3d': 'Operaciones Mixtas (三位数混合运算)'
         };
 
-        // 如果是基础运算，显示上限；如果是三位数，显示特定标题
         let titleText = titles[type] || 'Ejercicio';
         if (['add', 'sub', 'mixed'].includes(type)) {
             titleText += ` (Máx. ${limit})`;
         }
         document.getElementById('quiz-title').innerText = titleText;
-        
+
         generateQuestions();
     }
 
     document.getElementById('refresh-btn').onclick = generateQuestions;
 
-    function generateQuestions() {
-        const list = document.getElementById('quiz-list');
-        list.innerHTML = '';
-        
-        const usedQuestions = new Set(); // 用于存储已经生成的题目，防止重复
-        let count = 0;
-
-        // 使用 while 循环，直到生成满 10 道不重复的题目
-        while (count < 10) {
-            let data = getQuestion(currentType, currentLimit);
-            
-            // 如果这道题还没有出现过
-            if (!usedQuestions.has(data.text)) {
-                usedQuestions.add(data.text);
-                count++;
-                
-                const item = document.createElement('div');
-                item.className = 'quiz-item';
-                item.innerHTML = `
-                    <div class="question">${count}. ${data.text} = ?</div>
-                    <button class="ans-toggle" onclick="toggleAns(this)">Ver solución</button>
-                    <div class="solution-box">${data.solve}</div>
-                `;
-                list.appendChild(item);
-            }
-        }
-    }
-
     function getNum(max) { return Math.floor(Math.random() * max) + 1; }
-    
-    // 生成 100 - 999 之间的随机数
     function get3Digit() { return Math.floor(Math.random() * 900) + 100; }
 
+    // --- 保留你原有的 12 种题型生成逻辑，并返回结构化竖式数据 ---
     function getQuestion(type, limit) {
-        // --- 基础运算 ---
+        // 1. 基础加法
         if (type === 'add') {
-            let a = getNum(Math.max(1, limit - 2)); 
+            let a = getNum(Math.max(1, limit - 2));
             let b = Math.floor(Math.random() * (limit - a)) + 1;
-            return { text: `${a} + ${b}`, solve: `${a + b}` };
-        } 
+            const ans = a + b;
+            return {
+                text: `${a} + ${b}`,
+                mode: 'single',
+                steps: [{ nums: [a, b], ops: ['+'], ans }],
+                finalAns: ans
+            };
+        }
+        // 2. 基础减法
         if (type === 'sub') {
             let a = getNum(limit);
-            // 确保 a 至少为 2，防止出现 1-1=0 的情况
-            if (a === 1) a = Math.floor(Math.random() * (limit - 1)) + 2; 
-            // 确保 b 严格小于 a，防止出现类似 2-2=0
-            let b = Math.floor(Math.random() * (a - 1)) + 1; 
-            return { text: `${a} - ${b}`, solve: `${a - b}` };
+            if (a === 1) a = Math.floor(Math.random() * (limit - 1)) + 2;
+            let b = Math.floor(Math.random() * (a - 1)) + 1;
+            const ans = a - b;
+            return {
+                text: `${a} - ${b}`,
+                mode: 'single',
+                steps: [{ nums: [a, b], ops: ['-'], ans }],
+                finalAns: ans
+            };
         }
+        // 3. 100以内加减混合 (A ± B ± C -> 两步竖式)
         if (type === 'mixed') {
             while (true) {
                 let n1 = getNum(limit);
                 let op1 = Math.random() > 0.5 ? '+' : '-';
-                let n2 = Math.floor(Math.random() * (limit/2)) + 1;
-                
-                // 防止中间步骤出现相减为 0 或负数
-                if (op1 === '-' && n1 <= n2) continue; 
-                
+                let n2 = Math.floor(Math.random() * (limit / 2)) + 1;
+
+                if (op1 === '-' && n1 <= n2) continue;
                 let step1 = (op1 === '+') ? n1 + n2 : n1 - n2;
                 if (step1 <= 0 || step1 > limit) continue;
 
                 let op2 = Math.random() > 0.5 ? '+' : '-';
-                let n3 = Math.floor(Math.random() * (limit/2)) + 1;
-                
-                // 防止最后一步出现相减为 0 或负数
-                if (op2 === '-' && step1 <= n3) continue; 
-                
+                let n3 = Math.floor(Math.random() * (limit / 2)) + 1;
+
+                if (op2 === '-' && step1 <= n3) continue;
                 let step2 = (op2 === '+') ? step1 + n3 : step1 - n3;
                 if (step2 <= 0 || step2 > limit) continue;
 
                 return {
                     text: `${n1} ${op1} ${n2} ${op2} ${n3}`,
-                    solve: `${step1} ${op2} ${n3} = ${step2}`
+                    mode: 'twostep',
+                    steps: [
+                        { nums: [n1, n2], ops: [op1], ans: step1 },
+                        { nums: [step1, n3], ops: [op2], ans: step2, mirrorTop: true }
+                    ],
+                    finalAns: step2
                 };
             }
         }
-
-        // --- 进阶运算 (三位数) ---
-        
-        // 1. 两个三位数加法
+        // 4. 两个三位数加法
         if (type === 'add3d') {
             let a = get3Digit();
             let b = get3Digit();
-            return { text: `${a} + ${b}`, solve: `${a + b}` };
+            const ans = a + b;
+            return {
+                text: `${a} + ${b}`,
+                mode: 'single',
+                steps: [{ nums: [a, b], ops: ['+'], ans }],
+                finalAns: ans
+            };
         }
-
-        // 2. 两个三位数减法
+        // 5. 两个三位数减法
         if (type === 'sub3d') {
-            while(true) {
+            while (true) {
                 let a = get3Digit();
                 let b = get3Digit();
-                if (a === b) continue; // 防止两个数相等 (如 200-200=0)
-                if (a < b) [a, b] = [b, a]; 
-                return { text: `${a} - ${b}`, solve: `${a - b}` };
+                if (a === b) continue;
+                if (a < b) [a, b] = [b, a];
+                const ans = a - b;
+                return {
+                    text: `${a} - ${b}`,
+                    mode: 'single',
+                    steps: [{ nums: [a, b], ops: ['-'], ans }],
+                    finalAns: ans
+                };
             }
         }
-
-        // 3. 三个三位数加法
+        // 6. 三个三位数连加 (三行对齐叠加竖式)
         if (type === 'add3d_3') {
             let a = get3Digit();
             let b = get3Digit();
             let c = get3Digit();
-            return { text: `${a} + ${b} + ${c}`, solve: `${a + b + c}` };
+            const ans = a + b + c;
+            return {
+                text: `${a} + ${b} + ${c}`,
+                mode: 'single',
+                steps: [{ nums: [a, b, c], ops: ['+', '+'], ans }],
+                finalAns: ans
+            };
         }
-
-        // 4. 三个三位数减法 (A - B - C)
+        // 7. 三个三位数连减 (A - B - C -> 两步竖式)
         if (type === 'sub3d_3') {
             while (true) {
                 let a = get3Digit();
                 let b = get3Digit();
                 let c = get3Digit();
-                // 确保每一步减法都大于 0
                 if (a > b && (a - b) > c) {
-                    return { text: `${a} - ${b} - ${c}`, solve: `${a - b - c}` };
+                    const step1 = a - b;
+                    const step2 = step1 - c;
+                    return {
+                        text: `${a} - ${b} - ${c}`,
+                        mode: 'twostep',
+                        steps: [
+                            { nums: [a, b], ops: ['-'], ans: step1 },
+                            { nums: [step1, c], ops: ['-'], ans: step2, mirrorTop: true }
+                        ],
+                        finalAns: step2
+                    };
                 }
             }
         }
-
-        // 5. 三位数混合运算 (A +/- B +/- C)
+        // 8. 三位数混合运算 (A ± B ± C -> 两步竖式)
         if (type === 'mix3d') {
             while (true) {
                 let a = get3Digit();
@@ -412,24 +840,480 @@
                 let op1 = Math.random() > 0.5 ? '+' : '-';
                 let op2 = Math.random() > 0.5 ? '+' : '-';
 
-                // 确保中间结果严格大于 0
-                if (op1 === '-' && a <= b) continue; 
+                if (op1 === '-' && a <= b) continue;
                 let step1 = (op1 === '+') ? a + b : a - b;
-                
-                // 确保最终结果严格大于 0
-                if (op2 === '-' && step1 <= c) continue; 
+
+                if (op2 === '-' && step1 <= c) continue;
                 let result = (op2 === '+') ? step1 + c : step1 - c;
 
-                return { 
-                    text: `${a} ${op1} ${b} ${op2} ${c}`, 
-                    solve: `${a} ${op1} ${b} = ${step1};  ${step1} ${op2} ${c} = ${result}` 
+                return {
+                    text: `${a} ${op1} ${b} ${op2} ${c}`,
+                    mode: 'twostep',
+                    steps: [
+                        { nums: [a, b], ops: [op1], ans: step1 },
+                        { nums: [step1, c], ops: [op2], ans: result, mirrorTop: true }
+                    ],
+                    finalAns: result
                 };
             }
         }
     }
 
+    // --- 竖式进借位分析与文字讲解生成 ---
+    function analyzeStep(stepObj) {
+        const { nums, ops, ans } = stepObj;
+        const cols = Math.max(...nums.map(n => String(n).length), String(ans).length);
+        const pvLabels = ['U', 'D', 'C', 'UM', 'DM'];
+        const pvCn = ['个位', '十位', '百位', '千位', '万位'];
+        const carryHints = {};
+        const explanations = [];
+
+        if (ops[0] === '+' && ops.every(o => o === '+')) {
+            // 2个数或3个数连加
+            let carry = 0;
+            for (let pos = 0; pos < cols; pos++) {
+                const digits = nums.map(n => Math.floor(n / Math.pow(10, pos)) % 10);
+                const sum = digits.reduce((acc, d) => acc + d, 0) + carry;
+                const writeDigit = sum % 10;
+                const nextCarry = Math.floor(sum / 10);
+
+                let line = `<strong>${pvCn[pos]} (${pvLabels[pos]})：</strong>${digits.join(' + ')}`;
+                if (carry > 0) line += ` + 进位 ${carry}`;
+                line += ` = ${sum}`;
+                if (nextCarry > 0) {
+                    line += `，写 <strong>${writeDigit}</strong>，向${pvCn[pos + 1] || '前一位'}进 <strong>${nextCarry}</strong>。`;
+                    carryHints[pos + 1] = `+${nextCarry}`;
+                } else {
+                    line += `，写 <strong>${writeDigit}</strong>。`;
+                }
+                explanations.push(line);
+                carry = nextCarry;
+            }
+        } else {
+            // 两数减法
+            const a = nums[0];
+            const b = nums[1];
+            let borrow = 0;
+            for (let pos = 0; pos < cols; pos++) {
+                const dA = Math.floor(a / Math.pow(10, pos)) % 10;
+                const dB = Math.floor(b / Math.pow(10, pos)) % 10;
+                const topVal = dA - borrow;
+
+                if (topVal < dB) {
+                    const borrowedVal = topVal + 10;
+                    const writeDigit = borrowedVal - dB;
+                    let line = `<strong>${pvCn[pos]} (${pvLabels[pos]})：</strong>`;
+                    line += borrow > 0
+                        ? `${dA} 被借走 1 剩 ${topVal}，不够减 ${dB}，借 1 当 10，${borrowedVal} - ${dB} = <strong>${writeDigit}</strong>。`
+                        : `${dA} 不够减 ${dB}，向${pvCn[pos + 1]}借 1 当 10，${borrowedVal} - ${dB} = <strong>${writeDigit}</strong>。`;
+                    carryHints[pos + 1] = '-1';
+                    explanations.push(line);
+                    borrow = 1;
+                } else {
+                    const writeDigit = topVal - dB;
+                    let line = `<strong>${pvCn[pos]} (${pvLabels[pos]})：</strong>`;
+                    line += borrow > 0
+                        ? `${dA} 被借走 1 剩 ${topVal}，${topVal} - ${dB} = <strong>${writeDigit}</strong>。`
+                        : `${dA} - ${dB} = <strong>${writeDigit}</strong>。`;
+                    explanations.push(line);
+                    borrow = 0;
+                }
+            }
+        }
+
+        return { cols, carryHints, explanations };
+    }
+
+    // --- 渲染单个竖式板 HTML ---
+    function buildVerticalGridHtml(qIdx, stepIdx, stepObj, analysis) {
+        const { nums, ops, mirrorTop } = stepObj;
+        const { cols, carryHints } = analysis;
+        const pvMeta = [
+            { code: 'U', cls: 'col-u' },
+            { code: 'D', cls: 'col-d' },
+            { code: 'C', cls: 'col-c' },
+            { code: 'UM', cls: 'col-um' },
+            { code: 'DM', cls: 'col-um' }
+        ];
+
+        const gridStyle = `grid-template-columns: 30px repeat(${cols}, 44px);`;
+
+        // 1. 数位表头行
+        let headerHtml = `<span></span>`;
+        for (let pos = cols - 1; pos >= 0; pos--) {
+            const m = pvMeta[pos] || { code: '', cls: 'col-u' };
+            headerHtml += `<div class="pv-header-pill ${m.cls}">${m.code}</div>`;
+        }
+
+        // 2. 进位/借位辅助框行
+        let carryHtml = `<span></span>`;
+        for (let pos = cols - 1; pos >= 0; pos--) {
+            if (pos === 0) {
+                carryHtml += `<span></span>`;
+            } else {
+                const exp = carryHints[pos] || '';
+                carryHtml += `<input type="text" maxlength="3" class="carry-input" data-q="${qIdx}" data-step="${stepIdx}" data-expected="${exp}" placeholder="·" title="进位/借位辅助框">`;
+            }
+        }
+
+        // 3. 运算数字行
+        let rowsHtml = '';
+        nums.forEach((numVal, rIdx) => {
+            const opCell = rIdx === 0 ? `<span></span>` : `<div class="v-op-cell">${ops[rIdx - 1]}</div>`;
+            rowsHtml += opCell;
+
+            if (rIdx === 0 && mirrorTop) {
+                // 第二步顶部数字：自动镜像第一步填入的答案
+                for (let pos = cols - 1; pos >= 0; pos--) {
+                    rowsHtml += `<div class="v-mirror-cell is-empty" id="mirror-${qIdx}-${pos}">?</div>`;
+                }
+            } else {
+                const padded = String(numVal).padStart(cols, ' ');
+                for (let c = 0; c < cols; c++) {
+                    rowsHtml += `<div class="v-digit-cell">${padded[c] === ' ' ? '' : padded[c]}</div>`;
+                }
+            }
+        });
+
+        // 4. 答案输入框行
+        let ansInputsHtml = `<span></span>`;
+        for (let pos = cols - 1; pos >= 0; pos--) {
+            ansInputsHtml += `<input type="text" inputmode="numeric" maxlength="1" class="v-ans-input" id="ans-${qIdx}-${stepIdx}-${pos}" data-q="${qIdx}" data-step="${stepIdx}" data-pos="${pos}" aria-label="第${qIdx}题第${pos + 1}位">`;
+        }
+
+        return `
+            <div class="vertical-grid" style="${gridStyle}">
+                <div class="pv-header-row" style="display:contents;">${headerHtml}</div>
+                <div class="carry-row" style="display:contents;">${carryHtml}</div>
+                ${rowsHtml}
+                <div class="v-divider-line"></div>
+                ${ansInputsHtml}
+            </div>
+        `;
+    }
+
+    // --- 渲染解析区迷你标准竖式 ---
+    function buildMiniSolutionGridHtml(stepObj, analysis) {
+        const { nums, ops, ans } = stepObj;
+        const { cols, carryHints } = analysis;
+        const miniStyle = `grid-template-columns: 22px repeat(${cols}, 30px);`;
+
+        let carryRow = `<span></span>`;
+        for (let pos = cols - 1; pos >= 0; pos--) {
+            carryRow += `<span class="mini-carry">${carryHints[pos] || ''}</span>`;
+        }
+
+        let numRows = '';
+        nums.forEach((n, idx) => {
+            numRows += idx === 0 ? `<span></span>` : `<span style="color:#e11d48;">${ops[idx - 1]}</span>`;
+            const s = String(n).padStart(cols, ' ');
+            for (let c = 0; c < cols; c++) {
+                numRows += `<span>${s[c] === ' ' ? '' : s[c]}</span>`;
+            }
+        });
+
+        let ansRow = `<span></span>`;
+        const ansS = String(ans).padStart(cols, ' ');
+        for (let c = 0; c < cols; c++) {
+            ansRow += `<span style="color:#15803d;">${ansS[c] === ' ' ? '' : ansS[c]}</span>`;
+        }
+
+        return `
+            <div class="mini-sol-grid" style="${miniStyle}">
+                ${carryRow}
+                ${numRows}
+                <div style="grid-column:1/-1; height:2px; background:#1a4a8e;"></div>
+                ${ansRow}
+            </div>
+        `;
+    }
+
+    function generateQuestions() {
+        const list = document.getElementById('quiz-list');
+        list.innerHTML = '';
+        currentProblems = [];
+
+        document.getElementById('quiz-score-banner').innerHTML =
+            '💡 从最右边的 <strong>个位 (U)</strong> 开始填写，输完一位会自动向左跳格！';
+
+        const usedQuestions = new Set();
+        let count = 0;
+        let guard = 0;
+
+        while (count < 10 && guard < 600) {
+            guard++;
+            let data = getQuestion(currentType, currentLimit);
+            if (!data || usedQuestions.has(data.text)) continue;
+
+            usedQuestions.add(data.text);
+            count++;
+            const qIdx = count;
+
+            const stepAnalyses = data.steps.map(st => analyzeStep(st));
+            data.analyses = stepAnalyses;
+            currentProblems.push(data);
+
+            // 构建竖式作答区
+            let boardHtml = '';
+            if (data.mode === 'single') {
+                boardHtml = buildVerticalGridHtml(qIdx, 0, data.steps[0], stepAnalyses[0]);
+            } else {
+                boardHtml = `
+                    <div class="step-wrapper">
+                        <span class="step-badge-mini">① 第一步 (Paso 1)</span>
+                        ${buildVerticalGridHtml(qIdx, 0, data.steps[0], stepAnalyses[0])}
+                    </div>
+                    <div class="step-arrow-mid">→</div>
+                    <div class="step-wrapper">
+                        <span class="step-badge-mini">② 第二步 (Paso 2)</span>
+                        ${buildVerticalGridHtml(qIdx, 1, data.steps[1], stepAnalyses[1])}
+                    </div>
+                `;
+            }
+
+            // 构建解析区
+            const miniGridsHtml = data.steps
+                .map((st, sIdx) => buildMiniSolutionGridHtml(st, stepAnalyses[sIdx]))
+                .join(`<span style="font-weight:bold; color:#94a3b8;">→</span>`);
+
+            const stepsTextHtml = data.steps.map((st, sIdx) => {
+                const prefix = data.mode === 'twostep' ? `<div style="font-weight:bold; color:#1a4a8e; margin-top:4px;">【第 ${sIdx + 1} 步】</div>` : '';
+                return prefix + stepAnalyses[sIdx].explanations.map(line => `<div>• ${line}</div>`).join('');
+            }).join('');
+
+            const item = document.createElement('div');
+            item.className = 'quiz-item';
+            item.id = `quiz-card-${qIdx}`;
+            item.innerHTML = `
+                <div class="quiz-item-top">
+                    <span class="q-num-badge">第 ${qIdx} 题</span>
+                    <span class="q-horizontal-hint">${data.text} = ?</span>
+                </div>
+
+                <div class="vertical-board-wrap">
+                    ${boardHtml}
+                </div>
+
+                <div class="quiz-item-actions">
+                    <button type="button" class="btn-check-one" onclick="checkSingleQuestion(${qIdx})">核对本题</button>
+                    <button type="button" class="ans-toggle" onclick="toggleAns(this)">Ver solución</button>
+                </div>
+
+                <div class="feedback-msg" id="fb-${qIdx}"></div>
+
+                <div class="solution-box">
+                    <div class="mini-sol-wrap">${miniGridsHtml}</div>
+                    <div>${stepsTextHtml}</div>
+                    <div style="margin-top:6px; font-weight:bold; color:#1a4a8e;">
+                        Resultado (最终得数)：${data.text} = ${data.finalAns}
+                    </div>
+                </div>
+            `;
+            list.appendChild(item);
+        }
+
+        bindVerticalInputs();
+        applyBoardDisplayPrefs();
+    }
+
+    // --- 同步两步竖式中 Step 1 的输入到 Step 2 的顶部镜像格 ---
+    function syncTwoStepMirror(qIdx) {
+        const prob = currentProblems[qIdx - 1];
+        if (!prob || prob.mode !== 'twostep') return;
+
+        const colsStep1 = prob.analyses[0].cols;
+        const colsStep2 = prob.analyses[1].cols;
+
+        for (let pos = 0; pos < colsStep2; pos++) {
+            const mirrorEl = document.getElementById(`mirror-${qIdx}-${pos}`);
+            if (!mirrorEl) continue;
+
+            const srcBox = pos < colsStep1 ? document.getElementById(`ans-${qIdx}-0-${pos}`) : null;
+            const val = srcBox ? srcBox.value.trim() : '';
+
+            if (val !== '') {
+                mirrorEl.innerText = val;
+                mirrorEl.classList.remove('is-empty');
+            } else {
+                mirrorEl.innerText = pos === 0 ? '?' : '·';
+                mirrorEl.classList.add('is-empty');
+            }
+        }
+    }
+
+    // --- 绑定键盘事件：从右往左自动跳格 ---
+    function bindVerticalInputs() {
+        const inputs = document.querySelectorAll('.v-ans-input');
+        inputs.forEach(inp => {
+            inp.addEventListener('input', (e) => {
+                const cleaned = e.target.value.replace(/[^0-9]/g, '');
+                e.target.value = cleaned.slice(-1);
+                e.target.classList.remove('is-correct', 'is-wrong');
+
+                const q = Number(e.target.dataset.q);
+                const step = Number(e.target.dataset.step);
+                const pos = Number(e.target.dataset.pos);
+
+                if (step === 0) syncTwoStepMirror(q);
+
+                if (e.target.value !== '') {
+                    const nextLeft = document.getElementById(`ans-${q}-${step}-${pos + 1}`);
+                    if (nextLeft) {
+                        nextLeft.focus();
+                        nextLeft.select();
+                    } else if (step === 0) {
+                        // 如果是两步竖式且第一步最高位已填完，自动跳到第二步的个位
+                        const step2Unit = document.getElementById(`ans-${q}-1-0`);
+                        if (step2Unit) {
+                            step2Unit.focus();
+                            step2Unit.select();
+                        }
+                    }
+                }
+            });
+
+            inp.addEventListener('keydown', (e) => {
+                const q = Number(e.target.dataset.q);
+                const step = Number(e.target.dataset.step);
+                const pos = Number(e.target.dataset.pos);
+
+                if (e.key === 'ArrowLeft') {
+                    const leftBox = document.getElementById(`ans-${q}-${step}-${pos + 1}`);
+                    if (leftBox) { e.preventDefault(); leftBox.focus(); }
+                } else if (e.key === 'ArrowRight') {
+                    const rightBox = document.getElementById(`ans-${q}-${step}-${pos - 1}`);
+                    if (rightBox) { e.preventDefault(); rightBox.focus(); }
+                } else if (e.key === 'Backspace' && e.target.value === '') {
+                    const rightBox = document.getElementById(`ans-${q}-${step}-${pos - 1}`);
+                    if (rightBox) { e.preventDefault(); rightBox.focus(); }
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    checkSingleQuestion(q);
+                }
+            });
+        });
+    }
+
+    function applyBoardDisplayPrefs() {
+        const showPv = document.getElementById('toggle-pv-head').checked;
+        const showCarry = document.getElementById('toggle-carry-box').checked;
+        const list = document.getElementById('quiz-list');
+
+        list.classList.toggle('hide-pv-headers', !showPv);
+        list.classList.toggle('hide-carry-boxes', !showCarry);
+    }
+
+    // --- 核对单个竖式步骤 ---
+    function evaluateStepBoxes(qIdx, stepIdx, expectedAns, cols) {
+        const ansStr = String(expectedAns);
+        let digitsHighToLow = '';
+        let hasAny = false;
+        let hasGap = false;
+        let seenDigit = false;
+
+        for (let pos = cols - 1; pos >= 0; pos--) {
+            const box = document.getElementById(`ans-${qIdx}-${stepIdx}-${pos}`);
+            const val = box.value.trim();
+            if (val !== '') {
+                hasAny = true;
+                seenDigit = true;
+                digitsHighToLow += val;
+            } else if (seenDigit) {
+                hasGap = true;
+            }
+        }
+
+        const stepCorrect = hasAny && !hasGap && (Number(digitsHighToLow) === expectedAns);
+
+        for (let pos = cols - 1; pos >= 0; pos--) {
+            const box = document.getElementById(`ans-${qIdx}-${stepIdx}-${pos}`);
+            const val = box.value.trim();
+            box.classList.remove('is-correct', 'is-wrong');
+
+            const expectedDigit = pos < ansStr.length
+                ? ansStr[ansStr.length - 1 - pos]
+                : '';
+
+            if (expectedDigit === '') {
+                if (val === '' || (val === '0' && stepCorrect)) {
+                    if (val !== '') box.classList.add('is-correct');
+                } else {
+                    box.classList.add('is-wrong');
+                }
+            } else {
+                if (val === expectedDigit) {
+                    box.classList.add('is-correct');
+                } else {
+                    box.classList.add('is-wrong');
+                }
+            }
+        }
+
+        return { hasAny, stepCorrect };
+    }
+
+    // --- 核对单道题目 ---
+    function checkSingleQuestion(qIdx) {
+        const prob = currentProblems[qIdx - 1];
+        if (!prob) return false;
+
+        const card = document.getElementById(`quiz-card-${qIdx}`);
+        const fb = document.getElementById(`fb-${qIdx}`);
+
+        let anyFilled = false;
+        let allStepsCorrect = true;
+
+        prob.steps.forEach((st, sIdx) => {
+            const res = evaluateStepBoxes(qIdx, sIdx, st.ans, prob.analyses[sIdx].cols);
+            if (res.hasAny) anyFilled = true;
+            if (!res.stepCorrect) allStepsCorrect = false;
+        });
+
+        // 进位/借位辅助框答对给绿色鼓励
+        document.querySelectorAll(`.carry-input[data-q="${qIdx}"]`).forEach(cBox => {
+            cBox.classList.remove('carry-ok');
+            const v = cBox.value.trim();
+            const exp = cBox.dataset.expected;
+            if (v !== '' && exp !== '' && (v === exp || v === exp.replace('+', ''))) {
+                cBox.classList.add('carry-ok');
+            }
+        });
+
+        if (!anyFilled) {
+            fb.style.color = '#dc2626';
+            fb.innerText = '⚠️ 请先在横线下方填写得数哦！';
+            const firstUnit = document.getElementById(`ans-${qIdx}-0-0`);
+            if (firstUnit) firstUnit.focus();
+            return false;
+        }
+
+        if (allStepsCorrect) {
+            card.classList.add('item-solved');
+            fb.style.color = '#15803d';
+            fb.innerText = `🎉 ¡Muy bien! 完全正确：${prob.text} = ${prob.finalAns}`;
+        } else {
+            card.classList.remove('item-solved');
+            fb.style.color = '#dc2626';
+            fb.innerText = '❌ 红色格子那一位不对哦，再检查一下进位或借位！';
+        }
+
+        return allStepsCorrect;
+    }
+
+    function checkAllQuestions() {
+        let solved = 0;
+        for (let i = 1; i <= currentProblems.length; i++) {
+            if (checkSingleQuestion(i)) solved++;
+        }
+        const total = currentProblems.length;
+        const banner = document.getElementById('quiz-score-banner');
+        banner.innerHTML = solved === total
+            ? `🏆 太棒了！10 道题全部答对：<strong>${solved} / ${total}</strong> 题！`
+            : `📊 当前成绩：答对 <strong>${solved} / ${total}</strong> 题（绿色数位正确，红色请再算一算）`;
+    }
+
     function toggleAns(btn) {
-        const box = btn.nextElementSibling;
+        const box = btn.parentElement.nextElementSibling.nextElementSibling;
         const isHidden = box.style.display === 'none' || box.style.display === '';
         box.style.display = isHidden ? 'block' : 'none';
         btn.innerText = isHidden ? 'Ocultar' : 'Ver solución';
