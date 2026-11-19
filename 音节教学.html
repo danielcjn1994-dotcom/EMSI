@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>西班牙语自然拼读与看图识词 (Silabario Ilustrado)</title>
+    <style>
+        /* 全局样式：延续统一教学网站风格 */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #e9ecef;
+            color: #2c3e50;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .main-wrapper {
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* 顶部导航与工具栏 */
+        .top-header {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 22px 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border-top: 5px solid #00b894;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title p {
+            margin: 4px 0 0 0;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .header-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-tool {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-tool:hover {
+            background-color: #00b894;
+            color: #ffffff;
+            border-color: #00b894;
+        }
+
+        .btn-tool.active-mode {
+            background-color: #f1c40f;
+            color: #2c3e50;
+            border-color: #f39c12;
+        }
+
+        .btn-home {
+            background-color: #e2e6ea;
+            color: #383d41;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-home:hover {
+            background-color: #00b894;
+            color: #ffffff;
+        }
+
+        /* 搜索与快速跳转栏 */
+        .filter-bar {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-bar input {
+            flex: 1;
+            min-width: 220px;
+            padding: 9px 14px;
+            border: 1.5px solid #ced4da;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .filter-bar input:focus {
+            border-color: #00b894;
+        }
+
+        .filter-hint {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        /* 折叠课程卡片：延续 lesson-container 样式 */
+        details.lesson-container {
+            background: #ffffff;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+
+        details.lesson-container[open] {
+            border-color: #00b894;
+            box-shadow: 0 10px 25px rgba(0, 184, 148, 0.12);
+        }
+
+        details.lesson-container > summary {
+            list-style: none;
+            padding: 18px 25px;
+            cursor: pointer;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+
+        details.lesson-container > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details.lesson-container > summary:hover {
+            background-color: #f8fffe;
+        }
+
+        details.lesson-container[open] > summary {
+            background-color: #f0fdf9;
+            border-bottom: 1px solid #d1f2eb;
+        }
+
+        details.lesson-container > summary h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .summary-badge {
+            background: #00b894;
+            color: #ffffff;
+            font-size: 13px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .summary-arrow {
+            font-size: 14px;
+            color: #00b894;
+            font-weight: bold;
+            transition: transform 0.25s ease;
+        }
+
+        details.lesson-container[open] .summary-arrow {
+            transform: rotate(90deg);
+        }
+
+        /* 课程卡片内部主体 */
+        .lesson-card {
+            padding: 25px 30px 30px 30px;
+        }
+
+        .lesson-title {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .es-title {
+            display: inline-block;
+            background: #00b894;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 6px;
+        }
+
+        .lesson-title h2 {
+            margin: 4px 0 0 0;
+            font-size: 24px;
+            color: #2c3e50;
+        }
+
+        .quiz-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00b894;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 音节拼读条（5组音节） */
+        .syllable-strip {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .syllable-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 14px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .syllable-box:hover {
+            border-color: #00b894;
+            background: #e8f8f5;
+            transform: translateY(-2px);
+        }
+
+        .syllable-box:active {
+            transform: scale(0.97);
+        }
+
+        .syl-upper {
+            font-size: 22px;
+            font-weight: 800;
+            color: #2c3e50;
+            letter-spacing: 1px;
+        }
+
+        .syl-lower {
+            font-size: 22px;
+            font-weight: 600;
+            color: #00b894;
+            font-family: "Comic Sans MS", "Trebuchet MS", cursive, sans-serif;
+            margin-top: 2px;
+        }
+
+        .syl-audio-icon {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            opacity: 0.55;
+        }
+
+        /* 带图单词卡片网格 */
+        .vocab-visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .word-card {
+            background: #ffffff;
+            border: 1.5px solid #e9ecef;
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        .word-card:hover {
+            border-color: #00b894;
+            background: #f8fffe;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 184, 148, 0.12);
+        }
+
+        .word-card.speaking {
+            border-color: #f1c40f;
+            background: #fffdf0;
+        }
+
+        /* 单词旁边的配图框 */
+        .word-pic {
+            width: 68px;
+            height: 68px;
+            min-width: 68px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f0fdf9 0%, #e8f4fd 100%);
+            border: 1px solid #d1f2eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .word-pic svg {
+            width: 52px;
+            height: 52px;
+        }
+
+        .word-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .word-es-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
+        .word-es {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            letter-spacing: 0.3px;
+        }
+
+        /* 重音字母红色高亮 */
+        .tilde {
+            color: #e74c3c;
+            font-weight: 800;
+            text-decoration: underline;
+            text-decoration-color: rgba(231, 76, 60, 0.35);
+            text-underline-offset: 3px;
+        }
+
+        .word-syllables {
+            font-size: 13px;
+            color: #00b894;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .word-zh {
+            font-size: 15px;
+            color: #576574;
+            margin-top: 4px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        /* 隐藏中文复习模式 */
+        body.hide-zh .word-zh {
+            opacity: 0;
+            filter: blur(5px);
+        }
+
+        body.hide-zh .word-card:hover .word-zh {
+            opacity: 1;
+            filter: none;
+        }
+
+        .speak-badge {
+            background: #e8f8f5;
+            color: #00b894;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        /* 黄色重点提示框：延续 para-block 高亮风格 */
+        .para-block-tip {
+            background: #fff9db;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border-left: 5px solid #f1c40f;
+            font-size: 14px;
+        }
+
+        .para-block-tip .tip-es {
+            display: block;
+            font-weight: bold;
+            color: #7f6000;
+            margin-bottom: 3px;
+        }
+
+        .para-block-tip .tip-zh {
+            display: block;
+            color: #5c4800;
+        }
+
+        @media (max-width: 680px) {
+            body {
+                padding: 10px;
+            }
+            .lesson-card {
+                padding: 18px 15px;
+            }
+            .syllable-strip {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 6px;
+            }
+            .syl-upper, .syl-lower {
+                font-size: 17px;
+            }
+            .vocab-visual-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <!-- 顶部标题与控制区 -->
+    <header class="top-header">
+        <div class="header-title">
+            <h1>🎨 西班牙语看图自然拼读 <span style="font-size:14px; background:#e8f8f5; color:#00b894; padding:3px 10px; border-radius:12px;">30课 · 150词</span></h1>
+            <p>Silabario Ilustrado · 小写规范 · 红色重音标示 · 点击音节或图片即可发音</p>
+        </div>
+        <div class="header-actions">
+            <button type="button" class="btn-tool" id="toggleZhBtn" onclick="toggleChinese()">🙈 隐藏中文（复习模式）</button>
+            <button type="button" class="btn-tool" onclick="toggleAllLessons(true)">📂 全部展开</button>
+            <button type="button" class="btn-tool" onclick="toggleAllLessons(false)">📁 全部折叠</button>
+            <button type="button" class="btn-home" onclick="window.location.href='index.html'">🏠 返回主页</button>
+        </div>
+    </header>
+
+    <!-- 搜索过滤栏 -->
+    <div class="filter-bar">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="输入西班牙语单词、音节（如 bra, que）或中文意思快速查找..." oninput="filterLessons()">
+        <span class="filter-hint" id="matchCount">共 30 课（150 个带图词汇）</span>
+    </div>
+
+    <!-- 30课内容容器 -->
+    <main id="lessonsContainer"></main>
+</div>
+
+<script>
+    // 自定义高清矢量插画库（用于无标准Emoji或需要更直观儿童画面的单词）
+    const customSVGs = {
+        mesa: `<svg viewBox="0 0 64 64"><rect x="10" y="20" width="44" height="7" rx="2" fill="#27ae60"/><polygon points="10,20 18,14 54,14 54,20" fill="#2ecc71"/><rect x="14" y="27" width="5" height="25" fill="#1e8449"/><rect x="45" y="27" width="5" height="25" fill="#1e8449"/><rect x="22" y="27" width="4" height="19" fill="#145a32"/></svg>`,
+        maquina: `<svg viewBox="0 0 64 64"><rect x="14" y="8" width="36" height="48" rx="4" fill="#e74c3c"/><rect x="18" y="13" width="20" height="26" rx="2" fill="#d6eaf8"/><circle cx="23" cy="19" r="2.5" fill="#f39c12"/><circle cx="31" cy="19" r="2.5" fill="#2ecc71"/><circle cx="23" cy="27" r="2.5" fill="#9b59b6"/><circle cx="31" cy="27" r="2.5" fill="#e67e22"/><rect x="41" y="15" width="5" height="12" rx="1" fill="#2c3e50"/><rect x="18" y="43" width="20" height="7" rx="1" fill="#2c3e50"/></svg>`,
+        babero: `<svg viewBox="0 0 64 64"><path d="M22,12 C14,15 12,26 14,38 C16,49 24,54 32,54 C40,54 48,49 50,38 C52,26 50,15 42,12 C40,18 36,21 32,21 C28,21 24,18 22,12 Z" fill="#85c1e9" stroke="#3498db" stroke-width="2"/><circle cx="32" cy="36" r="6" fill="#f9e79f"/><circle cx="32" cy="36" r="2.5" fill="#f39c12"/></svg>`,
+        domino: `<svg viewBox="0 0 64 64"><rect x="18" y="8" width="28" height="48" rx="4" fill="#ffffff" stroke="#2c3e50" stroke-width="2.5"/><line x1="20" y1="32" x2="44" y2="32" stroke="#2c3e50" stroke-width="2.5"/><circle cx="25" cy="16" r="2.5" fill="#e74c3c"/><circle cx="39" cy="24" r="2.5" fill="#e74c3c"/><circle cx="25" cy="40" r="2.5" fill="#2c3e50"/><circle cx="32" cy="44" r="2.5" fill="#2c3e50"/><circle cx="39" cy="48" r="2.5" fill="#2c3e50"/></svg>`,
+        tubo: `<svg viewBox="0 0 64 64"><path d="M12,24 H36 A12,12 0 0 1 48,36 V50" fill="none" stroke="#95a5a6" stroke-width="12" stroke-linecap="round"/><rect x="8" y="16" width="6" height="16" rx="2" fill="#7f8c8d"/><rect x="40" y="46" width="16" height="6" rx="2" fill="#7f8c8d"/></svg>`,
+        cinturon: `<svg viewBox="0 0 64 64"><rect x="6" y="25" width="52" height="14" rx="3" fill="#8e5b32"/><rect x="24" y="22" width="16" height="20" rx="3" fill="none" stroke="#f1c40f" stroke-width="3.5"/><line x1="32" y1="32" x2="39" y2="32" stroke="#f1c40f" stroke-width="3"/></svg>`,
+        chupete: `<svg viewBox="0 0 64 64"><path d="M26,22 C26,12 38,12 38,22 L36,30 H28 Z" fill="#f5b041"/><rect x="18" y="28" width="28" height="9" rx="4.5" fill="#ec7063"/><circle cx="32" cy="44" r="9" fill="none" stroke="#5dade2" stroke-width="3.5"/></svg>`,
+        blanco: `<svg viewBox="0 0 64 64"><rect x="12" y="12" width="40" height="40" rx="10" fill="#ffffff" stroke="#bdc3c7" stroke-width="2.5"/><text x="32" y="37" text-anchor="middle" font-size="12" font-weight="bold" fill="#7f8c8d">BLANCO</text></svg>`,
+        preso: `<svg viewBox="0 0 64 64"><rect x="12" y="10" width="40" height="44" rx="4" fill="#ebedef" stroke="#34495e" stroke-width="2"/><circle cx="32" cy="27" r="9" fill="#f5cba7"/><path d="M20,48 C20,39 44,39 44,48" fill="#e67e22"/><line x1="20" y1="10" x2="20" y2="54" stroke="#2c3e50" stroke-width="2.5"/><line x1="28" y1="10" x2="28" y2="54" stroke="#2c3e50" stroke-width="2.5"/><line x1="36" y1="10" x2="36" y2="54" stroke="#2c3e50" stroke-width="2.5"/><line x1="44" y1="10" x2="44" y2="54" stroke="#2c3e50" stroke-width="2.5"/></svg>`,
+        clavo: `<svg viewBox="0 0 64 64"><rect x="20" y="12" width="24" height="5" rx="2" fill="#7f8c8d"/><polygon points="29,17 35,17 33,48 32,54 31,48" fill="#95a5a6"/></svg>`,
+        grapadora: `<svg viewBox="0 0 64 64"><rect x="10" y="42" width="44" height="8" rx="3" fill="#2c3e50"/><path d="M12,42 L16,24 L52,32 L50,40 Z" fill="#e74c3c"/></svg>`,
+        gru: `<svg viewBox="0 0 64 64"><ellipse cx="32" cy="26" rx="14" ry="16" fill="#fad7a0"/><polygon points="32,25 42,29 32,31" fill="#f5b041"/><circle cx="26" cy="22" r="2.2" fill="#2c3e50"/><circle cx="36" cy="22" r="2.2" fill="#2c3e50"/><path d="M16,42 H48 L50,56 H14 Z" fill="#2c3e50"/><rect x="24" y="40" width="16" height="16" fill="#7f8c8d"/><line x1="24" y1="45" x2="40" y2="45" stroke="#2c3e50" stroke-width="2"/><line x1="24" y1="51" x2="40" y2="51" stroke="#2c3e50" stroke-width="2"/></svg>`,
+        mogli: `<svg viewBox="0 0 64 64"><circle cx="32" cy="27" r="13" fill="#e0ac69"/><path d="M18,26 C18,13 46,13 46,26 C42,20 22,20 18,26 Z" fill="#1c2833"/><circle cx="27" cy="27" r="2" fill="#1c2833"/><circle cx="37" cy="27" r="2" fill="#1c2833"/><path d="M28,33 Q32,37 36,33" fill="none" stroke="#922b21" stroke-width="2" stroke-linecap="round"/><path d="M22,42 H42 L40,54 H24 Z" fill="#e74c3c"/></svg>`,
+        troglodita: `<svg viewBox="0 0 64 64"><circle cx="30" cy="24" r="12" fill="#f5cba7"/><path d="M18,20 Q30,8 42,20" fill="#6e2c00"/><path d="M20,36 L42,36 L44,54 L18,54 Z" fill="#f39c12"/><circle cx="26" cy="43" r="2" fill="#6e2c00"/><circle cx="35" cy="47" r="2.5" fill="#6e2c00"/><path d="M46,16 L54,50 L48,51 L43,17 Z" fill="#873600"/></svg>`
+    };
+
+    // 全部 30 课自然拼读与看图识词数据（严格对照 Silabario.pdf）
+    const lessonsData = [
+        {
+            num: 1,
+            title: "元音字母 (Las Vocales)",
+            syllables: ["a", "e", "i", "o", "u"],
+            tipEs: "Las cinco vocales (a, e, i, o, u) siempre suenan igual en español.",
+            tipZh: "西班牙语的 5 个元音（a, e, i, o, u）在任何单词中发音永远固定不变，口型要饱满。",
+            words: [
+                { word: "avión", html: "avi<span class='tilde'>ó</span>n", syl: "a · vión", zh: "飞机", pic: "✈️" },
+                { word: "elefante", html: "elefante", syl: "e · le · fan · te", zh: "大象", pic: "🐘" },
+                { word: "imán", html: "im<span class='tilde'>á</span>n", syl: "i · mán", zh: "磁铁", pic: "🧲" },
+                { word: "oso", html: "oso", syl: "o · so", zh: "熊", pic: "🐻" },
+                { word: "uva", html: "uva", syl: "u · va", zh: "葡萄", pic: "🍇" }
+            ]
+        },
+        {
+            num: 2,
+            title: "声母 M 音节组 (ma · me · mi · mo · mu)",
+            syllables: ["ma", "me", "mi", "mo", "mu"],
+            tipEs: "La letra M se pronuncia juntando los dos labios suavemente.",
+            tipZh: "字母 M 发双唇鼻音，注意 micrófono 和 música 都是重音落在倒数第三个音节（滑稽词），必须标重音。",
+            words: [
+                { word: "mano", html: "mano", syl: "ma · no", zh: "手", pic: "✋" },
+                { word: "mesa", html: "mesa", syl: "me · sa", zh: "桌子", svg: "mesa" },
+                { word: "micrófono", html: "micr<span class='tilde'>ó</span>fono", syl: "mi · cró · fo · no", zh: "麦克风", pic: "🎤" },
+                { word: "moto", html: "moto", syl: "mo · to", zh: "摩托车", pic: "🏍️" },
+                { word: "música", html: "m<span class='tilde'>ú</span>sica", syl: "mú · si · ca", zh: "音乐", pic: "🎵" }
+            ]
+        },
+        {
+            num: 3,
+            title: "K音拼写组 (ca · que · qui · co · cu)",
+            syllables: ["ca", "que", "qui", "co", "cu"],
+            tipEs: "¡Ojo! Para el sonido /k/ con E e I usamos QUE y QUI (la 'u' no suena).",
+            tipZh: "拼写重点：发 /k/ 音时，搭配 a, o, u 用 c（ca, co, cu），搭配 e, i 必须改用 qu（que, qui），且中间的 u 不发音！",
+            words: [
+                { word: "casa", html: "casa", syl: "ca · sa", zh: "房子", pic: "🏠" },
+                { word: "queso", html: "queso", syl: "que · so", zh: "奶酪", pic: "🧀" },
+                { word: "máquina", html: "m<span class='tilde'>á</span>quina", syl: "má · qui · na", zh: "自动售货机 / 机器", svg: "maquina" },
+                { word: "coche", html: "coche", syl: "co · che", zh: "汽车", pic: "🚗" },
+                { word: "cubo", html: "cubo", syl: "cu · bo", zh: "水桶", pic: "🪣" }
+            ]
+        },
+        {
+            num: 4,
+            title: "声母 B 音节组 (ba · be · bi · bo · bu)",
+            syllables: ["ba", "be", "bi", "bo", "bu"],
+            tipEs: "En español, la B y la V tienen exactamente el mismo sonido.",
+            tipZh: "西语中 B 和 V 发音完全相同；注意 búho 中的 h 不发音，为了隔开 u 和 o 的二合元音，在 ú 上标重音。",
+            words: [
+                { word: "babero", html: "babero", syl: "ba · be · ro", zh: "围嘴", svg: "babero" },
+                { word: "bebé", html: "beb<span class='tilde'>é</span>", syl: "be · bé", zh: "婴儿", pic: "👶" },
+                { word: "biberón", html: "biber<span class='tilde'>ó</span>n", syl: "bi · be · rón", zh: "奶瓶", pic: "🍼" },
+                { word: "bota", html: "bota", syl: "bo · ta", zh: "靴子", pic: "👢" },
+                { word: "búho", html: "b<span class='tilde'>ú</span>ho", syl: "bú · ho", zh: "猫头鹰", pic: "🦉" }
+            ]
+        },
+        {
+            num: 5,
+            title: "声母 D 音节组 (da · de · di · do · du)",
+            syllables: ["da", "de", "di", "do", "du"],
+            tipEs: "La D al principio suena firme; entre vocales suena más suave.",
+            tipZh: "D 在词首时舌尖轻抵上齿背发音；dominó 的重音在最后一个音节 nó，记得加标重音符号。",
+            words: [
+                { word: "dado", html: "dado", syl: "da · do", zh: "骰子", pic: "🎲" },
+                { word: "dedo", html: "dedo", syl: "de · do", zh: "手指", pic: "👆" },
+                { word: "dinosaurio", html: "dinosaurio", syl: "di · no · sau · rio", zh: "恐龙", pic: "🦖" },
+                { word: "dominó", html: "domin<span class='tilde'>ó</span>", syl: "do · mi · nó", zh: "多米诺骨牌", svg: "domino" },
+                { word: "ducha", html: "ducha", syl: "du · cha", zh: "淋浴", pic: "🚿" }
+            ]
+        },
+        {
+            num: 6,
+            title: "声母 F 音节组 (fa · fe · fi · fo · fu)",
+            syllables: ["fa", "fe", "fi", "fo", "fu"],
+            tipEs: "Coloca los dientes superiores suavemente sobre el labio inferior para decir F.",
+            tipZh: "发 F 音时上齿轻触下唇吹气；注意 feliz 以 z 结尾，重音天然落在最后一个音节 liz，无需标重音。",
+            words: [
+                { word: "fantasma", html: "fantasma", syl: "fan · tas · ma", zh: "幽灵", pic: "👻" },
+                { word: "feliz", html: "feliz", syl: "fe · liz", zh: "开心的", pic: "😄" },
+                { word: "fiesta", html: "fiesta", syl: "fies · ta", zh: "派对", pic: "🎉" },
+                { word: "foca", html: "foca", syl: "fo · ca", zh: "海豹", pic: "🦭" },
+                { word: "fuego", html: "fuego", syl: "fue · go", zh: "火 / 篝火", pic: "🔥" }
+            ]
+        },
+        {
+            num: 7,
+            title: "声母 L 音节组 (la · le · li · lo · lu)",
+            syllables: ["la", "le", "li", "lo", "lu"],
+            tipEs: "Lápiz lleva tilde porque termina en Z y la fuerza va en 'lá'.",
+            tipZh: "lápiz 以辅音 z 结尾却重读倒数第二个音节，所以 lá 必须标重音；león 和 limón 均重读词尾，也要标重音。",
+            words: [
+                { word: "lápiz", html: "l<span class='tilde'>á</span>piz", syl: "lá · piz", zh: "铅笔", pic: "✏️" },
+                { word: "león", html: "le<span class='tilde'>ó</span>n", syl: "le · ón", zh: "狮子", pic: "🦁" },
+                { word: "limón", html: "lim<span class='tilde'>ó</span>n", syl: "li · món", zh: "柠檬", pic: "🍋" },
+                { word: "lobo", html: "lobo", syl: "lo · bo", zh: "狼", pic: "🐺" },
+                { word: "luna", html: "luna", syl: "lu · na", zh: "月亮", pic: "🌙" }
+            ]
+        },
+        {
+            num: 8,
+            title: "声母 N 音节组 (na · ne · ni · no · nu)",
+            syllables: ["na", "ne", "ni", "no", "nu"],
+            tipEs: "La J en 'naranja' suena fuerte desde la garganta.",
+            tipZh: "注意 naranja 中的字母 j 发小舌摩擦音（类似汉语“喝”的加强版），不要读成英语的 j。",
+            words: [
+                { word: "naranja", html: "naranja", syl: "na · ran · ja", zh: "橙子", pic: "🍊" },
+                { word: "nenes", html: "nenes", syl: "ne · nes", zh: "孩子们", pic: "👧👦" },
+                { word: "nido", html: "nido", syl: "ni · do", zh: "鸟窝", pic: "🪺" },
+                { word: "noche", html: "noche", syl: "no · che", zh: "夜晚", pic: "🌃" },
+                { word: "nube", html: "nube", syl: "nu · be", zh: "云朵", pic: "☁️" }
+            ]
+        },
+        {
+            num: 9,
+            title: "声母 P 音节组 (pa · pe · pi · po · pu)",
+            syllables: ["pa", "pe", "pi", "po", "pu"],
+            tipEs: "La P en español se pronuncia sin soltar aire fuerte (sin aspiración).",
+            tipZh: "西语的 P 是清不送气音，发音时不要像英语那样喷出强烈的气流；单音节词 pie 不标重音。",
+            words: [
+                { word: "pala", html: "pala", syl: "pa · la", zh: "铲子", pic: "🪏" },
+                { word: "pelota", html: "pelota", syl: "pe · lo · ta", zh: "球", pic: "⚽" },
+                { word: "pie", html: "pie", syl: "pie", zh: "脚", pic: "🦶" },
+                { word: "pollo", html: "pollo", syl: "po · llo", zh: "小鸡", pic: "🐥" },
+                { word: "puente", html: "puente", syl: "puen · te", zh: "桥", pic: "🌉" }
+            ]
+        },
+        {
+            num: 10,
+            title: "词首大颤音 R 组 (ra · re · ri · ro · ru)",
+            syllables: ["ra", "re", "ri", "ro", "ru"],
+            tipEs: "Al principio de palabra, una sola R siempre suena fuerte (rr).",
+            tipZh: "重要规则：单个字母 r 出现在单词开头时，一律发大颤音（多击颤音）！río 的重音落在弱元音 í 上，必须标重音。",
+            words: [
+                { word: "rana", html: "rana", syl: "ra · na", zh: "青蛙", pic: "🐸" },
+                { word: "reloj", html: "reloj", syl: "re · loj", zh: "钟表", pic: "⏰" },
+                { word: "río", html: "r<span class='tilde'>í</span>o", syl: "rí · o", zh: "河流", pic: "🏞️" },
+                { word: "rosa", html: "rosa", syl: "ro · sa", zh: "玫瑰花", pic: "🌹" },
+                { word: "rueda", html: "rueda", syl: "rue · da", zh: "车轮", pic: "🛞" }
+            ]
+        },
+        {
+            num: 11,
+            title: "声母 S 音节组 (sa · se · si · so · su)",
+            syllables: ["sa", "se", "si", "so", "su"],
+            tipEs: "Los nombres propios como 'Supermán' empiezan con letra mayúscula.",
+            tipZh: "专有名词（如 Supermán 超人）首字母保持大写，因为重读在词尾 mán，所以需要标重音符号。",
+            words: [
+                { word: "salchicha", html: "salchicha", syl: "sal · chi · cha", zh: "香肠 / 热狗", pic: "🌭" },
+                { word: "serpiente", html: "serpiente", syl: "ser · pien · te", zh: "蛇", pic: "🐍" },
+                { word: "silla", html: "silla", syl: "si · lla", zh: "椅子", pic: "🪑" },
+                { word: "sopa", html: "sopa", syl: "so · pa", zh: "汤", pic: "🍲" },
+                { word: "Supermán", html: "Superm<span class='tilde'>á</span>n", syl: "Su · per · mán", zh: "超人", pic: "🦸‍♂️" }
+            ]
+        },
+        {
+            num: 12,
+            title: "声母 T 音节组 (ta · te · ti · to · tu)",
+            syllables: ["ta", "te", "ti", "to", "tu"],
+            tipEs: "La T en español se pronuncia apoyando la lengua detrás de los dientes superiores.",
+            tipZh: "西语的 T 也是清不送气音，舌尖抵住上齿背轻轻爆破；teléfono 重音在 lé，标重音。",
+            words: [
+                { word: "taza", html: "taza", syl: "ta · za", zh: "杯子", pic: "☕" },
+                { word: "teléfono", html: "tel<span class='tilde'>é</span>fono", syl: "te · lé · fo · no", zh: "电话", pic: "☎️" },
+                { word: "tigre", html: "tigre", syl: "ti · gre", zh: "老虎", pic: "🐯" },
+                { word: "tortuga", html: "tortuga", syl: "tor · tu · ga", zh: "乌龟", pic: "🐢" },
+                { word: "tubo", html: "tubo", syl: "tu · bo", zh: "管子", svg: "tubo" }
+            ]
+        },
+        {
+            num: 13,
+            title: "辅音连缀 BR 组 (bra · bre · bri · bro · bru)",
+            syllables: ["bra", "bre", "bri", "bro", "bru"],
+            tipEs: "Regla de oro: antes de B y P siempre se escribe M (sombrilla).",
+            tipZh: "拼写铁律：在字母 B 和 P 前面永远写 m 而不是 n，例如 sombrilla（遮阳伞）。",
+            words: [
+                { word: "brazo", html: "brazo", syl: "bra · zo", zh: "手臂", pic: "💪" },
+                { word: "sobre", html: "sobre", syl: "so · bre", zh: "信封", pic: "✉️" },
+                { word: "sombrilla", html: "sombrilla", syl: "som · bri · lla", zh: "遮阳伞", pic: "🏖️" },
+                { word: "libro", html: "libro", syl: "li · bro", zh: "书", pic: "📚" },
+                { word: "bruja", html: "bruja", syl: "bru · ja", zh: "女巫", pic: "🧙‍♀️" }
+            ]
+        },
+        {
+            num: 14,
+            title: "声母 V 音节组 (va · ve · vi · vo · vu)",
+            syllables: ["va", "ve", "vi", "vo", "vu"],
+            tipEs: "Recuerda: V y B se pronuncian igual, ¡nunca muerdas el labio!",
+            tipZh: "提醒孩子：西班牙语的 V 不咬下唇，发音与 B 完全相同，只是拼写不同。",
+            words: [
+                { word: "vaca", html: "vaca", syl: "va · ca", zh: "奶牛", pic: "🐄" },
+                { word: "ventana", html: "ventana", syl: "ven · ta · na", zh: "窗户", pic: "🪟" },
+                { word: "vino", html: "vino", syl: "vi · no", zh: "葡萄酒", pic: "🍷" },
+                { word: "volcán", html: "volc<span class='tilde'>á</span>n", syl: "vol · cán", zh: "火山", pic: "🌋" },
+                { word: "vuela", html: "vuela", syl: "vue · la", zh: "飞翔", pic: "🦅" }
+            ]
+        },
+        {
+            num: 15,
+            title: "双写 LL 音节组 (lla · lle · lli · llo · llu)",
+            syllables: ["lla", "lle", "lli", "llo", "llu"],
+            tipEs: "La doble LL suena parecido a la 'y' en 'yo' o 'yema'.",
+            tipZh: "双写字母 ll（elle）是一个独立音素，发音接近汉语的“y”（如 llave 读作 yave）。",
+            words: [
+                { word: "llave", html: "llave", syl: "lla · ve", zh: "钥匙", pic: "🔑" },
+                { word: "calle", html: "calle", syl: "ca · lle", zh: "街道", pic: "🛣️" },
+                { word: "gallina", html: "gallina", syl: "ga · lli · na", zh: "母鸡", pic: "🐔" },
+                { word: "llorar", html: "llorar", syl: "llo · rar", zh: "哭泣", pic: "😢" },
+                { word: "lluvia", html: "lluvia", syl: "llu · via", zh: "下雨", pic: "🌧️" }
+            ]
+        },
+        {
+            num: 16,
+            title: "声母 J 音节组 (ja · je · ji · jo · ju)",
+            syllables: ["ja", "je", "ji", "jo", "ju"],
+            tipEs: "En 'juguete', la 'u' después de 'g' es muda (no se pronuncia).",
+            tipZh: "注意 juguete 中的 gue 组合，中间的 u 不发音，直接读作 /ge/。",
+            words: [
+                { word: "jarra", html: "jarra", syl: "ja · rra", zh: "水壶", pic: "🏺" },
+                { word: "jersey", html: "jersey", syl: "jer · sey", zh: "毛衣", pic: "🧶" },
+                { word: "jirafa", html: "jirafa", syl: "ji · ra · fa", zh: "长颈鹿", pic: "🦒" },
+                { word: "ojo", html: "ojo", syl: "o · jo", zh: "眼睛", pic: "👁️" },
+                { word: "juguete", html: "juguete", syl: "ju · gue · te", zh: "玩具", pic: "🧸" }
+            ]
+        },
+        {
+            num: 17,
+            title: "咬舌音组 (za · ce · ci · zo · zu)",
+            syllables: ["za", "ce", "ci", "zo", "zu"],
+            tipEs: "Para el sonido /z/ con E e I usamos CE y CI (nunca ZE ni ZI).",
+            tipZh: "拼写规律：发咬舌清擦音时，与 a, o, u 拼写用 z（za, zo, zu），与 e, i 拼写改用 c（ce, ci）。",
+            words: [
+                { word: "zapato", html: "zapato", syl: "za · pa · to", zh: "鞋子", pic: "👟" },
+                { word: "cereza", html: "cereza", syl: "ce · re · za", zh: "樱桃", pic: "🍒" },
+                { word: "cinturón", html: "cintur<span class='tilde'>ó</span>n", syl: "cin · tu · rón", zh: "腰带", svg: "cinturon" },
+                { word: "zorro", html: "zorro", syl: "zo · rro", zh: "狐狸", pic: "🦊" },
+                { word: "zumo", html: "zumo", syl: "zu · mo", zh: "果汁", pic: "🧃" }
+            ]
+        },
+        {
+            num: 18,
+            title: "浊软腭音组 (ga · gue · gui · go · gu)",
+            syllables: ["ga", "gue", "gui", "go", "gu"],
+            tipEs: "En GUE y GUI, la 'u' sirve para que la G suene suave (como en 'gato').",
+            tipZh: "在 gue 和 gui 中，u 是哑音字母（不发音），它的作用是让 g 保持和 ga, go, gu 一样的浊音。",
+            words: [
+                { word: "gato", html: "gato", syl: "ga · to", zh: "猫", pic: "🐱" },
+                { word: "guerra", html: "guerra", syl: "gue · rra", zh: "战争 / 交战", pic: "⚔️" },
+                { word: "guitarra", html: "guitarra", syl: "gui · ta · rra", zh: "吉他", pic: "🎸" },
+                { word: "gorra", html: "gorra", syl: "go · rra", zh: "帽子", pic: "🧢" },
+                { word: "gusano", html: "gusano", syl: "gu · sa · no", zh: "毛毛虫", pic: "🐛" }
+            ]
+        },
+        {
+            num: 19,
+            title: "复合字母 CH 组 (cha · che · chi · cho · chu)",
+            syllables: ["cha", "che", "chi", "cho", "chu"],
+            tipEs: "La CH suena igual que en 'chocolate' o 'chico'.",
+            tipZh: "ch 是双字母组合，发音与汉语拼音的“q”或英语的“ch”相似，清脆短促。",
+            words: [
+                { word: "chaqueta", html: "chaqueta", syl: "cha · que · ta", zh: "夹克外套", pic: "🧥" },
+                { word: "leche", html: "leche", syl: "le · che", zh: "牛奶", pic: "🥛" },
+                { word: "chimenea", html: "chimenea", syl: "chi · me · ne · a", zh: "壁炉", pic: "🔥🏠" },
+                { word: "chocolate", html: "chocolate", syl: "cho · co · la · te", zh: "巧克力", pic: "🍫" },
+                { word: "chupete", html: "chupete", syl: "chu · pe · te", zh: "安抚奶嘴", svg: "chupete" }
+            ]
+        },
+        {
+            num: 20,
+            title: "辅音连缀 BL 组 (bla · ble · bli · blo · blu)",
+            syllables: ["bla", "ble", "bli", "blo", "blu"],
+            tipEs: "Une rápido la B y la L sin meter ninguna vocal en medio.",
+            tipZh: "练习辅音连缀 bl 时，双唇闭合发 b 后舌尖立刻弹向上齿龈发 l，中间不要夹杂元音。",
+            words: [
+                { word: "blanco", html: "blanco", syl: "blan · co", zh: "白色", svg: "blanco" },
+                { word: "cable", html: "cable", syl: "ca · ble", zh: "数据线 / 电缆", pic: "🔌" },
+                { word: "biblioteca", html: "biblioteca", syl: "bi · blio · te · ca", zh: "图书馆", pic: "🏛️" },
+                { word: "bloque", html: "bloque", syl: "blo · que", zh: "积木块", pic: "🧱" },
+                { word: "blusa", html: "blusa", syl: "blu · sa", zh: "女式衬衫", pic: "👚" }
+            ]
+        },
+        {
+            num: 21,
+            title: "辅音连缀 PL 组 (pla · ple · pli · plo · plu)",
+            syllables: ["pla", "ple", "pli", "plo", "plu"],
+            tipEs: "Plátano es una palabra esdrújula y siempre lleva tilde en 'plá'.",
+            tipZh: "plátano 重音在倒数第三个音节 plá 上，凡是倒数第三个音节重读的单词都必须标重音。",
+            words: [
+                { word: "plátano", html: "pl<span class='tilde'>á</span>tano", syl: "plá · ta · no", zh: "香蕉", pic: "🍌" },
+                { word: "plegar", html: "plegar", syl: "ple · gar", zh: "折叠（纸飞机）", pic: "📄✈️" },
+                { word: "multiplicar", html: "multiplicar", syl: "mul · ti · pli · car", zh: "做乘法", pic: "✖️" },
+                { word: "diploma", html: "diploma", syl: "di · plo · ma", zh: "奖状 / 证书", pic: "📜" },
+                { word: "pluma", html: "pluma", syl: "plu · ma", zh: "羽毛", pic: "🪶" }
+            ]
+        },
+        {
+            num: 22,
+            title: "辅音连缀 PR 组 (pra · pre · pri · pro · pru)",
+            syllables: ["pra", "pre", "pri", "pro", "pru"],
+            tipEs: "La R detrás de la P vibra una sola vez (sonido suave).",
+            tipZh: "在辅音 p 之后的 r 只轻弹一次（单击颤音），不要过度拉长成大颤音。",
+            words: [
+                { word: "prado", html: "prado", syl: "pra · do", zh: "草地 / 花田", pic: "🌸🌿" },
+                { word: "preso", html: "preso", syl: "pre · so", zh: "囚犯", svg: "preso" },
+                { word: "primero", html: "primero", syl: "pri · me · ro", zh: "第一名", pic: "🥇" },
+                { word: "profesor", html: "profesor", syl: "pro · fe · sor", zh: "老师", pic: "👨‍🏫" },
+                { word: "pruna", html: "pruna", syl: "pru · na", zh: "李子", pic: "🫐" }
+            ]
+        },
+        {
+            num: 23,
+            title: "辅音连缀 CL 组 (cla · cle · cli · clo · clu)",
+            syllables: ["cla", "cle", "cli", "clo", "clu"],
+            tipEs: "Observa cómo 'bicicleta' (2 ruedas) y 'triciclo' (3 ruedas) comparten 'cicl-'.",
+            tipZh: "词根小发现：bicicleta（两轮自行车）和 triciclo（三轮车）都含有表示“轮子/圆”的词根 cicl-。",
+            words: [
+                { word: "clavo", html: "clavo", syl: "cla · vo", zh: "钉子", svg: "clavo" },
+                { word: "bicicleta", html: "bicicleta", syl: "bi · ci · cle · ta", zh: "自行车", pic: "🚲" },
+                { word: "clip", html: "clip", syl: "clip", zh: "回形针", pic: "📎" },
+                { word: "triciclo", html: "triciclo", syl: "tri · ci · clo", zh: "三轮车", pic: "🛵" },
+                { word: "club", html: "club", syl: "club", zh: "俱乐部", pic: "🎪" }
+            ]
+        },
+        {
+            num: 24,
+            title: "辅音连缀 CR 组 (cra · cre · cri · cro · cru)",
+            syllables: ["cra", "cre", "cri", "cro", "cru"],
+            tipEs: "Cráneo lleva tilde en 'crá'. Croasán también se escribe 'cruasán'.",
+            tipZh: "cráneo 重音在 crá 需标重音；croasán（牛角面包）在西班牙皇家学院词典中也常拼作 cruasán。",
+            words: [
+                { word: "cráneo", html: "cr<span class='tilde'>á</span>neo", syl: "crá · ne · o", zh: "头骨", pic: "💀" },
+                { word: "crema", html: "crema", syl: "cre · ma", zh: "面霜 / 奶油", pic: "🧴" },
+                { word: "escribir", html: "escribir", syl: "es · cri · bir", zh: "写字", pic: "✍️" },
+                { word: "croasán", html: "croas<span class='tilde'>á</span>n", syl: "cro · a · sán", zh: "牛角面包", pic: "🥐" },
+                { word: "cruz", html: "cruz", syl: "cruz", zh: "十字架", pic: "✝️" }
+            ]
+        },
+        {
+            num: 25,
+            title: "辅音连缀 FL 组 (fla · fle · fli · flo · flu)",
+            syllables: ["fla", "fle", "fli", "flo", "flu"],
+            tipEs: "Sopla suavemente para la F y sube la lengua rápido para la L.",
+            tipZh: "发 fl 音组时，先送出轻微唇齿气音 f，随即舌尖顶住上齿龈过渡到 l。",
+            words: [
+                { word: "flauta", html: "flauta", syl: "flau · ta", zh: "长笛", pic: "🪈" },
+                { word: "flecha", html: "flecha", syl: "fle · cha", zh: "箭", pic: "🏹" },
+                { word: "flipper", html: "flipper", syl: "flip · per", zh: "弹珠游戏机", pic: "🕹️" },
+                { word: "flores", html: "flores", syl: "flo · res", zh: "花朵", pic: "🌸" },
+                { word: "fluorescente", html: "fluorescente", syl: "fluo · res · cen · te", zh: "荧光灯管", pic: "💡" }
+            ]
+        },
+        {
+            num: 26,
+            title: "辅音连缀 FR 组 (fra · fre · fri · fro · fru)",
+            syllables: ["fra", "fre", "fri", "fro", "fru"],
+            tipEs: "Frío lleva tilde en la 'í' para romper el diptongo (frí-o).",
+            tipZh: "frío 分成 frí · o 两个音节，为了打破弱元音 i 与强元音 o 的结合，必须在 í 上标重音。",
+            words: [
+                { word: "frambuesa", html: "frambuesa", syl: "fram · bue · sa", zh: "树莓 / 覆盆子", pic: "🫐" },
+                { word: "fresa", html: "fresa", syl: "fre · sa", zh: "草莓", pic: "🍓" },
+                { word: "frío", html: "fr<span class='tilde'>í</span>o", syl: "frí · o", zh: "寒冷 / 雪人", pic: "⛄" },
+                { word: "frotar", html: "frotar", syl: "fro · tar", zh: "擦洗 / 刷子", pic: "🧹" },
+                { word: "fruta", html: "fruta", syl: "fru · ta", zh: "水果", pic: "🧺🍎" }
+            ]
+        },
+        {
+            num: 27,
+            title: "辅音连缀 GR 组 (gra · gre · gri · gro · gru)",
+            syllables: ["gra", "gre", "gri", "gro", "gru"],
+            tipEs: "Gru es un nombre propio, por eso empieza con G mayúscula.",
+            tipZh: "Gru（《神偷奶爸》主角格鲁）是人名专有名词，首字母大写且为单音节词，不标重音。",
+            words: [
+                { word: "grapadora", html: "grapadora", syl: "gra · pa · do · ra", zh: "订书机", svg: "grapadora" },
+                { word: "tigre", html: "tigre", syl: "ti · gre", zh: "老虎", pic: "🐯" },
+                { word: "grillo", html: "grillo", syl: "gri · llo", zh: "蟋蟀", pic: "🦗" },
+                { word: "ogro", html: "ogro", syl: "o · gro", zh: "怪物 / 食人魔", pic: "👹" },
+                { word: "Gru", html: "Gru", syl: "Gru", zh: "格鲁（神偷奶爸）", svg: "gru" }
+            ]
+        },
+        {
+            num: 28,
+            title: "辅音连缀 GL 组 (gla · gle · gli · glo · glu)",
+            syllables: ["gla", "gle", "gli", "glo", "glu"],
+            tipEs: "Iglú lleva tilde en la 'ú' porque termina en vocal y es palabra aguda.",
+            tipZh: "iglú 以元音结尾且重读在最后一个音节 glú，因此必须标重音；Mogli（毛克利）为人名首字母大写。",
+            words: [
+                { word: "regla", html: "regla", syl: "re · gla", zh: "尺子", pic: "📏" },
+                { word: "iglesia", html: "iglesia", syl: "i · gle · sia", zh: "教堂", pic: "⛪" },
+                { word: "Mogli", html: "Mogli", syl: "Mo · gli", zh: "毛克利（森林王子）", svg: "mogli" },
+                { word: "globo", html: "globo", syl: "glo · bo", zh: "气球", pic: "🎈" },
+                { word: "iglú", html: "igl<span class='tilde'>ú</span>", syl: "i · glú", zh: "冰屋", pic: "🧊🏠" }
+            ]
+        },
+        {
+            num: 29,
+            title: "辅音连缀 TR 组 (tra · tre · tri · tro · tru)",
+            syllables: ["tra", "tre", "tri", "tro", "tru"],
+            tipEs: "¡Atención a la ortografía! Se escribe 'monstruo' con 'n' antes de 's'.",
+            tipZh: "拼写纠错提醒：原卡印刷漏了字母 n，规范西班牙语拼写为 monstruo（mons · truo）。",
+            words: [
+                { word: "tractor", html: "tractor", syl: "trac · tor", zh: "拖拉机", pic: "🚜" },
+                { word: "tren", html: "tren", syl: "tren", zh: "火车", pic: "🚂" },
+                { word: "trineo", html: "trineo", syl: "tri · ne · o", zh: "雪橇", pic: "🛷" },
+                { word: "troglodita", html: "troglodita", syl: "tro · glo · di · ta", zh: "穴居人", svg: "troglodita" },
+                { word: "monstruo", html: "monstruo", syl: "mons · truo", zh: "怪兽", pic: "👾" }
+            ]
+        },
+        {
+            num: 30,
+            title: "辅音连缀 DR 组 (dra · dre · dri · dro · dru)",
+            syllables: ["dra", "dre", "dri", "dro", "dru"],
+            tipEs: "Dragón lleva tilde en 'gón' porque termina en N y es aguda.",
+            tipZh: "dragón 以辅音 n 结尾且重读在词尾 gón，必须标重音；druida 分成 drui · da 两个音节。",
+            words: [
+                { word: "dragón", html: "drag<span class='tilde'>ó</span>n", syl: "dra · gón", zh: "龙", pic: "🐉" },
+                { word: "madre", html: "madre", syl: "ma · dre", zh: "妈妈 / 母亲", pic: "🤱" },
+                { word: "cocodrilo", html: "cocodrilo", syl: "co · co · dri · lo", zh: "鳄鱼", pic: "🐊" },
+                { word: "dromedario", html: "dromedario", syl: "dro · me · da · rio", zh: "单峰骆驼", pic: "🐪" },
+                { word: "druida", html: "druida", syl: "drui · da", zh: "德鲁伊 / 魔法师", pic: "🧙‍♂️" }
+            ]
+        }
+    ];
+
+    // 西班牙语语音朗读（Web Speech API）
+    function speakSpanish(text, cardEl) {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'es-ES';
+        utterance.rate = 0.85; // 适合儿童教学的清晰语速
+
+        if (cardEl) {
+            document.querySelectorAll('.word-card.speaking').forEach(el => el.classList.remove('speaking'));
+            cardEl.classList.add('speaking');
+            utterance.onend = () => cardEl.classList.remove('speaking');
+            utterance.onerror = () => cardEl.classList.remove('speaking');
+        }
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // 渲染全部 30 课卡片
+    function renderLessons(filterText = '') {
+        const container = document.getElementById('lessonsContainer');
+        const keyword = filterText.trim().toLowerCase();
+        let visibleLessonCount = 0;
+        let visibleWordCount = 0;
+
+        const html = lessonsData.map((lesson, index) => {
+            const lessonMatches = !keyword ||
+                lesson.title.toLowerCase().includes(keyword) ||
+                lesson.syllables.some(s => s.includes(keyword)) ||
+                lesson.words.some(w =>
+                    w.word.toLowerCase().includes(keyword) ||
+                    w.zh.toLowerCase().includes(keyword)
+                );
+
+            if (!lessonMatches) return '';
+
+            visibleLessonCount++;
+            visibleWordCount += lesson.words.length;
+
+            // 默认展开第1课，搜索时自动展开匹配课程，其余默认折叠（符合原网站习惯）
+            const isOpenAttr = (keyword || index === 0) ? 'open' : '';
+
+            const syllablesHtml = lesson.syllables.map(syl => `
+                <div class="syllable-box" onclick="speakSpanish('${syl}')" title="点击朗读音节 ${syl}">
+                    <span class="syl-audio-icon">🔊</span>
+                    <div class="syl-upper">${syl.toUpperCase()}</div>
+                    <div class="syl-lower">${syl}</div>
+                </div>
+            `).join('');
+
+            const wordsHtml = lesson.words.map(item => {
+                const visualContent = item.svg && customSVGs[item.svg]
+                    ? customSVGs[item.svg]
+                    : item.pic;
+
+                return `
+                    <div class="word-card" onclick="speakSpanish('${item.word}', this)" title="点击朗读 ${item.word}">
+                        <div class="word-pic">${visualContent}</div>
+                        <div class="word-info">
+                            <div class="word-es-row">
+                                <span class="word-es">${item.html}</span>
+                                <span class="speak-badge">🔊</span>
+                            </div>
+                            <div class="word-syllables">${item.syl}</div>
+                            <div class="word-zh">${item.zh}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <details class="lesson-container" ${isOpenAttr}>
+                    <summary>
+                        <h3>
+                            <span class="summary-badge">第 ${lesson.num} 课</span>
+                            <span>${lesson.title}</span>
+                        </h3>
+                        <span class="summary-arrow">▶</span>
+                    </summary>
+                    <article class="lesson-card">
+                        <div class="lesson-title">
+                            <div class="es-title">LECCIÓN ${lesson.num}</div>
+                            <h2>${lesson.title}</h2>
+                        </div>
+
+                        <div class="quiz-title">🔤 Sílabas / 核心音节拼读（点击发音）</div>
+                        <div class="syllable-strip">
+                            ${syllablesHtml}
+                        </div>
+
+                        <div class="quiz-title">🖼️ Vocabulario Ilustrado / 看图识词（点击图片或单词发音）</div>
+                        <div class="vocab-visual-grid">
+                            ${wordsHtml}
+                        </div>
+
+                        <div class="para-block-tip">
+                            <span class="tip-es">💡 Nota: ${lesson.tipEs}</span>
+                            <span class="tip-zh">教学提示：${lesson.tipZh}</span>
+                        </div>
+                    </article>
+                </details>
+            `;
+        }).join('');
+
+        container.innerHTML = html || `
+            <div style="background:#fff; padding:40px; text-align:center; border-radius:16px; color:#6c757d;">
+                没有找到包含“${filterText}”的音节或单词，请尝试其他关键词。
+            </div>
+        `;
+
+        document.getElementById('matchCount').innerText = keyword
+            ? `筛选结果：共 ${visibleLessonCount} 课（${visibleWordCount} 个带图词汇）`
+            : `共 30 课（150 个带图词汇）`;
+    }
+
+    function filterLessons() {
+        const val = document.getElementById('searchInput').value;
+        renderLessons(val);
+    }
+
+    function toggleAllLessons(openState) {
+        document.querySelectorAll('details.lesson-container').forEach(el => {
+            if (openState) el.setAttribute('open', '');
+            else el.removeAttribute('open');
+        });
+    }
+
+    function toggleChinese() {
+        document.body.classList.toggle('hide-zh');
+        const btn = document.getElementById('toggleZhBtn');
+        const isHidden = document.body.classList.contains('hide-zh');
+        btn.innerText = isHidden ? '👁️ 显示中文释义' : '🙈 隐藏中文（复习模式）';
+        btn.classList.toggle('active-mode', isHidden);
+    }
+
+    // 页面加载初始化
+    renderLessons();
+</script>
+</body>
+</html>
