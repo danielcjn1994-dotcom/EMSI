@@ -581,7 +581,7 @@
 
         .diff-arcs-svg {
             width: 100%;
-            height: 75px;
+            height: 108px;
             display: block;
             overflow: visible;
         }
@@ -1111,7 +1111,7 @@
 
                                     <div class="nl-scroll-wrap">
                                         <div class="nl-track-container" style="padding-top: 4px;">
-                                            <svg class="diff-arcs-svg" id="diff-arcs-svg" viewBox="0 0 1000 75"></svg>
+                                            <svg class="diff-arcs-svg" id="diff-arcs-svg" viewBox="0 0 1000 108"></svg>
                                             <div class="nl-line-row" id="nl-diff-track">
                                                 <div class="nl-base-line"></div>
                                             </div>
@@ -1620,7 +1620,7 @@
         const maxN = Math.max(a, b);
         const diff = maxN - minN;
 
-        // 1. 绘制顶部跳跃弧线 SVG
+        // 1. 绘制顶部跳跃弧线 SVG（下方逐格 +1，上方跨过去总和 +diff）
         const svg = document.getElementById('diff-arcs-svg');
         let svgHtml = '';
         for (let step = minN; step < maxN; step++) {
@@ -1628,15 +1628,29 @@
             const x2 = (step + 1) * 100;
             const xm = (x1 + x2) / 2;
             svgHtml += `
-                <path d="M ${x1} 68 Q ${xm} 16 ${x2} 68" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round"/>
-                <polygon points="${x2 - 7},62 ${x2},69 ${x2 - 1},59" fill="#10b981"/>
-                <rect x="${xm - 16}" y="14" width="32" height="20" rx="6" fill="#dcfce7" stroke="#86efac"/>
-                <text x="${xm}" y="28" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">+1</text>
+                <path d="M ${x1} 102 Q ${xm} 58 ${x2} 102" fill="none" stroke="#10b981" stroke-width="3.2" stroke-linecap="round"/>
+                <polygon points="${x2 - 7},96 ${x2},103 ${x2 - 1},93" fill="#10b981"/>
+                <rect x="${xm - 16}" y="56" width="32" height="20" rx="6" fill="#dcfce7" stroke="#86efac"/>
+                <text x="${xm}" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">+1</text>
+            `;
+        }
+        if (diff > 0) {
+            const xStart = minN * 100;
+            const xEnd = maxN * 100;
+            const xMid = (xStart + xEnd) / 2;
+            const ctrlY = Math.max(8, 52 - diff * 4.5);
+            const pillW = String(diff).length >= 2 ? 44 : 38;
+            const pillY = Math.max(2, ctrlY - 12);
+            svgHtml += `
+                <path d="M ${xStart} 102 Q ${xMid} ${ctrlY} ${xEnd} 102" fill="none" stroke="#1a4a8e" stroke-width="3.5" stroke-dasharray="7,5" stroke-linecap="round"/>
+                <polygon points="${xEnd - 8},95 ${xEnd},103 ${xEnd - 1},92" fill="#1a4a8e"/>
+                <rect x="${xMid - pillW / 2}" y="${pillY}" width="${pillW}" height="22" rx="7" fill="#1a4a8e" stroke="#f1c40f" stroke-width="2"/>
+                <text x="${xMid}" y="${pillY + 15}" text-anchor="middle" font-size="13.5" font-weight="900" fill="#ffffff">+${diff}</text>
             `;
         }
         if (diff === 0) {
             const x0 = a * 100;
-            svgHtml += `<text x="${x0}" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a4a8e">同一个位置 (相差 0 格)</text>`;
+            svgHtml += `<text x="${x0}" y="72" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a4a8e">同一个位置 (相差 0 格)</text>`;
         }
         svg.innerHTML = svgHtml;
 
