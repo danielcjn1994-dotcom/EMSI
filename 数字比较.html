@@ -188,7 +188,7 @@
             margin-top: 2px;
         }
 
-        /* --- 新增：缩写词汇表 (Glosario) 样式 --- */
+        /* --- 缩写词汇表 (Glosario) 样式 --- */
         .abbrev-legend {
             margin-top: 25px;
             background: #ffffff;
@@ -242,7 +242,6 @@
             color: #666;
             margin-top: 2px;
         }
-
 
         /* --- 比较大小理论样式 --- */
         .compare-step {
@@ -340,6 +339,504 @@
             font-weight: bold;
         }
 
+        /* =========================================================
+           新增模块 1 & 2：儿童互动数轴样式 (0-10 顺序 / 延伸至100 / 比多少)
+           ========================================================= */
+        .nl-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 12px;
+        }
+        .nl-direction-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+            font-weight: bold;
+            flex-wrap: wrap;
+        }
+        .dir-left {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fed7aa;
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+        .dir-right {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+        .nl-scroll-wrap {
+            overflow-x: auto;
+            padding: 10px 6px 6px 6px;
+        }
+        .nl-track-container {
+            min-width: 620px;
+            padding: 16px 26px 14px 26px;
+            position: relative;
+        }
+        .nl-line-row {
+            position: relative;
+            height: 62px;
+            display: flex;
+            align-items: center;
+        }
+        .nl-base-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 5px;
+            background: #94a3b8;
+            border-radius: 4px;
+            transform: translateY(-50%);
+        }
+        .nl-base-line::after {
+            content: '▶';
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-52%);
+            color: #64748b;
+            font-size: 16px;
+        }
+        .nl-node {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3px solid #1a4a8e;
+            color: #1a4a8e;
+            font-weight: 800;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 2;
+            user-select: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .nl-node:hover {
+            transform: translate(-50%, -50%) scale(1.12);
+            background: #eff6ff;
+        }
+        .nl-node.is-selected {
+            background: #1a4a8e;
+            color: #ffffff;
+            border-color: #f1c40f;
+            transform: translate(-50%, -50%) scale(1.18);
+            box-shadow: 0 0 0 4px rgba(241, 196, 15, 0.45);
+            z-index: 4;
+        }
+        .nl-node.is-prev {
+            background: #ffedd5;
+            color: #c2410c;
+            border-color: #f97316;
+            z-index: 3;
+        }
+        .nl-node.is-next {
+            background: #dcfce7;
+            color: #15803d;
+            border-color: #22c55e;
+            z-index: 3;
+        }
+        .nl-node.is-comp-a {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #1d4ed8;
+            transform: translate(-50%, -50%) scale(1.14);
+            z-index: 4;
+        }
+        .nl-node.is-comp-b {
+            background: #f59e0b;
+            color: #ffffff;
+            border-color: #d97706;
+            transform: translate(-50%, -50%) scale(1.14);
+            z-index: 4;
+        }
+        .nl-node.is-between {
+            background: #fef9c3;
+            border-color: #eab308;
+            color: #854d0e;
+        }
+        .nl-tag-top {
+            position: absolute;
+            top: -22px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+        .nl-info-panel {
+            margin-top: 14px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .nl-info-card {
+            background: white;
+            border-radius: 8px;
+            padding: 10px 14px;
+            border-left: 4px solid #1a4a8e;
+        }
+        .nl-info-card.prev-card { border-left-color: #f97316; }
+        .nl-info-card.next-card { border-left-color: #22c55e; }
+        .nl-info-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: bold;
+        }
+        .nl-info-val {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #1e293b;
+            margin-top: 3px;
+        }
+        .nl-info-sub {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 2px;
+        }
+
+        /* 0-100 整十跳转标签 */
+        .decade-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .decade-btn {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1.5px solid #cbd5e1;
+            background: white;
+            color: #334155;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .decade-btn:hover {
+            border-color: #1a4a8e;
+            color: #1a4a8e;
+        }
+        .decade-btn.active {
+            background: #1a4a8e;
+            color: white;
+            border-color: #1a4a8e;
+            box-shadow: 0 2px 6px rgba(26, 74, 142, 0.25);
+        }
+
+        /* 0-10 比多少跳跃图 */
+        .diff-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            background: #f8fafc;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .diff-select {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #1e293b;
+            background: white;
+            cursor: pointer;
+        }
+        .btn-mini-action {
+            padding: 7px 14px;
+            border-radius: 8px;
+            border: none;
+            background: #10b981;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-mini-action:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .diff-arcs-svg {
+            width: 100%;
+            height: 75px;
+            display: block;
+            overflow: visible;
+        }
+        .diff-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .diff-badge-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 10px;
+            padding: 12px 15px;
+        }
+        .diff-badge-box.math-bridge {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+        .math-formula-pill {
+            display: inline-block;
+            background: white;
+            border: 1px solid #86efac;
+            color: #166534;
+            font-family: 'Courier New', monospace;
+            font-weight: 900;
+            font-size: 1.15rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin: 4px 6px 0 0;
+        }
+
+        /* =========================================================
+           新增模块 3：0-100 自定义范围数字前后接龙练习样式
+           ========================================================= */
+        .chain-builder-box {
+            margin-top: 35px;
+            background: #f8fafc;
+            border: 2px solid #dbeafe;
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .chain-builder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+        .chain-builder-header h3 {
+            margin: 0;
+            color: #1a4a8e;
+            font-size: 1.3rem;
+        }
+        .preset-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .preset-pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #93c5fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .preset-pill:hover {
+            background: #2563eb;
+            color: white;
+        }
+        .chain-config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+        .config-field {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .config-field label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #475569;
+        }
+        .config-input, .config-select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1.5px solid #cbd5e1;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .config-input:focus, .config-select:focus {
+            outline: none;
+            border-color: #1a4a8e;
+        }
+        .btn-start-chain {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1a4a8e 0%, #2563eb 100%);
+            color: white;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            transition: all 0.2s;
+        }
+        .btn-start-chain:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+        }
+
+        /* 接龙练习题目界面样式 */
+        .chain-toolbar {
+            grid-column: 1 / -1;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .chain-score-badge {
+            font-weight: bold;
+            color: #1e40af;
+            font-size: 1.05rem;
+        }
+        .btn-check-all {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            background: #f59e0b;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(245, 158, 11, 0.3);
+            transition: all 0.2s;
+        }
+        .btn-check-all:hover {
+            background: #d97706;
+            transform: translateY(-1px);
+        }
+        .chain-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 18px 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+        }
+        .chain-card.full-width {
+            grid-column: 1 / -1;
+        }
+        .chain-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .chain-index-label {
+            font-weight: bold;
+            color: #64748b;
+            font-size: 1rem;
+        }
+        .chain-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .chain-given-box {
+            min-width: 58px;
+            height: 54px;
+            padding: 0 12px;
+            border-radius: 12px;
+            background: #1a4a8e;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(26, 74, 142, 0.2);
+            position: relative;
+        }
+        .chain-input-box {
+            width: 64px;
+            height: 54px;
+            border-radius: 12px;
+            border: 2.5px dashed #3b82f6;
+            background: #f8fafc;
+            text-align: center;
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #1e293b;
+            transition: all 0.2s;
+        }
+        .chain-input-box:focus {
+            outline: none;
+            border-style: solid;
+            border-color: #f59e0b;
+            background: #fffbeb;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        }
+        .chain-input-box.is-correct {
+            border-style: solid;
+            border-color: #22c55e;
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .chain-input-box.is-wrong {
+            border-style: solid;
+            border-color: #ef4444;
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .chain-arrow {
+            color: #94a3b8;
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+        .btn-check-single {
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .btn-check-single:hover { background: #1d4ed8; }
+
         /* --- 按钮样式 --- */
         .btn-grid {
             display: grid;
@@ -377,6 +874,8 @@
             margin-bottom: 30px;
             padding-bottom: 15px;
             border-bottom: 2px solid #edf2f7;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .btn-nav {
@@ -506,6 +1005,14 @@
         .highlight { font-weight: bold; color: #d97706; }
 
         .hidden { display: none; }
+
+        .footer {
+            background-color: #1a4a8e;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -519,13 +1026,16 @@
         <div class="card">
             <div id="home-page">
                 
-                <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                     <a href="index.html" class="btn-back-pill">
                         <span class="arrow">←</span> Volver (返回首页)
                     </a>
+                    <button type="button" onclick="openNumberLineSection()" style="padding: 10px 22px; border-radius: 50px; border: 2px solid #f1c40f; background: #fffbeb; color: #1a4a8e; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+                        📏 Recta Numérica 0–100 (打开互动数轴学习)
+                    </button>
                 </div>
 
-                <div class="theory-block">
+                <div class="theory-block" id="theory-block">
                     <div class="theory-header" onclick="toggleTheory()">
                         <span>📚 Aprende los Números (点击展开学习数字)</span>
                         <span id="theory-arrow">▼</span>
@@ -533,6 +1043,88 @@
                     <div class="theory-content" id="theory-content">
                         <div class="concept-grid">
                             
+                            <!-- =========================================================
+                                 新增模块 1：数轴（0 到 10 的顺序、前后左右，以及以此类推到 100）
+                                 ========================================================= -->
+                            <div class="concept-card" id="card-number-line-order" style="border-left-color: #2563eb;">
+                                <h4>Recta Numérica: Orden 0–10 y hasta 100 <span class="zh">(数轴：0–10 的顺序、前后左右与延伸到 100)</span></h4>
+                                <p style="margin: 0 0 8px 0; color: #334155;">
+                                    Haz clic en cualquier número para ver quién va <strong>antes (izquierda)</strong> y quién va <strong>después (derecha)</strong>.
+                                    <span style="display:block; color:#64748b; font-size:0.92rem;">(点击任意数字，看看谁在它的前面/左边，谁在它的后面/右边！)</span>
+                                </p>
+
+                                <div class="nl-box">
+                                    <div class="nl-direction-bar">
+                                        <span class="dir-left">← Izquierda / Anterior (左边 · 在前面 · 越来越小 -1)</span>
+                                        <span style="color: #1a4a8e;">Paso 1: Elige un rango (选择 0–10 或延伸到 100)</span>
+                                        <span class="dir-right">Derecha / Posterior → (右边 · 在后面 · 越来越大 +1)</span>
+                                    </div>
+
+                                    <!-- 0-100 整十区间切换（默认 0-10，可点到 100） -->
+                                    <div class="decade-tabs" id="decade-tabs"></div>
+
+                                    <!-- 互动数轴主体 -->
+                                    <div class="nl-scroll-wrap">
+                                        <div class="nl-track-container">
+                                            <div class="nl-line-row" id="nl-order-track">
+                                                <div class="nl-base-line"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 前后左右解读卡片 -->
+                                    <div class="nl-info-panel" id="nl-order-info"></div>
+
+                                    <!-- 以此类推到 100 的整十规律条 -->
+                                    <div style="margin-top: 16px; background: #f8fafc; border: 1px dashed #93c5fd; border-radius: 10px; padding: 12px 15px;">
+                                        <div style="font-weight: bold; color: #1a4a8e; margin-bottom: 6px;">
+                                            🚀 De 10 en 10 hasta 100 <span style="font-weight: normal; color: #64748b; font-size: 0.9rem;">(以此类推到 100：个位 0→1→2…→9→10 的顺序永远一样！)</span>
+                                        </div>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;" id="nl-tens-strip"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- =========================================================
+                                 新增模块 2：0 到 10 数轴比多少（谁比谁大多少，谁比谁少多少）
+                                 ========================================================= -->
+                            <div class="concept-card" id="card-number-line-diff" style="border-left-color: #10b981;">
+                                <h4>Recta 0–10: ¿Cuánto mayor? ¿Cuánto menor? <span class="zh">(0–10 数轴比多少：为加减口算打基础)</span></h4>
+                                <p style="margin: 0 0 10px 0; color: #334155;">
+                                    Cuenta los saltos entre dos números para saber cuánto más o cuánto menos tiene cada uno.
+                                    <span style="display:block; color:#64748b; font-size:0.92rem;">(数一数两个数字之间隔了几格，就能知道谁比谁大多少、谁比谁少多少！)</span>
+                                </p>
+
+                                <div class="nl-box">
+                                    <div class="diff-controls">
+                                        <label style="font-weight: bold; color: #2563eb;">
+                                            🔵 Número A (第一个数):
+                                            <select id="diff-select-a" class="diff-select" onchange="updateDiffNumberLine()"></select>
+                                        </label>
+                                        <label style="font-weight: bold; color: #d97706;">
+                                            🟠 Número B (第二个数):
+                                            <select id="diff-select-b" class="diff-select" onchange="updateDiffNumberLine()"></select>
+                                        </label>
+                                        <button type="button" class="btn-mini-action" onclick="randomDiffPair()">🎲 随机换两个数 (Aleatorio)</button>
+                                        <span style="font-size: 0.85rem; color: #64748b;">💡 也可以直接点击下方数轴上的数字</span>
+                                    </div>
+
+                                    <div class="nl-scroll-wrap">
+                                        <div class="nl-track-container" style="padding-top: 4px;">
+                                            <svg class="diff-arcs-svg" id="diff-arcs-svg" viewBox="0 0 1000 75"></svg>
+                                            <div class="nl-line-row" id="nl-diff-track">
+                                                <div class="nl-base-line"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="diff-summary-grid" id="diff-summary-grid"></div>
+                                </div>
+                            </div>
+
+                            <!-- =========================================================
+                                 以下为原有 4 个核心学习板块（内容完整保留，未作改动）
+                                 ========================================================= -->
                             <div class="concept-card">
                                 <h4>1. Valor Posicional <span class="zh">(数位表)</span></h4>
                                 <p>¡Cada posición tiene un nombre! <span style="display:block; color:#666; font-size:0.9rem;">(每个数字的位置都有名字！)</span></p>
@@ -730,6 +1322,54 @@
                         <small>1000以内比大小</small>
                     </button>
                 </div>
+
+                <!-- =========================================================
+                     新增模块 3：0 到 100 自定义范围数字前后接龙练习配置区
+                     ========================================================= -->
+                <div class="chain-builder-box">
+                    <div class="chain-builder-header">
+                        <h3>🚂 Cadena de Números: Anterior y Posterior <span style="font-size: 1rem; color: #64748b; font-weight: normal;">(0–100 自定义范围数字前后接龙)</span></h3>
+                        <span style="font-size: 0.9rem; color: #1d4ed8; font-weight: bold;">选择范围与显示数字个数，填写前后数字！</span>
+                    </div>
+
+                    <div class="preset-pills">
+                        <span style="font-size: 0.9rem; color: #64748b; font-weight: bold; align-self: center;">快速范围:</span>
+                        <button type="button" class="preset-pill" onclick="applyChainPreset(0, 10, 4)">0 – 10</button>
+                        <button type="button" class="preset-pill" onclick="applyChainPreset(0, 20, 5)">0 – 20</button>
+                        <button type="button" class="preset-pill" onclick="applyChainPreset(10, 30, 5)">10 – 30</button>
+                        <button type="button" class="preset-pill" onclick="applyChainPreset(20, 50, 6)">20 – 50</button>
+                        <button type="button" class="preset-pill" onclick="applyChainPreset(50, 100, 6)">50 – 100</button>
+                        <button type="button" class="preset-pill" onclick="applyChainPreset(0, 100, 6)">0 – 100</button>
+                    </div>
+
+                    <div class="chain-config-grid">
+                        <div class="config-field">
+                            <label for="chain-min">起始数字 Desde (0 – 98):</label>
+                            <input type="number" id="chain-min" class="config-input" value="0" min="0" max="98">
+                        </div>
+                        <div class="config-field">
+                            <label for="chain-max">结束数字 Hasta (2 – 100):</label>
+                            <input type="number" id="chain-max" class="config-input" value="20" min="2" max="100">
+                        </div>
+                        <div class="config-field">
+                            <label for="chain-count">显示几个数字 (Números mostrados):</label>
+                            <input type="number" id="chain-count" class="config-input" value="5" min="1" max="15">
+                        </div>
+                        <div class="config-field">
+                            <label for="chain-mode">接龙方式 (Tipo de ejercicio):</label>
+                            <select id="chain-mode" class="config-select">
+                                <option value="neighbors1">前后邻居接龙 ([前] - [数字] - [后])</option>
+                                <option value="neighbors2">前后两步接龙 ([前2][前1] - [数字] - [后1][后2])</option>
+                                <option value="sequence">连续小接龙 (范围内只显示几个数字，补全整条接龙)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-start-chain" onclick="startChainQuiz()">
+                        🚀 开始数字前后接龙练习 (Empezar Cadena Numérica)
+                    </button>
+                </div>
+
             </div>
 
             <div id="quiz-page" class="hidden">
@@ -801,11 +1441,288 @@
         }
     }
 
+    function openNumberLineSection() {
+        const content = document.getElementById('theory-content');
+        const arrow = document.getElementById('theory-arrow');
+        content.style.display = 'block';
+        arrow.innerText = '▲';
+        document.getElementById('card-number-line-order').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     function randInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // --- 核心生成逻辑 (数字比大小) ---
+    // =========================================================================
+    // 新增模块 1 脚本：数轴（0-10 顺序与前后左右 + 以此类推到 100）
+    // =========================================================================
+    let currentDecadeStart = 0;
+    let selectedOrderNum = 5;
+
+    function initOrderNumberLine() {
+        const tabsContainer = document.getElementById('decade-tabs');
+        const tensStrip = document.getElementById('nl-tens-strip');
+        tabsContainer.innerHTML = '';
+        tensStrip.innerHTML = '';
+
+        for (let start = 0; start <= 90; start += 10) {
+            const end = start + 10;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'decade-btn' + (start === currentDecadeStart ? ' active' : '');
+            btn.innerText = `${start} – ${end}`;
+            btn.dataset.start = start;
+            btn.onclick = () => selectDecadeRange(start);
+            tabsContainer.appendChild(btn);
+        }
+
+        for (let t = 0; t <= 100; t += 10) {
+            const pill = document.createElement('button');
+            pill.type = 'button';
+            pill.className = 'decade-btn';
+            pill.style.padding = '5px 11px';
+            pill.innerText = t;
+            pill.onclick = () => {
+                const targetStart = t === 100 ? 90 : t;
+                selectDecadeRange(targetStart, t);
+            };
+            tensStrip.appendChild(pill);
+
+            if (t < 100) {
+                const arrow = document.createElement('span');
+                arrow.style.color = '#94a3b8';
+                arrow.style.fontWeight = 'bold';
+                arrow.innerText = '→';
+                tensStrip.appendChild(arrow);
+            }
+        }
+
+        renderOrderNumberLine();
+    }
+
+    function selectDecadeRange(start, specificNum) {
+        currentDecadeStart = start;
+        selectedOrderNum = (typeof specificNum === 'number') ? specificNum : (start + 5);
+        document.querySelectorAll('#decade-tabs .decade-btn').forEach(btn => {
+            btn.classList.toggle('active', Number(btn.dataset.start) === start);
+        });
+        renderOrderNumberLine();
+    }
+
+    function renderOrderNumberLine() {
+        const track = document.getElementById('nl-order-track');
+        track.innerHTML = '<div class="nl-base-line"></div>';
+
+        const start = currentDecadeStart;
+        const end = start + 10;
+
+        for (let i = 0; i <= 10; i++) {
+            const num = start + i;
+            const node = document.createElement('div');
+            node.className = 'nl-node';
+            node.style.left = `${i * 10}%`;
+            node.innerText = num;
+
+            if (num === selectedOrderNum) {
+                node.classList.add('is-selected');
+                node.innerHTML = `<span class="nl-tag-top" style="background:#f1c40f; color:#1e293b;">选中的数</span>${num}`;
+            } else if (num === selectedOrderNum - 1) {
+                node.classList.add('is-prev');
+                node.innerHTML = `<span class="nl-tag-top" style="background:#ffedd5; color:#c2410c;">← 前/左</span>${num}`;
+            } else if (num === selectedOrderNum + 1) {
+                node.classList.add('is-next');
+                node.innerHTML = `<span class="nl-tag-top" style="background:#dcfce7; color:#15803d;">后/右 →</span>${num}`;
+            }
+
+            node.onclick = () => {
+                selectedOrderNum = num;
+                renderOrderNumberLine();
+            };
+
+            track.appendChild(node);
+        }
+
+        const info = document.getElementById('nl-order-info');
+        const prevText = selectedOrderNum === 0
+            ? `<div class="nl-info-val" style="color:#94a3b8;">— (起点 0)</div><div class="nl-info-sub">0 是最小的自然数，左边没有数字了</div>`
+            : `<div class="nl-info-val" style="color:#c2410c;">${selectedOrderNum - 1}</div><div class="nl-info-sub"><strong>${selectedOrderNum - 1}</strong> 在 <strong>${selectedOrderNum}</strong> 的前面（左边），比它小 1</div>`;
+
+        const nextText = selectedOrderNum === 100
+            ? `<div class="nl-info-val" style="color:#15803d;">100 (到达一百啦!)</div><div class="nl-info-sub">我们从 0 一路按顺序数到了 100</div>`
+            : `<div class="nl-info-val" style="color:#15803d;">${selectedOrderNum + 1}</div><div class="nl-info-sub"><strong>${selectedOrderNum + 1}</strong> 在 <strong>${selectedOrderNum}</strong> 的后面（右边），比它大 1</div>`;
+
+        let leftNums = [];
+        for (let k = start; k < selectedOrderNum; k++) leftNums.push(k);
+        let rightNums = [];
+        for (let k = selectedOrderNum + 1; k <= end; k++) rightNums.push(k);
+
+        info.innerHTML = `
+            <div class="nl-info-card prev-card">
+                <div class="nl-info-label">← Anterior / A la izquierda (前一个 · 左边)</div>
+                ${prevText}
+            </div>
+            <div class="nl-info-card">
+                <div class="nl-info-label">📍 Número Elegido (当前数字与左右顺序)</div>
+                <div class="nl-info-val" style="color:#1a4a8e;">${selectedOrderNum}</div>
+                <div class="nl-info-sub">
+                    左边 (${leftNums.length ? leftNums.join(', ') : '无'}) 都比 ${selectedOrderNum} 小；<br>
+                    右边 (${rightNums.length ? rightNums.join(', ') : '无'}) 都比 ${selectedOrderNum} 大。
+                </div>
+            </div>
+            <div class="nl-info-card next-card">
+                <div class="nl-info-label">Posterior / A la derecha → (后一个 · 右边)</div>
+                ${nextText}
+            </div>
+        `;
+    }
+
+    // =========================================================================
+    // 新增模块 2 脚本：0 到 10 数轴比多少（谁比谁大多少，谁比谁少多少）
+    // =========================================================================
+    let diffPickTurn = 'A';
+
+    function initDiffNumberLine() {
+        const selA = document.getElementById('diff-select-a');
+        const selB = document.getElementById('diff-select-b');
+        selA.innerHTML = '';
+        selB.innerHTML = '';
+
+        for (let i = 0; i <= 10; i++) {
+            const optA = document.createElement('option');
+            optA.value = i;
+            optA.innerText = i;
+            if (i === 3) optA.selected = true;
+            selA.appendChild(optA);
+
+            const optB = document.createElement('option');
+            optB.value = i;
+            optB.innerText = i;
+            if (i === 7) optB.selected = true;
+            selB.appendChild(optB);
+        }
+
+        updateDiffNumberLine();
+    }
+
+    function randomDiffPair() {
+        const a = randInt(0, 10);
+        let b = randInt(0, 10);
+        while (b === a) b = randInt(0, 10);
+        document.getElementById('diff-select-a').value = a;
+        document.getElementById('diff-select-b').value = b;
+        updateDiffNumberLine();
+    }
+
+    function updateDiffNumberLine() {
+        const a = Number(document.getElementById('diff-select-a').value);
+        const b = Number(document.getElementById('diff-select-b').value);
+        const minN = Math.min(a, b);
+        const maxN = Math.max(a, b);
+        const diff = maxN - minN;
+
+        // 1. 绘制顶部跳跃弧线 SVG
+        const svg = document.getElementById('diff-arcs-svg');
+        let svgHtml = '';
+        for (let step = minN; step < maxN; step++) {
+            const x1 = step * 100;
+            const x2 = (step + 1) * 100;
+            const xm = (x1 + x2) / 2;
+            svgHtml += `
+                <path d="M ${x1} 68 Q ${xm} 16 ${x2} 68" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round"/>
+                <polygon points="${x2 - 7},62 ${x2},69 ${x2 - 1},59" fill="#10b981"/>
+                <rect x="${xm - 16}" y="14" width="32" height="20" rx="6" fill="#dcfce7" stroke="#86efac"/>
+                <text x="${xm}" y="28" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">+1</text>
+            `;
+        }
+        if (diff === 0) {
+            const x0 = a * 100;
+            svgHtml += `<text x="${x0}" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a4a8e">同一个位置 (相差 0 格)</text>`;
+        }
+        svg.innerHTML = svgHtml;
+
+        // 2. 绘制 0-10 数轴节点
+        const track = document.getElementById('nl-diff-track');
+        track.innerHTML = '<div class="nl-base-line"></div>';
+
+        for (let i = 0; i <= 10; i++) {
+            const node = document.createElement('div');
+            node.className = 'nl-node';
+            node.style.left = `${i * 10}%`;
+            node.innerText = i;
+
+            if (i === a && i === b) {
+                node.classList.add('is-comp-a');
+                node.innerHTML = `<span class="nl-tag-top" style="background:#dbeafe; color:#1d4ed8;">A 和 B</span>${i}`;
+            } else if (i === a) {
+                node.classList.add('is-comp-a');
+                node.innerHTML = `<span class="nl-tag-top" style="background:#dbeafe; color:#1d4ed8;">A = ${a}</span>${i}`;
+            } else if (i === b) {
+                node.classList.add('is-comp-b');
+                node.innerHTML = `<span class="nl-tag-top" style="background:#ffedd5; color:#c2410c;">B = ${b}</span>${i}`;
+            } else if (i > minN && i < maxN) {
+                node.classList.add('is-between');
+            }
+
+            node.onclick = () => {
+                if (diffPickTurn === 'A') {
+                    document.getElementById('diff-select-a').value = i;
+                    diffPickTurn = 'B';
+                } else {
+                    document.getElementById('diff-select-b').value = i;
+                    diffPickTurn = 'A';
+                }
+                updateDiffNumberLine();
+            };
+
+            track.appendChild(node);
+        }
+
+        // 3. 更新“谁比谁大多少 / 谁比谁少多少 / 口算桥梁”说明卡
+        const summary = document.getElementById('diff-summary-grid');
+        if (diff === 0) {
+            summary.innerHTML = `
+                <div class="diff-badge-box">
+                    <div style="font-weight:bold; color:#92400e;">⚖️ 两个数一样大 (Son iguales)</div>
+                    <div style="font-size:1.25rem; font-weight:900; color:#1e293b; margin-top:4px;">${a} = ${b}</div>
+                    <div style="font-size:0.9rem; color:#475569; margin-top:4px;">它们在数轴的同一个点上，相差 <strong>0</strong> 格。</div>
+                </div>
+            `;
+        } else {
+            summary.innerHTML = `
+                <div class="diff-badge-box">
+                    <div style="font-weight:bold; color:#92400e;">📏 数一数隔了几格 (Diferencia: ${diff} pasos)</div>
+                    <div style="font-size:1.15rem; font-weight:900; color:#15803d; margin-top:6px;">
+                        🔺 ${maxN} 比 ${minN} 大 ${diff}
+                        <span style="display:block; font-size:0.85rem; font-weight:normal; color:#475569;">(${maxN} es ${diff} mayor que ${minN})</span>
+                    </div>
+                    <div style="font-size:1.15rem; font-weight:900; color:#c2410c; margin-top:6px;">
+                        🔻 ${minN} 比 ${maxN} 少 ${diff}
+                        <span style="display:block; font-size:0.85rem; font-weight:normal; color:#475569;">(${minN} es ${diff} menor que ${maxN})</span>
+                    </div>
+                </div>
+                <div class="diff-badge-box math-bridge">
+                    <div style="font-weight:bold; color:#166534;">🧠 加减口算小桥梁 (Para sumar y restar)</div>
+                    <div style="font-size:0.9rem; color:#334155; margin:4px 0 6px 0;">
+                        从 <strong>${minN}</strong> 往右跳 <strong>${diff}</strong> 格到 <strong>${maxN}</strong>；反过来往左跳 <strong>${diff}</strong> 格！
+                    </div>
+                    <div>
+                        <span class="math-formula-pill">${minN} + ${diff} = ${maxN}</span>
+                        <span class="math-formula-pill">${maxN} - ${diff} = ${minN}</span>
+                        <span class="math-formula-pill">${maxN} - ${minN} = ${diff}</span>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // 初始化两个数轴
+    initOrderNumberLine();
+    initDiffNumberLine();
+
+
+    // =========================================================================
+    // 原有核心生成逻辑 (数字比大小 - 完整保留)
+    // =========================================================================
     function getNumberOperands(level) {
         let max = 10;
         if (level === 'lt10') max = 9;
@@ -832,6 +1749,7 @@
         currentLevel = level;
         document.getElementById('home-page').classList.add('hidden');
         document.getElementById('quiz-page').classList.remove('hidden');
+        document.getElementById('refresh-btn').onclick = generateQuestions;
         
         const titles = {
             'lt10': 'Números hasta 10 (10以内)',
@@ -926,6 +1844,235 @@
     function goHome() {
         document.getElementById('home-page').classList.remove('hidden');
         document.getElementById('quiz-page').classList.add('hidden');
+    }
+
+    // =========================================================================
+    // 新增模块 3 脚本：0-100 自定义范围数字前后接龙练习
+    // =========================================================================
+    let chainConfig = { min: 0, max: 20, count: 5, mode: 'neighbors1' };
+
+    function applyChainPreset(min, max, count) {
+        document.getElementById('chain-min').value = min;
+        document.getElementById('chain-max').value = max;
+        document.getElementById('chain-count').value = count;
+    }
+
+    function startChainQuiz() {
+        let min = parseInt(document.getElementById('chain-min').value, 10);
+        let max = parseInt(document.getElementById('chain-max').value, 10);
+        let count = parseInt(document.getElementById('chain-count').value, 10);
+        const mode = document.getElementById('chain-mode').value;
+
+        if (isNaN(min)) min = 0;
+        if (isNaN(max)) max = 20;
+        if (isNaN(count)) count = 5;
+
+        min = Math.max(0, Math.min(96, min));
+        max = Math.max(min + 2, Math.min(100, max));
+        if (mode === 'neighbors2' && max - min < 4) {
+            max = Math.min(100, min + 4);
+        }
+        count = Math.max(1, Math.min(15, count));
+
+        document.getElementById('chain-min').value = min;
+        document.getElementById('chain-max').value = max;
+        document.getElementById('chain-count').value = count;
+
+        chainConfig = { min, max, count, mode };
+
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('quiz-page').classList.remove('hidden');
+        document.getElementById('quiz-title').innerText = `Cadena Numérica ${min}–${max} (${min}到${max}数字接龙)`;
+        document.getElementById('refresh-btn').onclick = generateChainQuestions;
+
+        generateChainQuestions();
+    }
+
+    function generateChainQuestions() {
+        const list = document.getElementById('quiz-list');
+        list.innerHTML = '';
+
+        const { min, max, count, mode } = chainConfig;
+
+        // 顶部统一核对与得分统计栏
+        const toolbar = document.createElement('div');
+        toolbar.className = 'chain-toolbar';
+        toolbar.innerHTML = `
+            <div class="chain-score-badge" id="chain-score-text">
+                ✏️ 范围：<strong>${min} – ${max}</strong> ｜ 请填写所有空白格子里的前后数字
+            </div>
+            <button type="button" class="btn-check-all" onclick="checkAllChainInputs()">
+                ✅ 检查全部答案 (Comprobar Todo)
+            </button>
+        `;
+        list.appendChild(toolbar);
+
+        if (mode === 'sequence') {
+            // 模式 3：连续区间小接龙（范围内只显示几个提示数字，补全前后所有空格）
+            const span = max - min + 1;
+            let seqStart = min;
+            let seqEnd = max;
+
+            // 如果范围跨度大于 12，每次随机截取一段 10 个连续数字，既保持在选定范围内又方便屏幕排版
+            if (span > 12) {
+                const len = Math.max(count + 3, 10);
+                const actualLen = Math.min(len, span);
+                seqStart = randInt(min, max - actualLen + 1);
+                seqEnd = seqStart + actualLen - 1;
+            }
+
+            const allNums = [];
+            for (let n = seqStart; n <= seqEnd; n++) allNums.push(n);
+
+            const actualClues = Math.min(count, Math.max(1, allNums.length - 1));
+            const shownIndices = new Set();
+            while (shownIndices.size < actualClues) {
+                shownIndices.add(randInt(0, allNums.length - 1));
+            }
+
+            const card = document.createElement('div');
+            card.className = 'chain-card full-width';
+            const qId = 'chain-seq-1';
+
+            let rowHtml = '';
+            const fullAnswerParts = [];
+
+            allNums.forEach((num, idx) => {
+                if (idx > 0) rowHtml += `<span class="chain-arrow">→</span>`;
+                if (shownIndices.has(idx)) {
+                    rowHtml += `<div class="chain-given-box" title="提示数字">${num}</div>`;
+                    fullAnswerParts.push(`<strong style="color:#1a4a8e;">[${num}]</strong>`);
+                } else {
+                    rowHtml += `<input type="number" inputmode="numeric" class="chain-input-box" data-group="${qId}" data-ans="${num}" aria-label="填写数字">`;
+                    fullAnswerParts.push(`<span class="highlight">${num}</span>`);
+                }
+            });
+
+            card.innerHTML = `
+                <div class="chain-card-top">
+                    <span class="chain-index-label">🚂 连续数字小接龙 (显示了 ${actualClues} 个数字，请补全前后所有数字):</span>
+                    <button type="button" class="btn-check-single" onclick="checkSingleChainGroup('${qId}')">核对这一组</button>
+                </div>
+                <div class="chain-row">${rowHtml}</div>
+                <div style="margin-top: 10px;">
+                    <button type="button" class="toggle-solution" onclick="toggleSolution('${qId}')">Ver Solución (查看完整接龙)</button>
+                    <div class="solution-box" id="sol-${qId}">
+                        <div class="step-row">完整接龙 (Cadena completa):</div>
+                        <div class="step-row" style="font-size: 1.25rem;">${fullAnswerParts.join(' → ')}</div>
+                    </div>
+                </div>
+            `;
+            list.appendChild(card);
+
+        } else {
+            // 模式 1 & 2：前后邻居接龙（每个显示的基准数字填写前后 1 个或前后 2 个数字）
+            const radius = mode === 'neighbors2' ? 2 : 1;
+            const validAnchors = [];
+            for (let n = min + radius; n <= max - radius; n++) {
+                validAnchors.push(n);
+            }
+
+            // 随机打乱并选取 count 个不重复数字（按从小到大排序展示，更符合数轴习惯）
+            const shuffled = [...validAnchors].sort(() => Math.random() - 0.5);
+            const picked = shuffled.slice(0, Math.min(count, validAnchors.length)).sort((a, b) => a - b);
+
+            picked.forEach((anchor, idx) => {
+                const qId = `chain-${idx + 1}`;
+                const card = document.createElement('div');
+                card.className = 'chain-card';
+
+                let rowHtml = '';
+                const solParts = [];
+
+                for (let offset = -radius; offset <= radius; offset++) {
+                    const val = anchor + offset;
+                    if (offset > -radius) rowHtml += `<span class="chain-arrow">→</span>`;
+                    if (offset === 0) {
+                        rowHtml += `<div class="chain-given-box">${val}</div>`;
+                        solParts.push(`<strong style="color:#1a4a8e;">[${val}]</strong>`);
+                    } else {
+                        const hintText = offset < 0 ? '前' : '后';
+                        rowHtml += `<input type="number" inputmode="numeric" class="chain-input-box" data-group="${qId}" data-ans="${val}" placeholder="${hintText}">`;
+                        solParts.push(`<span class="highlight">${val}</span>`);
+                    }
+                }
+
+                card.innerHTML = `
+                    <div class="chain-card-top">
+                        <span class="chain-index-label">第 ${idx + 1} 组 · 填出 <strong>${anchor}</strong> 前后的数字:</span>
+                        <button type="button" class="btn-check-single" onclick="checkSingleChainGroup('${qId}')">核对</button>
+                    </div>
+                    <div class="chain-row">${rowHtml}</div>
+                    <div style="margin-top: 8px;">
+                        <button type="button" class="toggle-solution" onclick="toggleSolution('${qId}')">Ver Solución (查看答案)</button>
+                        <div class="solution-box" id="sol-${qId}">
+                            ${solParts.join(' → ')}
+                        </div>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // 绑定回车键自动跳转下一个输入框
+        const inputs = Array.from(list.querySelectorAll('.chain-input-box'));
+        inputs.forEach((inp, idx) => {
+            inp.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (inputs[idx + 1]) {
+                        inputs[idx + 1].focus();
+                    } else {
+                        checkAllChainInputs();
+                    }
+                }
+            });
+        });
+    }
+
+    function evaluateChainInput(inp) {
+        const expected = Number(inp.dataset.ans);
+        const raw = inp.value.trim();
+        inp.classList.remove('is-correct', 'is-wrong');
+        if (raw === '') {
+            inp.classList.add('is-wrong');
+            return false;
+        }
+        if (Number(raw) === expected) {
+            inp.classList.add('is-correct');
+            return true;
+        } else {
+            inp.classList.add('is-wrong');
+            return false;
+        }
+    }
+
+    window.checkSingleChainGroup = function(qId) {
+        const inputs = document.querySelectorAll(`.chain-input-box[data-group="${qId}"]`);
+        inputs.forEach(inp => evaluateChainInput(inp));
+        updateChainScoreBanner();
+    };
+
+    window.checkAllChainInputs = function() {
+        const inputs = document.querySelectorAll('.chain-input-box');
+        inputs.forEach(inp => evaluateChainInput(inp));
+        updateChainScoreBanner();
+    };
+
+    function updateChainScoreBanner() {
+        const inputs = document.querySelectorAll('.chain-input-box');
+        if (!inputs.length) return;
+        let correctCount = 0;
+        inputs.forEach(inp => {
+            if (inp.classList.contains('is-correct')) correctCount++;
+        });
+        const badge = document.getElementById('chain-score-text');
+        if (badge) {
+            const allDone = correctCount === inputs.length;
+            badge.innerHTML = allDone
+                ? `🎉 太棒了！全部答对：<strong>${correctCount} / ${inputs.length}</strong> 个数字！`
+                : `📊 当前成绩：答对 <strong>${correctCount} / ${inputs.length}</strong> 空（绿色正确，红色请再检查一下哦）`;
+        }
     }
 </script>
 </body>
